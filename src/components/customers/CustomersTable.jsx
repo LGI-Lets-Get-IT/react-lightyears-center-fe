@@ -1,0 +1,200 @@
+import React, { memo, useEffect, useState } from "react";
+import Table from "@/components/shared/table/Table";
+import {
+  FiAlertOctagon,
+  FiArchive,
+  FiClock,
+  FiEdit3,
+  FiEye,
+  FiMoreHorizontal,
+  FiMoreVertical,
+  FiPrinter,
+  FiSend,
+  FiTrash2,
+} from "react-icons/fi";
+import Dropdown from "@/components/shared/Dropdown";
+import SelectDropdown from "@/components/shared/SelectDropdown";
+import Select from "react-select";
+import { Link } from "react-router-dom";
+import { customersTableData } from "@/utils/data/customersTableData";
+import { clientStatusOptions } from "@/utils/options";
+
+const actions = [
+  { label: "Edit", icon: <FiEdit3 /> },
+  // { label: "Print", icon: <FiPrinter /> },
+  //   { label: "Remind", icon: <FiClock /> },
+  // { type: "divider" },
+  // { label: "Archive", icon: <FiArchive /> },
+  // { label: "Report Spam", icon: <FiAlertOctagon />, },
+  //   { type: "divider" },
+  { label: "Delete", icon: <FiTrash2 /> },
+];
+
+const TableCell = memo(({ options, defaultSelect }) => {
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  return (
+    <SelectDropdown
+      options={options}
+      defaultSelect={defaultSelect}
+      selectedOption={selectedOption}
+      onSelectOption={(option) => setSelectedOption(option)}
+    />
+  );
+});
+
+const CustomersTable = ({ clients }) => {
+  const columns = [
+    {
+      accessorKey: "id",
+      header: ({ table }) => {
+        const checkboxRef = React.useRef(null);
+
+        useEffect(() => {
+          if (checkboxRef.current) {
+            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
+          }
+        }, [table.getIsSomeRowsSelected()]);
+
+        return (
+          <input
+            type="checkbox"
+            className="custom-table-checkbox"
+            ref={checkboxRef}
+            checked={table.getIsAllRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+          />
+        );
+      },
+      cell: ({ row }) => (
+        <input
+          type="checkbox"
+          className="custom-table-checkbox"
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+      meta: {
+        headerClassName: "width-30",
+      },
+    },
+
+    {
+      accessorKey: "fullName",
+      header: () => "Client Name",
+      cell: (info) => {
+        const clientName = info.getValue();
+        return (
+          <a href="#" className="hstack gap-3">
+            {/* {
+                            roles?.img ?
+                                <div className="avatar-image avatar-md">
+                                    <img src={roles?.img} alt="" className="img-fluid" />
+                                </div>
+                                :
+                                <div className="text-white avatar-text user-avatar-text avatar-md">{roles?.name.substring(0, 1)}</div>
+                        } */}
+            <div>
+              <span className="text-truncate-1-line">{clientName}</span>
+            </div>
+          </a>
+        );
+      },
+    },
+    {
+      accessorKey: "guardianName",
+      header: () => "Guardian Name",
+      cell: (info) => <a>{info.getValue()}</a>,
+    },
+    {
+      accessorKey: "guardianEmail",
+      header: () => "Guardian Email",
+      cell: (info) => <a href="apps-email.html">{info.getValue()}</a>,
+    },
+    // {
+    //     accessorKey: 'group',
+    //     header: () => 'Group',
+    //     cell: (info) => {
+    //         const x = info.getValue()
+    //         return (
+    //             <Select
+    //                 defaultValue={x.defaultSelect}
+    //                 isMulti
+    //                 name="tags"
+    //                 options={x.tags}
+    //                 className="basic-multi-select"
+    //                 classNamePrefix="select"
+    //                 hideSelectedOptions={false}
+    //                 isSearchable={false}
+    //                 // onChange={(e) => console.log(e)}
+    //                 formatOptionLabel={tags => (
+    //                     <div className="user-option d-flex align-items-center gap-2">
+    //                         <span style={{ marginTop: "1px", backgroundColor: `${tags.color}` }} className={`wd-7 ht-7 rounded-circle`}></span>
+    //                         <span>{tags.label}</span>
+    //                     </div>
+    //                 )}
+    //             />
+    //         )
+    //     }
+    // },
+    {
+      accessorKey: "guardianPhone",
+      header: () => "Guardian Phone",
+      cell: (info) => <a href="tel:">{info.getValue()}</a>,
+      // meta: {
+      //     className: "fw-bold text-dark"
+      // }
+    },
+    {
+      accessorKey: "guardianRelationship",
+      header: () => "Guardian Relationship",
+      cell: (info) => <a>{info.getValue()}</a>,
+    },
+    // {
+    //     accessorKey: 'date',
+    //     header: () => 'Date',
+    // },
+    {
+      accessorKey: "isActive",
+      header: () => "Is Active",
+      cell: (info) => (
+        <TableCell
+          options={clientStatusOptions}
+          defaultSelect={info?.getValue().toString()}
+        />
+      ),
+    },
+    {
+      accessorKey: "actions",
+      header: () => "Actions",
+      cell: ({ row }) => (
+        <div className="hstack gap-2 justify-content-end">
+          <Link
+            to={`/clients/${row.original.uuid}`}
+            className="avatar-text avatar-md"
+          >
+            <FiEye />
+          </Link>
+          <Dropdown
+            dropdownItems={actions}
+            triggerClass="avatar-md"
+            triggerPosition={"0,21"}
+            triggerIcon={<FiMoreHorizontal />}
+          />
+        </div>
+      ),
+      meta: {
+        headerClassName: "text-end",
+      },
+    },
+  ];
+
+  return (
+    <div>
+      <Table data={clients} columns={columns} />
+    </div>
+  );
+};
+
+export default CustomersTable;
