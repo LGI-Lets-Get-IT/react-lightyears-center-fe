@@ -45,9 +45,9 @@ const CustomersHeader = () => {
                     iconStrokeWidth={0}
                     isAvatar={false}
                 />
-                <Link to="/customers/create" className="btn btn-primary">
+                <Link to="/clients/create" className="btn btn-primary">
                     <FiPlus size={16} className='me-2' />
-                    <span>Create Customer</span>
+                    <span>Create New Client</span>
                 </Link>
             </div>
 

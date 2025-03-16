@@ -21,29 +21,78 @@ export const menuList = [
   },
   {
     id: 1,
-    name: 'clients',
-    path: '/clients',
-    icon: 'feather-users',
+    name: "clients",
+    path: "#",
+    icon: "feather-users",
     dropdownMenu: [
-      // {
-      //   id: 1,
-      //   name: 'Client List',
-      //   path: '/clients',
-      //   subdropdownMenu: false,
-      // },
       {
         id: 1,
-        name: 'Create New Client',
-        path: '/clients/create',
+        name: "Client List",
+        path: "/clients",
         subdropdownMenu: false,
-      }
+      },
+      // {
+      //   id: 1,
+      //   name: 'Create New Client',
+      //   path: '/clients/create',
+      //   subdropdownMenu: false,
+      // }
     ],
   },
-  // {
-  //   id: 2,
-  //   name: 'appointments',
-  //   path: '/appointments',
-  // },
+  {
+    id: 2,
+    name: "appointments",
+    path: "#",
+    icon: "feather-calendar",
+    dropdownMenu: [
+      {
+        id: 1,
+        name: "Appointment List",
+        path: "/appointments",
+        subdropdownMenu: false,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "Schools",
+    path: "#",
+    dropdownMenu: [
+      {
+        id: 1,
+        name: "School List",
+        path: "/schools",
+        subdropdownMenu: false,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "Treatments",
+    path: "#",
+    dropdownMenu: [
+      {
+        id: 1,
+        name: "Treatment List",
+        path: "/treatments",
+        subdropdownMenu: false,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Tests",
+    path: "#",
+    dropdownMenu: [
+      {
+        id: 1,
+        name: "Test List",
+        path: "/tests",
+        subdropdownMenu: false,
+      },
+    ],
+  },
+
   // {
   //   id: 1,
   //   name: "reports",
