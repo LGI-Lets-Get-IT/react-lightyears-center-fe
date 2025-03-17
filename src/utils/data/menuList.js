@@ -21,6 +21,20 @@ export const menuList = [
   },
   {
     id: 1,
+    name: "appointments",
+    path: "#",
+    icon: "feather-calendar",
+    dropdownMenu: [
+      {
+        id: 1,
+        name: "Appointment List",
+        path: "/appointments",
+        subdropdownMenu: false,
+      },
+    ],
+  },
+  {
+    id: 2,
     name: "clients",
     path: "#",
     icon: "feather-users",
@@ -40,23 +54,10 @@ export const menuList = [
     ],
   },
   {
-    id: 2,
-    name: "appointments",
-    path: "#",
-    icon: "feather-calendar",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "Appointment List",
-        path: "/appointments",
-        subdropdownMenu: false,
-      },
-    ],
-  },
-  {
     id: 3,
     name: "Schools",
     path: "#",
+    icon: "lu-school",
     dropdownMenu: [
       {
         id: 1,
@@ -68,26 +69,28 @@ export const menuList = [
   },
   {
     id: 4,
-    name: "Treatments",
+    name: "Tests",
     path: "#",
+    icon: "pi-notepencil-light",
     dropdownMenu: [
       {
         id: 1,
-        name: "Treatment List",
-        path: "/treatments",
+        name: "Test List",
+        path: "/tests",
         subdropdownMenu: false,
       },
     ],
   },
   {
     id: 5,
-    name: "Tests",
+    name: "Treatments",
     path: "#",
+    icon: "lia-file-medical",
     dropdownMenu: [
       {
         id: 1,
-        name: "Test List",
-        path: "/tests",
+        name: "Treatment List",
+        path: "/treatments",
         subdropdownMenu: false,
       },
     ],
