@@ -1,87 +1,75 @@
-import React from 'react'
-import { FiAlertTriangle } from 'react-icons/fi'
-import { projectsData } from '@/utils/data/projectsData'
-import ImageGroup from '@/components/shared/ImageGroup'
-import HorizontalProgress from '@/components/shared/HorizontalProgress';
-import { FaPencil } from 'react-icons/fa6';
+// import React from "react";
+// import { FiAlertTriangle } from "react-icons/fi";
+// import { projectsData } from "@/utils/data/projectsData";
+// import ImageGroup from "@/components/shared/ImageGroup";
+// import HorizontalProgress from "@/components/shared/HorizontalProgress";
+import { FaPencil } from "react-icons/fa6";
 
 const childInfoData = [
-    { label: 'Full Name', key: 'fullName' },
-    { label: 'Age', key: 'age' },
-    { label: 'Date of Birth', key: 'dateOfBirth' },
-    { label: 'Address', key: 'address' },
-    { label: 'Nationality', key: 'nationality' },
-    // { label: 'School Name', key: 'school.id'},
+  { label: "Full Name", key: "fullName" },
+  { label: "Age", key: "age" },
+  { label: "Date of Birth", key: "dateOfBirth" },
+  { label: "Address", key: "address" },
+  { label: "Nationality", key: "nationality" },
+  // { label: 'School Name', key: 'school.id'},
 ];
 
 const parentInfoData = [
-    { label: 'Guardian Name', key: 'guardianName' },
-    { label: 'Guardian Phone', key: 'guardianPhone' },
-    { label: 'Guardian Nationality', key: 'guardianNationality' },
-    { label: 'Relationship With Child', key: 'guardianRelationship'}
-]
-const TabOverviewContent = ({ clientInformation }) => {
-    return (
-        <div
-            className="tab-pane fade show active p-4"
-            id="overviewTab"
-            role="tabpanel"
-        >
-            {/* <div className="about-section mb-5">
-                <div className="mb-4 d-flex align-items-center justify-content-between">
-                    <h5 className="fw-bold mb-0">Profile About:</h5>
-                    <a href="#" className="btn btn-sm btn-light-brand">
-                        Updates
-                    </a>
-                </div>
-                <p>
-                    John Doe is a frontend developer with over 5 years of experience creating
-                    high-quality, user-friendly websites and web applications. He has a strong
-                    understanding of web development technologies and a keen eye for design.
-                </p>
-                <p>
-                    John is proficient in languages such as HTML, CSS, and JavaScript, and is
-                    experienced in using popular frontend frameworks such as React and
-                    Angular. He is also well-versed in user experience design and uses his
-                    knowledge to create engaging and intuitive user interfaces.
-                </p>
-                <p>
-                    Throughout his career, John has worked on a wide range of projects for
-                    clients in various industries, including e-commerce, healthcare, and
-                    education. He takes a collaborative approach to development and enjoys
-                    working closely with clients and other developers to bring their ideas to
-                    life.
-                </p>
-            </div> */}
-            <div className="profile-details mb-5">
-                <div className="mb-4 d-flex align-items-center justify-content-between">
-                    <h5 className="fw-bold mb-0">Child Information:</h5>
-                    <a href="#" className="btn btn-sm btn-light-brand gap-1">
-                        <FaPencil/> Edit Information
-                    </a>
-                </div>
-                {childInfoData.map((item, index) => (
-                    <div key={index}  className={`row g-0 ${index === childInfoData.length - 1 ? 'mb-0' : 'mb-4'}`}>
-                        <div className="col-sm-6 text-muted">{item.label}:</div>
-                        <div className="col-sm-6 fw-semibold">{clientInformation?.[item.key]}</div>
-                    </div>
-                ))}
+  { label: "Guardian Name", key: "guardianName" },
+  { label: "Guardian Phone", key: "guardianPhone" },
+  { label: "Guardian Nationality", key: "guardianNationality" },
+  { label: "Relationship With Child", key: "guardianRelationship" },
+];
+const TabOverviewContent = () => {
+  return (
+    <div
+      className="tab-pane fade show active p-4"
+      id="overviewTab"
+      role="tabpanel"
+    >
+      <div className="profile-details mb-5">
+        <div className="mb-4 d-flex align-items-center justify-content-between">
+          <h5 className="fw-bold mb-0">Child Information:</h5>
+          <a href="#" className="btn btn-sm btn-light-brand gap-1">
+            <FaPencil /> Edit Information
+          </a>
+        </div>
+        {childInfoData.map((item, index) => (
+          <div
+            key={index}
+            className={`row g-0 ${
+              index === childInfoData.length - 1 ? "mb-0" : "mb-4"
+            }`}
+          >
+            <div className="col-sm-6 text-muted">{item.label}:</div>
+            <div className="col-sm-6 fw-semibold">
+              {clientInformation?.[item.key]}
             </div>
-            <div className="profile-details mb-5">
-                <div className="mb-4 d-flex align-items-center justify-content-between">
-                    <h5 className="fw-bold mb-0">Parent Information:</h5>
-                    <a href="#" className="btn btn-sm btn-light-brand gap-1">
-                        <FaPencil/> Edit Information
-                    </a>
-                </div>
-                {parentInfoData.map((item, index) => (
-                    <div key={index}  className={`row g-0 ${index === parentInfoData.length - 1 ? 'mb-0' : 'mb-4'}`}>
-                        <div className="col-sm-6 text-muted">{item.label}:</div>
-                        <div className="col-sm-6 fw-semibold">{clientInformation?.[item.key]}</div>
-                    </div>
-                ))}
+          </div>
+        ))}
+      </div>
+      <div className="profile-details mb-5">
+        <div className="mb-4 d-flex align-items-center justify-content-between">
+          <h5 className="fw-bold mb-0">Parent Information:</h5>
+          <a href="#" className="btn btn-sm btn-light-brand gap-1">
+            <FaPencil /> Edit Information
+          </a>
+        </div>
+        {parentInfoData.map((item, index) => (
+          <div
+            key={index}
+            className={`row g-0 ${
+              index === parentInfoData.length - 1 ? "mb-0" : "mb-4"
+            }`}
+          >
+            <div className="col-sm-6 text-muted">{item.label}:</div>
+            <div className="col-sm-6 fw-semibold">
+              {clientInformation?.[item.key]}
             </div>
-            {/* <div
+          </div>
+        ))}
+      </div>
+      {/* <div
                 className="alert alert-dismissible mb-4 p-4 d-flex alert-soft-warning-message profile-overview-alert"
                 role="alert"
             >
@@ -109,7 +97,7 @@ const TabOverviewContent = ({ clientInformation }) => {
                     />
                 </div>
             </div> */}
-            {/* <div className="project-section">
+      {/* <div className="project-section">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                     <h5 className="fw-bold mb-0">Projects Details:</h5>
                     <a href="#" className="btn btn-sm btn-light-brand">
@@ -172,9 +160,8 @@ const TabOverviewContent = ({ clientInformation }) => {
                     }
                 </div>
             </div> */}
-        </div>
+    </div>
+  );
+};
 
-    )
-}
-
-export default TabOverviewContent
+export default TabOverviewContent;

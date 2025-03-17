@@ -43,6 +43,8 @@ const TableCell = memo(({ options, defaultSelect }) => {
   );
 });
 
+TableCell.displayName = "TableCell";
+
 const CustomersTable = ({ clients }) => {
   const columns = [
     {
@@ -86,15 +88,16 @@ const CustomersTable = ({ clients }) => {
       cell: (info) => {
         const clientName = info.getValue();
         return (
-          <a href="#" className="hstack gap-3">
-            {/* {
-                            roles?.img ?
-                                <div className="avatar-image avatar-md">
-                                    <img src={roles?.img} alt="" className="img-fluid" />
-                                </div>
-                                :
-                                <div className="text-white avatar-text user-avatar-text avatar-md">{roles?.name.substring(0, 1)}</div>
-                        } */}
+          <a className="hstack gap-3">
+            {/* {roles?.img ? (
+              <div className="avatar-image avatar-md">
+                <img src={roles?.img} alt="" className="img-fluid" />
+              </div>
+            ) : (
+              <div className="text-white avatar-text user-avatar-text avatar-md">
+                {roles?.name.substring(0, 1)}
+              </div>
+            )} */}
             <div>
               <span className="text-truncate-1-line">{clientName}</span>
             </div>

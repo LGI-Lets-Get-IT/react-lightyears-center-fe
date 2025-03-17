@@ -21,22 +21,22 @@ export const menuList = [
   },
   {
     id: 1,
-    name: 'clients',
-    path: '/clients',
-    icon: 'feather-users',
+    name: "clients",
+    path: "#",
+    icon: "feather-users",
     dropdownMenu: [
-      // {
-      //   id: 1,
-      //   name: 'Client List',
-      //   path: '/clients',
-      //   subdropdownMenu: false,
-      // },
       {
         id: 1,
-        name: 'Create New Client',
-        path: '/clients/create',
+        name: "Client List",
+        path: "/clients",
         subdropdownMenu: false,
-      }
+      },
+      {
+        id: 2,
+        name: "Create New Client",
+        path: "/clients/create",
+        subdropdownMenu: false,
+      },
     ],
   },
   // {
