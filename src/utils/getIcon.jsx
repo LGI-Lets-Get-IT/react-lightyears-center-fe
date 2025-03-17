@@ -6,6 +6,7 @@ import {
   BsEnvelopePlus,
   BsEnvelopeSlash,
 } from "react-icons/bs";
+import { FaFileMedical } from "react-icons/fa";
 import {
   FaBriefcase,
   FaBuilding,
@@ -116,6 +117,10 @@ import {
   FiX,
   FiYoutube,
 } from "react-icons/fi";
+import { PiNotePencilLight } from "react-icons/pi";
+import { LuSchool } from "react-icons/lu";
+import { LiaFileMedicalSolid, LiaNotesMedicalSolid } from "react-icons/lia";
+import { CiMedicalClipboard } from "react-icons/ci";
 
 const getIcon = (name) => {
   switch (name) {
@@ -310,6 +315,8 @@ const getIcon = (name) => {
       return <FaCcPaypal />;
     case "fa-facebook":
       return <FaFacebook />;
+    case "fa-file-medical":
+      return <FaFileMedical />;
     case "fa-twitter":
       return <FaTwitter />;
     case "fa-youtube":
@@ -345,6 +352,15 @@ const getIcon = (name) => {
       return <BsEnvelopeHeart />;
     case "bi-envelope-slash":
       return <BsEnvelopeSlash />;
+
+    case "pi-notepencil-light":
+      return <PiNotePencilLight />;
+
+    case "lia-file-medical":
+      return <CiMedicalClipboard />;
+
+    case "lu-school":
+      return <LuSchool />;
 
     default:
       break;
