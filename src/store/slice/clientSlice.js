@@ -45,6 +45,19 @@ export const createClient = createAsyncThunk(
   }
 );
 
+export const deleteClient = createAsyncThunk(
+  "clients/deleteClient",
+  async (clientId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await clientsApi.deleteClient(clientId);
+      // dispatch(fetchAllClients());
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const clientSlice = createSlice({
   name: "client",
   initialState,
