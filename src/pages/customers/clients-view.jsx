@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import CustomersViewHeader from "@/components/customersView/CustomersViewHeader";
-import CustomerContent from "@/components/customersView/CustomerContent";
+import ClientsViewHeader from "./components/ClientsViewHeader";
+import ClientsContent from "./components/ClientsContent";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchClientById } from "../store/slice/clientSlice";
+import { fetchClientById } from "../../store/slice/clientSlice";
 import { useParams } from "react-router-dom";
 
 const CustomersView = () => {
@@ -19,11 +19,11 @@ const CustomersView = () => {
   return (
     <>
       <PageHeader>
-        <CustomersViewHeader />
+        <ClientsViewHeader />
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <CustomerContent userData={currentClient} />
+          <ClientsContent userData={currentClient} />
         </div>
       </div>
     </>

@@ -22,7 +22,7 @@ import {
 } from "react-icons/bs";
 import Dropdown from "@/components/shared/Dropdown";
 import { Link } from "react-router-dom";
-import CustomersStatistics from "../widgetsStatistics/CustomersStatistics";
+import CustomersStatistics from "../../../components/widgetsStatistics/CustomersStatistics";
 
 const filterAction = [
   { label: "All", icon: <FiEye /> },

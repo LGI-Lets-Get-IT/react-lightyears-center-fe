@@ -20,7 +20,7 @@ const parentInfoData = [
   { label: "Guardian Nationality", key: "guardianNationality" },
   { label: "Relationship With Child", key: "guardianRelationship" },
 ];
-const TabOverviewContent = () => {
+const TabOverviewContent = ({ clientInformation }) => {
   return (
     <div
       className="tab-pane fade show active p-4"

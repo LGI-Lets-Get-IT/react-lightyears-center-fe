@@ -37,7 +37,7 @@ export const createClient = createAsyncThunk(
   async (clientData, { rejectWithValue, dispatch }) => {
     try {
       const response = await clientsApi.createClient(clientData);
-      dispatch(fetchAllClients());
+      // dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);

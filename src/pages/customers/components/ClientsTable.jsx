@@ -45,7 +45,7 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const CustomersTable = ({ clients }) => {
+const ClientsTable = ({ clients }) => {
   const columns = [
     {
       accessorKey: "id",
@@ -200,4 +200,4 @@ const CustomersTable = ({ clients }) => {
   );
 };
 
-export default CustomersTable;
+export default ClientsTable;

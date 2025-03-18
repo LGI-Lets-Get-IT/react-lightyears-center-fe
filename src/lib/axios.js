@@ -27,7 +27,27 @@ api.interceptors.request.use(
 
 // Response interceptor
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log("REERASP", response);
+    if (response.status === 201) {
+      MySwal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        backdrop: false,
+        // didOpen: (toast) => {
+        //   toast.addEventListener("mouseenter", Swal.stopTimer);
+        //   toast.addEventListener("mouseleave", Swal.resumeTimer);
+        // },
+      }).fire({
+        icon: "success",
+        title: response?.data?.message || "TESTTEST",
+      });
+    }
+    return response;
+  },
   async (error) => {
     console.log("ERROR", error);
     MySwal.mixin({

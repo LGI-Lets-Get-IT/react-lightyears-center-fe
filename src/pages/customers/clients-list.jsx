@@ -1,14 +1,10 @@
-import React, { useEffect } from "react";
-import CustomersTable from "@/components/customers/CustomersTable";
-import CustomersHeader from "@/components/customers/CustomersHeader";
+import { useEffect } from "react";
+import ClientsTable from "./components/ClientsTable";
+import ClientsHeader from "./components/ClientsHeader";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import Footer from "@/components/shared/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createClient,
-  fetchAllClients,
-  fetchClientById,
-} from "../store/slice/clientSlice";
+import { fetchAllClients } from "../../store/slice/clientSlice";
 
 const CustomersList = () => {
   const dispatch = useDispatch();
@@ -21,11 +17,11 @@ const CustomersList = () => {
   return (
     <>
       <PageHeader>
-        <CustomersHeader />
+        <ClientsHeader />
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <CustomersTable clients={clients} />
+          <ClientsTable clients={clients} />
         </div>
       </div>
       <Footer />
