@@ -7,7 +7,7 @@ import { FaPencil } from "react-icons/fa6";
 
 const childInfoData = [
   { label: "Full Name", key: "fullName" },
-  { label: "Age", key: "age" },
+  { label: "Age", key: "age", suffix: "years old" },
   { label: "Date of Birth", key: "dateOfBirth" },
   { label: "Address", key: "address" },
   { label: "Nationality", key: "nationality" },
@@ -43,7 +43,7 @@ const TabOverviewContent = ({ clientInformation }) => {
           >
             <div className="col-sm-6 text-muted">{item.label}:</div>
             <div className="col-sm-6 fw-semibold">
-              {clientInformation?.[item.key]}
+              {clientInformation?.[item.key]} {item?.suffix}
             </div>
           </div>
         ))}

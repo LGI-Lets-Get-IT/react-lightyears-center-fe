@@ -33,6 +33,7 @@ const Table = ({ data, columns }) => {
     onGlobalFilterChange: setGlobalFilter,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    getRowId: row => row.uuid ?? row.id,
   });
 
   return (

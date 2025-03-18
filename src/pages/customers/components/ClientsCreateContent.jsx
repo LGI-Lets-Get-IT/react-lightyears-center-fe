@@ -1,10 +1,6 @@
 import React from "react";
 import TabProfile from "../../../components/customersCreate/TabProfile";
 import TabPassword from "../../../components/customersCreate/TabPassword";
-import TabBilling from "../../../components/customersCreate/TabBilling";
-import TabNotificationsContent from "../../../components/customersView/TabNotificationsContent";
-import TabConnections from "../../../components/customersView/TabConnections";
-import TabBillingContent from "../../../components/customersView/TabBillingContent";
 
 const CustomerCreateContent = () => {
   return (

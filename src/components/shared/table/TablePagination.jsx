@@ -10,7 +10,7 @@ const TablePagination = ({ table }) => {
           role="status"
           aria-live="polite"
         >
-          Showing 1 to {table.getState().pagination.pageSize} of{" "}
+          Showing 1 to {table.getState().pagination.pageSize} of
           {table.getRowCount()} entries
         </div>
       </div>
@@ -24,12 +24,19 @@ const TablePagination = ({ table }) => {
               className={`paginate_button page-item previous ${
                 !table.getCanPreviousPage() ? "disabled" : ""
               } `}
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              // onClick={() => table.previousPage()}
+              // disabled={!table.getCanPreviousPage()}
             >
-              <a href="#" className="page-link">
+              {/* <a href="#" className="page-link">
                 Previous
-              </a>
+              </a> */}
+              <button
+                className="page-link"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </button>
             </li>
             <li className="paginate_button page-item active">
               <a
@@ -47,12 +54,19 @@ const TablePagination = ({ table }) => {
               className={`paginate_button page-item next ${
                 !table.getCanNextPage() ? "disabled" : ""
               }`}
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              // onClick={() => table.nextPage()}
+              // disabled={!table.getCanNextPage()}
             >
-              <a href="#" className="page-link">
+              {/* <a href="#" className="page-link">
                 Next
-              </a>
+              </a> */}
+              <button 
+                className="page-link"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </button>
             </li>
           </ul>
         </div>

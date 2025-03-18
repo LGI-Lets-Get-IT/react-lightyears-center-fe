@@ -12,7 +12,6 @@ export const fetchAllSchools = createAsyncThunk(
   "schools/getAllSchools",
   async (_, { rejectWithValue, dispatch }) => {
     try {
-        console.log('AFLSSKLSFALK', initialState.schools)
       const response = await schoolsApi.getAllSchools();
       return response.data.data;
     } catch (error) {

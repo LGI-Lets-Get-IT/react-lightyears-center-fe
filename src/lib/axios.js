@@ -5,6 +5,19 @@ const MySwal = withReactContent(Swal);
 
 // import { getAuthStore } from '../stores/authStore';
 
+const swalOptions = {
+  toast: true,
+  position: "top-end",
+  showConfirmButton: false,
+  timer: 4000,
+  timerProgressBar: true,
+  backdrop: false,
+  // didOpen: (toast) => {
+  //   toast.addEventListener("mouseenter", Swal.stopTimer);
+  //   toast.addEventListener("mouseleave", Swal.resumeTimer);
+  // },
+};
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
 });
@@ -12,7 +25,6 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    console.log("REQUEST INTERCEPTORS");
     const token = "asd";
     // const token = getAuthStore.getState().token;
     if (token) {
@@ -30,18 +42,7 @@ api.interceptors.response.use(
   (response) => {
     console.log("REERASP", response);
     if (response.status === 201) {
-      MySwal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        backdrop: false,
-        // didOpen: (toast) => {
-        //   toast.addEventListener("mouseenter", Swal.stopTimer);
-        //   toast.addEventListener("mouseleave", Swal.resumeTimer);
-        // },
-      }).fire({
+      MySwal.mixin(swalOptions).fire({
         icon: "success",
         title: response?.data?.message || "TESTTEST",
       });
@@ -50,18 +51,7 @@ api.interceptors.response.use(
   },
   async (error) => {
     console.log("ERROR", error);
-    MySwal.mixin({
-      toast: true,
-      position: "top-end",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      backdrop: false,
-      // didOpen: (toast) => {
-      //   toast.addEventListener("mouseenter", Swal.stopTimer);
-      //   toast.addEventListener("mouseleave", Swal.resumeTimer);
-      // },
-    }).fire({
+    MySwal.mixin(swalOptions).fire({
       icon: "error",
       title: error?.response?.data?.message || "Internal Server Error",
     });

@@ -1,81 +1,83 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../index.css";
-import RootLayout from "../layout/root";
+import RootLayout from "@/layout/root";
+import SchoolsCreate from "@/pages/schools/schools-create";
 
-const Home = lazy(() => import("../pages/home"));
-const Analytics = lazy(() => import("../pages/analytics"));
-const ReportsSales = lazy(() => import("../pages/reports-sales"));
-const ReportsLeads = lazy(() => import("../pages/reports-leads"));
-const ReportsProject = lazy(() => import("../pages/reports-project"));
-const AppsChat = lazy(() => import("../pages/apps-chat"));
-const LayoutApplications = lazy(() => import("../layout/layoutApplications"));
-const AppsEmail = lazy(() => import("../pages/apps-email"));
-const ReportsTimesheets = lazy(() => import("../pages/reports-timesheets"));
-const LoginCover = lazy(() => import("../pages/login-cover"));
-const AppsTasks = lazy(() => import("../pages/apps-tasks"));
-const AppsNotes = lazy(() => import("../pages/apps-notes"));
-const AppsCalender = lazy(() => import("../pages/apps-calender"));
-const AppsStorage = lazy(() => import("../pages/apps-storage"));
-const Proposalist = lazy(() => import("../pages/proposal-list"));
-const CustomersList = lazy(() => import("../pages/customers/clients-list"));
-const ProposalView = lazy(() => import("../pages/proposal-view"));
-const ProposalEdit = lazy(() => import("../pages/proposal-edit"));
-const LeadsList = lazy(() => import("../pages/leadsList"));
-const CustomersView = lazy(() => import("../pages/customers/clients-view"));
-const CustomersCreate = lazy(() => import("../pages/customers/clients-create"));
-const ProposalCreate = lazy(() => import("../pages/proposal-create"));
-const LeadsView = lazy(() => import("../pages/leads-view"));
-const LeadsCreate = lazy(() => import("../pages/leads-create"));
-const PaymentList = lazy(() => import("../pages/payment-list"));
-const PaymentView = lazy(() => import("../pages/payment-view/"));
-const PaymentCreate = lazy(() => import("../pages/payment-create"));
-const ProjectsList = lazy(() => import("../pages/projects-list"));
-const ProjectsView = lazy(() => import("../pages/projects-view"));
-const ProjectsCreate = lazy(() => import("../pages/projects-create"));
-const SettingsGaneral = lazy(() => import("../pages/settings-ganeral"));
-const LayoutSetting = lazy(() => import("../layout/layoutSetting"));
-const SettingsSeo = lazy(() => import("../pages/settings-seo"));
-const SettingsTags = lazy(() => import("../pages/settings-tags"));
-const SettingsEmail = lazy(() => import("../pages/settings-email"));
-const SettingsTasks = lazy(() => import("../pages/settings-tasks"));
-const SettingsLeads = lazy(() => import("../pages/settings-leads"));
+const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
+const Home = lazy(() => import("@/pages/home"));
+const Analytics = lazy(() => import("@/pages/analytics"));
+const ReportsSales = lazy(() => import("@/pages/reports-sales"));
+const ReportsLeads = lazy(() => import("@/pages/reports-leads"));
+const ReportsProject = lazy(() => import("@/pages/reports-project"));
+const AppsChat = lazy(() => import("@/pages/apps-chat"));
+const LayoutApplications = lazy(() => import("@/layout/layoutApplications"));
+const AppsEmail = lazy(() => import("@/pages/apps-email"));
+const ReportsTimesheets = lazy(() => import("@/pages/reports-timesheets"));
+const LoginCover = lazy(() => import("@/pages/login-cover"));
+const AppsTasks = lazy(() => import("@/pages/apps-tasks"));
+const AppsNotes = lazy(() => import("@/pages/apps-notes"));
+const AppsCalender = lazy(() => import("@/pages/apps-calender"));
+const AppsStorage = lazy(() => import("@/pages/apps-storage"));
+const Proposalist = lazy(() => import("@/pages/proposal-list"));
+const CustomersList = lazy(() => import("@/pages/customers/clients-list"));
+const ProposalView = lazy(() => import("@/pages/proposal-view"));
+const ProposalEdit = lazy(() => import("@/pages/proposal-edit"));
+const LeadsList = lazy(() => import("@/pages/leadsList"));
+const CustomersView = lazy(() => import("@/pages/customers/clients-view"));
+const CustomersCreate = lazy(() => import("@/pages/customers/clients-create"));
+const ProposalCreate = lazy(() => import("@/pages/proposal-create"));
+const LeadsView = lazy(() => import("@/pages/leads-view"));
+const LeadsCreate = lazy(() => import("@/pages/leads-create"));
+const PaymentList = lazy(() => import("@/pages/payment-list"));
+const PaymentView = lazy(() => import("@/pages/payment-view/"));
+const PaymentCreate = lazy(() => import("@/pages/payment-create"));
+const ProjectsList = lazy(() => import("@/pages/projects-list"));
+const ProjectsView = lazy(() => import("@/pages/projects-view"));
+const ProjectsCreate = lazy(() => import("@/pages/projects-create"));
+const SettingsGaneral = lazy(() => import("@/pages/settings-ganeral"));
+const LayoutSetting = lazy(() => import("@/layout/layoutSetting"));
+const SettingsSeo = lazy(() => import("@/pages/settings-seo"));
+const SettingsTags = lazy(() => import("@/pages/settings-tags"));
+const SettingsEmail = lazy(() => import("@/pages/settings-email"));
+const SettingsTasks = lazy(() => import("@/pages/settings-tasks"));
+const SettingsLeads = lazy(() => import("@/pages/settings-leads"));
 const SettingsMiscellaneous = lazy(() =>
-  import("../pages/settings-miscellaneous")
+  import("@/pages/settings-miscellaneous")
 );
-const SettingsRecaptcha = lazy(() => import("../pages/settings-recaptcha"));
+const SettingsRecaptcha = lazy(() => import("@/pages/settings-recaptcha"));
 const SettingsLocalization = lazy(() =>
-  import("../pages/settings-localization")
+  import("@/pages/settings-localization")
 );
-const SettingsCustomers = lazy(() => import("../pages/settings-customers"));
-const SettingsGateways = lazy(() => import("../pages/settings-gateways"));
-const SettingsFinance = lazy(() => import("../pages/settings-finance"));
-const SettingsSupport = lazy(() => import("../pages/settings-support"));
-const LayoutAuth = lazy(() => import("../layout/layoutAuth"));
-const LoginMinimal = lazy(() => import("../pages/login-minimal"));
-const LoginCreative = lazy(() => import("../pages/login-creative"));
-const RegisterCover = lazy(() => import("../pages/register-cover"));
-const RegisterMinimal = lazy(() => import("../pages/register-minimal"));
-const RegisterCreative = lazy(() => import("../pages/register-creative"));
-const ResetCover = lazy(() => import("../pages/reset-cover"));
-const ResetMinimal = lazy(() => import("../pages/reset-minimal"));
-const ResetCreative = lazy(() => import("../pages/reset-creative"));
-const ErrorCover = lazy(() => import("../pages/error-cover"));
-const ErrorCreative = lazy(() => import("../pages/error-creative"));
-const ErrorMinimal = lazy(() => import("../pages/error-minimal"));
-const OtpCover = lazy(() => import("../pages/otp-cover"));
-const OtpMinimal = lazy(() => import("../pages/otp-minimal"));
-const OtpCreative = lazy(() => import("../pages/otp-creative"));
-const MaintenanceCover = lazy(() => import("../pages/maintenance-cover"));
-const MaintenanceMinimal = lazy(() => import("../pages/maintenance-minimal"));
-const MaintenanceCreative = lazy(() => import("../pages/maintenance-creative"));
-const HelpKnowledgebase = lazy(() => import("../pages/help-knowledgebase"));
-const WidgetsLists = lazy(() => import("../pages/widgets-lists"));
-const WidgetsTables = lazy(() => import("../pages/widgets-tables"));
-const WidgetsCharts = lazy(() => import("../pages/widgets-charts"));
-const WidgetsStatistics = lazy(() => import("../pages/widgets-statistics"));
+const SettingsCustomers = lazy(() => import("@/pages/settings-customers"));
+const SettingsGateways = lazy(() => import("@/pages/settings-gateways"));
+const SettingsFinance = lazy(() => import("@/pages/settings-finance"));
+const SettingsSupport = lazy(() => import("@/pages/settings-support"));
+const LayoutAuth = lazy(() => import("@/layout/layoutAuth"));
+const LoginMinimal = lazy(() => import("@/pages/login-minimal"));
+const LoginCreative = lazy(() => import("@/pages/login-creative"));
+const RegisterCover = lazy(() => import("@/pages/register-cover"));
+const RegisterMinimal = lazy(() => import("@/pages/register-minimal"));
+const RegisterCreative = lazy(() => import("@/pages/register-creative"));
+const ResetCover = lazy(() => import("@/pages/reset-cover"));
+const ResetMinimal = lazy(() => import("@/pages/reset-minimal"));
+const ResetCreative = lazy(() => import("@/pages/reset-creative"));
+const ErrorCover = lazy(() => import("@/pages/error-cover"));
+const ErrorCreative = lazy(() => import("@/pages/error-creative"));
+const ErrorMinimal = lazy(() => import("@/pages/error-minimal"));
+const OtpCover = lazy(() => import("@/pages/otp-cover"));
+const OtpMinimal = lazy(() => import("@/pages/otp-minimal"));
+const OtpCreative = lazy(() => import("@/pages/otp-creative"));
+const MaintenanceCover = lazy(() => import("@/pages/maintenance-cover"));
+const MaintenanceMinimal = lazy(() => import("@/pages/maintenance-minimal"));
+const MaintenanceCreative = lazy(() => import("@/pages/maintenance-creative"));
+const HelpKnowledgebase = lazy(() => import("@/pages/help-knowledgebase"));
+const WidgetsLists = lazy(() => import("@/pages/widgets-lists"));
+const WidgetsTables = lazy(() => import("@/pages/widgets-tables"));
+const WidgetsCharts = lazy(() => import("@/pages/widgets-charts"));
+const WidgetsStatistics = lazy(() => import("@/pages/widgets-statistics"));
 const WidgetsMiscellaneous = lazy(() =>
-  import("../pages/widgets-miscellaneous")
+  import("@/pages/widgets-miscellaneous")
 );
 
 const LoadingFallback = () => {
@@ -160,6 +162,14 @@ export const router = createBrowserRouter([
       {
         path: "/clients/create",
         element: <CustomersCreate />,
+      },
+      {
+        path: "/schools",
+        element: <SchoolsList />,
+      },
+      {
+        path: "/schools/create",
+        element: <SchoolsCreate />,
       },
       {
         path: "/leads/list",

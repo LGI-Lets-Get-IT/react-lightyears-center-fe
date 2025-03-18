@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { FiCalendar, FiCamera, FiLayers, FiUserPlus } from "react-icons/fi";
+import {
+  FiCalendar,
+  FiCamera,
+  FiCheck,
+  FiLayers,
+  FiUserPlus,
+  FiX,
+} from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import TextArea from "@/components/shared/TextArea";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
-import MultiSelectTags from "@/components/shared/MultiSelectTags";
 import {
-  customerListStatusOptions,
-  customerListTagsOptions,
   genderOptions,
   relationshipOptions,
 } from "@/utils/options";
@@ -15,23 +19,15 @@ import useLocationData from "@/hooks/useLocationData";
 import useDatePicker from "@/hooks/useDatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../store/slice/schoolSlice";
-import { FaPlus } from "react-icons/fa";
 import { createClient } from "@/store/slice/clientSlice";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { schools } = useSelector((state) => state.schools);
-  const [inputs, setInputs] = useState({});
+  const [userInput, setUserInput] = useState({});
   const [selectedOption, setSelectedOption] = useState({});
-  const [nationalityOption, setNationalityOption] = useState({});
-  const [relationshipOption, setRelationshipOption] = useState({});
-  const [genderOption, setGenderOption] = useState({});
-  const [guardianNationalityOption, setGuardianNationalityOption] = useState(
-    {}
-  );
-  const [schoolOption, setSchoolOption] = useState({});
   const { startDate, endDate, setStartDate, setEndDate, renderFooter } =
     useDatePicker();
   const { countries } = useLocationData();
@@ -45,23 +41,20 @@ const TabProfile = () => {
   }, []);
 
   const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setInputs((values) => ({ ...values, [name]: value }));
+    setUserInput((values) => ({ ...values, [event.target.name]: event.target.value }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log('SELECTEDOPTION', selectedOption)
     const body = {
-      ...inputs,
-      nationality: nationalityOption.label,
-      schoolId: schoolOption.value,
-      guardianNationality: guardianNationalityOption.label,
-      guardianRelationship: relationshipOption.label,
-      gender: genderOption.label,
+      ...userInput,
+      nationality: selectedOption['nationality']?.label,
+      schoolId: selectedOption['school']?.value,
+      guardianNationality: selectedOption['guardianNationality']?.label,
+      guardianRelationship: selectedOption['relationship']?.label,
+      gender: selectedOption['gender']?.label,
     };
-    // console.log("INPUTS", inputs);1
 
     dispatch(createClient(body))
       .unwrap()
@@ -88,7 +81,7 @@ const TabProfile = () => {
             placeholder={"Full Name"}
             name={"fullName"}
             onChange={handleChange}
-            value={inputs.fullName || ""}
+            value={userInput.fullName || ""}
           />
           <Input
             icon="feather-link-2"
@@ -97,15 +90,7 @@ const TabProfile = () => {
             placeholder={"Age"}
             name={"age"}
             onChange={handleChange}
-            value={inputs.age || ""}
-          />
-          <TextArea
-            label={"Child Address"}
-            icon="feather-map-pin"
-            placeholder={"Child Address"}
-            labelId={"childAddress"}
-            onChange={handleChange}
-            name={"address"}
+            value={userInput.age || ""}
           />
           <div className="row mb-4 align-items-center">
             <div className="col-lg-4">
@@ -123,6 +108,7 @@ const TabProfile = () => {
                   style={{ flexBasis: "95%" }}
                 >
                   <DatePicker
+                    showYearDropdown
                     placeholderText="Pick date of birth"
                     selected={startDate}
                     showPopperArrow={false}
@@ -147,13 +133,11 @@ const TabProfile = () => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={gender}
-                selectedOption={genderOption}
+                selectedOption={selectedOption?.gender}
                 placeholder={"Select Child Gender"}
                 // defaultSelect="usa"
                 onSelectOption={(option) => {
-                  // fetchStates(option.label);
-                  // fetchCities(option.label);
-                  setGenderOption(option);
+                  setSelectedOption({ ...selectedOption, gender: option })
                 }}
               />
             </div>
@@ -165,13 +149,13 @@ const TabProfile = () => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={countries}
-                selectedOption={nationalityOption}
+                selectedOption={selectedOption?.nationality}
                 placeholder={"Select Child Nationality"}
                 // defaultSelect="usa"
                 onSelectOption={(option) => {
                   // fetchStates(option.label);
                   // fetchCities(option.label);
-                  setNationalityOption(option);
+                  setSelectedOption({ ...selectedOption, nationality: option });
                 }}
               />
             </div>
@@ -186,11 +170,11 @@ const TabProfile = () => {
                   label: school.name,
                   value: school.id,
                 }))}
-                selectedOption={schoolOption}
+                selectedOption={selectedOption?.school}
                 placeholder={"Select School Name"}
                 // defaultSelect="usa"
                 onSelectOption={(option) => {
-                  setSchoolOption(option);
+                  setSelectedOption({ ...selectedOption, school: option})
                 }}
               />
               <hr className="my-0" />
@@ -214,7 +198,7 @@ const TabProfile = () => {
             placeholder={"Guardian Name"}
             name={"guardianName"}
             onChange={handleChange}
-            value={inputs.guardianName || ""}
+            value={userInput.guardianName || ""}
           />
           <Input
             icon="feather-mail"
@@ -224,7 +208,7 @@ const TabProfile = () => {
             name={"guardianEmail"}
             type={"email"}
             onChange={handleChange}
-            value={inputs.guardianEmail || ""}
+            value={userInput.guardianEmail || ""}
           />
           <Input
             icon="feather-phone"
@@ -233,7 +217,7 @@ const TabProfile = () => {
             placeholder={"Guardian Phone Number"}
             name={"guardianPhone"}
             onChange={handleChange}
-            value={inputs.guardianPhone || ""}
+            value={userInput.guardianPhone || ""}
           />
           <div className="row mb-4 align-items-center">
             <div className="col-lg-4">
@@ -242,13 +226,13 @@ const TabProfile = () => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={countries}
-                selectedOption={guardianNationalityOption}
+                selectedOption={selectedOption?.guardianNationality}
                 placeholder={"Select Guardian Nationality"}
                 // defaultSelect="usa"
                 onSelectOption={(option) => {
                   // fetchStates(option.label);
                   // fetchCities(option.label);
-                  setGuardianNationalityOption(option);
+                  setSelectedOption({ ...selectedOption, guardianNationality: option})
                 }}
               />
             </div>
@@ -261,20 +245,20 @@ const TabProfile = () => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={relationships}
-                selectedOption={relationshipOption}
+                selectedOption={selectedOption?.relationship}
                 placeholder="Select Gender"
-                onSelectOption={(option) => setRelationshipOption(option)}
+                onSelectOption={(option) => setSelectedOption({ ...selectedOption, relationship: option })}
               />
             </div>
           </div>
 
-          <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
+          <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
             <a href="#" className="btn btn-light-brand">
-              <FiLayers size={16} className="me-2" />
-              <span>Save as Draft</span>
+              <FiX size={16} className="me-2" />
+              <span>Cancel</span>
             </a>
             <button type="submit" className="btn btn-primary">
-              <FiUserPlus size={16} className="me-2" />
+              <FiCheck size={16} className="me-2" />
               <span>Create Client</span>
             </button>
           </div>

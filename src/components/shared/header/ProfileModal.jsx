@@ -20,14 +20,14 @@ const ProfileModal = () => {
                     </div>
                 </div>
                 <div className="dropdown">
-                    <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
+                    {/* <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
                             <span>Active</span>
                         </span>
                         <i className="ms-auto me-0"><FiChevronRight /></i>
-                    </a>
-                    <div className="dropdown-menu user-active">
+                    </a> */}
+                    {/* <div className="dropdown-menu user-active">
                         {
                             activePosition.map((item, index) => {
                                 return (
@@ -43,10 +43,10 @@ const ProfileModal = () => {
                                 )
                             })
                         }
-                    </div>
+                    </div> */}
                 </div>
-                <div className="dropdown-divider"></div>
-                <div className="dropdown">
+                {/* <div className="dropdown-divider"></div> */}
+                {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className=" me-2"><FiDollarSign /></i>
@@ -72,28 +72,28 @@ const ProfileModal = () => {
                         }
 
                     </div>
-                </div>
-                <div className="dropdown-divider"></div>
+                </div> */}
+                {/* <div className="dropdown-divider"></div> */}
                 <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
                     <span>Profile Details</span>
                 </a>
-                <a href="#" className="dropdown-item">
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiDollarSign /></i>
                     <span>Billing Details</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i><FiBell /></i>
                     <span>Notifications</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
-                </a>
+                </a> */}
                 <div className="dropdown-divider"></div>
                 <a href="./auth-login-minimal.html" className="dropdown-item">
                     <i> <FiLogOut /></i>
