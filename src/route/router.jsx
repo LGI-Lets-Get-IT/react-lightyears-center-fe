@@ -5,6 +5,7 @@ import RootLayout from "@/layout/root";
 import SchoolsCreate from "@/pages/schools/schools-create";
 
 const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
+const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));
 const Home = lazy(() => import("@/pages/home"));
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -170,6 +171,10 @@ export const router = createBrowserRouter([
       {
         path: "/schools/create",
         element: <SchoolsCreate />,
+      },
+      {
+        path: "/schools/:id",
+        element: <SchoolsView />,
       },
       {
         path: "/leads/list",

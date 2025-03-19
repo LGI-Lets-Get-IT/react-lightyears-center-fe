@@ -3,7 +3,7 @@ import { schoolsApi } from "../../services/schoolService";
 
 const initialState = {
   schools: [],
-  currentSchool: null,
+  school: null,
   isLoading: false,
   error: null,
 };
@@ -65,7 +65,7 @@ export const schoolSlice = createSlice({
     });
     builder.addCase(fetchSchoolById.fulfilled, (state, action) => {
       state.isLoading = true;
-      state.currentSchool = action.payload;
+      state.school = action.payload;
     });
     builder.addCase(fetchSchoolById.rejected, (state, action) => {
       state.isLoading = true;
