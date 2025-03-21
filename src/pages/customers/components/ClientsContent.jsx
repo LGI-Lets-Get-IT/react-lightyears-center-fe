@@ -1,7 +1,7 @@
 // import React from "react";
 import TabOverviewContent from "../../../components/customersView/TabOverviewContent";
 import TabActivityContent from "../../../components/customersView/TabActivityContent";
-import Profile from "../../../components/widgetsList/Profile";
+import Profile from "./Profile";
 import PropTypes from "prop-types";
 
 const CustomerContent = ({ userData }) => {

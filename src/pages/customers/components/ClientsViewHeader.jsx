@@ -9,17 +9,17 @@ const CustomersViewHeader = () => {
   };
   return (
     <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-      <a
+      {/* <a
         href="#"
         className="btn btn-icon btn-light-brand"
         onClick={handleClick}
       >
         <FiStar size={16} />
-      </a>
-      <a href="#" className="btn btn-icon btn-light-brand">
+      </a> */}
+      {/* <a href="#" className="btn btn-icon btn-light-brand">
         <FiEye size={16} className="me-2" />
         <span>Follow</span>
-      </a>
+      </a> */}
       <Link to="/clients/create" className="btn btn-primary">
         <FiPlus size={16} className="me-2" />
         <span>Create New Client</span>

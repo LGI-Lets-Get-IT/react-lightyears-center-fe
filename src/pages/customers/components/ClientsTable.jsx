@@ -1,22 +1,9 @@
 import React, { memo, useEffect, useState } from "react";
 import Table from "@/components/shared/table/Table";
-import {
-  FiAlertOctagon,
-  FiArchive,
-  FiClock,
-  FiEdit3,
-  FiEye,
-  FiMoreHorizontal,
-  FiMoreVertical,
-  FiPrinter,
-  FiSend,
-  FiTrash2,
-} from "react-icons/fi";
+import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import Select from "react-select";
 import { Link } from "react-router-dom";
-import { customersTableData } from "@/utils/data/customersTableData";
 import { clientStatusOptions } from "@/utils/options";
 
 const actions = [
@@ -113,7 +100,9 @@ const ClientsTable = ({ clients }) => {
     {
       accessorKey: "guardianEmail",
       header: () => "Guardian Email",
-      cell: (info) => <a href="apps-email.html">{info.getValue()}</a>,
+      cell: (info) => (
+        <a href={`mailto:${info.getValue()}`}>{info.getValue()}</a>
+      ),
     },
     // {
     //     accessorKey: 'group',
@@ -144,7 +133,7 @@ const ClientsTable = ({ clients }) => {
     {
       accessorKey: "guardianPhone",
       header: () => "Guardian Phone",
-      cell: (info) => <a href="tel:">{info.getValue()}</a>,
+      cell: (info) => <a href={`tel:${info.getValue()}`}>{info.getValue()}</a>,
       // meta: {
       //     className: "fw-bold text-dark"
       // }
