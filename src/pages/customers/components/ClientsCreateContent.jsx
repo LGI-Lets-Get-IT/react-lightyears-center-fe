@@ -1,6 +1,6 @@
 // import React from "react";
 import TabPassword from "../../../components/customersCreate/TabPassword";
-import TabProfile from "./clientsEdit/TabClientsEdit";
+import TabProfile from "./TabProfile";
 
 const CustomerCreateContent = () => {
   return (

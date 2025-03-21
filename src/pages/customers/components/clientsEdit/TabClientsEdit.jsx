@@ -8,7 +8,7 @@ import useLocationData from "@/hooks/useLocationData";
 import useDatePicker from "@/hooks/useDatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../../store/slice/schoolSlice";
-import { deleteClient, updateClientById } from "@/store/slice/clientSlice";
+import { updateClientById } from "@/store/slice/clientSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 

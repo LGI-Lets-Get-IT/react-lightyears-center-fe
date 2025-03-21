@@ -62,9 +62,9 @@ export const updateClientById = createAsyncThunk(
 
 export const deleteClient = createAsyncThunk(
   "clients/deleteClient",
-  async (clientId, { rejectWithValue, dispatch }) => {
+  async (clientData, { rejectWithValue }) => {
     try {
-      const response = await clientsApi.deleteClient(clientId);
+      const response = await clientsApi.deleteClient(clientData);
       // dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {

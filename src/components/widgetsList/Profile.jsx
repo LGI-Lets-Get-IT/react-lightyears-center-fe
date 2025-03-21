@@ -1,23 +1,21 @@
 import { deleteClient } from "@/store/slice/clientSlice";
-import React from "react";
-import { BsPatchCheckFill } from "react-icons/bs";
 import { FaMars, FaVenus } from "react-icons/fa6";
-import { FiEdit, FiMail, FiMapPin, FiPhone, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiMail, FiPhone, FiTrash2 } from "react-icons/fi";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-const Profile = ({
-  uuid,
-  fullName,
-  gender,
-  address,
-  guardianEmail,
-  guardianPhone,
-}) => {
+import { useNavigate, useParams } from "react-router-dom";
+const Profile = ({ fullName, gender, guardianEmail, guardianPhone }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { uuid } = useParams();
 
-  const handleDelete = () => {
-    dispatch(deleteClient(uuid))
+  const handleDelete = (event) => {
+    event.preventDefault();
+
+    const payload = {
+      clientIds: [uuid],
+    };
+
+    dispatch(deleteClient(payload))
       .unwrap()
       .then(() => navigate(`/clients`))
       .catch((error) => console.error("handle error", error));
@@ -65,19 +63,10 @@ const Profile = ({
         <ul className="list-unstyled mb-4">
           <li className="hstack justify-content-between mb-4">
             <span className="text-muted fw-medium hstack gap-3">
-              <FiMapPin size={16} />
-              Address
-            </span>
-            <a href="#" className="float-end">
-              {address}
-            </a>
-          </li>
-          <li className="hstack justify-content-between mb-4">
-            <span className="text-muted fw-medium hstack gap-3">
               <FiPhone size={16} />
               Guardian Phone Number
             </span>
-            <a href="#" className="float-end">
+            <a href={`tel:${guardianPhone}`} className="float-end">
               {guardianPhone}
             </a>
           </li>
@@ -86,16 +75,16 @@ const Profile = ({
               <FiMail size={16} />
               Guardian Email
             </span>
-            <a href="#" className="float-end">
+            <a href={`mailto:${guardianEmail}`} className="float-end">
               {guardianEmail}
             </a>
           </li>
         </ul>
         <div className="d-flex gap-2 text-center pt-4">
-          <a onClick={handleDelete} className="w-50 btn btn-light-brand">
+          <button onClick={handleDelete} className="w-50 btn btn-light-brand">
             <FiTrash2 size={16} className="me-2" />
             <span>Delete</span>
-          </a>
+          </button>
           <a href={`/clients/edit/${uuid}`} className="w-50 btn btn-primary">
             <FiEdit size={16} className="me-2" />
             <span>Edit Profile</span>
