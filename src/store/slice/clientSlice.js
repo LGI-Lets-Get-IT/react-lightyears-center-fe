@@ -25,6 +25,7 @@ export const fetchClientById = createAsyncThunk(
   async (clientId, { rejectWithValue }) => {
     try {
       const response = await clientsApi.getClientById(clientId);
+      // console.log("CLIENT ID: ", clientId);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -37,6 +38,20 @@ export const createClient = createAsyncThunk(
   async (clientData, { rejectWithValue, dispatch }) => {
     try {
       const response = await clientsApi.createClient(clientData);
+      // dispatch(fetchAllClients());
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateClientById = createAsyncThunk(
+  "clients/updateClientById",
+  async (clientData, { rejectWithValue, dispatch }) => {
+    try {
+      const { clientId, ...data } = clientData;
+      const response = await clientsApi.updateClientById(clientId, data);
       // dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {

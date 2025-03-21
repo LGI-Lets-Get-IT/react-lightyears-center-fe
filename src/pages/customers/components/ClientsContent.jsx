@@ -9,6 +9,7 @@ const CustomerContent = ({ userData }) => {
     <>
       <div className="col-xxl-4 col-xl-6">
         <Profile
+          uuid={userData?.uuid}
           fullName={userData?.fullName}
           gender={userData?.gender}
           address={userData?.address}

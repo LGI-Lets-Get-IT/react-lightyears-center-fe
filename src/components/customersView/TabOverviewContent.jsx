@@ -9,7 +9,6 @@ const childInfoData = [
   { label: "Full Name", key: "fullName" },
   { label: "Age", key: "age", suffix: "years old" },
   { label: "Date of Birth", key: "dateOfBirth" },
-  { label: "Address", key: "address" },
   { label: "Nationality", key: "nationality" },
   // { label: 'School Name', key: 'school.id'},
 ];
@@ -30,9 +29,9 @@ const TabOverviewContent = ({ clientInformation }) => {
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
           <h5 className="fw-bold mb-0">Child Information:</h5>
-          <a href="#" className="btn btn-sm btn-light-brand gap-1">
+          {/* <a href="#" className="btn btn-sm btn-light-brand gap-1">
             <FaPencil /> Edit Information
-          </a>
+          </a> */}
         </div>
         {childInfoData.map((item, index) => (
           <div
@@ -51,9 +50,9 @@ const TabOverviewContent = ({ clientInformation }) => {
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
           <h5 className="fw-bold mb-0">Parent Information:</h5>
-          <a href="#" className="btn btn-sm btn-light-brand gap-1">
+          {/* <a href="#" className="btn btn-sm btn-light-brand gap-1">
             <FaPencil /> Edit Information
-          </a>
+          </a> */}
         </div>
         {parentInfoData.map((item, index) => (
           <div

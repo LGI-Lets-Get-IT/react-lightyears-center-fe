@@ -11,12 +11,12 @@ export const menuList = [
         path: "/",
         subdropdownMenu: false,
       },
-      {
-        id: 2,
-        name: "Analytics",
-        path: "/dashboards/analytics",
-        subdropdownMenu: false,
-      },
+      // {
+      //   id: 2,
+      //   name: "Analytics",
+      //   path: "/dashboards/analytics",
+      //   subdropdownMenu: false,
+      // },
     ],
   },
   {

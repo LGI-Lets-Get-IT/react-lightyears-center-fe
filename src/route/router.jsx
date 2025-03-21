@@ -4,9 +4,6 @@ import "../index.css";
 import RootLayout from "@/layout/root";
 import SchoolsCreate from "@/pages/schools/schools-create";
 
-const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
-const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));
-const Home = lazy(() => import("@/pages/home"));
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
 const ReportsLeads = lazy(() => import("@/pages/reports-leads"));
@@ -21,12 +18,9 @@ const AppsNotes = lazy(() => import("@/pages/apps-notes"));
 const AppsCalender = lazy(() => import("@/pages/apps-calender"));
 const AppsStorage = lazy(() => import("@/pages/apps-storage"));
 const Proposalist = lazy(() => import("@/pages/proposal-list"));
-const CustomersList = lazy(() => import("@/pages/customers/clients-list"));
 const ProposalView = lazy(() => import("@/pages/proposal-view"));
 const ProposalEdit = lazy(() => import("@/pages/proposal-edit"));
 const LeadsList = lazy(() => import("@/pages/leadsList"));
-const CustomersView = lazy(() => import("@/pages/customers/clients-view"));
-const CustomersCreate = lazy(() => import("@/pages/customers/clients-create"));
 const ProposalCreate = lazy(() => import("@/pages/proposal-create"));
 const LeadsView = lazy(() => import("@/pages/leads-view"));
 const LeadsCreate = lazy(() => import("@/pages/leads-create"));
@@ -77,6 +71,27 @@ const WidgetsLists = lazy(() => import("@/pages/widgets-lists"));
 const WidgetsTables = lazy(() => import("@/pages/widgets-tables"));
 const WidgetsCharts = lazy(() => import("@/pages/widgets-charts"));
 const WidgetsStatistics = lazy(() => import("@/pages/widgets-statistics"));
+
+// *
+// * The Light Years Routes START
+// *
+const Home = lazy(() => import("@/pages/home"));
+
+const CustomersView = lazy(() => import("@/pages/customers/clients-view"));
+const CustomersCreate = lazy(() => import("@/pages/customers/clients-create"));
+const CustomersList = lazy(() => import("@/pages/customers/clients-list"));
+const CustomersEdit = lazy(() => import("@/pages/customers/clients-edit"));
+
+const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
+const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));
+
+const AppointmentsList = lazy(() =>
+  import("@/pages/appointments/appointments-list")
+);
+
+// *
+// * The Light Years Routes END
+// *
 const WidgetsMiscellaneous = lazy(() =>
   import("@/pages/widgets-miscellaneous")
 );
@@ -100,10 +115,52 @@ export const router = createBrowserRouter([
     ),
     errorElement: <ErrorMinimal />,
     children: [
+      // *
+      // * The Light Years Routes START
+      // *
       {
         index: true,
         element: <Home />,
       },
+      {
+        path: "/appointments",
+        element: <AppointmentsList />,
+      },
+
+      // clients
+      {
+        path: "/clients",
+        element: <CustomersList />,
+      },
+      {
+        path: "/clients/:uuid",
+        element: <CustomersView />,
+      },
+      {
+        path: "/clients/edit/:uuid",
+        element: <CustomersEdit />,
+      },
+      {
+        path: "/clients/create",
+        element: <CustomersCreate />,
+      },
+
+      // schools
+      {
+        path: "/schools",
+        element: <SchoolsList />,
+      },
+      {
+        path: "/schools/create",
+        element: <SchoolsCreate />,
+      },
+      {
+        path: "/schools/:id",
+        element: <SchoolsView />,
+      },
+      // *
+      // * The Light Years Routes END
+      // *
       {
         path: "/dashboards/analytics",
         element: <Analytics />,
@@ -151,30 +208,6 @@ export const router = createBrowserRouter([
       {
         path: "/payment/create",
         element: <PaymentCreate />,
-      },
-      {
-        path: "/clients",
-        element: <CustomersList />,
-      },
-      {
-        path: "/clients/:uuid",
-        element: <CustomersView />,
-      },
-      {
-        path: "/clients/create",
-        element: <CustomersCreate />,
-      },
-      {
-        path: "/schools",
-        element: <SchoolsList />,
-      },
-      {
-        path: "/schools/create",
-        element: <SchoolsCreate />,
-      },
-      {
-        path: "/schools/:id",
-        element: <SchoolsView />,
       },
       {
         path: "/leads/list",

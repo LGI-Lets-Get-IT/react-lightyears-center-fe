@@ -1,8 +1,28 @@
+import { deleteClient } from "@/store/slice/clientSlice";
 import React from "react";
 import { BsPatchCheckFill } from "react-icons/bs";
 import { FaMars, FaVenus } from "react-icons/fa6";
 import { FiEdit, FiMail, FiMapPin, FiPhone, FiTrash2 } from "react-icons/fi";
-const Profile = ({ fullName, gender, address, guardianEmail, guardianPhone }) => {
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+const Profile = ({
+  uuid,
+  fullName,
+  gender,
+  address,
+  guardianEmail,
+  guardianPhone,
+}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleDelete = () => {
+    dispatch(deleteClient(uuid))
+      .unwrap()
+      .then(() => navigate(`/clients`))
+      .catch((error) => console.error("handle error", error));
+  };
+
   return (
     <div className="card stretch stretch-full">
       <div className="card-body">
@@ -33,16 +53,12 @@ const Profile = ({ fullName, gender, address, guardianEmail, guardianPhone }) =>
           </div>
           <div className="fs-12 fw-normal text-muted text-center d-flex flex-wrap gap-3 mb-4">
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">28.65K</h6>
+              <h6 className="fs-15 fw-bolder">00</h6>
               <p className="fs-12 text-muted mb-0">Appointments</p>
             </div>
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">38.85K</h6>
+              <h6 className="fs-15 fw-bolder">00</h6>
               <p className="fs-12 text-muted mb-0">Assessments</p>
-            </div>
-            <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">43.67K</h6>
-              <p className="fs-12 text-muted mb-0">Engagement</p>
             </div>
           </div>
         </div>
@@ -76,11 +92,11 @@ const Profile = ({ fullName, gender, address, guardianEmail, guardianPhone }) =>
           </li>
         </ul>
         <div className="d-flex gap-2 text-center pt-4">
-          <a href="#" className="w-50 btn btn-light-brand">
+          <a onClick={handleDelete} className="w-50 btn btn-light-brand">
             <FiTrash2 size={16} className="me-2" />
             <span>Delete</span>
           </a>
-          <a href="#" className="w-50 btn btn-primary">
+          <a href={`/clients/edit/${uuid}`} className="w-50 btn btn-primary">
             <FiEdit size={16} className="me-2" />
             <span>Edit Profile</span>
           </a>
