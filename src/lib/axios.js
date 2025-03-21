@@ -40,7 +40,7 @@ api.interceptors.request.use(
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    console.log("REERASP", response);
+    // console.log("REERASP", response);
     if (response.status === 201) {
       MySwal.mixin(swalOptions).fire({
         icon: "success",

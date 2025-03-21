@@ -8,17 +8,41 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone }) => {
   const navigate = useNavigate();
   const { uuid } = useParams();
 
+  // const handleDelete = (event) => {
+  //   event.preventDefault();
+
+  //   const payload = {
+  //     clientIds: [uuid],
+  //   };
+
+  //   dispatch(deleteClient(payload))
+  //     .unwrap()
+  //     .then(() => navigate(`/clients`))
+  //     .catch((error) => console.error("handle error", error));
+  // };
+
   const handleDelete = (event) => {
     event.preventDefault();
 
+    // Ensure `uuid` is correctly formatted and exists
+    if (!uuid) {
+      console.error("UUID is undefined");
+      return;
+    }
+
     const payload = {
-      clientIds: [uuid],
+      clientIds: [uuid], // Ensure it's an array
     };
+
+    console.log("DELETE PAYLOAD:", payload); // Debugging log
 
     dispatch(deleteClient(payload))
       .unwrap()
-      .then(() => navigate(`/clients`))
-      .catch((error) => console.error("handle error", error));
+      .then(() => {
+        console.log("Client deleted successfully");
+        navigate(`/clients`);
+      })
+      .catch((error) => console.error("Handle error:", error));
   };
 
   return (

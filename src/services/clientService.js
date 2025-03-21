@@ -5,5 +5,5 @@ export const clientsApi = {
   getAllClients: () => api.get("/clients"),
   getClientById: (id) => api.get(`/clients/${id}`),
   updateClientById: (id, requestBody) => api.put(`/clients/${id}`, requestBody),
-  deleteClient: (requestBody) => api.delete(`/clients`, requestBody),
+  deleteClient: (requestBody) => api.delete(`/clients`, { data: requestBody }),
 };
