@@ -14,7 +14,7 @@ const actions = [
   // { label: "Archive", icon: <FiArchive /> },
   // { label: "Report Spam", icon: <FiAlertOctagon />, },
   //   { type: "divider" },
-  { label: "Delete", icon: <FiTrash2 /> },
+  // { label: "Delete", icon: <FiTrash2 /> },
 ];
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -71,24 +71,25 @@ const ClientsTable = ({ clients }) => {
 
     {
       accessorKey: "fullName",
-      header: () => "Client Name",
-      cell: (info) => {
-        const clientName = info.getValue();
+      header: () => "Children Name",
+      cell: ({ row }) => {
+        const clientName = row.original.fullName;
         return (
-          <a className="hstack gap-3">
-            {/* {roles?.img ? (
-              <div className="avatar-image avatar-md">
-                <img src={roles?.img} alt="" className="img-fluid" />
-              </div>
-            ) : (
-              <div className="text-white avatar-text user-avatar-text avatar-md">
-                {roles?.name.substring(0, 1)}
-              </div>
-            )} */}
-            <div>
-              <span className="text-truncate-1-line">{clientName}</span>
-            </div>
-          </a>
+          // <a className="hstack gap-3">
+          //   {/* {roles?.img ? (
+          //     <div className="avatar-image avatar-md">
+          //       <img src={roles?.img} alt="" className="img-fluid" />
+          //     </div>
+          //   ) : (
+          //     <div className="text-white avatar-text user-avatar-text avatar-md">
+          //       {roles?.name.substring(0, 1)}
+          //     </div>
+          //   )} */}
+          //   <div>
+          //     <span className="text-truncate-1-line">{clientName}</span>
+          //   </div>
+          // </a>
+          <Link to={`/clients/${row.original.uuid}`}>{clientName}</Link>
         );
       },
     },
