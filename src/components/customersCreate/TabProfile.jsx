@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from "react";
-import {
-  FiCalendar,
-  FiCamera,
-  FiCheck,
-  FiLayers,
-  FiUserPlus,
-  FiX,
-} from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import DatePicker from "react-datepicker";
-import TextArea from "@/components/shared/TextArea";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
-import {
-  genderOptions,
-  relationshipOptions,
-} from "@/utils/options";
+import { genderOptions, relationshipOptions } from "@/utils/options";
 import useLocationData from "@/hooks/useLocationData";
 import useDatePicker from "@/hooks/useDatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../store/slice/schoolSlice";
 import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
@@ -28,38 +18,44 @@ const TabProfile = () => {
   const { schools } = useSelector((state) => state.schools);
   const [userInput, setUserInput] = useState({});
   const [selectedOption, setSelectedOption] = useState({});
-  const { startDate, endDate, setStartDate, setEndDate, renderFooter } =
-    useDatePicker();
+  const { startDate, setStartDate, renderFooter } = useDatePicker();
   const { countries } = useLocationData();
   // const group = customerListTagsOptions
   // const status = customerListStatusOptions
   const relationships = relationshipOptions;
   const gender = genderOptions;
 
+  console.log("START DATE", startDate);
+
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
 
   const handleChange = (event) => {
-    setUserInput((values) => ({ ...values, [event.target.name]: event.target.value }));
+    setUserInput((values) => ({
+      ...values,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('SELECTEDOPTION', selectedOption)
+    const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
+    // console.log("SELECTEDOPTION", selectedOption);
     const body = {
       ...userInput,
-      nationality: selectedOption['nationality']?.label,
-      schoolId: selectedOption['school']?.value,
-      guardianNationality: selectedOption['guardianNationality']?.label,
-      guardianRelationship: selectedOption['relationship']?.label,
-      gender: selectedOption['gender']?.label,
+      dateOfBirth: formattedDate,
+      nationality: selectedOption["nationality"]?.label,
+      schoolId: selectedOption["school"]?.value,
+      guardianNationality: selectedOption["guardianNationality"]?.label,
+      guardianRelationship: selectedOption["relationship"]?.label,
+      gender: selectedOption["gender"]?.label,
     };
 
     dispatch(createClient(body))
       .unwrap()
       .then(() => navigate("/clients"))
-      .catch((error) => "handle error");
+      .catch((error) => console.error("handle error", error));
   };
 
   return (
@@ -112,6 +108,7 @@ const TabProfile = () => {
                     placeholderText="Pick date of birth"
                     selected={startDate}
                     showPopperArrow={false}
+                    dateFormat="yyyy-MM-dd" // Updated format
                     onChange={(date) => setStartDate(date)}
                     className="form-control rounded-0"
                     popperPlacement="bottom-start"
@@ -137,7 +134,7 @@ const TabProfile = () => {
                 placeholder={"Select Child Gender"}
                 // defaultSelect="usa"
                 onSelectOption={(option) => {
-                  setSelectedOption({ ...selectedOption, gender: option })
+                  setSelectedOption({ ...selectedOption, gender: option });
                 }}
               />
             </div>
@@ -174,7 +171,7 @@ const TabProfile = () => {
                 placeholder={"Select School Name"}
                 // defaultSelect="usa"
                 onSelectOption={(option) => {
-                  setSelectedOption({ ...selectedOption, school: option})
+                  setSelectedOption({ ...selectedOption, school: option });
                 }}
               />
               <hr className="my-0" />
@@ -232,7 +229,10 @@ const TabProfile = () => {
                 onSelectOption={(option) => {
                   // fetchStates(option.label);
                   // fetchCities(option.label);
-                  setSelectedOption({ ...selectedOption, guardianNationality: option})
+                  setSelectedOption({
+                    ...selectedOption,
+                    guardianNationality: option,
+                  });
                 }}
               />
             </div>
@@ -247,7 +247,9 @@ const TabProfile = () => {
                 options={relationships}
                 selectedOption={selectedOption?.relationship}
                 placeholder="Select Gender"
-                onSelectOption={(option) => setSelectedOption({ ...selectedOption, relationship: option })}
+                onSelectOption={(option) =>
+                  setSelectedOption({ ...selectedOption, relationship: option })
+                }
               />
             </div>
           </div>
