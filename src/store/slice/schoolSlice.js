@@ -25,6 +25,8 @@ export const fetchSchoolById = createAsyncThunk(
   async (schoolId, { rejectWithValue }) => {
     try {
       const response = await schoolsApi.getSchoolById(schoolId);
+      // console.log("fetchSchoolById RESPONSE: ", response.data.data);
+
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
