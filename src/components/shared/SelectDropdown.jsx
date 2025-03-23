@@ -14,7 +14,7 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
 
     useEffect(() => {
         if (defaultSelect) {
-            const defaultOption = options?.find(option => option.value?.toLowerCase() === defaultSelect?.toLowerCase());
+            const defaultOption = options?.find(option => option.value === defaultSelect);
             setLocalSelectedOption(defaultOption || null); // Set default if found
         }
 
@@ -36,6 +36,13 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
     const filteredOptions = options?.filter(option =>
         option.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    useEffect(() => {
+        if (selectedOption) {
+            // const selectedOpt = options?.find(option => option.value === selectedOption);
+            setLocalSelectedOption(selectedOption);
+        }
+    }, [selectedOption]);
 
     useEffect(() => {
         if (isOpen) {

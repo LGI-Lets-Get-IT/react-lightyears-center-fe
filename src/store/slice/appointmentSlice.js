@@ -13,7 +13,7 @@ export const fetchAllAppointments = createAsyncThunk(
     async (_, { rejectWithValue}) => {
         try {
             const response = await appointmentsApi.getAllAppointments()
-            return response.data
+            return response.data.data
         } catch (error) {
             return rejectWithValue(error.message)
         }

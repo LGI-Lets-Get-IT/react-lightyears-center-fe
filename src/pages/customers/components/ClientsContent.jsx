@@ -1,6 +1,6 @@
 // import React from "react";
 import TabOverviewContent from "../../../components/customersView/TabOverviewContent";
-import TabActivityContent from "../../../components/customersView/TabActivityContent";
+import TabAppointmentContent from "../../../components/customersView/TabAppointmentContent";
 import Profile from "./Profile";
 import PropTypes from "prop-types";
 
@@ -15,6 +15,7 @@ const CustomerContent = ({ userData }) => {
           address={userData?.address}
           guardianEmail={userData?.guardianEmail}
           guardianPhone={userData?.guardianPhone}
+          totalAppointments={userData?.appointments.length}
         />
       </div>
       <div className="col-xxl-8 col-xl-6">
@@ -41,17 +42,17 @@ const CustomerContent = ({ userData }) => {
                   href="#"
                   className="nav-link"
                   data-bs-toggle="tab"
-                  data-bs-target="#activityTab"
+                  data-bs-target="#appointmentTab"
                   role="tab"
                 >
-                  Activity
+                  Appointments
                 </a>
               </li>
             </ul>
           </div>
           <div className="tab-content">
             <TabOverviewContent clientInformation={userData} />
-            <TabActivityContent />
+            <TabAppointmentContent />
           </div>
         </div>
       </div>

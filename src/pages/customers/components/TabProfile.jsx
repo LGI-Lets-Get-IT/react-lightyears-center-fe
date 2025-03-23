@@ -253,7 +253,7 @@ const TabProfile = () => {
           </div>
 
           <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-            <a href="#" className="btn btn-light-brand">
+            <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
               <FiX size={16} className="me-2" />
               <span>Cancel</span>
             </a>

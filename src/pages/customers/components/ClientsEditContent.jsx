@@ -4,7 +4,8 @@ import TabPassword from "../../../components/customersCreate/TabPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchClientById } from "@/store/slice/clientSlice";
+import { fetchClientByUuid } from "@/store/slice/clientSlice";
+import { FiCheck, FiX } from "react-icons/fi";
 
 const CustomerCreateContent = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const CustomerCreateContent = () => {
 
   useEffect(() => {
     console.log("PARAMS", uuid);
-    dispatch(fetchClientById(uuid));
+    dispatch(fetchClientByUuid(uuid));
   }, []);
 
   return (

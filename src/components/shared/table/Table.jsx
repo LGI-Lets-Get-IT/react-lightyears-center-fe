@@ -65,7 +65,7 @@ const Table = ({ data, columns }) => {
                                   header.column.columnDef.meta?.headerClassName
                                 }
                               >
-                                {header.uuid === "uuis" ? (
+                                {header.id === "id" ? (
                                   <div className="d-flex gap-2">
                                     {flexRender(
                                       header.column.columnDef.header,

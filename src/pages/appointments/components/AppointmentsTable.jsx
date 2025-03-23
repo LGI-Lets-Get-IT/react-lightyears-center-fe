@@ -32,7 +32,7 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const ClientsTable = ({ clients }) => {
+const AppointmentsTable = ({ appointments }) => {
   const columns = [
     {
       accessorKey: "id",
@@ -70,7 +70,7 @@ const ClientsTable = ({ clients }) => {
     },
 
     {
-      accessorKey: "fullName",
+      accessorKey: "clientName",
       header: () => "Client Name",
       cell: (info) => {
         const clientName = info.getValue();
@@ -84,41 +84,19 @@ const ClientsTable = ({ clients }) => {
       },
     },
     {
-      accessorKey: "guardianName",
-      header: () => "Guardian Name",
+      accessorKey: "psychologistName",
+      header: () => "Psychologist Name",
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-      accessorKey: "guardianEmail",
-      header: () => "Guardian Email",
-      cell: (info) => <a href="apps-email.html">{info.getValue()}</a>,
+      accessorKey: 'consultDate',
+      header: () => 'Consultation Date',
+      cell: (info) => <a>{info.getValue()}</a>
     },
     {
-      accessorKey: "guardianPhone",
-      header: () => "Guardian Phone",
-      cell: (info) => <a href="tel:">{info.getValue()}</a>,
-      // meta: {
-      //     className: "fw-bold text-dark"
-      // }
-    },
-    {
-      accessorKey: "guardianRelationship",
-      header: () => "Guardian Relationship",
-      cell: (info) => <a>{info.getValue()}</a>,
-    },
-    // {
-    //     accessorKey: 'date',
-    //     header: () => 'Date',
-    // },
-    {
-      accessorKey: "isActive",
-      header: () => "Is Active",
-      cell: (info) => (
-        <TableCell
-          options={clientStatusOptions}
-          defaultSelect={info?.getValue().toString()}
-        />
-      ),
+      accessorKey: 'consultTime',
+      header: () => 'Consultation Time',
+      cell: (info) => <a>{info.getValue()}</a>
     },
     {
       accessorKey: "actions",
@@ -126,7 +104,7 @@ const ClientsTable = ({ clients }) => {
       cell: ({ row }) => (
         <div className="hstack gap-2 justify-content-end">
           <Link
-            to={`/clients/${row.original.uuid}`}
+            to={`/appointments/${row.original.id}`}
             className="avatar-text avatar-md"
           >
             <FiEye />
@@ -147,9 +125,9 @@ const ClientsTable = ({ clients }) => {
 
   return (
     <div>
-      <Table data={clients} columns={columns} />
+      <Table data={appointments} columns={columns} />
     </div>
   );
 };
 
-export default ClientsTable;
+export default AppointmentsTable;

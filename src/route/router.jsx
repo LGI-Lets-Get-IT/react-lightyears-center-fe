@@ -137,7 +137,7 @@ export const router = createBrowserRouter([
         element: <CustomersView />,
       },
       {
-        path: "/clients/edit/:uuid",
+        path: "/clients/:uuid/edit",
         element: <CustomersEdit />,
       },
       {

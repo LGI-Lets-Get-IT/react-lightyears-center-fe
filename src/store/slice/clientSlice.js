@@ -20,11 +20,11 @@ export const fetchAllClients = createAsyncThunk(
   }
 );
 
-export const fetchClientById = createAsyncThunk(
-  "clients/getClientById",
-  async (clientId, { rejectWithValue }) => {
+export const fetchClientByUuid = createAsyncThunk(
+  "clients/fetchClientByUuid",
+  async (clientUuid, { rejectWithValue }) => {
     try {
-      const response = await clientsApi.getClientById(clientId);
+      const response = await clientsApi.getClientByUuid(clientUuid);
       // console.log("CLIENT ID: ", clientId);
       return response.data.data;
     } catch (error) {
@@ -46,12 +46,12 @@ export const createClient = createAsyncThunk(
   }
 );
 
-export const updateClientById = createAsyncThunk(
-  "clients/updateClientById",
+export const updateClientByUuid = createAsyncThunk(
+  "clients/updateClientByUuid",
   async (clientData, { rejectWithValue, dispatch }) => {
     try {
-      const { clientId, ...data } = clientData;
-      const response = await clientsApi.updateClientById(clientId, data);
+      const { clientUuid, ...data } = clientData;
+      const response = await clientsApi.updateClientByUuid(clientUuid, data);
       // dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {
@@ -89,14 +89,14 @@ export const clientSlice = createSlice({
       state.isLoading = true;
       state.error = action.payload;
     });
-    builder.addCase(fetchClientById.pending, (state) => {
+    builder.addCase(fetchClientByUuid.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(fetchClientById.fulfilled, (state, action) => {
+    builder.addCase(fetchClientByUuid.fulfilled, (state, action) => {
       state.isLoading = true;
       state.currentClient = action.payload;
     });
-    builder.addCase(fetchClientById.rejected, (state, action) => {
+    builder.addCase(fetchClientByUuid.rejected, (state, action) => {
       state.isLoading = true;
       state.error = action.payload;
     });

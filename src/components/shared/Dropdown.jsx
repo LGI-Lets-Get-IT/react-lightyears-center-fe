@@ -67,7 +67,7 @@ const Dropdown = ({
                                         <Checkbox checked={item.checked} id={item.id} name={item.label} className={""} />
                                         :
 
-                                        <Link to={item.link || "#"} target='_blank' className={`${active === item.label ? "active" : ""} dropdown-item`}
+                                        <Link to={item.link || "#"} className={`${active === item.label ? "active" : ""} dropdown-item`}
                                             data-bs-toggle={item.link || dataBsToggle} data-bs-target={item.modalTarget} onClick={() => onClick(item.label, id)}
                                         >
                                             {

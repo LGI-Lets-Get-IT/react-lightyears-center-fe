@@ -4,15 +4,15 @@ import ClientsHeader from "./components/AppointmentsHeader";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import Footer from "@/components/shared/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllClients } from "../../store/slice/clientSlice";
+import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
 
 const CustomersList = () => {
   const dispatch = useDispatch();
 
-  const { clients } = useSelector((state) => state.clients);
+  const { appointments } = useSelector((state) => state.appointments);
 
   useEffect(() => {
-    dispatch(fetchAllClients());
+    dispatch(fetchAllAppointments());
   }, []);
   return (
     <>
@@ -21,7 +21,7 @@ const CustomersList = () => {
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <AppointmentsTable clients={clients} />
+          <AppointmentsTable appointments={appointments} />
         </div>
       </div>
       <Footer />

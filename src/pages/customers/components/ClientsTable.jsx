@@ -6,17 +6,6 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
 import { clientStatusOptions } from "@/utils/options";
 
-const actions = [
-  { label: "Edit", icon: <FiEdit3 /> },
-  // { label: "Print", icon: <FiPrinter /> },
-  //   { label: "Remind", icon: <FiClock /> },
-  // { type: "divider" },
-  // { label: "Archive", icon: <FiArchive /> },
-  // { label: "Report Spam", icon: <FiAlertOctagon />, },
-  //   { type: "divider" },
-  // { label: "Delete", icon: <FiTrash2 /> },
-];
-
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -33,6 +22,11 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const ClientsTable = ({ clients }) => {
+  const getActions = (uuid) => [
+    { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit` },
+    { label: "Delete", icon: <FiTrash2 /> },
+  ];
+
   const columns = [
     {
       accessorKey: "id",
@@ -170,7 +164,7 @@ const ClientsTable = ({ clients }) => {
             <FiEye />
           </Link>
           <Dropdown
-            dropdownItems={actions}
+            dropdownItems={getActions(row.original.uuid)}
             triggerClass="avatar-md"
             triggerPosition={"0,21"}
             triggerIcon={<FiMoreHorizontal />}

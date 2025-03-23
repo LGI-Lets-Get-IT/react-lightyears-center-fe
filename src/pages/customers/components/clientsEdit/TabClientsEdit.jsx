@@ -8,7 +8,7 @@ import useLocationData from "@/hooks/useLocationData";
 import useDatePicker from "@/hooks/useDatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../../store/slice/schoolSlice";
-import { updateClientById } from "@/store/slice/clientSlice";
+import {  updateClientByUuid } from "@/store/slice/clientSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 
@@ -21,14 +21,22 @@ const TabProfile = ({ userData }) => {
   const [selectedOption, setSelectedOption] = useState({});
   const { startDate, setStartDate, renderFooter } = useDatePicker();
   const { countries } = useLocationData();
-  // const group = customerListTagsOptions
-  // const status = customerListStatusOptions
   const relationships = relationshipOptions;
   const gender = genderOptions;
 
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
+
+  useEffect(() => {
+    setUserInput({
+      fullName: userData?.fullName,
+      age: userData?.age,
+      guardianName: userData?.guardianName,
+      guardianEmail: userData?.guardianEmail,
+      guardianPhone: userData?.guardianPhone,
+    })
+  }, [userData])
 
   const handleChange = (event) => {
     setUserInput((values) => ({
@@ -38,13 +46,13 @@ const TabProfile = ({ userData }) => {
   };
 
   const handleSubmit = (event) => {
-    console.log("Form submitted");
     event.preventDefault();
-    const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
+    const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : format(userData?.dateOfBirth, 'yyyy-MM-dd');
+
 
     const body = {
       ...userInput,
-      clientId: uuid,
+      clientUuid: uuid,
       dateOfBirth: formattedDate,
       nationality: selectedOption["nationality"]?.label,
       schoolId: selectedOption["school"]?.value,
@@ -53,7 +61,7 @@ const TabProfile = ({ userData }) => {
       gender: selectedOption["gender"]?.label,
     };
 
-    dispatch(updateClientById(body))
+    dispatch(updateClientByUuid(body))
       .unwrap()
       .then(() => navigate(`/clients/${uuid}`))
       .catch((error) => console.error("handle error", error));
@@ -80,7 +88,7 @@ const TabProfile = ({ userData }) => {
             placeholder={"Full Name"}
             name={"fullName"}
             onChange={handleChange}
-            value={userInput.fullName || userData?.fullName}
+            value={userInput.fullName}
           />
           <Input
             icon="feather-link-2"
@@ -89,7 +97,7 @@ const TabProfile = ({ userData }) => {
             placeholder={"Age"}
             name={"age"}
             onChange={handleChange}
-            value={userInput.age || userData?.age}
+            value={userInput.age}
           />
           <div className="row mb-4 align-items-center">
             <div className="col-lg-4">
@@ -139,9 +147,10 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={gender}
+                // selectedOption={selectedOption?.gender}
+                // placeholder={`${userData?.gender}`}
                 selectedOption={selectedOption?.gender}
-                placeholder={`${userData?.gender}`}
-                // defaultSelect="usa"
+                defaultSelect={userData?.gender}
                 onSelectOption={(option) => {
                   setSelectedOption({
                     ...selectedOption,
@@ -158,12 +167,11 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={countries}
+                // selectedOption={selectedOption?.nationality}
+                // placeholder={`${userData?.nationality}`}
                 selectedOption={selectedOption?.nationality}
-                placeholder={`${userData?.nationality}`}
-                // defaultSelect="usa"
+                defaultSelect={userData?.nationality}
                 onSelectOption={(option) => {
-                  // fetchStates(option.label);
-                  // fetchCities(option.label);
                   setSelectedOption({ ...selectedOption, nationality: option });
                 }}
               />
@@ -180,8 +188,7 @@ const TabProfile = ({ userData }) => {
                   value: school.id,
                 }))}
                 selectedOption={selectedOption?.school}
-                placeholder={`${userData?.schoolId}`} // belum ambil nama sekolah ni mas
-                // defaultSelect="usa"
+                defaultSelect={userData?.schoolId}
                 onSelectOption={(option) => {
                   setSelectedOption({ ...selectedOption, school: option });
                 }}
@@ -209,7 +216,7 @@ const TabProfile = ({ userData }) => {
             placeholder={"Guardian Name"}
             name={"guardianName"}
             onChange={handleChange}
-            value={userInput.guardianName || userData?.guardianName}
+            value={userInput.guardianName}
           />
           <Input
             icon="feather-mail"
@@ -219,7 +226,7 @@ const TabProfile = ({ userData }) => {
             name={"guardianEmail"}
             type={"email"}
             onChange={handleChange}
-            value={userInput.guardianEmail || userData?.guardianEmail}
+            value={userInput.guardianEmail}
           />
           <Input
             icon="feather-phone"
@@ -228,7 +235,7 @@ const TabProfile = ({ userData }) => {
             placeholder={"Guardian Phone Number"}
             name={"guardianPhone"}
             onChange={handleChange}
-            value={userInput.guardianPhone || userData?.guardianPhone}
+            value={userInput.guardianPhone}
           />
           <div className="row mb-4 align-items-center">
             <div className="col-lg-4">
@@ -237,9 +244,10 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={countries}
+                // selectedOption={selectedOption?.guardianNationality}
+                // placeholder={userData?.guardianNationality}
                 selectedOption={selectedOption?.guardianNationality}
-                placeholder={userData?.guardianNationality}
-                // defaultSelect="usa"
+                defaultSelect={userData?.guardianNationality}
                 onSelectOption={(option) => {
                   // fetchStates(option.label);
                   // fetchCities(option.label);
@@ -259,20 +267,20 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={relationships}
+                // selectedOption={selectedOption?.relationship}
+                // placeholder={`${userData?.guardianRelationship}`}
                 selectedOption={selectedOption?.relationship}
-                placeholder={`${userData?.guardianRelationship}`}
+                defaultSelect={userData?.guardianRelationship}
                 onSelectOption={(option) =>
                   setSelectedOption({ ...selectedOption, relationship: option })
                 }
               />
             </div>
           </div>
-
           <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
             <a
-              href="#"
               className="btn btn-light-brand"
-              onClick={(e) => e.preventDefault()}
+              onClick={() => navigate(-1)}
             >
               <FiX size={16} className="me-2" />
               <span>Cancel</span>

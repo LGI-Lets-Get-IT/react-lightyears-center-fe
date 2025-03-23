@@ -16,13 +16,13 @@ const logData = [
 ];
 
 
-const TabActivityContent = () => {
+const TabAppointmentContent = () => {
     return (
-        <div className="tab-pane fade" id="activityTab" role="tabpanel">
+        <div className="tab-pane fade" id="appointmentTab" role="tabpanel">
             <div className="recent-activity p-4 pb-0">
                 <div className="mb-4 pb-2 d-flex justify-content-between">
-                    <h5 className="fw-bold">Recent Activity:</h5>
-                    <a href="#" className="btn btn-sm btn-light-brand">View Alls</a>
+                    <h5 className="fw-bold">Recent Appointments:</h5>
+                    {/* <a href="#" className="btn btn-sm btn-light-brand">View Alls</a> */}
                 </div>
                 <ul className="list-unstyled activity-feed">
                     {profileActivityData.map((item, index) => (
@@ -78,7 +78,7 @@ const TabActivityContent = () => {
     )
 }
 
-export default TabActivityContent
+export default TabAppointmentContent
 
 
 
