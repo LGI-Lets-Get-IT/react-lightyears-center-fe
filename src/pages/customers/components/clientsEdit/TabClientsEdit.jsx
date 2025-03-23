@@ -26,8 +26,6 @@ const TabProfile = ({ userData }) => {
   const relationships = relationshipOptions;
   const gender = genderOptions;
 
-  console.log("START DATE", startDate);
-
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
