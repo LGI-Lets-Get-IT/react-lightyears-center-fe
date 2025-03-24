@@ -1,9 +1,15 @@
-FROM node:20-alpine as build
-
+FROM node:20-alpine AS build
+# Set the working directory
 WORKDIR /app
-COPY package.json .
+# Copy the package.json and package-lock.json files
+COPY package*.json ./
+# Install the dependencies
 RUN npm install
-
+# Copy the app files
 COPY . .
-EXPOSE 5173
+# Build the app
+RUN npm run build
+# Expose the port
+EXPOSE 3000
+# Run the app
 CMD ["npm", "run", "dev"]
