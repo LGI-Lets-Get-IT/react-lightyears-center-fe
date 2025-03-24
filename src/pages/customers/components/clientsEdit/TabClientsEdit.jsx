@@ -147,10 +147,10 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={gender}
-                // selectedOption={selectedOption?.gender}
-                // placeholder={`${userData?.gender}`}
                 selectedOption={selectedOption?.gender}
-                defaultSelect={userData?.gender}
+                placeholder={`${userData?.gender}`}
+                // selectedOption={selectedOption?.gender}
+                // defaultSelect={userData?.gender}
                 onSelectOption={(option) => {
                   setSelectedOption({
                     ...selectedOption,
@@ -167,10 +167,10 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={countries}
-                // selectedOption={selectedOption?.nationality}
-                // placeholder={`${userData?.nationality}`}
                 selectedOption={selectedOption?.nationality}
-                defaultSelect={userData?.nationality}
+                placeholder={`${userData?.nationality}`}
+                // selectedOption={selectedOption?.nationality}
+                // defaultSelect={userData?.nationality}
                 onSelectOption={(option) => {
                   setSelectedOption({ ...selectedOption, nationality: option });
                 }}
@@ -188,7 +188,8 @@ const TabProfile = ({ userData }) => {
                   value: school.id,
                 }))}
                 selectedOption={selectedOption?.school}
-                defaultSelect={userData?.schoolId}
+                placeholder={userData?.schoolId}
+                // defaultSelect={userData?.schoolId}
                 onSelectOption={(option) => {
                   setSelectedOption({ ...selectedOption, school: option });
                 }}
@@ -244,10 +245,10 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={countries}
-                // selectedOption={selectedOption?.guardianNationality}
-                // placeholder={userData?.guardianNationality}
                 selectedOption={selectedOption?.guardianNationality}
-                defaultSelect={userData?.guardianNationality}
+                placeholder={userData?.guardianNationality}
+                // selectedOption={selectedOption?.guardianNationality}
+                // defaultSelect={userData?.guardianNationality}
                 onSelectOption={(option) => {
                   // fetchStates(option.label);
                   // fetchCities(option.label);
@@ -267,10 +268,10 @@ const TabProfile = ({ userData }) => {
             <div className="col-lg-8">
               <SelectDropdown
                 options={relationships}
-                // selectedOption={selectedOption?.relationship}
-                // placeholder={`${userData?.guardianRelationship}`}
                 selectedOption={selectedOption?.relationship}
-                defaultSelect={userData?.guardianRelationship}
+                placeholder={`${userData?.guardianRelationship}`}
+                // selectedOption={selectedOption?.relationship}
+                // defaultSelect={userData?.guardianRelationship}
                 onSelectOption={(option) =>
                   setSelectedOption({ ...selectedOption, relationship: option })
                 }

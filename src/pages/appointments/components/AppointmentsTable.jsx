@@ -73,9 +73,11 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "clientName",
       header: () => "Client Name",
       cell: (info) => {
+        const clientId = info.row.original.clientId
+        console.log('info.row.original', clientId)
         const clientName = info.getValue();
         return (
-          <a className="hstack gap-3">
+          <a href={`/clients/${clientId}`} className="hstack gap-3">
             <div>
               <span className="text-truncate-1-line">{clientName}</span>
             </div>

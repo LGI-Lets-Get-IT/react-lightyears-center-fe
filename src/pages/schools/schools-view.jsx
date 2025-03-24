@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import LeadsViewTab from "@/components/leadsViewCreate/LeadsViewTab";
-import SchoolsViewContent from "./components/SchoolsViewContent";
-import SchoolsViewHeader from "./components/SchoolsViewHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchSchoolById } from "@/store/slice/schoolSlice";
+import PageHeader from "@/components/shared/pageHeader/PageHeader";
+import SchoolsViewContent from "./components/SchoolsViewContent";
+import SchoolsViewHeader from "./components/SchoolsViewHeader";
+import SchoolsViewTab from "./components/SchoolsViewTab";
 
 const SchoolsView = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const SchoolsView = () => {
       <PageHeader>
         <SchoolsViewHeader />
       </PageHeader>
-      <LeadsViewTab />
+      <SchoolsViewTab/>
       <div className="main-content">
         <div className="tab-content">
           {/* <LeadssTable /> */}

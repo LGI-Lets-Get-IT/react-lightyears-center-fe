@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import AppointmentsTable from "./components/AppointmentsTable";
-import ClientsHeader from "./components/AppointmentsHeader";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import Footer from "@/components/shared/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
+import AppointmentsHeader from "./components/AppointmentsHeader";
 
 const CustomersList = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const CustomersList = () => {
   return (
     <>
       <PageHeader>
-        <ClientsHeader />
+        <AppointmentsHeader />
       </PageHeader>
       <div className="main-content">
         <div className="row">

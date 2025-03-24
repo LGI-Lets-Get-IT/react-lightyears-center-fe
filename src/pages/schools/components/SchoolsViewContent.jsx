@@ -1,15 +1,13 @@
-import TabLeadsProfile from "./TabLeadsProfile";
+import TabSchoolClient from "./TabSchoolsClient";
+import TabSchoolsProfile from "./TabSchoolsProfile";
 import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 
 const SchoolsViewContent = (schoolsData) => {
   return (
     <>
-      <TabLeadsProfile schoolInformation={schoolsData?.schoolsData} />
-      <div className="tab-pane fade" id="proposalTab" role="tabpanel">
-        <LeadsEmptyCard
-          title={"No proposals yet!"}
-          description={"There is no proposals create yet."}
-        />
+      <TabSchoolsProfile schoolInformation={schoolsData?.schoolsData} />
+      <div className="tab-pane fade" id="clientTab" role="tabpanel">
+        <TabSchoolClient/>
       </div>
       <div className="tab-pane fade" id="tasksTab" role="tabpanel">
         <LeadsEmptyCard

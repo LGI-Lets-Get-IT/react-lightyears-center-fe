@@ -2,8 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../index.css";
 import RootLayout from "@/layout/root";
-import SchoolsCreate from "@/pages/schools/schools-create";
 
+const SchoolsCreate = lazy(() => import("@/pages/schools/schools-create"));
+const AppointmentsView = lazy(() => import("@/pages/appointments/appointments-view"));
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
 const ReportsLeads = lazy(() => import("@/pages/reports-leads"));
@@ -125,6 +126,10 @@ export const router = createBrowserRouter([
       {
         path: "/appointments",
         element: <AppointmentsList />,
+      },
+      {
+        path: '/appointments/:id',
+        element: <AppointmentsView/>,
       },
 
       // clients

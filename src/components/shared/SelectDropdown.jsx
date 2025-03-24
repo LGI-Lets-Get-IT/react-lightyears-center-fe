@@ -37,12 +37,12 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
         option.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    useEffect(() => {
-        if (selectedOption) {
-            // const selectedOpt = options?.find(option => option.value === selectedOption);
-            setLocalSelectedOption(selectedOption);
-        }
-    }, [selectedOption]);
+    // useEffect(() => {
+    //     if (selectedOption) {
+    //         // const selectedOpt = options?.find(option => option.value === selectedOption);
+    //         setLocalSelectedOption(selectedOption);
+    //     }
+    // }, [selectedOption]);
 
     useEffect(() => {
         if (isOpen) {

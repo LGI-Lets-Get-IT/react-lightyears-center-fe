@@ -42,7 +42,7 @@ const NavigationManu = () => {
               </li>
               <Menus />
             </ul>
-            <div className="card text-center">
+            {/* <div className="card text-center">
               <div className="card-body">
                 <i className="fs-4 text-dark">
                   <FiSunrise />
@@ -56,8 +56,8 @@ const NavigationManu = () => {
                   Download Now
                 </Link>
               </div>
-            </div>
-            <div style={{ height: "18px" }}></div>
+            </div> */}
+            {/* <div style={{ height: "18px" }}></div> */}
           </PerfectScrollbar>
         </div>
       </div>
