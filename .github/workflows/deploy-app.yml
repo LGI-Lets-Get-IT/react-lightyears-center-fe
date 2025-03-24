@@ -1,0 +1,75 @@
+name: Deploy application
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - development
+
+jobs:
+  build-image:
+    uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
+  deploy-to-development:
+    needs: build-image
+    if: github.ref == 'refs/heads/development'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT}}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            docker container rm -f ${{ vars.CONTAINER_NAME_DEVELOPMENT }} || true
+            docker image rm -f ${{ vars.IMAGE_NAME_DEVELOPMENT }}:latest || true
+            docker run --name ${{ vars.CONTAINER_NAME_DEVELOPMENT }} -d -p 3000:3000 ${{ vars.IMAGE_NAME_DEVELOPMENT }}:latest
+            docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME_DEVELOPMENT }}
+  deploy-to-staging:
+    needs: build-image
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT}}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            docker container rm -f ${{ vars.CONTAINER_NAME_STAGING }} || true
+            docker image rm -f ${{ vars.IMAGE_NAME_STAGING }}:latest || true
+            docker run --name ${{ vars.CONTAINER_NAME_STAGING }} -d -p 3344:3344 ${{ vars.IMAGE_NAME_STAGING }}:latest
+            docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME_STAGING }}
+    # - name: Setup SSH Private Key
+    #   run: |
+    #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    # - name: Deploy to SSH
+    #   run: |
+    #     ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@server.itslgit.com "
+    #     docker container rm -f lumecafe_backend || true &&
+    #     docker image rm -f mrizalrizky/lume-pos-backend:latest || true &&
+    #     docker run --name lumcafe_backend -d -p 3443:3443"
+  deploy-to-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT}}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            docker container rm -f ${{ vars.CONTAINER_NAME }} || true
+            docker image rm -f ${{ vars.IMAGE_NAME }}:latest || true
+            docker run --name ${{ vars.CONTAINER_NAME }} -d -p 3344:3344 ${{ vars.IMAGE_NAMET }}:latest
+            docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME }}
