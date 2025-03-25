@@ -4,6 +4,7 @@ import { schoolsApi } from "../../services/schoolService";
 const initialState = {
   schools: [],
   school: null,
+  schoolClients: [],
   isLoading: false,
   error: null,
 };
@@ -93,7 +94,7 @@ export const schoolSlice = createSlice({
     });
     builder.addCase(fetchSchoolClientsById.fulfilled, (state, action) => {
       state.isLoading = true;
-      state.school = action.payload;
+      state.schoolClients = action.payload;
     });
     builder.addCase(fetchSchoolClientsById.rejected, (state, action) => {
       state.isLoading = true;

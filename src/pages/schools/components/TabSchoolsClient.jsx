@@ -9,13 +9,13 @@ import CardLoader from '@/components/shared/CardLoader'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchSchoolClientsById } from '@/store/slice/schoolSlice'
 
-const TabSchoolClient = ({ schoolId }) => {
-    const dispatch = useDispatch()
+const TabSchoolClient = () => {
+    // const dispatch = useDispatch()
     const { school } = useSelector((state) => state.schools)
 
-    useEffect(() => {
-        dispatch(fetchSchoolClientsById(1))
-    }, [])
+    // useEffect(() => {
+    //     dispatch(fetchSchoolClientsById(1))
+    // }, [])
     return (
         <div className="col">
             <div className="card stretch stretch-full">
@@ -47,7 +47,7 @@ const TabSchoolClient = ({ schoolId }) => {
                                                 </div> */}
                                             </td>
                                             <td>
-                                                <span>{guardianName}</span>
+                                                <a>{guardianName}</a>
                                             </td>
                                             <td>
                                                 <a href={`mailto:${guardianEmail}`}>{guardianEmail}</a>

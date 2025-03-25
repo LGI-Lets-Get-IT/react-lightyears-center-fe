@@ -101,7 +101,7 @@ const Card = ({ title, content }) => {
   return (
     <div className="row mb-4">
       <div className="col-lg-2 fw-medium">{title}</div>
-      <div className="col-lg-10">{content}</div>
+      <div className="col-lg-10 fw-bold">{content}</div>
     </div>
   );
 };

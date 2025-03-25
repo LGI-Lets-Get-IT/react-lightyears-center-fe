@@ -2,12 +2,13 @@ import TabSchoolClient from "./TabSchoolsClient";
 import TabSchoolsProfile from "./TabSchoolsProfile";
 import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 
-const SchoolsViewContent = (schoolsData) => {
+const SchoolsViewContent = ({schoolsData}) => {
+  {console.log('SCHOOLSDATA', schoolsData)}
   return (
     <>
-      <TabSchoolsProfile schoolInformation={schoolsData?.schoolsData} />
+      <TabSchoolsProfile schoolInformation={schoolsData} />
       <div className="tab-pane fade" id="clientTab" role="tabpanel">
-<TabSchoolClient />
+      <TabSchoolClient />
       </div>
       <div className="tab-pane fade" id="tasksTab" role="tabpanel">
         <LeadsEmptyCard

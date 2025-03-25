@@ -10,7 +10,7 @@ const childInfoData = [
   { label: "Age", key: "age", suffix: "years old" },
   { label: "Date of Birth", key: "dateOfBirth" },
   { label: "Nationality", key: "nationality" },
-  // { label: 'School Name', key: 'school.id'},
+  { label: "School Name", key: "schoolName"}
 ];
 
 const parentInfoData = [

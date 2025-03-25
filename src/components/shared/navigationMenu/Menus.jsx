@@ -48,7 +48,7 @@ const Menus = () => {
                     <li
                         key={id}
                         onClick={(e) => handleMainMenu(e, name)}
-                        className={`nxl-item nxl-hasmenu ${activeParent === name ? "active nxl-trigger" : ""}`}
+                        className={`nxl-item nxl-hasmenu ${activeParent === name ? "active" : ""}`}
                     >
                         <Link to={path} className="nxl-link text-capitalize">
                             <span className="nxl-micon"> {getIcon(icon)} </span>
@@ -56,7 +56,7 @@ const Menus = () => {
                                 {name}
                             </span>
                             <span className="nxl-arrow fs-16">
-                                {openDropdown === name ? <FiChevronRight/> : <FiChevronUp/>}
+                                {openDropdown === name ? <FiChevronDown/> : <FiChevronRight/>}
                                 {/* <FiChevronRight /> */}
                             </span>
                         </Link>

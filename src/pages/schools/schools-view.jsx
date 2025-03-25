@@ -10,11 +10,11 @@ import SchoolsViewTab from "./components/SchoolsViewTab";
 const SchoolsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const currentSchool = useSelector((state) => state.schools.school);
+  const { school } = useSelector((state) => state.schools);
 
   useEffect(() => {
     dispatch(fetchSchoolById(id));
-  }, [dispatch, id]);
+  }, [id]);
 
   return (
     <>
@@ -24,8 +24,7 @@ const SchoolsView = () => {
       <SchoolsViewTab/>
       <div className="main-content">
         <div className="tab-content">
-          {/* <LeadssTable /> */}
-          <SchoolsViewContent schoolsData={currentSchool} />
+          <SchoolsViewContent schoolsData={school} />
         </div>
       </div>
     </>
