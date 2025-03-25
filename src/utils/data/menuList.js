@@ -4,20 +4,20 @@ export const menuList = [
     name: "dashboards",
     path: "#",
     icon: "feather-airplay",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "CRM",
-        path: "/",
-        subdropdownMenu: false,
-      },
-      // {
-      //   id: 2,
-      //   name: "Analytics",
-      //   path: "/dashboards/analytics",
-      //   subdropdownMenu: false,
-      // },
-    ],
+    // dropdownMenu: [
+    //   // {
+    //   //   id: 1,
+    //   //   name: "CRM",
+    //   //   path: "/",
+    //   //   subdropdownMenu: false,
+    //   // },
+    //   // {
+    //   //   id: 2,
+    //   //   name: "Analytics",
+    //   //   path: "/dashboards/analytics",
+    //   //   subdropdownMenu: false,
+    //   // },
+    // ],
   },
   {
     id: 1,

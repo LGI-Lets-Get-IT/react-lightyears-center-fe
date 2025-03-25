@@ -78,10 +78,10 @@ const WidgetsStatistics = lazy(() => import("@/pages/widgets-statistics"));
 // *
 const Home = lazy(() => import("@/pages/home"));
 
-const CustomersView = lazy(() => import("@/pages/customers/clients-view"));
-const CustomersCreate = lazy(() => import("@/pages/customers/clients-create"));
-const CustomersList = lazy(() => import("@/pages/customers/clients-list"));
-const CustomersEdit = lazy(() => import("@/pages/customers/clients-edit"));
+const CustomersView = lazy(() => import("@/pages/clients/clients-view"));
+const CustomersCreate = lazy(() => import("@/pages/clients/clients-create"));
+const CustomersList = lazy(() => import("@/pages/clients/clients-list"));
+const CustomersEdit = lazy(() => import("@/pages/clients/clients-edit"));
 
 const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
 const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));

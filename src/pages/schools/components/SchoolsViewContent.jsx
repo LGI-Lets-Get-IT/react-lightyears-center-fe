@@ -7,7 +7,7 @@ const SchoolsViewContent = (schoolsData) => {
     <>
       <TabSchoolsProfile schoolInformation={schoolsData?.schoolsData} />
       <div className="tab-pane fade" id="clientTab" role="tabpanel">
-        <TabSchoolClient/>
+<TabSchoolClient />
       </div>
       <div className="tab-pane fade" id="tasksTab" role="tabpanel">
         <LeadsEmptyCard

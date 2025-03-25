@@ -1,11 +1,25 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FiMoreVertical } from 'react-icons/fi'
 import { crmStatisticsData } from '@/utils/data/crmStatisticsData'
 import getIcon from '@/utils/getIcon'
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
+
+
+function renderEventContent(eventInfo) {
+    console.log('EVENTINFOO', eventInfo)
+    return(
+      <>
+        <b>{eventInfo.event.title}</b>
+      </>
+    )
+  }
 
 
 const SiteOverviewStatistics = () => {
+    const navigate = useNavigate()
     return (
         <>
             {
@@ -47,6 +61,21 @@ const SiteOverviewStatistics = () => {
                     </div>
                 ))
             }
+             <FullCalendar plugins={[dayGridPlugin]} eventClick={() => navigate('/appointments')} eventContent={renderEventContent} events={[
+                {
+                    title: 'test 1', date: '2025-03-15'
+                },
+                {
+                    title: 'test 2', date: '2025-03-09'
+                },
+                {
+                    title: 'test 3', date: '2025-03-12'
+                },
+                {
+                    title: 'aaa 4', date: '2025-03-12'
+                }
+            ]}
+            />
         </>
     )
 }

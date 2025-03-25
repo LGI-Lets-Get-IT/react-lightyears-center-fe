@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
 import AppointmentsHeader from "./components/AppointmentsHeader";
 
-const CustomersList = () => {
+const AppointmentsList = () => {
   const dispatch = useDispatch();
 
   const { appointments } = useSelector((state) => state.appointments);
@@ -29,4 +29,4 @@ const CustomersList = () => {
   );
 };
 
-export default CustomersList;
+export default AppointmentsList;
