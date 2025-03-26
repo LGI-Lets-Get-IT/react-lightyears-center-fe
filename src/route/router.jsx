@@ -4,7 +4,9 @@ import "../index.css";
 import RootLayout from "@/layout/root";
 
 const SchoolsCreate = lazy(() => import("@/pages/schools/schools-create"));
-const AppointmentsView = lazy(() => import("@/pages/appointments/appointments-view"));
+const AppointmentsView = lazy(() =>
+  import("@/pages/appointments/appointments-view")
+);
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
 const ReportsLeads = lazy(() => import("@/pages/reports-leads"));
@@ -76,7 +78,7 @@ const WidgetsStatistics = lazy(() => import("@/pages/widgets-statistics"));
 // *
 // * The Light Years Routes START
 // *
-const Home = lazy(() => import("@/pages/home"));
+const Home = lazy(() => import("@/pages/dashboard/home"));
 
 const CustomersView = lazy(() => import("@/pages/clients/clients-view"));
 const CustomersCreate = lazy(() => import("@/pages/clients/clients-create"));
@@ -128,8 +130,8 @@ export const router = createBrowserRouter([
         element: <AppointmentsList />,
       },
       {
-        path: '/appointments/:id',
-        element: <AppointmentsView/>,
+        path: "/appointments/:id",
+        element: <AppointmentsView />,
       },
 
       // clients

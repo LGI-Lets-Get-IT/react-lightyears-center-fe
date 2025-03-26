@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import TabProjectOverview from "@/components/projectsView/TabProjectOverview";
 import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 import AppointmentViewHeader from "./components/AppointmentViewHeader";
 import AppointmentViewTabItems from "./components/AppointmentViewTabItems";
 import TabAppointmentOverview from "./components/TabAppointmentOverview";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-
 const AppointmentsView = () => {
   //   const dispatch = useDispatch();
   //   const { id } = useParams();

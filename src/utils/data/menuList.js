@@ -2,7 +2,7 @@ export const menuList = [
   {
     id: 0,
     name: "dashboards",
-    path: "#",
+    path: "/",
     icon: "feather-airplay",
     // dropdownMenu: [
     //   // {
