@@ -73,11 +73,10 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "clientName",
       header: () => "Client Name",
       cell: (info) => {
-        const clientId = info.row.original.clientId
-        console.log('info.row.original', clientId)
+        const appointmentId = info.row.original.id;
         const clientName = info.getValue();
         return (
-          <a href={`/clients/${clientId}`} className="hstack gap-3">
+          <a href={`/appointments/${appointmentId}`} className="hstack gap-3">
             <div>
               <span className="text-truncate-1-line">{clientName}</span>
             </div>
@@ -91,14 +90,14 @@ const AppointmentsTable = ({ appointments }) => {
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-      accessorKey: 'consultDate',
-      header: () => 'Consultation Date',
-      cell: (info) => <a>{info.getValue()}</a>
+      accessorKey: "consultDate",
+      header: () => "Consultation Date",
+      cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-      accessorKey: 'consultTime',
-      header: () => 'Consultation Time',
-      cell: (info) => <a>{info.getValue()}</a>
+      accessorKey: "consultTime",
+      header: () => "Consultation Time",
+      cell: (info) => <a>{info.getValue()}</a>,
     },
     {
       accessorKey: "actions",
