@@ -90,25 +90,14 @@ const AppointmentsTable = ({ appointments }) => {
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-<<<<<<< Updated upstream
-      accessorKey: "consultDate",
-      header: () => "Consultation Date",
+      accessorKey: "appointmentDate",
+      header: () => "Appointment Date",
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-      accessorKey: "consultTime",
-      header: () => "Consultation Time",
+      accessorKey: "appointmentTime",
+      header: () => "Appointment Time",
       cell: (info) => <a>{info.getValue()}</a>,
-=======
-      accessorKey: 'appointmentDate',
-      header: () => 'Appointment Date',
-      cell: (info) => <a>{info.getValue()}</a>
-    },
-    {
-      accessorKey: 'appointmentTime',
-      header: () => 'Appointment Time',
-      cell: (info) => <a>{info.getValue()}</a>
->>>>>>> Stashed changes
     },
     {
       accessorKey: "actions",

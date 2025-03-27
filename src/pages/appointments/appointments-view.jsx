@@ -4,14 +4,21 @@ import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 import AppointmentViewHeader from "./components/AppointmentViewHeader";
 import AppointmentViewTabItems from "./components/AppointmentViewTabItems";
 import TabAppointmentOverview from "./components/TabAppointmentOverview";
-const AppointmentsView = () => {
-  //   const dispatch = useDispatch();
-  //   const { id } = useParams();
-  //   const currentAppointment = useSelector((state) => state.appointment);
+import { fetchAppointmentById } from "@/store/slice/appointmentSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-  //   useEffect(() => {
-  //     dispatch(fetchSchoolById(id));
-  //   }, [dispatch, id]);
+const AppointmentsView = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const currentAppointment = useSelector((state) => state.appointment);
+
+  console.log("appointment: ", currentAppointment);
+
+  useEffect(() => {
+    dispatch(fetchAppointmentById(id));
+  }, [dispatch, id]);
 
   return (
     <>
@@ -21,7 +28,7 @@ const AppointmentsView = () => {
       <AppointmentViewTabItems />
       <div className="main-content">
         <div className="tab-content">
-          <TabAppointmentOverview />
+          <TabAppointmentOverview appointmentData={currentAppointment} />
           <div className="tab-pane fade" id="activityTab">
             <LeadsEmptyCard
               title="No activity yet!"

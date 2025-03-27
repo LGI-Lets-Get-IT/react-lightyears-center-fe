@@ -44,7 +44,7 @@ export const imageList = [
     user_img: "/images/avatar/5.png",
   },
 ];
-const TabAppointmentOverview = () => {
+const TabAppointmentOverview = ({ appointmentData }) => {
   const chartOptions = projectViewAreaChartOptions();
   return (
     <div className="tab-pane fade active show" id="overviewTab">
@@ -226,7 +226,7 @@ const TabAppointmentOverview = () => {
                 <br />
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Child Name</label>
-                  <p>--client.fullName</p>
+                  <p>{appointmentData?.client.fullName}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Child Age</label>
