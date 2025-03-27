@@ -10,7 +10,7 @@ const TablePagination = ({ table }) => {
           role="status"
           aria-live="polite"
         >
-          Showing 1 to {table.getState().pagination.pageSize} of
+          Showing 1 to {table.getState().pagination.pageSize} of {""}
           {table.getRowCount()} entries
         </div>
       </div>

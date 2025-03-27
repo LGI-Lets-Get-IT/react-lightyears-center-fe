@@ -154,7 +154,7 @@ export const router = createBrowserRouter([
 
       // schools
       {
-        path: "/schools",
+        path: "/settings/schools",
         element: <SchoolsList />,
       },
       {

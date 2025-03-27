@@ -188,7 +188,7 @@ const TabProfile = ({ userData }) => {
                   value: school.id,
                 }))}
                 selectedOption={selectedOption?.school}
-                placeholder={userData?.schoolId}
+                placeholder={userData?.schoolName}
                 // defaultSelect={userData?.schoolId}
                 onSelectOption={(option) => {
                   setSelectedOption({ ...selectedOption, school: option });

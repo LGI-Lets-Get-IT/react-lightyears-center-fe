@@ -55,10 +55,12 @@ const Menus = () => {
                             <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>
                                 {name}
                             </span>
-                            <span className="nxl-arrow fs-16">
-                                {openDropdown === name ? <FiChevronDown/> : <FiChevronRight/>}
-                                {/* <FiChevronRight /> */}
-                            </span>
+                            {dropdownMenu &&
+                                <span className="nxl-arrow fs-16">
+                                    {openDropdown === name ? <FiChevronDown/> : <FiChevronRight/>}
+                                    {/* <FiChevronRight /> */}
+                                </span>
+                            }
                         </Link>
                         <ul
                             className={`nxl-submenu ${openDropdown === name ? "nxl-menu-visible" : "nxl-menu-hidden"}`}
@@ -67,7 +69,7 @@ const Menus = () => {
                                 const x = name;
                                 return (
                                     <Fragment key={id}>
-                                        {subdropdownMenu.length ? (
+                                        {subdropdownMenu?.length ? (
                                             <li
                                                 className={`nxl-item nxl-hasmenu ${activeChild === name ? "active" : ""
                                                     }`}
@@ -81,7 +83,7 @@ const Menus = () => {
                                                         </i>
                                                     </span>
                                                 </Link>
-                                                {subdropdownMenu.map(({ id, name, path }) => {
+                                                {subdropdownMenu?.map(({ id, name, path }) => {
                                                     return (
                                                         <ul
                                                             key={id}

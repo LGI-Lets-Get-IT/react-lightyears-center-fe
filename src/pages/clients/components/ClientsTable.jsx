@@ -65,7 +65,7 @@ const ClientsTable = ({ clients }) => {
 
     {
       accessorKey: "fullName",
-      header: () => "Children Name",
+      header: () => "Client Name",
       cell: ({ row }) => {
         const clientName = row.original.fullName;
         return (

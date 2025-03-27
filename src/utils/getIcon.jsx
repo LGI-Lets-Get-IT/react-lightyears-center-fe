@@ -121,6 +121,7 @@ import { PiNotePencilLight } from "react-icons/pi";
 import { LuSchool } from "react-icons/lu";
 import { LiaFileMedicalSolid, LiaNotesMedicalSolid } from "react-icons/lia";
 import { CiMedicalClipboard } from "react-icons/ci";
+import { IoSettingsOutline } from "react-icons/io5"
 
 const getIcon = (name) => {
   switch (name) {
@@ -361,6 +362,9 @@ const getIcon = (name) => {
 
     case "lu-school":
       return <LuSchool />;
+
+    case "io-settings-outline":
+      return <IoSettingsOutline/>
 
     default:
       break;

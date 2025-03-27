@@ -103,13 +103,13 @@ const useLocationData = () => {
         fetchCountry();
     }, []);
 
-    useEffect(() => {
-        if (countries?.length > 0) {
-            const x = countries.findIndex((country) => country?.value === "usa")
-            fetchStates(countries[210]?.label);
-            fetchCities(countries[210]?.label);
-        }
-    }, [countries]);
+    // useEffect(() => {
+    //     if (countries?.length > 0) {
+    //         const x = countries.findIndex((country) => country?.value === "usa")
+    //         fetchStates(countries[210]?.label);
+    //         fetchCities(countries[210]?.label);
+    //     }
+    // }, [countries]);
     
     return {
         selectedOption,

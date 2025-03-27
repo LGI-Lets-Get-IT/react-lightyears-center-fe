@@ -4,24 +4,11 @@ export const menuList = [
     name: "dashboards",
     path: "/",
     icon: "feather-airplay",
-    // dropdownMenu: [
-    //   // {
-    //   //   id: 1,
-    //   //   name: "CRM",
-    //   //   path: "/",
-    //   //   subdropdownMenu: false,
-    //   // },
-    //   // {
-    //   //   id: 2,
-    //   //   name: "Analytics",
-    //   //   path: "/dashboards/analytics",
-    //   //   subdropdownMenu: false,
-    //   // },
-    // ],
+    subdropdownMenu: false,
   },
   {
     id: 1,
-    name: "appointments",
+    name: "Appointments",
     path: "#",
     icon: "feather-calendar",
     dropdownMenu: [
@@ -35,7 +22,21 @@ export const menuList = [
   },
   {
     id: 2,
-    name: "clients",
+    name: "Assessments",
+    path: "#",
+    icon: "pi-notepencil-light",
+    dropdownMenu: [
+      {
+        id: 1,
+        name: "Assessment List",
+        path: "/assessments",
+        subdropdownMenu: false,
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: "Clients",
     path: "#",
     icon: "feather-users",
     dropdownMenu: [
@@ -45,56 +46,72 @@ export const menuList = [
         path: "/clients",
         subdropdownMenu: false,
       },
-      // {
-      //   id: 1,
-      //   name: 'Create New Client',
-      //   path: '/clients/create',
-      //   subdropdownMenu: false,
-      // }
-    ],
-  },
-  {
-    id: 3,
-    name: "Schools",
-    path: "#",
-    icon: "lu-school",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "School List",
-        path: "/schools",
-        subdropdownMenu: false,
-      },
     ],
   },
   {
     id: 4,
-    name: "Tests",
-    path: "#",
-    icon: "pi-notepencil-light",
+    name: "Treatment Plans",
+    path: '#',
+    icon: 'feather-calendar',
     dropdownMenu: [
       {
         id: 1,
-        name: "Test List",
-        path: "/tests",
+        name: "Plan List",
+        path: '/treatment-plans',
         subdropdownMenu: false,
       },
     ],
   },
   {
     id: 5,
-    name: "Treatments",
+    name: "Settings",
     path: "#",
-    icon: "lia-file-medical",
+    icon: "io-settings-outline",
     dropdownMenu: [
       {
         id: 1,
-        name: "Treatment List",
-        path: "/treatments",
-        subdropdownMenu: false,
+        name: "Schools",
+        path: "#",
+        icon: "lu-school",
+        subdropdownMenu: [
+          {
+            id: 1,
+            name: "School List",
+            path: "/settings/schools",
+            subdropdownMenu: false,
+          },
+        ],
       },
-    ],
-  },
+      {
+        id: 2,
+        name: "Tests",
+        path: "#",
+        icon: "pi-notepencil-light",
+        subdropdownMenu: [
+          {
+            id: 1,
+            name: "Type List",
+            path: "/tests",
+            subdropdownMenu: false,
+          },
+        ],
+      },
+      {
+        id: 3,
+        name: "Treatment Types",
+        path: "#",
+        icon: "lia-file-medical",
+        subdropdownMenu: [
+          {
+            id: 1,
+            name: "Type List",
+            path: "/treatment-types",
+            subdropdownMenu: false,
+          },
+        ],
+      },
+    ]
+  }
 
   // {
   //   id: 1,

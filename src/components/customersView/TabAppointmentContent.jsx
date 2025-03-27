@@ -2,6 +2,7 @@ import React from 'react'
 import { FiCheck, FiCheckCircle, FiEye, FiMoreHorizontal, FiMoreVertical, FiX } from 'react-icons/fi'
 import { profileActivityData } from '@/utils/data/profileActivityData'
 import { ActivityListItem } from '../widgetsList/ActivityTwo';
+import TabClientsAppointment from '@/pages/clients/components/TabClientsAppointment';
 
 const logData = [
     { browser: 'Chrome on Window', ip: '192.149.122.128', time: '11:34 PM', action: 'success' },
@@ -19,10 +20,11 @@ const logData = [
 const TabAppointmentContent = () => {
     return (
         <div className="tab-pane fade" id="appointmentTab" role="tabpanel">
-            <div className="recent-activity p-4 pb-0">
+            <TabClientsAppointment/>
+            {/* <div className="recent-activity p-4 pb-0">
                 <div className="mb-4 pb-2 d-flex justify-content-between">
                     <h5 className="fw-bold">Recent Appointments:</h5>
-                    {/* <a href="#" className="btn btn-sm btn-light-brand">View Alls</a> */}
+                    <a href="#" className="btn btn-sm btn-light-brand">View Alls</a>
                 </div>
                 <ul className="list-unstyled activity-feed">
                     {profileActivityData.map((item, index) => (
@@ -43,9 +45,9 @@ const TabAppointmentContent = () => {
                     <FiMoreHorizontal className='fs-12' />
                     <span className="fs-10 text-uppercase ms-2 text-truncate-1-line">Load More</span>
                 </a>
-            </div>
-            <hr />
-            <div className="logs-history mb-0">
+            </div> */}
+            {/* <hr /> */}
+            {/* <div className="logs-history mb-0">
                 <div className="px-4 mb-4 d-flex justify-content-between">
                     <h5 className="fw-bold">Logs History</h5>
                     <a href="#" className="btn btn-sm btn-light-brand">View Alls</a>
@@ -73,7 +75,7 @@ const TabAppointmentContent = () => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
