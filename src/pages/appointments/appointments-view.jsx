@@ -22,7 +22,7 @@ const AppointmentsView = () => {
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
-  }, [id]);
+  }, [dispatch, id]);
 
   if (isLoading) {
     return <div>Loading...</div>;

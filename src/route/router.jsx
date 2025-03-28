@@ -4,10 +4,6 @@ import "../index.css";
 import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 
-const SchoolsCreate = lazy(() => import("@/pages/schools/schools-create"));
-const AppointmentsView = lazy(() =>
-  import("@/pages/appointments/appointments-view")
-);
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
 const ReportsLeads = lazy(() => import("@/pages/reports-leads"));
@@ -87,9 +83,16 @@ const CustomersEdit = lazy(() => import("@/pages/clients/clients-edit"));
 
 const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
 const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));
+const SchoolsCreate = lazy(() => import("@/pages/schools/schools-create"));
 
 const AppointmentsList = lazy(() =>
   import("@/pages/appointments/appointments-list")
+);
+const AppointmentsView = lazy(() =>
+  import("@/pages/appointments/appointments-view")
+);
+const AppointmentsCreate = lazy(() =>
+  import("@/pages/appointments/appointments-create")
 );
 
 // *
@@ -133,6 +136,10 @@ export const router = createBrowserRouter([
         path: "/appointments/:id",
         element: <AppointmentsView />,
       },
+      {
+        path: "/appointments/create",
+        element: <AppointmentsCreate />,
+      },
 
       // clients
       {
@@ -154,13 +161,13 @@ export const router = createBrowserRouter([
 
       // schools
       {
-        path: '/settings',
+        path: "/settings",
         children: [
           {
-            path: 'schools',
-            element: <SchoolsList/>
-          }
-        ]
+            path: "schools",
+            element: <SchoolsList />,
+          },
+        ],
       },
       // {
       //   path: "/settings/schools",

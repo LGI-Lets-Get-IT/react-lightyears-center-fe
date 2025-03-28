@@ -1,11 +1,11 @@
 import React from "react";
-import { FiCalendar, FiCheckCircle, FiMoreVertical } from "react-icons/fi";
+import { FiCalendar } from "react-icons/fi";
 import getIcon from "@/utils/getIcon";
 
-const moreOptions = [
-  { label: "Pin Project", icon: "feather-map-pin" },
-  { label: "Edit Project", icon: "feather-edit" },
-];
+// const moreOptions = [
+//   { label: "Pin Project", icon: "feather-map-pin" },
+//   { label: "Edit Project", icon: "feather-edit" },
+// ];
 
 export const imageList = [
   {
@@ -36,14 +36,9 @@ export const imageList = [
 ];
 const TabAppointmentOverview = ({ appointmentData }) => {
   // const chartOptions = projectViewAreaChartOptions();
-<<<<<<< HEAD
-  console.log("appointmentData", appointmentData);
-
-=======
->>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
   return (
     <div className="tab-pane fade active show" id="overviewTab">
-      {console.log('APPOINTMENTDATA', appointmentData)}
+      {console.log("APPOINTMENTDATA", appointmentData)}
       <div className="row">
         <div className="col-lg-12">
           <div className="card stretch stretch-full">
@@ -51,28 +46,17 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               <div className="me-4">
                 <h4 className="mb-4 fw-bold d-flex">
                   <span className="text-truncate-1-line">
-<<<<<<< HEAD
                     {appointmentData?.title} |{" "}
                     <span className="text-muted">
                       {appointmentData?.appointmentType}
                     </span>
-=======
-                    [{appointmentData?.appointmentType}] {appointmentData?.title}
-                    {/* <span className="badge bg-soft-primary text-primary mx-3">
-                      STATUS
-                    </span> */}
->>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                   </span>
                   <span className="badge bg-soft-primary text-primary mx-3">
                     STATUS
                   </span>
                 </h4>
                 <p>
-<<<<<<< HEAD
-                  with
-=======
                   Psychologist:
->>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                   <b> {appointmentData?.psychologistName}</b>
                 </p>
 
@@ -240,11 +224,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Child Age</label>
-<<<<<<< HEAD
-                  <p>{appointmentData?.client.age}</p>
-=======
                   <p>{appointmentData?.client.age} years old</p>
->>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Date of Birth</label>
@@ -257,7 +237,6 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Gender</label>
                   <p>{appointmentData?.client.gender}</p>
-<<<<<<< HEAD
                 </div>
                 <hr />
                 <h5 className="fw-bold mb-0" style={{ paddingBottom: "1rem" }}>
@@ -268,28 +247,26 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   <p>{appointmentData?.client.guardianName}</p>
                 </div>
                 <div className="col-md-6 mb-4">
-                  <label className="form-label">Guardian Phone</label>
-                  <p>{appointmentData?.client.guardianPhone}</p>
-                </div>
-                <div className="col-md-6 mb-4">
-                  <label className="form-label">Guardian Email</label>
-                  <p>{appointmentData?.client.fullName}</p>
-                </div>
-                <div className="col-md-6 mb-4">
                   <label className="form-label">Guardian Nationality</label>
                   <p>{appointmentData?.client.guardianNationality}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Relationship With Child</label>
                   <p>{appointmentData?.client.guardianRelationship}</p>
-=======
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Contact Person:</label>
                   <p>
-                    {appointmentData?.client.guardianRelationship}: <a href={`tel:${appointmentData?.client.guardianPhone}`}>{appointmentData?.client.guardianPhone}</a> / <a href={`mailto:${appointmentData?.client.guardianEmail}`}>{appointmentData?.client.guardianEmail}</a> ({appointmentData?.client.guardianName})
+                    {appointmentData?.client.guardianRelationship}:{" "}
+                    <a href={`tel:${appointmentData?.client.guardianPhone}`}>
+                      {appointmentData?.client.guardianPhone}
+                    </a>{" "}
+                    /{" "}
+                    <a href={`mailto:${appointmentData?.client.guardianEmail}`}>
+                      {appointmentData?.client.guardianEmail}
+                    </a>{" "}
+                    ({appointmentData?.client.guardianName})
                   </p>
->>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                 </div>
                 <hr />
                 <div className="col-md-12">
@@ -363,23 +340,70 @@ const TabAppointmentOverview = ({ appointmentData }) => {
             <div className="col-xl-12 col-md-6">
               <div className="card stretch stretch-full">
                 <div className="card-body">
-                  <div className="d-flex justify-content-between">
-                    <div className="fw-semibold">16 / 25 Open Tasks</div>
-                    <i className="text-warning">
-                      <FiCheckCircle size={16} />
-                    </i>
-                  </div>
-                  <div className="progress mt-2 ht-3">
-                    <div
-                      className="progress-bar bg-warning"
-                      role="progressbar"
-                      style={{ width: "78%" }}
-                    />
-                  </div>
+                  {(() => {
+                    const today = new Date();
+                    const createdAt = new Date(appointmentData?.createdAt);
+                    const appointmentDate = new Date(
+                      appointmentData?.appointmentDate
+                    );
+
+                    // Total period = from createdAt to appointmentDate
+                    const totalPeriod = Math.ceil(
+                      (appointmentDate - createdAt) / (1000 * 60 * 60 * 24)
+                    );
+
+                    const elapsedPeriod = Math.ceil(
+                      (today - createdAt) / (1000 * 60 * 60 * 24)
+                    );
+
+                    const diffDays = Math.ceil(
+                      (appointmentDate - today) / (1000 * 60 * 60 * 24)
+                    );
+
+                    const progress =
+                      elapsedPeriod < 0
+                        ? 0
+                        : Math.min((elapsedPeriod / totalPeriod) * 100, 100);
+
+                    const isOverdue = today > appointmentDate;
+                    const isToday =
+                      today.toDateString() === appointmentDate.toDateString();
+
+                    const statusText = isOverdue
+                      ? "Appointment Overdue"
+                      : isToday
+                      ? "Appointment Today"
+                      : `${diffDays} Day${diffDays > 1 ? "s" : ""} Left`;
+
+                    return (
+                      <>
+                        <div className="d-flex justify-content-between">
+                          <div className="fw-semibold">{statusText}</div>
+                          <i
+                            className={
+                              isOverdue ? "text-danger" : "text-success"
+                            }
+                          >
+                            <FiCalendar size={16} />
+                          </i>
+                        </div>
+                        <div className="progress mt-2 ht-3">
+                          <div
+                            className={`progress-bar ${
+                              isOverdue ? "bg-danger" : "bg-success"
+                            }`}
+                            role="progressbar"
+                            style={{ width: `${progress}%` }}
+                          />
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
-            <div className="col-xl-12 col-md-6">
+
+            {/* <div className="col-xl-12 col-md-6">
               <div className="card stretch stretch-full">
                 <div className="card-body">
                   <div className="d-flex justify-content-between">
@@ -397,7 +421,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* <div className="card stretch stretch-full">
             <ReactApexChart

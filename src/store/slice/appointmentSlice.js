@@ -8,6 +8,18 @@ const initialState = {
   error: null,
 };
 
+export const makeAppointment = createAsyncThunk(
+  "appointments/createAppointment",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await appointmentsApi.createAppointment(data);
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchAllAppointments = createAsyncThunk(
   "appointments/getAllAppointments",
   async (_, { rejectWithValue }) => {
@@ -64,6 +76,19 @@ export const appointmentSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder
+      .addCase(makeAppointment.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(makeAppointment.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appointments.push(action.payload);
+      })
+      .addCase(makeAppointment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 
