@@ -1,66 +1,65 @@
 export const menuList = [
   {
     id: 0,
-    name: "dashboards",
+    name: "Dashboard",
     path: "/",
     icon: "feather-airplay",
-    subdropdownMenu: false,
   },
   {
     id: 1,
     name: "Appointments",
-    path: "#",
+    path: "/appointments",
     icon: "feather-calendar",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "Appointment List",
-        path: "/appointments",
-        subdropdownMenu: false,
-      },
-    ],
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Appointment List",
+    //     path: "/appointments",
+    //     subdropdownMenu: false,
+    //   },
+    // ],
   },
   {
     id: 2,
     name: "Assessments",
-    path: "#",
+    path: "/assessments",
     icon: "pi-notepencil-light",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "Assessment List",
-        path: "/assessments",
-        subdropdownMenu: false,
-      }
-    ]
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Assessment List",
+    //     path: "/assessments",
+    //     subdropdownMenu: false,
+    //   }
+    // ]
   },
   {
     id: 3,
     name: "Clients",
-    path: "#",
+    path: "/clients",
     icon: "feather-users",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "Client List",
-        path: "/clients",
-        subdropdownMenu: false,
-      },
-    ],
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Client List",
+    //     path: "/clients",
+    //     subdropdownMenu: false,
+    //   },
+    // ],
   },
   {
     id: 4,
     name: "Treatment Plans",
-    path: '#',
+    path: '/treatment-plans',
     icon: 'feather-calendar',
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "Plan List",
-        path: '/treatment-plans',
-        subdropdownMenu: false,
-      },
-    ],
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Plan List",
+    //     path: '/treatment-plans',
+    //     subdropdownMenu: false,
+    //   },
+    // ],
   },
   {
     id: 5,
@@ -71,44 +70,22 @@ export const menuList = [
       {
         id: 1,
         name: "Schools",
-        path: "#",
+        path: "/settings/schools",
         icon: "lu-school",
-        subdropdownMenu: [
-          {
-            id: 1,
-            name: "School List",
-            path: "/settings/schools",
-            subdropdownMenu: false,
-          },
-        ],
+        subdropdownMenu: false,
       },
       {
         id: 2,
         name: "Tests",
-        path: "#",
+        path: "/tests",
         icon: "pi-notepencil-light",
-        subdropdownMenu: [
-          {
-            id: 1,
-            name: "Type List",
-            path: "/tests",
-            subdropdownMenu: false,
-          },
-        ],
+        subdropdownMenu: false,
       },
       {
         id: 3,
         name: "Treatment Types",
-        path: "#",
+        path: "/treatment-types",
         icon: "lia-file-medical",
-        subdropdownMenu: [
-          {
-            id: 1,
-            name: "Type List",
-            path: "/treatment-types",
-            subdropdownMenu: false,
-          },
-        ],
       },
     ]
   }

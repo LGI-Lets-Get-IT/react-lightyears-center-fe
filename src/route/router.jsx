@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import "../index.css";
 import RootLayout from "@/layout/root";
+import ErrorMinimal from "@/pages/error-minimal";
 
 const SchoolsCreate = lazy(() => import("@/pages/schools/schools-create"));
 const AppointmentsView = lazy(() =>
@@ -62,7 +63,6 @@ const ResetMinimal = lazy(() => import("@/pages/reset-minimal"));
 const ResetCreative = lazy(() => import("@/pages/reset-creative"));
 const ErrorCover = lazy(() => import("@/pages/error-cover"));
 const ErrorCreative = lazy(() => import("@/pages/error-creative"));
-const ErrorMinimal = lazy(() => import("@/pages/error-minimal"));
 const OtpCover = lazy(() => import("@/pages/otp-cover"));
 const OtpMinimal = lazy(() => import("@/pages/otp-minimal"));
 const OtpCreative = lazy(() => import("@/pages/otp-creative"));
@@ -154,9 +154,18 @@ export const router = createBrowserRouter([
 
       // schools
       {
-        path: "/settings/schools",
-        element: <SchoolsList />,
+        path: '/settings',
+        children: [
+          {
+            path: 'schools',
+            element: <SchoolsList/>
+          }
+        ]
       },
+      // {
+      //   path: "/settings/schools",
+      //   element: <SchoolsList />,
+      // },
       {
         path: "/schools/create",
         element: <SchoolsCreate />,

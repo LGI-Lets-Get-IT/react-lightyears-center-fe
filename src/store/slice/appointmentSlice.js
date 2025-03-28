@@ -54,6 +54,17 @@ export const appointmentSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(fetchAppointmentById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchAppointmentById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentAppointment = action.payload;
+    });
+    builder.addCase(fetchAppointmentById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
 

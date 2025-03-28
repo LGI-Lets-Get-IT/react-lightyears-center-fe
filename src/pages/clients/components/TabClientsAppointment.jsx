@@ -19,24 +19,22 @@ const TabClientsAppointment = () => {
 
     return (
         <div className="col">
-                {console.log('CLIENT', currentClient)}
             <div className="card stretch stretch-full">
-                {/* <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} /> */}
                 <div className="card-body custom-card-action">
-                    {todos.map(({ badgeColor, badgeText, dueIn, time, title }, index) => {
+                    {currentClient && currentClient.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime }, index) => {
                             return (
                                 <Fragment key={index}>
                                     <div className="d-flex align-items-center">
                                         <div className="me-4">
-                                            <h6 className="fw-bold mb-0">24 Jan 2025</h6>
-                                            <span className="fs-12 mb-0">{time}</span>
+                                            <h6 className="fw-bold mb-0">{appointmentDate}</h6>
+                                            <span className="fs-12 mb-0">{appointmentTime}</span>
                                         </div>
-                                        <div className={`d-flex align-items-center justify-content-between border-3 border-start border-${badgeColor} rounded w-100`}>
+                                        <div className={`d-flex align-items-center justify-content-between border-3 border-start border-${todos[0].badgeColor} rounded w-100`}>
                                             <div className="mx-3">
-                                                <a href="#" className="fw-semibold mb-1 text-truncate-1-line">{title}</a>
-                                                <div className="fs-12 fw-normal text-muted text-truncate-1-line">STATUS</div>
+                                                <a href={`/appointments/${id}`} className="fw-semibold mb-1 text-truncate-1-line">[{appointmentType}] {title}</a>
+                                                <div className="fs-12 fw-normal text-muted text-truncate-1-line">{appointmentType}</div>
                                             </div>
-                                            <a href="#" className={`badge bg-soft-${badgeColor} text-${badgeColor}`}>{badgeText}</a>
+                                            <a href="#" className={`badge bg-soft-${todos[0].badgeColor} text-${todos[0].badgeColor}`}>{appointmentType}</a>
                                         </div>
                                     </div>
                                     {todos.length - 1 === index ? "" : <hr className="border-dashed my-3" />}
@@ -45,8 +43,6 @@ const TabClientsAppointment = () => {
                         })
                     }
                 </div>
-                {/* <a href="#" className="card-footer fs-11 fw-bold text-uppercase text-center">Refresh</a> */}
-                {/* <CardLoader refreshKey={refreshKey} /> */}
             </div>
         </div>
 

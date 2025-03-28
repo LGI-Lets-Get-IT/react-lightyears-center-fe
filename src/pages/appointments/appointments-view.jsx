@@ -12,13 +12,11 @@ import { useParams } from "react-router-dom";
 const AppointmentsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const currentAppointment = useSelector((state) => state.appointment);
-
-  console.log("appointment: ", currentAppointment);
+  const { currentAppointment } = useSelector((state) => state.appointments);
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
-  }, [dispatch, id]);
+  }, [id]);
 
   return (
     <>

@@ -117,7 +117,7 @@ import {
   FiX,
   FiYoutube,
 } from "react-icons/fi";
-import { PiNotePencilLight } from "react-icons/pi";
+import { PiNotePencilLight, PiStethoscopeThin } from "react-icons/pi";
 import { LuSchool } from "react-icons/lu";
 import { LiaFileMedicalSolid, LiaNotesMedicalSolid } from "react-icons/lia";
 import { CiMedicalClipboard } from "react-icons/ci";
@@ -356,6 +356,9 @@ const getIcon = (name) => {
 
     case "pi-notepencil-light":
       return <PiNotePencilLight />;
+
+    case "pi-stethoscope":
+      return <PiStethoscopeThin />;
 
     case "lia-file-medical":
       return <CiMedicalClipboard />;
