@@ -1,16 +1,6 @@
 import React from "react";
-import {
-  FiBarChart2,
-  FiCalendar,
-  FiCheckCircle,
-  FiClock,
-  FiLink2,
-  FiMoreVertical,
-} from "react-icons/fi";
-import ImageGroup from "@/components/shared/ImageGroup";
+import { FiCalendar, FiCheckCircle, FiMoreVertical } from "react-icons/fi";
 import getIcon from "@/utils/getIcon";
-import ReactApexChart from "react-apexcharts";
-import { projectViewAreaChartOptions } from "@/utils/chartsLogic/projectViewAreaChartOptions";
 
 const moreOptions = [
   { label: "Pin Project", icon: "feather-map-pin" },
@@ -45,7 +35,9 @@ export const imageList = [
   },
 ];
 const TabAppointmentOverview = ({ appointmentData }) => {
-  const chartOptions = projectViewAreaChartOptions();
+  // const chartOptions = projectViewAreaChartOptions();
+  console.log("appointmentData", appointmentData);
+
   return (
     <div className="tab-pane fade active show" id="overviewTab">
       <div className="row">
@@ -55,15 +47,18 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               <div className="me-4">
                 <h4 className="mb-4 fw-bold d-flex">
                   <span className="text-truncate-1-line">
-                    APPOINTMENT TITLE{" "}
-                    <span className="badge bg-soft-primary text-primary mx-3">
-                      STATUS
+                    {appointmentData?.title} |{" "}
+                    <span className="text-muted">
+                      {appointmentData?.appointmentType}
                     </span>
+                  </span>
+                  <span className="badge bg-soft-primary text-primary mx-3">
+                    STATUS
                   </span>
                 </h4>
                 <p>
-                  By:
-                  <b> Gabriel Utomo</b>
+                  with
+                  <b> {appointmentData?.psychologistName}</b>
                 </p>
 
                 <div className="d-flex align-items-center">
@@ -230,19 +225,19 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Child Age</label>
-                  <p>--client.age</p>
+                  <p>{appointmentData?.client.age}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Date of Birth</label>
-                  <p>--client.dateOfBirth</p>
+                  <p>{appointmentData?.client.dateOfBirth}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Nationality</label>
-                  <p>--client.nationality</p>
+                  <p>{appointmentData?.client.nationality}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Gender</label>
-                  <p>--client.gender</p>
+                  <p>{appointmentData?.client.gender}</p>
                 </div>
                 <hr />
                 <h5 className="fw-bold mb-0" style={{ paddingBottom: "1rem" }}>
@@ -250,23 +245,23 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </h5>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Guardian Name</label>
-                  <p>--client.guardianName</p>
+                  <p>{appointmentData?.client.guardianName}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Guardian Phone</label>
-                  <p>--client.guardianPhone</p>
+                  <p>{appointmentData?.client.guardianPhone}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Guardian Email</label>
-                  <p>--client.guardianEmail</p>
+                  <p>{appointmentData?.client.fullName}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Guardian Nationality</label>
-                  <p>--client.guardianNationality</p>
+                  <p>{appointmentData?.client.guardianNationality}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Relationship With Child</label>
-                  <p>--client.guardianRelationship</p>
+                  <p>{appointmentData?.client.guardianRelationship}</p>
                 </div>
                 <hr />
                 <div className="col-md-12">
@@ -313,8 +308,8 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   <p className="mb-0">
                     Some popular CRM applications include Salesforce, Microsoft
                     Dynamics 365, HubSpot, Zoho CRM, and Freshsales. The choice
-                    of CRM application depends on an organization's specific
-                    needs and budget.
+                    of CRM application depends on an organization&apos;s
+                    specific needs and budget.
                   </p>
                 </div>
               </div>
@@ -324,32 +319,16 @@ const TabAppointmentOverview = ({ appointmentData }) => {
         <div className="col-xl-4">
           <div className="row">
             <HourCard
-              icon="feather-log-in"
+              icon="feather-calendar"
               color="primary"
-              title="Logged Hours"
-              hours="00:00"
-              totalBilled="00:00"
+              title="Appointment Date"
+              hours={appointmentData?.appointmentDate}
             />
             <HourCard
-              icon="feather-clipboard"
+              icon="feather-clock"
               color="warning"
-              title="Billable Hours"
-              hours="00:00"
-              totalBilled="00:00"
-            />
-            <HourCard
-              icon="feather-check"
-              color="success"
-              title="Billed Hours"
-              hours="00:00"
-              totalBilled="00:00"
-            />
-            <HourCard
-              icon="feather-x"
-              color="danger"
-              title="Unbilled Hour"
-              hours="00:00"
-              totalBilled="00:00"
+              title="Appointment Hours"
+              hours={appointmentData?.appointmentTime}
             />
           </div>
           <div className="row">
@@ -411,10 +390,10 @@ export default TabAppointmentOverview;
 const HourCard = ({
   icon,
   color,
-  textColorClass,
+  // textColorClass,
   title,
   hours,
-  totalBilled,
+  // totalBilled,
 }) => {
   return (
     <div className="col-xxl-6 col-xl-12 col-sm-6">
@@ -428,10 +407,6 @@ const HourCard = ({
           <p>
             <span className={`fw-bold text-${color}`}>{title}:</span> {hours}
           </p>
-          <div>
-            <span className="fw-bold text-dark">Total Billed:</span>{" "}
-            {totalBilled}
-          </div>
         </div>
       </div>
     </div>

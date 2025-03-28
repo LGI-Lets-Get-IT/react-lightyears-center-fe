@@ -11,17 +11,18 @@ const SchoolsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { school } = useSelector((state) => state.schools);
+  // console.log("Schools Data: ", school);
 
   useEffect(() => {
     dispatch(fetchSchoolById(id));
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <>
       <PageHeader>
         <SchoolsViewHeader />
       </PageHeader>
-      <SchoolsViewTab/>
+      <SchoolsViewTab />
       <div className="main-content">
         <div className="tab-content">
           <SchoolsViewContent schoolsData={school} />

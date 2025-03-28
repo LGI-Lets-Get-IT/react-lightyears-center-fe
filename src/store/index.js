@@ -4,10 +4,10 @@ import clientReducer from "./slice/clientSlice";
 import schoolReducer from "./slice/schoolSlice";
 
 export const store = configureStore({
-    reducer: {
-        appointments: appointmentReducer,
-        clients: clientReducer,
-        schools: schoolReducer,
-    },
-    // middleware
-})
+  reducer: {
+    appointment: appointmentReducer,
+    clients: clientReducer,
+    schools: schoolReducer,
+  },
+  // middleware
+});

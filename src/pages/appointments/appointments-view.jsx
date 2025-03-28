@@ -12,13 +12,25 @@ import { useParams } from "react-router-dom";
 const AppointmentsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const currentAppointment = useSelector((state) => state.appointment);
+  const { appointment, isLoading, error } = useSelector((state) => ({
+    appointment: state.appointment.currentAppointment,
+    isLoading: state.appointment.isLoading,
+    error: state.appointment.error,
+  }));
 
-  console.log("appointment: ", currentAppointment);
+  console.log("Current appointment data: ", appointment);
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
   }, [dispatch, id]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <>
@@ -28,7 +40,13 @@ const AppointmentsView = () => {
       <AppointmentViewTabItems />
       <div className="main-content">
         <div className="tab-content">
-          <TabAppointmentOverview appointmentData={currentAppointment} />
+          <TabAppointmentOverview appointmentData={appointment} />
+          <div className="tab-pane fade" id="ReportsTab">
+            <LeadsEmptyCard
+              title="No milestones yet!"
+              description="There is no milestones on this project"
+            />
+          </div>
           <div className="tab-pane fade" id="activityTab">
             <LeadsEmptyCard
               title="No activity yet!"
@@ -39,12 +57,6 @@ const AppointmentsView = () => {
             <LeadsEmptyCard
               title="No timesheets yet!"
               description="There is no timesheets on this project"
-            />
-          </div>
-          <div className="tab-pane fade" id="milestonesTab">
-            <LeadsEmptyCard
-              title="No milestones yet!"
-              description="There is no milestones on this project"
             />
           </div>
           <div className="tab-pane fade" id="discussionsTab">
