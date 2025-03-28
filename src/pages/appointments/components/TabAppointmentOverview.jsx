@@ -36,10 +36,14 @@ export const imageList = [
 ];
 const TabAppointmentOverview = ({ appointmentData }) => {
   // const chartOptions = projectViewAreaChartOptions();
+<<<<<<< HEAD
   console.log("appointmentData", appointmentData);
 
+=======
+>>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
   return (
     <div className="tab-pane fade active show" id="overviewTab">
+      {console.log('APPOINTMENTDATA', appointmentData)}
       <div className="row">
         <div className="col-lg-12">
           <div className="card stretch stretch-full">
@@ -47,17 +51,28 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               <div className="me-4">
                 <h4 className="mb-4 fw-bold d-flex">
                   <span className="text-truncate-1-line">
+<<<<<<< HEAD
                     {appointmentData?.title} |{" "}
                     <span className="text-muted">
                       {appointmentData?.appointmentType}
                     </span>
+=======
+                    [{appointmentData?.appointmentType}] {appointmentData?.title}
+                    {/* <span className="badge bg-soft-primary text-primary mx-3">
+                      STATUS
+                    </span> */}
+>>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                   </span>
                   <span className="badge bg-soft-primary text-primary mx-3">
                     STATUS
                   </span>
                 </h4>
                 <p>
+<<<<<<< HEAD
                   with
+=======
+                  Psychologist:
+>>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                   <b> {appointmentData?.psychologistName}</b>
                 </p>
 
@@ -120,7 +135,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   </div> */}
                 </div>
               </div>
-              <div className="filter-dropdown">
+              {/* <div className="filter-dropdown">
                 <a
                   className="btn btn-icon btn-light-brand"
                   data-bs-toggle="dropdown"
@@ -146,7 +161,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                     );
                   })}
                 </div>
-              </div>
+              </div> */}
               {/* <div className="mt-4 mt-md-0">
                 <div className="d-flex gap-2">
                   <a
@@ -225,7 +240,11 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Child Age</label>
+<<<<<<< HEAD
                   <p>{appointmentData?.client.age}</p>
+=======
+                  <p>{appointmentData?.client.age} years old</p>
+>>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Date of Birth</label>
@@ -238,6 +257,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Gender</label>
                   <p>{appointmentData?.client.gender}</p>
+<<<<<<< HEAD
                 </div>
                 <hr />
                 <h5 className="fw-bold mb-0" style={{ paddingBottom: "1rem" }}>
@@ -262,6 +282,14 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Relationship With Child</label>
                   <p>{appointmentData?.client.guardianRelationship}</p>
+=======
+                </div>
+                <div className="col-md-6 mb-4">
+                  <label className="form-label">Contact Person:</label>
+                  <p>
+                    {appointmentData?.client.guardianRelationship}: <a href={`tel:${appointmentData?.client.guardianPhone}`}>{appointmentData?.client.guardianPhone}</a> / <a href={`mailto:${appointmentData?.client.guardianEmail}`}>{appointmentData?.client.guardianEmail}</a> ({appointmentData?.client.guardianName})
+                  </p>
+>>>>>>> dde7ed933f9664db96945bbf71b93e5f87c9864b
                 </div>
                 <hr />
                 <div className="col-md-12">

@@ -53,7 +53,6 @@ export const appointmentSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
-    // Add the following to handle fetchAppointmentById
     builder.addCase(fetchAppointmentById.pending, (state) => {
       state.isLoading = true;
     });
