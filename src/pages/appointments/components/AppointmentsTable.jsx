@@ -90,6 +90,11 @@ const AppointmentsTable = ({ appointments }) => {
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
+      accessorKey: "title",
+      header: () => "Appointment Title",
+      cell: (info) => <a>{info.getValue()}</a>,
+    },
+    {
       accessorKey: "appointmentDate",
       header: () => "Appointment Date",
       cell: (info) => <a>{info.getValue()}</a>,

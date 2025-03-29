@@ -18,7 +18,7 @@ const AppointmentsView = () => {
     error: state.appointment.error,
   }));
 
-  console.log("Current appointment data: ", appointment);
+  // console.log("Current appointment data: ", appointment);
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));

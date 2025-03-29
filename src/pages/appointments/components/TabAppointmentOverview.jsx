@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 import getIcon from "@/utils/getIcon";
 
@@ -36,9 +36,85 @@ export const imageList = [
 ];
 const TabAppointmentOverview = ({ appointmentData }) => {
   // const chartOptions = projectViewAreaChartOptions();
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 1000); // update tiap detik
+
+    return () => clearInterval(timer);
+  }, []);
+
+  if (
+    !appointmentData?.createdAt ||
+    !appointmentData?.appointmentDate ||
+    !appointmentData?.appointmentTime
+  ) {
+    return null;
+  }
+
+  const createdAt = new Date(appointmentData.createdAt);
+  const appointmentDateOnly = new Date(appointmentData.appointmentDate);
+
+  // Parse appointmentTime string
+  const [startTimeStr, endTimeStr] = appointmentData.appointmentTime
+    .split(" - ")
+    .map((t) => t.trim());
+
+  const [startHour, startMinute] = startTimeStr.split(":").map(Number);
+  const [endHour, endMinute] = endTimeStr.split(":").map(Number);
+
+  // Build full datetime objects for the start and end of the appointment
+  const appointmentStart = new Date(appointmentDateOnly);
+  appointmentStart.setHours(startHour, startMinute, 0, 0);
+
+  const appointmentEnd = new Date(appointmentDateOnly);
+  appointmentEnd.setHours(endHour, endMinute, 0, 0);
+
+  const totalDurationMs = appointmentStart - createdAt;
+  const elapsedMs = now - createdAt;
+  const progress =
+    elapsedMs <= 0 ? 0 : Math.min((elapsedMs / totalDurationMs) * 100, 100);
+
+  // Status determination
+  const isOverdue = now > appointmentEnd;
+  const isOngoing = now >= appointmentStart && now <= appointmentEnd;
+  const isBeforeStart = now < appointmentStart;
+  const isToday = now.toDateString() === appointmentDateOnly.toDateString();
+
+  // Format countdown to HH:mm:ss
+  const formatCountdown = (ms) => {
+    const totalSeconds = Math.max(Math.floor(ms / 1000), 0);
+    const hours = Math.floor(totalSeconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const minutes = Math.floor((totalSeconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  let statusText = "";
+  if (isOverdue) {
+    statusText = "Appointment Completed / Missed";
+  } else if (isOngoing) {
+    statusText = "On Going - Ends in " + formatCountdown(appointmentEnd - now);
+  } else if (isBeforeStart && isToday) {
+    statusText = "Starting in " + formatCountdown(appointmentStart - now);
+  } else if (isBeforeStart && !isToday) {
+    const daysLeft = Math.ceil(
+      (appointmentStart - now) / (1000 * 60 * 60 * 24)
+    );
+    statusText =
+      `${daysLeft} Day${daysLeft > 1 ? "s" : ""} Left - ` +
+      formatCountdown(appointmentStart - now);
+  }
+
   return (
     <div className="tab-pane fade active show" id="overviewTab">
-      {console.log("APPOINTMENTDATA", appointmentData)}
+      {/* {console.log("APPOINTMENTDATA", appointmentData)} */}
       <div className="row">
         <div className="col-lg-12">
           <div className="card stretch stretch-full">
@@ -52,7 +128,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                     </span>
                   </span>
                   <span className="badge bg-soft-primary text-primary mx-3">
-                    STATUS
+                    On Progress
                   </span>
                 </h4>
                 <p>
@@ -340,65 +416,25 @@ const TabAppointmentOverview = ({ appointmentData }) => {
             <div className="col-xl-12 col-md-6">
               <div className="card stretch stretch-full">
                 <div className="card-body">
-                  {(() => {
-                    const today = new Date();
-                    const createdAt = new Date(appointmentData?.createdAt);
-                    const appointmentDate = new Date(
-                      appointmentData?.appointmentDate
-                    );
-
-                    // Total period = from createdAt to appointmentDate
-                    const totalPeriod = Math.ceil(
-                      (appointmentDate - createdAt) / (1000 * 60 * 60 * 24)
-                    );
-
-                    const elapsedPeriod = Math.ceil(
-                      (today - createdAt) / (1000 * 60 * 60 * 24)
-                    );
-
-                    const diffDays = Math.ceil(
-                      (appointmentDate - today) / (1000 * 60 * 60 * 24)
-                    );
-
-                    const progress =
-                      elapsedPeriod < 0
-                        ? 0
-                        : Math.min((elapsedPeriod / totalPeriod) * 100, 100);
-
-                    const isOverdue = today > appointmentDate;
-                    const isToday =
-                      today.toDateString() === appointmentDate.toDateString();
-
-                    const statusText = isOverdue
-                      ? "Appointment Overdue"
-                      : isToday
-                      ? "Appointment Today"
-                      : `${diffDays} Day${diffDays > 1 ? "s" : ""} Left`;
-
-                    return (
-                      <>
-                        <div className="d-flex justify-content-between">
-                          <div className="fw-semibold">{statusText}</div>
-                          <i
-                            className={
-                              isOverdue ? "text-danger" : "text-success"
-                            }
-                          >
-                            <FiCalendar size={16} />
-                          </i>
-                        </div>
-                        <div className="progress mt-2 ht-3">
-                          <div
-                            className={`progress-bar ${
-                              isOverdue ? "bg-danger" : "bg-success"
-                            }`}
-                            role="progressbar"
-                            style={{ width: `${progress}%` }}
-                          />
-                        </div>
-                      </>
-                    );
-                  })()}
+                  <div className="d-flex justify-content-between">
+                    <div className="fw-semibold">{statusText}</div>
+                    <i className={isOverdue ? "text-danger" : "text-success"}>
+                      <FiCalendar size={16} />
+                    </i>
+                  </div>
+                  <div className="progress mt-2 ht-3">
+                    <div
+                      className={`progress-bar ${
+                        isOverdue
+                          ? "bg-danger"
+                          : isOngoing
+                          ? "bg-warning"
+                          : "bg-success"
+                      }`}
+                      role="progressbar"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -448,7 +484,7 @@ const HourCard = ({
   // totalBilled,
 }) => {
   return (
-    <div className="col-xxl-6 col-xl-12 col-sm-6">
+    <div className="col-xxl-12 col-xl-12 col-sm-6">
       <div className="card stretch stretch-full">
         <div className="card-body">
           <div

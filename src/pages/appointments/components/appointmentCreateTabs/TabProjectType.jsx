@@ -21,8 +21,8 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
       <form id="project-type">
         <fieldset>
           <div className="mb-5">
-            <h2 className="fs-16 fw-bold">Appointment Title</h2>
-            <p className="text-muted">Title for the appointment.</p>
+            <h2 className="fs-16 fw-bold">Appointment Detail</h2>
+            <p className="text-muted">Detail for the appointment.</p>
             {error && (
               <label id="project-type-error" className="error">
                 <FiAlertTriangle /> This field is required.
