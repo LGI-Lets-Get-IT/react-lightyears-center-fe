@@ -39,15 +39,14 @@ const TabProfile = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
-    // console.log("SELECTEDOPTION", selectedOption);
     const body = {
       ...userInput,
-      dateOfBirth: formattedDate,
-      nationality: selectedOption["nationality"]?.label,
+      childDob: formattedDate,
+      childNationality: selectedOption["nationality"]?.label,
+      childGender: selectedOption["gender"]?.label,
       schoolId: selectedOption["school"]?.value,
       guardianNationality: selectedOption["guardianNationality"]?.label,
       guardianRelationship: selectedOption["relationship"]?.label,
-      gender: selectedOption["gender"]?.label,
     };
 
     dispatch(createClient(body))

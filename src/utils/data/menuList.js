@@ -87,6 +87,12 @@ export const menuList = [
         path: "/treatment-types",
         icon: "lia-file-medical",
       },
+      {
+        id: 4,
+        name: 'Psychologists',
+        path: '/psychologists',
+        icon: 'lia-file-medical',
+      }
     ]
   }
 

@@ -76,11 +76,12 @@ const AppointmentsTable = ({ appointments }) => {
         const appointmentId = info.row.original.id;
         const clientName = info.getValue();
         return (
-          <a href={`/appointments/${appointmentId}`} className="hstack gap-3">
-            <div>
-              <span className="text-truncate-1-line">{clientName}</span>
-            </div>
-          </a>
+          <Link to={`/appointments/${appointmentId}`}>{clientName}</Link>
+          // <a href={`/appointments/${appointmentId}`} className="hstack gap-3">
+          //   <div>
+          //     <span className="text-truncate-1-line">{clientName}</span>
+          //   </div>
+          // </a>
         );
       },
     },
@@ -103,6 +104,11 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "appointmentTime",
       header: () => "Appointment Time",
       cell: (info) => <a>{info.getValue()}</a>,
+    },
+    {
+      accessorKey: "status",
+      header: () => "Status",
+      cell: (info) => <a>{info.getValue()}</a>
     },
     {
       accessorKey: "actions",

@@ -42,6 +42,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
     const timer = setInterval(() => {
       setNow(new Date());
     }, 1000); // update tiap detik
+    console.log('ASD')
 
     return () => clearInterval(timer);
   }, []);
@@ -122,13 +123,19 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               <div className="me-4">
                 <h4 className="mb-4 fw-bold d-flex">
                   <span className="text-truncate-1-line">
-                    {appointmentData?.title} |{" "}
-                    <span className="text-muted">
+                    {appointmentData ? <>[{appointmentData?.appointmentType}] {appointmentData?.title}</> : <>-</>}
+                    {/* <span className="text-muted">
                       {appointmentData?.appointmentType}
-                    </span>
+                    </span> */}
                   </span>
-                  <span className="badge bg-soft-primary text-primary mx-3">
-                    On Progress
+                  {/* <span className="badge bg-soft-primary text-primary mx-3">
+                    {appointmentData?.status}
+                  </span> */}
+                  <span className={`
+                    badge bg-soft-${appointmentData?.status == 'Upcoming' ? 'primary' : appointmentData?.status == 'Ongoing ' ? 'warning' : appointmentData?.status == 'Done' ? 'success' : 'danger'}
+                    text-${appointmentData?.status == 'Upcoming' ? 'primary' : appointmentData?.status == 'Ongoing' ? 'warning' : appointmentData?.status == 'Done' ? 'success' : 'danger'} mx-3
+                    `}>
+                    {appointmentData?.status}
                   </span>
                 </h4>
                 <p>

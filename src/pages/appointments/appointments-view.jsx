@@ -43,8 +43,8 @@ const AppointmentsView = () => {
           <TabAppointmentOverview appointmentData={appointment} />
           <div className="tab-pane fade" id="ReportsTab">
             <LeadsEmptyCard
-              title="No milestones yet!"
-              description="There is no milestones on this project"
+              title="No reports yet!"
+              description="There are no reports to be viewed"
             />
           </div>
           <div className="tab-pane fade" id="activityTab">

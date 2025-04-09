@@ -15,7 +15,7 @@ const CustomerContent = ({ userData }) => {
           address={userData?.address}
           guardianEmail={userData?.guardianEmail}
           guardianPhone={userData?.guardianPhone}
-          totalAppointments={userData?.appointments.length}
+          totalAppointments={userData?.appointments?.length}
         />
       </div>
       <div className="col-xxl-8 col-xl-6">

@@ -3,6 +3,8 @@ import { lazy, Suspense } from "react";
 import "../index.css";
 import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
+import PlansList from "@/pages/treatment-plans/plans-list";
+import PlansView from "@/pages/treatment-plans/plans-view";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -158,7 +160,14 @@ export const router = createBrowserRouter([
         path: "/clients/create",
         element: <CustomersCreate />,
       },
-
+      {
+        path: '/treatment-plans',
+        element: <PlansList/>,
+      },
+      {
+        path: '/treatment-plans/:id',
+        element: <PlansView/>
+      },
       // schools
       {
         path: "/settings",
