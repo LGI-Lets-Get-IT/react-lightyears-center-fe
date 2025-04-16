@@ -136,19 +136,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/appointments",
-        element: <ProtectedRoute requiredPermissions={["view_appointments"]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
           <AppointmentsList/>
         </ProtectedRoute>,
       },
       {
         path: "/appointments/:id",
-        element: <ProtectedRoute requiredPermissions={["view_appointments"]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
           <AppointmentsView/>
         </ProtectedRoute>,
       },
       {
         path: "/appointments/create",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.CREATE}>
           <AppointmentsCreate/>
         </ProtectedRoute>,
       },

@@ -9,9 +9,8 @@ const Menus = () => {
     const { currentUser } = useSelector((state) => state.auth);
     const { permissions } = currentUser || [];
     const filteredMenuList = menuList.filter((menu) => {
-        console.log('USER PERMISSIONS', permissions, menu.permissions)
-        if (menu.permissions && menu.permissions.length > 0) {
-            return menu.permissions.some((permission) => permissions.includes(permission))
+        if (menu?.permissions && menu?.permissions?.length > 0) {
+            return menu?.permissions.some((permission) => permissions?.includes(permission))
         }
         return true; // Include menu items without permissions or with empty permissions array
     });

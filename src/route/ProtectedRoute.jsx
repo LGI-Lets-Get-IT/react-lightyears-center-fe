@@ -12,9 +12,7 @@ const ProtectedRoute = ({ requiredPermissions, children }) => {
         return <Navigate to="/login" replace />
     }
 
-    console.log('USER PERMISSIONS', permissions, requiredPermissions)
-
-    if (requiredPermissions && !requiredPermissions.includes(permissions)) {
+    if (requiredPermissions && requiredPermissions.includes(permissions)) {
         return (
             MySwal.mixin({
                 toast: true,

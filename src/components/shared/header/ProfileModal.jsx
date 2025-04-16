@@ -3,15 +3,21 @@ import { userLogout } from '@/store/slice/authSlice'
 import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.auth)
 
     const handleLogout = () => {
         dispatch(userLogout())
+        .unwrap()
+        .then(() => {
+            navigate('/login')
+        })
     }
     return (
         <div className="dropdown nxl-h-item">
