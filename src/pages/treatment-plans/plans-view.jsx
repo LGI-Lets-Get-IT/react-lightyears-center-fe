@@ -14,8 +14,6 @@ const PlansView = () => {
   const { id } = useParams();
   const { plan } = useSelector((state) => state.treatmentPlans);
 
-  // console.log("Current appointment data: ", appointment);
-
   useEffect(() => {
     dispatch(fetchPlanById(id));
   }, [id]);

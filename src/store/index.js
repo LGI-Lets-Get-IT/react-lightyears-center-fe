@@ -6,7 +6,7 @@ import schoolReducer from "./slice/schoolSlice";
 import authReducer from './slice/authSlice';
 import { persistReducer, persistStore } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
-// import treatmentPlanReducer from "./slice/treatmentPlanSlice";
+import treatmentPlanReducer from "./slice/treatmentPlanSlice";
 
 const authPersistConfig = {
   key: 'root',
@@ -21,7 +21,7 @@ export const store = configureStore({
     }),
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
-    // treatmentPlans: treatmentPlanReducer,
+    treatmentPlans: treatmentPlanReducer,
     appointment: appointmentReducer,
     clients: clientReducer,
     employees: employeeReducer,

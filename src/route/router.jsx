@@ -120,9 +120,9 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <Suspense fallback={<LoadingFallback />}>
-        {/* <ProtectedRoute> */}
+        <ProtectedRoute requiredPermissions={PERMISSIONS.DASHBOARD.VIEW}>
           <RootLayout />
-        {/* </ProtectedRoute> */}
+        </ProtectedRoute>
       </Suspense>
     ),
     errorElement: <ErrorMinimal />,

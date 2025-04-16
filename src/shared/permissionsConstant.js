@@ -1,4 +1,8 @@
 export const PERMISSIONS = {
+    DASHBOARD: {
+      VIEW: 'view_dashboard',
+    },
+
     APPOINTMENTS: {
       CREATE: 'create_appointments',
       VIEW: 'view_appointments',
