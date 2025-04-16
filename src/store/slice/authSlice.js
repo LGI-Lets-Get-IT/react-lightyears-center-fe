@@ -3,7 +3,7 @@ import { authApi } from "../../services/authService"
 
 const initialState = {
     currentUser: null,
-    // accessToken: null,
+    accessToken: null,
     isAuthenticated: false,
     isLoading: false,
     error: null,
@@ -45,7 +45,7 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.isAuthenticated = true;
             state.currentUser = action.payload.user;
-            // state.accessToken = action.payload.accessToken;
+            state.accessToken = action.payload.accessToken;
         });
         builder.addCase(userLogin.rejected, (state, action) => {
             state.isLoading = false;
@@ -54,11 +54,11 @@ export const authSlice = createSlice({
         builder.addCase(userLogout.pending, (state) => {
             state.isLoading = true;
         });
-        builder.addCase(userLogout.fulfilled, (state) => {
+        builder.addCase(userLogout.fulfilled, (state, action) => {
             state.isLoading = false;
             state.isAuthenticated = false;
             state.currentUser = null;
-            // state.accessToken = null;
+            state.accessToken = null;
         });
         builder.addCase(userLogout.rejected, (state, action) => {
             state.isLoading = false;

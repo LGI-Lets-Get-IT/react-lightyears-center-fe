@@ -22,6 +22,8 @@ import {
 } from "react-icons/bs";
 import Dropdown from "@/components/shared/Dropdown";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { PERMISSIONS } from "../../../shared/permissionsConstant";
 // import CustomersStatistics from "../../../components/widgetsStatistics/CustomersStatistics";
 
 const filterAction = [
@@ -43,6 +45,7 @@ const fileType = [
 ];
 
 const SchoolsHeader = () => {
+  const { currentUser } = useSelector((state) => state.auth);
   return (
     <>
       <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
@@ -69,10 +72,12 @@ const SchoolsHeader = () => {
           iconStrokeWidth={0}
           isAvatar={false}
         /> */}
-        <Link to="/schools/create" className="btn btn-primary">
-          <FiPlus size={16} className="me-2" />
-          <span>Create New School</span>
-        </Link>
+        {currentUser.permissions?.includes(PERMISSIONS.SCHOOLS.CREATE) && (
+          <Link to="/schools/create" className="btn btn-primary">
+            <FiPlus size={16} className="me-2" />
+            <span>Create New School</span>
+          </Link>
+        )}
       </div>
 
       <div

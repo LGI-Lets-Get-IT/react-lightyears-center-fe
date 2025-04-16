@@ -20,10 +20,10 @@ const CustomersViewHeader = () => {
         <FiEye size={16} className="me-2" />
         <span>Follow</span>
       </a> */}
-      <Link to="/clients/create" className="btn btn-primary">
+      {/* <Link to="/clients/create" className="btn btn-primary">
         <FiPlus size={16} className="me-2" />
         <span>Create New Client</span>
-      </Link>
+      </Link> */}
     </div>
   );
 };

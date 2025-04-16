@@ -73,7 +73,7 @@ const CustomersHeader = () => {
           iconStrokeWidth={0}
           isAvatar={false}
         />
-        {currentUser.permissions.includes(PERMISSIONS.CLIENTS.CREATE) &&
+        {currentUser.permissions?.includes(PERMISSIONS.CLIENTS.CREATE) &&
         <Link to="/clients/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Client</span>

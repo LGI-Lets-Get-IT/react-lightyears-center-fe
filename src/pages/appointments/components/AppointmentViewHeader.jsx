@@ -56,10 +56,10 @@ const AppointmentViewHeader = () => {
                     }
                 </div>
             </div>
-            <Link to="/appointments/create" className="btn btn-primary">
+            {/* <Link to="/appointments/create" className="btn btn-primary">
                 <FiPlus size={16} className='me-2' />
                 <span>Create New Appointment</span>
-            </Link>
+            </Link> */}
             <div className="filter-dropdown">
                 <ul className="dropdown-menu dropdown-menu-start">
                     {

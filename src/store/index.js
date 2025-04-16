@@ -11,7 +11,7 @@ import storage from 'redux-persist/lib/storage';
 const authPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['currentUser', 'isAuthenticated'],
+  whitelist: ['currentUser', 'accessToken', 'isAuthenticated'],
 }
 
 export const store = configureStore({

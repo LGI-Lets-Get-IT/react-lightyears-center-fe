@@ -2,13 +2,15 @@ import React, { memo, useState } from "react";
 import { deleteClient } from "@/store/slice/clientSlice";
 import { FaMars, FaVenus } from "react-icons/fa6";
 import { FiEdit, FiMail, FiPhone, FiTrash2 } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import { PERMISSIONS } from "../../../shared/permissionsConstant";
 
 const Profile = ({ fullName, gender, guardianEmail, guardianPhone, totalAppointments }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { uuid } = useParams();
+  const { currentUser } = useSelector((state) => state.auth);
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -87,6 +89,7 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone, totalAppointm
           </li>
         </ul>
         <div className="d-flex gap-2 text-center pt-4">
+          {currentUser.permissions?.includes(PERMISSIONS.CLIENTS.DELETE) && (
           <button
             onClick={() => setShowModal(true)}
             className="w-50 btn btn-light-brand"
@@ -94,10 +97,13 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone, totalAppointm
             <FiTrash2 size={16} className="me-2" />
             <span>Delete</span>
           </button>
-          <Link to={`/clients/${uuid}/edit`} className="w-50 btn btn-primary">
-            <FiEdit size={16} className="me-2" />
-            <span>Edit Profile</span>
-          </Link>
+          )}
+          {currentUser.permissions?.includes(PERMISSIONS.CLIENTS.UPDATE) && (
+            <Link to={`/clients/${uuid}/edit`} className="w-50 btn btn-primary">
+              <FiEdit size={16} className="me-2" />
+              <span>Edit Profile</span>
+            </Link>
+          )}
         </div>
       </div>
 

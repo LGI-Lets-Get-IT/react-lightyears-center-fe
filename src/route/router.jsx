@@ -156,37 +156,37 @@ export const router = createBrowserRouter([
       // clients
       {
         path: "/clients",
-        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.VIEW]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
           <CustomersList />
         </ProtectedRoute>,
       },
       {
         path: "/clients/:uuid",
-        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.VIEW]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
           <CustomersView />
         </ProtectedRoute>,
       },
       {
         path: "/clients/:uuid/edit",
-        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.UPDATE]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.UPDATE}>
           <CustomersEdit />
         </ProtectedRoute>,
       },
       {
         path: "/clients/create",
-        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.CREATE]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.CREATE}>
           <CustomersCreate />
         </ProtectedRoute>,
       },
       {
         path: '/treatment-plans',
-        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.TREATMENT_PLANS.VIEW]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.TREATMENT_PLANS.VIEW}>
           <PlansList/>
         </ProtectedRoute>,
       },
       {
         path: '/treatment-plans/:id',
-        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.TREATMENT_PLANS.VIEW]}>
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.TREATMENT_PLANS.VIEW}>
           <PlansView/>
         </ProtectedRoute>,
       },
