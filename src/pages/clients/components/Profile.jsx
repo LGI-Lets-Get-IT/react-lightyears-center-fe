@@ -53,15 +53,15 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone, totalAppointm
           </div>
           <div className="fs-12 fw-normal text-muted text-center d-flex flex-wrap gap-3 mb-4">
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">{totalAppointments}</h6>
+              <h6 className="fs-15 fw-bolder">{totalAppointments ?? 0}</h6>
               <p className="fs-12 text-muted mb-0">Total Appointments</p>
             </div>
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">00</h6>
+              <h6 className="fs-15 fw-bolder">0</h6>
               <p className="fs-12 text-muted mb-0">Total Assessments</p>
             </div>
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">00</h6>
+              <h6 className="fs-15 fw-bolder">0</h6>
               <p className="fs-12 text-muted mb-0">Total Therapies</p>
             </div>
           </div>

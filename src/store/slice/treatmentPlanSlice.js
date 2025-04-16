@@ -10,7 +10,7 @@ const initialState = {
 
 export const fetchAllPlans = createAsyncThunk(
   "treatmentplan/getAllPlans",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await treatmentPlansApi.getAllPlans();
       return response.data.data;
@@ -24,7 +24,7 @@ export const fetchPlanById = createAsyncThunk(
   "treatmentplan/getPlanById",
   async (planId, { rejectWithValue }) => {
     try {
-      const response = await treatmentPlansApi.getPlanlById(planId);
+      const response = await treatmentPlansApi.getPlanById(planId);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -35,7 +35,7 @@ export const fetchPlanById = createAsyncThunk(
 
 export const createPlan = createAsyncThunk(
   "treatmentplan/createPlan",
-  async (planData, { rejectWithValue, dispatch }) => {
+  async (planData, { rejectWithValue }) => {
     try {
       const response = await treatmentPlansApi.createPlan(planData);
       return response.data.data;

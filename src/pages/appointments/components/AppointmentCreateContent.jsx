@@ -5,6 +5,7 @@ import TabCompleted from "./appointmentCreateTabs/TabCompleted";
 import TabDateTime from "./appointmentCreateTabs/TabDateTime";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   { name: "Type", required: true },
@@ -14,15 +15,15 @@ const steps = [
 ];
 
 const AppointmentCreateContent = () => {
-  const [currentStep, setCurrentStep] = useState(0);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(0);
   const [error, setError] = useState(false);
   const [formData, setFormData] = useState({
     client: "",
     title: "",
     appointmentType: "",
-    psychologistName: "",
-    psychologistId: 1,
+    psychologistId: null,
     appointmentDate: "",
   });
 
@@ -41,7 +42,7 @@ const AppointmentCreateContent = () => {
         }
         break;
       case 1:
-        if (!formData.psychologistName.trim()) {
+        if (!formData.psychologistId) {
           setError(true);
           return false;
         }
@@ -79,7 +80,10 @@ const AppointmentCreateContent = () => {
           appointmentDate: formData.appointmentDate,
           appointmentTime: formData.appointmentTime,
         };
-        dispatch(makeAppointment(payload));
+        dispatch(makeAppointment(payload))
+          .unwrap()
+          .then(() => navigate('/appointments/'))
+          .catch((error) => console.error("handle error", error));
       }
 
       setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -105,6 +109,7 @@ const AppointmentCreateContent = () => {
       <div className="card border-top-0">
         <div className="card-body p-0 wizard" id="project-create-steps">
           <div className="steps clearfix">
+            {console.log('FORMDATAAA', formData)}
             <ul role="tablist">
               {steps.map((step, index) => (
                 <li

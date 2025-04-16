@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { fetchPlanById } from "@/store/slice/treatmentPlanSlice";
 import PlanViewHeader from "./components/PlanViewHeader";
 import PlanViewTabItems from "./components/PlanViewTabItems";
+import TabPlanProgress from "./components/TabPlanProgress";
 
 const PlansView = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,8 @@ const PlansView = () => {
       <div className="main-content">
         <div className="tab-content">
           {/* <TabAppointmentOverview appointmentData={appointment} /> */}
-          <div className="tab-pane fade" id="ReportsTab">
+          <div className="tab-pane fade" id="progressTab">
+            <TabPlanProgress/>
             <LeadsEmptyCard
               title="No reports yet!"
               description="There are no reports to be viewed"

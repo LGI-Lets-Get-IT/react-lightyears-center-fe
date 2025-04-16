@@ -20,7 +20,7 @@ const SiteOverviewStatistics = () => {
   const navigate = useNavigate();
   return (
     <>
-      {crmStatisticsData.map(
+      {/* {crmStatisticsData.map(
         ({
           id,
           completed_number,
@@ -79,7 +79,7 @@ const SiteOverviewStatistics = () => {
             </div>
           </div>
         )
-      )}
+      )} */}
       <div className="card">
         <div className="card-body">
           <FullCalendar

@@ -10,18 +10,12 @@ const PlanViewTabItems = () => {
       </div>
       <div className="d-flex align-items-center justify-content-between">
         <div className="nav-tabs-wrapper page-content-left-sidebar-wrapper">
-          <div className="d-flex d-md-none">
-            <a href="#" className="page-content-left-close-toggle">
-              <i className="feather-arrow-left me-2"></i>
-              <span>Back</span>
-            </a>
-          </div>
           <ul
-            className="nav nav-tabs nav-tabs-custom-style"
+            className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs"
             id="myTab"
             role="tablist"
           >
-            <li className="nav-item" role="presentation">
+            <li className="nav-item flex-fill border-top" role="presentation">
               <button
                 className="nav-link active"
                 data-bs-toggle="tab"
@@ -30,16 +24,16 @@ const PlanViewTabItems = () => {
                 Overview
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li className="nav-item flex-fill border-top" role="presentation">
               <button
                 className="nav-link"
                 data-bs-toggle="tab"
-                data-bs-target="#ReportsTab"
+                data-bs-target="#progressTab"
               >
-                Reports
+                Progress
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            {/* <li className="nav-item" role="presentation">
               <button
                 className="nav-link"
                 data-bs-toggle="tab"
@@ -47,7 +41,7 @@ const PlanViewTabItems = () => {
               >
                 Files
               </button>
-            </li>
+            </li> */}
             {/* <li className="nav-item" role="presentation">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#timesheetsTab">Timesheets</button>
                         </li>

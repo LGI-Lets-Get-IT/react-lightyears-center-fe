@@ -1,9 +1,18 @@
+import { store } from '@/store/index'
+import { userLogout } from '@/store/slice/authSlice'
 import React, { Fragment } from 'react'
 import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
+import { useDispatch, useSelector } from 'react-redux'
 
 const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
 const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector((state) => state.auth)
+
+    const handleLogout = () => {
+        dispatch(userLogout())
+    }
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
@@ -12,10 +21,14 @@ const ProfileModal = () => {
             <div className="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                 <div className="dropdown-header">
                     <div className="d-flex align-items-center">
-                        <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" />
+                        {/* <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" /> */}
                         <div>
-                            <h6 className="text-dark mb-0">Alexandra Della <span className="badge bg-soft-success text-success ms-1">PRO</span></h6>
-                            <span className="fs-12 fw-medium text-muted">alex.della@outlook.com</span>
+                            <h6 className="text-dark mb-0">{currentUser?.fullName}
+                                {currentUser?.role && 
+                                <span className="badge bg-soft-success text-success ms-1">{currentUser?.role}</span>
+                                }
+                            </h6>
+                            <span className="fs-12 fw-medium text-muted">{currentUser?.email}</span>
                         </div>
                     </div>
                 </div>
@@ -74,10 +87,10 @@ const ProfileModal = () => {
                     </div>
                 </div> */}
                 {/* <div className="dropdown-divider"></div> */}
-                <a href="#" className="dropdown-item">
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiUser /></i>
                     <span>Profile Details</span>
-                </a>
+                </a> */}
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>
@@ -94,11 +107,11 @@ const ProfileModal = () => {
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
                 </a> */}
-                <div className="dropdown-divider"></div>
-                <a href="./auth-login-minimal.html" className="dropdown-item">
+                {/* <div className="dropdown-divider"></div> */}
+                <button type='button' onClick={handleLogout} className="dropdown-item">
                     <i> <FiLogOut /></i>
                     <span>Logout</span>
-                </a>
+                </button>
             </div>
         </div>
     )

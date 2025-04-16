@@ -339,67 +339,49 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Contact Person:</label>
-                  <p>
-                    {appointmentData?.client.guardianRelationship}:{" "}
+                  <ul>
+                    <li>
+                      <a href={`mailto:${appointmentData?.client.guardianEmail}`}>{appointmentData?.client.guardianEmail}</a>
+                    </li>
+                    <li>
+                      <a href={`tel:${appointmentData?.client.guardianPhone}`}>{appointmentData?.client.guardianPhone}</a>
+                    </li>
+                  </ul>
+                  {/* <p>
+                    {appointmentData?.client.guardianName} ({appointmentData?.client.guardianRelationship}):{" "}
                     <a href={`tel:${appointmentData?.client.guardianPhone}`}>
                       {appointmentData?.client.guardianPhone}
                     </a>{" "}
                     /{" "}
                     <a href={`mailto:${appointmentData?.client.guardianEmail}`}>
                       {appointmentData?.client.guardianEmail}
-                    </a>{" "}
-                    ({appointmentData?.client.guardianName})
-                  </p>
+                    </a>
+                  </p> */}
                 </div>
-                <hr />
-                <div className="col-md-12">
+                {/* <hr /> */}
+                {/* <div className="col-md-12">
                   <label className="form-label">Description</label>
                   <p>
-                    CRM (Customer Relationship Management) applications are
-                    software tools that help organizations manage interactions
-                    with their customers, streamline sales and marketing
-                    activities, and improve overall customer satisfaction. There
-                    are many different CRM applications available, ranging from
-                    simple contact management tools to more sophisticated
-                    platforms that integrate with other business systems.
+                    Ini adalah kolom deskripsi
                   </p>
                   <p className="fw-semibold mt-4">
-                    Some of the common features of CRM applications include:
+                    Isi kolom 1
                   </p>
                   <ul>
                     <li>
-                      Contact Management: Allows organizations to store and
-                      manage customer data, including names, addresses, phone
-                      numbers, and email addresses.
+                     li 1
                     </li>
                     <li>
-                      Sales Management: Helps organizations manage their sales
-                      pipeline, track leads and deals, and analyze sales
-                      performance.
+                      li 2
                     </li>
                     <li>
-                      Marketing Automation: Helps organizations automate their
-                      marketing processes, including email marketing, social
-                      media campaigns, and lead generation.
-                    </li>
-                    <li>
-                      Customer Service and Support: Allows organizations to
-                      track and manage customer service requests and provide
-                      support to customers via various channels.
-                    </li>
-                    <li>
-                      Analytics and Reporting: Provides insights into customer
-                      behavior, sales trends, and other key metrics that help
-                      organizations make data-driven decisions.
+                      li 3
                     </li>
                   </ul>
                   <p className="mb-0">
-                    Some popular CRM applications include Salesforce, Microsoft
-                    Dynamics 365, HubSpot, Zoho CRM, and Freshsales. The choice
-                    of CRM application depends on an organization&apos;s
-                    specific needs and budget.
+                    lanjutan
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

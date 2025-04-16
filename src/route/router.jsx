@@ -5,6 +5,8 @@ import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 import PlansList from "@/pages/treatment-plans/plans-list";
 import PlansView from "@/pages/treatment-plans/plans-view";
+import ProtectedRoute from "./ProtectedRoute";
+import { PERMISSIONS } from "../shared/permissionsConstant";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -118,7 +120,9 @@ export const router = createBrowserRouter([
     path: "/",
     element: (
       <Suspense fallback={<LoadingFallback />}>
-        <RootLayout />
+        {/* <ProtectedRoute> */}
+          <RootLayout />
+        {/* </ProtectedRoute> */}
       </Suspense>
     ),
     errorElement: <ErrorMinimal />,
@@ -132,41 +136,59 @@ export const router = createBrowserRouter([
       },
       {
         path: "/appointments",
-        element: <AppointmentsList />,
+        element: <ProtectedRoute requiredPermissions={["view_appointments"]}>
+          <AppointmentsList/>
+        </ProtectedRoute>,
       },
       {
         path: "/appointments/:id",
-        element: <AppointmentsView />,
+        element: <ProtectedRoute requiredPermissions={["view_appointments"]}>
+          <AppointmentsView/>
+        </ProtectedRoute>,
       },
       {
         path: "/appointments/create",
-        element: <AppointmentsCreate />,
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
+          <AppointmentsCreate/>
+        </ProtectedRoute>,
       },
 
       // clients
       {
         path: "/clients",
-        element: <CustomersList />,
+        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.VIEW]}>
+          <CustomersList />
+        </ProtectedRoute>,
       },
       {
         path: "/clients/:uuid",
-        element: <CustomersView />,
+        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.VIEW]}>
+          <CustomersView />
+        </ProtectedRoute>,
       },
       {
         path: "/clients/:uuid/edit",
-        element: <CustomersEdit />,
+        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.UPDATE]}>
+          <CustomersEdit />
+        </ProtectedRoute>,
       },
       {
         path: "/clients/create",
-        element: <CustomersCreate />,
+        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.CLIENTS.CREATE]}>
+          <CustomersCreate />
+        </ProtectedRoute>,
       },
       {
         path: '/treatment-plans',
-        element: <PlansList/>,
+        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.TREATMENT_PLANS.VIEW]}>
+          <PlansList/>
+        </ProtectedRoute>,
       },
       {
         path: '/treatment-plans/:id',
-        element: <PlansView/>
+        element: <ProtectedRoute requiredPermissions={[PERMISSIONS.TREATMENT_PLANS.VIEW]}>
+          <PlansView/>
+        </ProtectedRoute>,
       },
       // schools
       {

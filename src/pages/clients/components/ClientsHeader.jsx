@@ -23,6 +23,8 @@ import {
 import Dropdown from "@/components/shared/Dropdown";
 import { Link } from "react-router-dom";
 import CustomersStatistics from "../../../components/widgetsStatistics/CustomersStatistics";
+import { ROLES } from "../../../shared/rolesConstant";
+import { useSelector } from "react-redux";
 
 const filterAction = [
   { label: "All", icon: <FiEye /> },
@@ -43,6 +45,7 @@ const fileType = [
 ];
 
 const CustomersHeader = () => {
+  const { currentUser } = useSelector(state => state.auth)
   return (
     <>
       <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
@@ -69,10 +72,12 @@ const CustomersHeader = () => {
           iconStrokeWidth={0}
           isAvatar={false}
         />
+        {currentUser.role === ROLES.STAFF &&
         <Link to="/clients/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Client</span>
         </Link>
+        }
       </div>
 
       <div

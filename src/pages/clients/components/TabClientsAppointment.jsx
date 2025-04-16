@@ -21,7 +21,8 @@ const TabClientsAppointment = () => {
         <div className="col">
             <div className="card stretch stretch-full">
                 <div className="card-body custom-card-action">
-                    {currentClient && currentClient.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime }, index) => {
+                    {currentClient && currentClient.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
+                            const badgeColor = status == 'Upcoming' ? 'primary' : status == 'Ongoing ' ? 'warning' : status == 'Done' ? 'success' : 'danger'
                             return (
                                 <Fragment key={index}>
                                     <div className="d-flex align-items-center">
@@ -29,12 +30,12 @@ const TabClientsAppointment = () => {
                                             <h6 className="fw-bold mb-0">{appointmentDate}</h6>
                                             <span className="fs-12 mb-0">{appointmentTime}</span>
                                         </div>
-                                        <div className={`d-flex align-items-center justify-content-between border-3 border-start border-${todos[0].badgeColor} rounded w-100`}>
+                                        <div className={`d-flex align-items-center justify-content-between border-3 border-start border-${badgeColor} rounded w-100`}>
                                             <div className="mx-3">
-                                                <a href={`/appointments/${id}`} className="fw-semibold mb-1 text-truncate-1-line">[{appointmentType}] {title}</a>
-                                                <div className="fs-12 fw-normal text-muted text-truncate-1-line">{appointmentType}</div>
+                                                <a href={`/appointments/${id}`} className="fw-semibold mb-1 text-truncate-1-line text-capitalize">[{appointmentType}] {title}</a>
+                                                <div className="fs-12 fw-normal text-muted text-truncate-1-line text-capitalize">{appointmentType}</div>
                                             </div>
-                                            <a href="#" className={`badge bg-soft-${todos[0].badgeColor} text-${todos[0].badgeColor}`}>{appointmentType}</a>
+                                            <a href="#" className={`badge bg-soft-${badgeColor} text-${badgeColor}`}>{status}</a>
                                         </div>
                                     </div>
                                     {todos.length - 1 === index ? "" : <hr className="border-dashed my-3" />}

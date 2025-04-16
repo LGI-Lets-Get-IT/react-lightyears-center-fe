@@ -1,16 +1,16 @@
 // import React from "react";
+import { fetchAllEmployees } from "@/store/slice/employeeSlice";
+import { useEffect } from "react";
 import { FiAlertTriangle } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 
 const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    setFormData({ ...formData, psychologistName: value });
+  const dispatch = useDispatch();
+  const { employees } = useSelector((state) => state.employees);
 
-    // Clear error if valid
-    if (value.trim() !== "") {
-      setError(false);
-    }
-  };
+  useEffect(() => {
+    dispatch(fetchAllEmployees());
+  }, [])
 
   return (
     <section className="step-body mt-4 body current">
@@ -37,15 +37,27 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
               <label htmlFor="psychologistName" className="form-label">
                 PIC Name <span className="text-danger">*</span>
               </label>
-              <input
-                type="text"
-                className={`form-control ${error ? "is-invalid" : ""}`}
-                id="psychologistName"
-                name="psychologistName"
-                value={formData.psychologistName}
-                onChange={handleInputChange}
+              <select
+                id="psychologist"
+                className={`form-control ${
+                  error && !formData.psychologistId ? "is-invalid" : ""
+                }`}
+                value={formData.psychologistId}
+                onChange={(e) => {
+                  const selectedEmployeeId = parseInt(e.target.value);
+                  console.log('selectedEmployeeId', selectedEmployeeId)
+                  // const selectedEmployee = employees.find((employee) => employee.id === selectedId);
+                  setFormData({ ...formData, psychologistId: selectedEmployeeId }); // 👈 fix is here
+                }}
                 required
-              />
+              >
+                <option value="">-- Select Psychologist --</option>
+                {employees?.map((employee) => (
+                  <option key={employee.id} value={employee.id}>
+                    {employee.fullName}
+                  </option>
+                ))}
+              </select>
             </div>
           </fieldset>
         </fieldset>

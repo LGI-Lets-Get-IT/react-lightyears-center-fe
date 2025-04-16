@@ -2,25 +2,30 @@ import React, { useState } from 'react'
 import { userLogin } from '../../store/slice/authSlice'
 import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Input from '../shared/Input'
 
 const LoginForm = ({ resetPath }) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [loginData, setLoginData] = useState({})
 
 
-    const handleUserLogin = async () => {
+    const handleUserLogin = async (e) => {
+        e.preventDefault();
         dispatch(userLogin(loginData))
+        .unwrap()
+        .then(() => navigate('/'))
+        .catch((error) => console.error("handle error", error));
     }
     return (
         <>
             <h2 className="fs-20 fw-bolder mb-4">Login</h2>
             <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
             {/* <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p> */}
-            <form action="index.html" className="w-100 mt-4 pt-2">
+            <form onSubmit={handleUserLogin} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
-                    <input type="email" className="form-control" placeholder="Email" onInput={(event) => setLoginData({ ...loginData, username: event.target.value})} required />
+                    <input type="email" className="form-control" placeholder="Email" onInput={(event) => setLoginData({ ...loginData, email: event.target.value})} required />
                 </div>
                 <div className="mb-3">
                     <input type="password" className="form-control" placeholder="Password" onInput={(event) => setLoginData({ ...loginData, password: event.target.value })} required />

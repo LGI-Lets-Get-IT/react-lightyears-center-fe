@@ -3,6 +3,7 @@ import getIcon from "@/utils/getIcon";
 import { FiAlertTriangle } from "react-icons/fi";
 import { fetchAllClients } from "@/store/slice/clientSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Dropdown from "@/components/shared/Dropdown";
 
 const TabProjectType = ({ setFormData, formData, error, setError }) => {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
         <hr className="mb-5" />
         <fieldset>
           <div className="mb-5">
-            <h2 className="fs-16 fw-bold">Appointment type</h2>
+            <h2 className="fs-16 fw-bold">Appointment Type</h2>
             <p className="text-muted">Select appointment type first.</p>
             {error && (
               <label id="project-type-error" className="error">

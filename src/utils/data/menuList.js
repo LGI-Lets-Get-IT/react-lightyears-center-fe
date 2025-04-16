@@ -1,3 +1,5 @@
+import { PERMISSIONS } from "../../shared/permissionsConstant";
+
 export const menuList = [
   {
     id: 0,
@@ -10,6 +12,7 @@ export const menuList = [
     name: "Appointments",
     path: "/appointments",
     icon: "feather-calendar",
+    permissions: [PERMISSIONS.APPOINTMENTS.VIEW]
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -24,6 +27,7 @@ export const menuList = [
     name: "Assessments",
     path: "/assessments",
     icon: "pi-notepencil-light",
+    permissions: [PERMISSIONS.ASSESSMENTS.VIEW]
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -38,6 +42,7 @@ export const menuList = [
     name: "Clients",
     path: "/clients",
     icon: "feather-users",
+    permissions: [PERMISSIONS.CLIENTS.VIEW]
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -52,6 +57,7 @@ export const menuList = [
     name: "Treatment Plans",
     path: '/treatment-plans',
     icon: 'feather-calendar',
+    permissions: [PERMISSIONS.TREATMENT_PLANS.VIEW]
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -76,7 +82,7 @@ export const menuList = [
       },
       {
         id: 2,
-        name: "Tests",
+        name: "Test Types",
         path: "/tests",
         icon: "pi-notepencil-light",
         subdropdownMenu: false,
@@ -86,13 +92,20 @@ export const menuList = [
         name: "Treatment Types",
         path: "/treatment-types",
         icon: "lia-file-medical",
+        permissions: [PERMISSIONS.TREATMENT_TYPES.VIEW]
       },
       {
         id: 4,
         name: 'Psychologists',
         path: '/psychologists',
         icon: 'lia-file-medical',
-      }
+      },
+      {
+        id: 5,
+        name: 'Therapists',
+        path: '/therapists',
+        icon: 'lia-file-medical',
+      },
     ]
   }
 

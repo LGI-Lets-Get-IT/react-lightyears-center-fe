@@ -41,9 +41,9 @@ const TabProfile = () => {
     const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
     const body = {
       ...userInput,
-      childDob: formattedDate,
-      childNationality: selectedOption["nationality"]?.label,
-      childGender: selectedOption["gender"]?.label,
+      dateOfBirth: formattedDate,
+      nationality: selectedOption["nationality"]?.label,
+      gender: selectedOption["gender"]?.label,
       schoolId: selectedOption["school"]?.value,
       guardianNationality: selectedOption["guardianNationality"]?.label,
       guardianRelationship: selectedOption["relationship"]?.label,

@@ -23,7 +23,7 @@ const CustomerCreateContent = () => {
                 Profile
               </a>
             </li>
-            <li className="nav-item flex-fill border-top" role="presentation">
+            {/* <li className="nav-item flex-fill border-top" role="presentation">
               <a
                 href="$"
                 className="nav-link"
@@ -33,7 +33,7 @@ const CustomerCreateContent = () => {
               >
                 Password
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="tab-content">

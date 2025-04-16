@@ -3,8 +3,18 @@ import { FiChevronDown, FiChevronRight, FiChevronUp } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import { menuList } from "@/utils/data/menuList";
 import getIcon from "@/utils/getIcon";
+import { useSelector } from "react-redux";
 
 const Menus = () => {
+    const { currentUser } = useSelector((state) => state.auth);
+    const { permissions } = currentUser || [];
+    const filteredMenuList = menuList.filter((menu) => {
+        console.log('USER PERMISSIONS', permissions, menu.permissions)
+        if (menu.permissions && menu.permissions.length > 0) {
+            return menu.permissions.some((permission) => permissions.includes(permission))
+        }
+        return true; // Include menu items without permissions or with empty permissions array
+    });
     const [openDropdown, setOpenDropdown] = useState(null);
     const [openSubDropdown, setOpenSubDropdown] = useState(null);
     const [activeParent, setActiveParent] = useState("");
@@ -43,7 +53,7 @@ const Menus = () => {
 
     return (
         <>
-            {menuList.map(({ dropdownMenu, id, name, path, icon }) => {
+            {filteredMenuList.map(({ dropdownMenu, id, name, path, icon }) => {
                 return (
                     <li
                         key={id}

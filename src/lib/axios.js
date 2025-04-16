@@ -1,9 +1,8 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { store } from "../store";
 const MySwal = withReactContent(Swal);
-
-// import { getAuthStore } from '../stores/authStore';
 
 const swalOptions = {
   toast: true,
@@ -20,13 +19,20 @@ const swalOptions = {
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
+  withCredentials: true,
 });
+
+export const axiosPublic = axios.create({
+  baseURL: import.meta.env.VITE_APP_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+})
 
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
-    const token = "asd";
-    // const token = getAuthStore.getState().token;
+    const token = store.getState().auth.accessToken;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -41,6 +47,32 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     // console.log("REERASP", response);
+    if (response.status === 201 || response.status === 204 ) {
+      MySwal.mixin(swalOptions).fire({
+        icon: "success",
+        title: response?.data?.message || "Success",
+      });
+    }
+    return response;
+  },
+  async (error) => {
+    MySwal.mixin(swalOptions).fire({
+      icon: "error",
+      title: error?.response?.data?.message || "Internal Server Error",
+    });
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+      // Handle unauthorized access
+      // getAuthStore.getState().logout();
+    }
+    return Promise.reject(error);
+  }
+);
+
+axiosPublic.interceptors.response.use(
+  (response) => {
+    console.log("REERASP", response);
     if (response.status === 201 || response.status === 204 ) {
       MySwal.mixin(swalOptions).fire({
         icon: "success",

@@ -48,11 +48,7 @@ export const fetchAppointmentById = createAsyncThunk(
 export const appointmentSlice = createSlice({
   name: "appointment",
   initialState,
-  reducers: {
-    createAppointment: (state) => {
-      console.log("APPOINTMENT CREATED", state);
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchAllAppointments.pending, (state) => {
       state.isLoading = true;

@@ -10,7 +10,8 @@ import NavigationProvider from "./contentApi/navigationProvider";
 import SideBarToggleProvider from "./contentApi/sideBarToggleProvider";
 // import ThemeCustomizer from "./components/shared/ThemeCustomizer";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { persistor, store } from "./store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
       <NavigationProvider>
         <SideBarToggleProvider>
           <Provider store={store}>
-            <RouterProvider router={router} />
+              <RouterProvider router={router} />
           </Provider>
         </SideBarToggleProvider>
       </NavigationProvider>
