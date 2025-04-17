@@ -6,8 +6,8 @@ import useBootstrapUtils from "@/hooks/useBootstrapUtils";
 import SupportDetails from "@/components/supportDetails";
 
 const RootLayout = () => {
-  const pathName = useLocation().pathname;
-  useBootstrapUtils(pathName);
+  // const pathName = useLocation().pathname;
+  // useBootstrapUtils(pathName);
 
   return (
     <>

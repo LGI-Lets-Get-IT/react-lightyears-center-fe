@@ -35,8 +35,6 @@ const useBootstrapUtils = (pathName) => {
         };
 
     }, [pathName])
-
-    return null;
 }
 
 export default useBootstrapUtils
