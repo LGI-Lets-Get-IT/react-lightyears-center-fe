@@ -5,6 +5,8 @@ import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
 import { clientStatusOptions } from "@/utils/options";
+import { useSelector } from "react-redux";
+import { PERMISSIONS } from "../../../shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -22,6 +24,8 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const ClientsTable = ({ clients }) => {
+  const { currentUser } = useSelector(state => state.auth)
+
   const getActions = (uuid) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit` },
     { label: "Delete", icon: <FiTrash2 /> },
@@ -145,12 +149,27 @@ const ClientsTable = ({ clients }) => {
     {
       accessorKey: "isActive",
       header: () => "Is Active",
-      cell: (info) => (
-        <TableCell
-          options={clientStatusOptions}
-          defaultSelect={info?.getValue().toString()}
-        />
-      ),
+      cell: (info) => {
+        return currentUser.permissions?.includes(PERMISSIONS.CLIENTS.UPDATE) ?
+            <TableCell
+            options={clientStatusOptions}
+            defaultSelect={info?.getValue().toString()}
+            />
+            : (
+              <div className="hstack gap-2">
+                  <span className="selected-label">
+                    <span className="status-dot" style={{ backgroundColor: 'aqua' }}></span>
+                  </span>
+                  <a>{info.getValue().toString() == true ? "Active" : "Inactive"}</a>
+              </div>
+            )
+        }
+        //
+        // <TableCell
+        //   options={clientStatusOptions}
+        //   defaultSelect={info?.getValue().toString()}
+        // />
+      // ),
     },
     {
       accessorKey: "actions",
@@ -163,12 +182,14 @@ const ClientsTable = ({ clients }) => {
           >
             <FiEye />
           </Link>
-          <Dropdown
-            dropdownItems={getActions(row.original.uuid)}
-            triggerClass="avatar-md"
-            triggerPosition={"0,21"}
-            triggerIcon={<FiMoreHorizontal />}
-          />
+          {currentUser.permissions?.includes(PERMISSIONS.CLIENTS.UPDATE) && 
+            <Dropdown
+              dropdownItems={getActions(row.original.uuid)}
+              triggerClass="avatar-md"
+              triggerPosition={"0,21"}
+              triggerIcon={<FiMoreHorizontal />}
+            />
+          }
         </div>
       ),
       meta: {

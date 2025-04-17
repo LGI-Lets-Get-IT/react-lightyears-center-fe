@@ -12,25 +12,13 @@ import { useParams } from "react-router-dom";
 const AppointmentsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { appointment, isLoading, error } = useSelector((state) => ({
-    appointment: state.appointment.currentAppointment,
-    isLoading: state.appointment.isLoading,
-    error: state.appointment.error,
-  }));
+  const { currentAppointment } = useSelector((state) => state.appointments);
 
   // console.log("Current appointment data: ", appointment);
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
   }, [dispatch, id]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
 
   return (
     <>
@@ -40,7 +28,7 @@ const AppointmentsView = () => {
       <AppointmentViewTabItems />
       <div className="main-content">
         <div className="tab-content">
-          <TabAppointmentOverview appointmentData={appointment} />
+          <TabAppointmentOverview appointmentData={currentAppointment} />
           <div className="tab-pane fade" id="ReportsTab">
             <LeadsEmptyCard
               title="No reports yet!"

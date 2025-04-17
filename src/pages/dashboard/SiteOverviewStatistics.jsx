@@ -6,17 +6,6 @@ import getIcon from '@/utils/getIcon'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
-
-function renderEventContent(eventInfo) {
-    console.log('EVENTINFOO', eventInfo)
-    return(
-      <>
-        <b>{eventInfo.event.title}</b>
-      </>
-    )
-  }
-
-
 const SiteOverviewStatistics = () => {
     const navigate = useNavigate()
     return (

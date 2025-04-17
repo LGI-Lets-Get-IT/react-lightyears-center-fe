@@ -1,23 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiMoreVertical } from "react-icons/fi";
 import { crmStatisticsData } from "@/utils/data/crmStatisticsData";
-import getIcon from "@/utils/getIcon";
+// import getIcon from "@/utils/getIcon";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from "@fullcalendar/interaction";
-
-function renderEventContent(eventInfo) {
-  console.log("EVENTINFOO", eventInfo);
-  return (
-    <>
-      <b>{eventInfo.event.title}</b>
-    </>
-  );
-}
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
+import { format } from "date-fns";
+import { PERMISSIONS } from "../../shared/permissionsConstant";
 
 const SiteOverviewStatistics = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { currentUser } = useSelector(state => state.auth)
+  const { appointments } = useSelector((state) => state.appointments)
+
+  useEffect(() => {
+    dispatch(fetchAllAppointments())
+  }, [])
   return (
     <>
       {/* {crmStatisticsData.map(
@@ -80,33 +84,39 @@ const SiteOverviewStatistics = () => {
           </div>
         )
       )} */}
-      <div className="card">
-        <div className="card-body">
-          <FullCalendar
-            plugins={[dayGridPlugin]}
-            eventClick={() => navigate("/appointments")}
-            eventContent={renderEventContent}
-            events={[
-              {
-                title: "test 1",
-                date: "2025-03-15",
-              },
-              {
-                title: "test 2",
-                date: "2025-03-09",
-              },
-              {
-                title: "test 3",
-                date: "2025-03-12",
-              },
-              {
-                title: "aaa 4",
-                date: "2025-03-12",
-              },
-            ]}
-          />
-        </div>
-      </div>
+      {currentUser.permissions?.includes(PERMISSIONS.APPOINTMENTS.VIEW) &&
+              <div className="card">
+                  <div className="card-body">
+                      <div className="card-body custom-card-action p-0">
+                      <FullCalendar
+                        height={500}
+                        plugins={[timeGridPlugin, interactionPlugin]}
+                        initialView="timeGridWeek"
+                        eventDisplay="auto"
+                        firstDay={1}
+                        hiddenDays={[7]}
+                        slotMinTime={"10:00:00"}
+                        eventClick={(info) => navigate(`/appointments/${info.event.id}`)}
+                        eventTimeFormat={{
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          hour12: false,
+                        }}
+                        headerToolbar={{
+                          left: 'prev,next',
+                          center: 'title',
+                          right: 'timeGridDay,timeGridWeek'
+                        }}
+                        events={appointments.map(item => ({
+                          id: item.id,
+                          title: item.title,
+                          start: `${format(item.appointmentDate, 'yyyy-MM-dd')} ${item.appointmentTime.split(' - ')[0]}`,
+                          end: `${format(item.appointmentDate, 'yyyy-MM-dd')} ${item.appointmentTime.split(' - ')[1]}`,
+                        }))}
+                    />
+              </div>
+          </div>
+      </div>}
     </>
   );
 };

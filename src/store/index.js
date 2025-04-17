@@ -22,7 +22,7 @@ export const store = configureStore({
   reducer: {
     auth: persistReducer(authPersistConfig, authReducer),
     treatmentPlans: treatmentPlanReducer,
-    appointment: appointmentReducer,
+    appointments: appointmentReducer,
     clients: clientReducer,
     employees: employeeReducer,
     schools: schoolReducer,
