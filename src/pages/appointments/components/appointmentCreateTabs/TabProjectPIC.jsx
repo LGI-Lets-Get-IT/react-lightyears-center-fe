@@ -1,4 +1,5 @@
 // import React from "react";
+import SelectDropdown from "@/components/shared/SelectDropdown";
 import { fetchAllEmployees } from "@/store/slice/employeeSlice";
 import { useEffect } from "react";
 import { FiAlertTriangle } from "react-icons/fi";
@@ -23,29 +24,41 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
             </p>
           </div>
 
-          {error && (
+          {error.psychologistId && (
             <label
               id="psychologistName-error"
               className="error text-danger mb-2 d-flex align-items-center gap-1"
             >
-              <FiAlertTriangle /> This field is required.
+              <FiAlertTriangle /> {error.psychologistId}
             </label>
           )}
 
           <fieldset>
-            <div className="mb-4">
+            <div className="col-lg-8">
               <label htmlFor="psychologistName" className="form-label">
                 PIC Name <span className="text-danger">*</span>
               </label>
-              <select
+              <SelectDropdown
+                className={`${error.psychologistId ? "is-invalid" : ""}`}
+                options={employees?.map((employee) => ({
+                  label: employee.fullName,
+                  value: employee.id,
+                }))}
+                placeholder={"Select Psychologist"}
+                selectedOption={formData?.psychologistId}
+                onSelectOption={(option) => {
+                  setFormData({ ...formData, psychologistId: option.value });
+                }}
+              />
+              {/* <select
                 id="psychologist"
                 className={`form-control ${
                   error && !formData.psychologistId ? "is-invalid" : ""
                 }`}
                 value={formData.psychologistId}
                 onChange={(e) => {
-                  const selectedEmployeeId = parseInt(e.target.value);
-                  console.log('selectedEmployeeId', selectedEmployeeId)
+                  const selectedEmployeeId = parseInt(e.target.value) ?? null;
+                  console.log('selectedEmployeeId', selectedEmployeeId, typeof selectedEmployeeId)
                   // const selectedEmployee = employees.find((employee) => employee.id === selectedId);
                   setFormData({ ...formData, psychologistId: selectedEmployeeId }); // 👈 fix is here
                 }}
@@ -57,7 +70,7 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
                     {employee.fullName}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
           </fieldset>
         </fieldset>

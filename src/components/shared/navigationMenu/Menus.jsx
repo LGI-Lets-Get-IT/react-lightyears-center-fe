@@ -8,11 +8,40 @@ import { useSelector } from "react-redux";
 const Menus = () => {
     const { currentUser } = useSelector((state) => state.auth);
     const { permissions } = currentUser || [];
-    const filteredMenuList = menuList.filter((menu) => {
-        if (menu?.permissions && menu?.permissions?.length > 0) {
-            return menu?.permissions.some((permission) => permissions?.includes(permission))
+    // const filteredMenuList = menuList.filter((menu) => {
+    //     if (menu?.permissions && menu?.permissions?.length > 0) {
+    //         return menu?.permissions.some((permission) => permissions?.includes(permission))
+    //     }
+    //     return true; // Include menu items without permissions or with empty permissions array
+    // });
+    const filteredMenuList = menuList
+    .map((menu) => {
+        // Clone to avoid mutating original menuList
+        const clonedMenu = { ...menu };
+
+        // Filter dropdownMenu if present
+        if (clonedMenu.dropdownMenu?.length) {
+        clonedMenu.dropdownMenu = clonedMenu.dropdownMenu.filter((item) => {
+            if (item?.permissions?.length) {
+            return item.permissions.some((p) => permissions?.includes(p));
+            }
+            return true;
+        });
         }
-        return true; // Include menu items without permissions or with empty permissions array
+
+        return clonedMenu;
+    })
+    .filter((menu) => {
+        if (menu?.permissions?.length) {
+            return menu.permissions.some((p) => permissions?.includes(p));
+        }
+
+        // If dropdownMenu exists, check if it's empty after filtering
+        if (menu.dropdownMenu?.length) {
+        return menu.dropdownMenu.length > 0;
+        }
+
+        return true;
     });
     const [openDropdown, setOpenDropdown] = useState(null);
     const [openSubDropdown, setOpenSubDropdown] = useState(null);

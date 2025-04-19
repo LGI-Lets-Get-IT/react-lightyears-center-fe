@@ -23,22 +23,20 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
         <fieldset>
           <div className="mb-5">
             <h2 className="fs-16 fw-bold">Appointment Detail</h2>
-            <p className="text-muted">Detail for the appointment.</p>
-            {error && (
-              <label id="project-type-error" className="error">
-                <FiAlertTriangle /> This field is required.
-              </label>
-            )}
+            <p className="text-muted">Detail for the appointment</p>
           </div>
           <div className="mb-4">
+            {error.title && (
+              <label id="project-type-error" className="error">
+                <FiAlertTriangle /> {error.title}
+              </label>
+            )}
             <label htmlFor="title" className="form-label">
               Title <span className="text-danger">*</span>
             </label>
             <input
               type="text"
-              className={`form-control ${
-                error && !formData.title ? "is-invalid" : ""
-              }`}
+              className={`form-control ${error.title ? "is-invalid" : ""}`}
               id="title"
               name="title"
               value={formData.title || ""}
@@ -47,13 +45,18 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
             />
           </div>
           <div className="mb-4">
+            {error.client && (
+              <label id="project-type-error" className="error">
+                <FiAlertTriangle /> {error.client}
+              </label>
+            )}
             <label htmlFor="client" className="form-label">
               Client <span className="text-danger">*</span>
             </label>
             <select
               id="client"
               className={`form-control ${
-                error && !formData.clientId ? "is-invalid" : ""
+                error.client ? "is-invalid" : ""
               }`}
               value={formData.client?.id || ""}
               onChange={(e) => {
@@ -76,10 +79,10 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
         <fieldset>
           <div className="mb-5">
             <h2 className="fs-16 fw-bold">Appointment Type</h2>
-            <p className="text-muted">Select appointment type first.</p>
-            {error && (
+            <p className="text-muted">Select the type of this appointment</p>
+            {error.appointmentType && (
               <label id="project-type-error" className="error">
-                <FiAlertTriangle /> This field is required.
+                <FiAlertTriangle /> Appointment type is required.
               </label>
             )}
           </div>
@@ -90,7 +93,6 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               description={"Assessment appointment for the patient"}
               id={"assessment"}
               name={"appointmentType"}
-              isRequired={true}
               setFormData={setFormData}
               formData={formData}
               setError={setError}
@@ -101,7 +103,6 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               description={"Consultation appointment for the patient"}
               id={"consultation"}
               name={"appointmentType"}
-              isRequired={false}
               setFormData={setFormData}
               formData={formData}
               setError={setError}
@@ -112,7 +113,6 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               description={"Treatment appointment for the patient"}
               id={"treatment"}
               name={"appointmentType"}
-              isRequired={false}
               setFormData={setFormData}
               formData={formData}
               setError={setError}

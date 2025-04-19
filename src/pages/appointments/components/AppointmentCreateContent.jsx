@@ -6,6 +6,7 @@ import TabDateTime from "./appointmentCreateTabs/TabDateTime";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { step0Schema, step1Schema, step2Schema } from "../../../schemas/appointmentSchema";
 
 const steps = [
   { name: "Type", required: true },
@@ -18,75 +19,48 @@ const AppointmentCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
-  const [error, setError] = useState(false);
+  const [errors, setErrors] = useState(false);
   const [formData, setFormData] = useState({
-    client: "",
-    title: "",
+    client: null,
+    title: null,
     appointmentType: "",
     psychologistId: null,
-    appointmentDate: "",
+    appointmentDate: null,
+    timeStart: null,
+    timeEnd: null,
   });
 
-  const validateFields = () => {
-    if (!steps[currentStep].required) return true;
-
-    switch (currentStep) {
-      case 0:
-        if (
-          !formData.appointmentType.trim() ||
-          formData.title.trim() === "" ||
-          !formData.client
-        ) {
-          setError(true);
-          return false;
-        }
-        break;
-      case 1:
-        if (!formData.psychologistId) {
-          setError(true);
-          return false;
-        }
-        break;
-      case 2:
-        if (
-          !formData.appointmentDate.trim() ||
-          !formData.timeStart.trim() ||
-          !formData.timeEnd.trim()
-        ) {
-          setError(true);
-          return false;
-        }
-        break;
-      default:
-        break;
-    }
-
-    setError(false);
-    return true;
-  };
-
-  const handleNext = (e) => {
+  const handleNext = async (e) => {
     e.preventDefault();
-    if (validateFields()) {
-      // If on step 2 (before final step), submit the form
-      if (currentStep === 2) {
-        const payload = {
-          title: formData.title,
-          psychologistId: formData.psychologistId,
-          client: formData.client?.id, // send clientId
-          timeStart: formData.timeStart,
-          timeEnd: formData.timeEnd,
-          appointmentType: formData.appointmentType,
-          appointmentDate: formData.appointmentDate,
-          appointmentTime: formData.appointmentTime,
-        };
-        dispatch(makeAppointment(payload))
-          .unwrap()
-          .then(() => navigate('/appointments/'))
-          .catch((error) => console.error("handle error", error));
-      }
+    try {
+      if(currentStep === 0) {
+        await step0Schema.validate(formData, { abortEarly: false })
+        setErrors(false)
+      } else if (currentStep === 1) {
+        await step1Schema.validate(formData, { abortEarly: false })
+        setErrors(false)
+      } else if (currentStep === 2) {
+        await step2Schema.validate(formData, { abortEarly: false })
+        setErrors(false)
 
+        dispatch(makeAppointment(formData))
+        .unwrap()
+        .then(() => {
+          setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+          navigate('/appointments')
+        })
+        .catch((rejectedValueOrSerializedError) => {
+          console.log('rejectedValueOrSerializedError', rejectedValueOrSerializedError)
+        });
+      }
       setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+    } catch (error) {
+      const newError = {}
+      error.inner.forEach((err) => {
+        newError[err.path] = err.message
+      })
+
+      setErrors(newError)
     }
   };
 
@@ -99,8 +73,6 @@ const AppointmentCreateContent = () => {
     e.preventDefault();
     if (index < currentStep) {
       setCurrentStep(index); // allow backward
-    } else if (validateFields()) {
-      setCurrentStep(index); // allow forward if valid
     }
   };
 
@@ -115,7 +87,7 @@ const AppointmentCreateContent = () => {
                 <li
                   key={index}
                   className={`${currentStep === index ? "current" : ""} ${
-                    currentStep === index && error ? "error" : ""
+                    currentStep === index && errors ? "error" : ""
                   }`}
                   onClick={(e) => handleTabClick(e, index)}
                 >
@@ -132,24 +104,24 @@ const AppointmentCreateContent = () => {
               <TabProjectType
                 setFormData={setFormData}
                 formData={formData}
-                error={error}
-                setError={setError}
+                error={errors}
+                setError={setErrors}
               />
             )}
             {currentStep === 1 && (
               <TabProjectDetails
                 setFormData={setFormData}
                 formData={formData}
-                error={error}
-                setError={setError}
+                error={errors}
+                setError={setErrors}
               />
             )}
             {currentStep === 2 && (
               <TabDateTime
                 setFormData={setFormData}
                 formData={formData}
-                error={error}
-                setError={setError}
+                error={errors}
+                setError={setErrors}
               />
             )}
             {currentStep === 3 && <TabCompleted />}

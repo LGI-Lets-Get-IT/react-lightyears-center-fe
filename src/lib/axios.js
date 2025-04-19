@@ -2,6 +2,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { store } from "../store";
+import { userLogout, userRefreshToken } from "@/store/slice/authSlice";
 const MySwal = withReactContent(Swal);
 
 const swalOptions = {
@@ -60,11 +61,18 @@ api.interceptors.response.use(
       icon: "error",
       title: error?.response?.data?.message || "Internal Server Error",
     });
+    console.log('ERROR', error.response)
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      window.location.href = "/login";
-      // Handle unauthorized access
-      // getAuthStore.getState().logout();
+      store.dispatch(userRefreshToken())
+      // localStorage.removeItem("token");
+      // window.location.href = "/login";
+    }
+    if (error.response?.status === 403) {
+      localStorage
+    }
+    if (error.response?.status === 404) {
+      store.dispatch(userLogout())
+      window.location.href('/login')
     }
     return Promise.reject(error);
   }

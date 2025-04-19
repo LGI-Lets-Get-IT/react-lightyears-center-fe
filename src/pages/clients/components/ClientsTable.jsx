@@ -150,18 +150,14 @@ const ClientsTable = ({ clients }) => {
       accessorKey: "isActive",
       header: () => "Is Active",
       cell: (info) => {
+        const isActive = info.getValue() == true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
         return currentUser.permissions?.includes(PERMISSIONS.CLIENTS.UPDATE) ?
             <TableCell
             options={clientStatusOptions}
             defaultSelect={info?.getValue().toString()}
             />
             : (
-              <div className="hstack gap-2">
-                  <span className="selected-label">
-                    <span className="status-dot" style={{ backgroundColor: 'aqua' }}></span>
-                  </span>
-                  <a>{info.getValue().toString() == true ? "Active" : "Inactive"}</a>
-              </div>
+              <span className={`badge bg-soft-${isActive.color} text-${isActive.color}`}>{isActive.text}</span>
             )
         }
         //

@@ -5,16 +5,18 @@ import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
 import { clientStatusOptions } from "@/utils/options";
+import { useDispatch, useSelector } from "react-redux";
+import { PERMISSIONS } from "../../../shared/permissionsConstant";
 
 const actions = [
-  { label: "Edit", icon: <FiEdit3 /> },
+  { label: "Edit", icon: <FiEdit3 />, permission: PERMISSIONS.APPOINTMENTS.UPDATE },
   // { label: "Print", icon: <FiPrinter /> },
   //   { label: "Remind", icon: <FiClock /> },
   // { type: "divider" },
   // { label: "Archive", icon: <FiArchive /> },
   // { label: "Report Spam", icon: <FiAlertOctagon />, },
   //   { type: "divider" },
-  { label: "Delete", icon: <FiTrash2 /> },
+  { label: "Delete", icon: <FiTrash2 />, permission: PERMISSIONS.APPOINTMENTS.DELETE },
 ];
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -33,6 +35,9 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const AppointmentsTable = ({ appointments }) => {
+  const dispatch = useDispatch()
+  const { currentUser } = useSelector(state => state.auth)
+
   const columns = [
     {
       accessorKey: "id",
@@ -108,27 +113,38 @@ const AppointmentsTable = ({ appointments }) => {
     {
       accessorKey: "status",
       header: () => "Status",
-      cell: (info) => <a>{info.getValue()}</a>
+      cell: (info) => {
+        const statusColor = info.getValue() == 'Upcoming' ? 'warning' : info.getValue() == 'Ongoing' ? 'primary' : "success"
+        return <span className={`badge bg-soft-${statusColor} text-${statusColor}`}>{info.getValue()}</span>
+      }
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
-      cell: ({ row }) => (
-        <div className="hstack gap-2 justify-content-end">
-          <Link
-            to={`/appointments/${row.original.id}`}
-            className="avatar-text avatar-md"
-          >
-            <FiEye />
-          </Link>
-          <Dropdown
-            dropdownItems={actions}
-            triggerClass="avatar-md"
-            triggerPosition={"0,21"}
-            triggerIcon={<FiMoreHorizontal />}
-          />
-        </div>
-      ),
+      cell: ({ row }) => {
+        const permittedActions = actions.filter(action =>
+          currentUser.permissions?.includes(action.permission)
+        )
+
+        return (
+          <div className="hstack gap-2 justify-content-end">
+            <Link
+              to={`/appointments/${row.original.id}`}
+              className="avatar-text avatar-md"
+            >
+              <FiEye />
+            </Link>
+            {currentUser.permissions?.includes(PERMISSIONS.APPOINTMENTS.UPDATE || PERMISSIONS.APPOINTMENTS.DELETE) &&
+              <Dropdown
+                dropdownItems={permittedActions}
+                triggerClass="avatar-md"
+                triggerPosition={"0,21"}
+                triggerIcon={<FiMoreHorizontal />}
+              />
+            }
+          </div>
+        )
+      },
       meta: {
         headerClassName: "text-end",
       },

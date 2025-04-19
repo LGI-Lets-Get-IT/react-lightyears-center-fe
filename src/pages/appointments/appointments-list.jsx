@@ -9,7 +9,7 @@ import AppointmentsHeader from "./components/AppointmentsHeader";
 const AppointmentsList = () => {
   const dispatch = useDispatch();
 
-  const { appointments } = useSelector((state) => state.appointment);
+  const { appointments } = useSelector((state) => state.appointments);
 
   useEffect(() => {
     dispatch(fetchAllAppointments());

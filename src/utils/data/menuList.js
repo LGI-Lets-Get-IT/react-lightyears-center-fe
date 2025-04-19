@@ -72,12 +72,14 @@ export const menuList = [
     name: "Settings",
     path: "#",
     icon: "io-settings-outline",
+    permissions: [PERMISSIONS.SCHOOLS.CREATE, PERMISSIONS.TEST_TYPES.CREATE, PERMISSIONS.TREATMENT_TYPES.CREATE],
     dropdownMenu: [
       {
         id: 1,
         name: "Schools",
         path: "/settings/schools",
         icon: "lu-school",
+        permissions: [PERMISSIONS.SCHOOLS.CREATE],
         subdropdownMenu: false,
       },
       {
@@ -85,6 +87,7 @@ export const menuList = [
         name: "Test Types",
         path: "/tests",
         icon: "pi-notepencil-light",
+        permissions: [PERMISSIONS.TEST_TYPES.CREATE],
         subdropdownMenu: false,
       },
       {
@@ -92,7 +95,7 @@ export const menuList = [
         name: "Treatment Types",
         path: "/treatment-types",
         icon: "lia-file-medical",
-        permissions: [PERMISSIONS.TREATMENT_TYPES.VIEW]
+        permissions: [PERMISSIONS.TREATMENT_TYPES.CREATE]
       },
       {
         id: 4,

@@ -95,6 +95,7 @@ const SiteOverviewStatistics = () => {
                         eventDisplay="auto"
                         firstDay={1}
                         hiddenDays={[7]}
+                        eventMaxStack={1}
                         slotMinTime={"10:00:00"}
                         eventClick={(info) => navigate(`/appointments/${info.event.id}`)}
                         eventTimeFormat={{
@@ -102,6 +103,7 @@ const SiteOverviewStatistics = () => {
                           minute: '2-digit',
                           hour12: false,
                         }}
+                        eventBackgroundColor="red"
                         headerToolbar={{
                           left: 'prev,next',
                           center: 'title',

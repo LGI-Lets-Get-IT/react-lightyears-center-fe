@@ -34,6 +34,18 @@ export const userLogout = createAsyncThunk(
     }
 )
 
+export const userRefreshToken = createAsyncThunk(
+    'auth/refreshToken',
+    async (body, { rejectWithValue }) => {
+        try {
+            const response = await authApi.refreshToken(body)
+            return response.data.data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -55,13 +67,24 @@ export const authSlice = createSlice({
         builder.addCase(userLogout.pending, (state) => {
             state.isLoading = true;
         });
-        builder.addCase(userLogout.fulfilled, (state, action) => {
+        builder.addCase(userLogout.fulfilled, (state) => {
             state.isLoading = false;
             state.isAuthenticated = false;
             state.currentUser = null;
             state.accessToken = null;
         });
         builder.addCase(userLogout.rejected, (state, action) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        });
+        builder.addCase(userRefreshToken.pending, (state) => {
+            state.isLoading = true;
+        });
+        builder.addCase(userRefreshToken.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.accessToken = action.payload.accessToken;
+        });
+        builder.addCase(userRefreshToken.rejected, (state, action) => {
             state.isLoading = false;
             state.error = action.payload;
         });
