@@ -87,6 +87,7 @@ export const clientSlice = createSlice({
     });
     builder.addCase(fetchAllClients.rejected, (state, action) => {
       state.isLoading = true;
+      state.clients = initialState.clients
       state.error = action.payload;
     });
     builder.addCase(fetchClientByUuid.pending, (state) => {
@@ -98,6 +99,7 @@ export const clientSlice = createSlice({
     });
     builder.addCase(fetchClientByUuid.rejected, (state, action) => {
       state.isLoading = true;
+      state.currentClient = initialState.currentClient
       state.error = action.payload;
     });
   },

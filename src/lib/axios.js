@@ -57,22 +57,32 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const originalRequest = error.config;
+    const message = error?.response?.data?.message
     MySwal.mixin(swalOptions).fire({
       icon: "error",
-      title: error?.response?.data?.message || "Internal Server Error",
+      title: message || "Internal Server Error",
     });
-    console.log('ERROR', error.response)
-    if (error.response?.status === 401) {
-      store.dispatch(userRefreshToken())
-      // localStorage.removeItem("token");
-      // window.location.href = "/login";
-    }
-    if (error.response?.status === 403) {
-      localStorage
-    }
-    if (error.response?.status === 404) {
-      store.dispatch(userLogout())
-      window.location.href('/login')
+    if (error.response?.status === 401 &&
+        message == "Token expired. Please refresh the page." &&
+        !originalRequest._retry
+      ) {
+      try {
+        originalRequest._retry = true;
+        await store.dispatch(userRefreshToken()).unwrap();
+        const newAccessToken = store.getState().auth.accessToken;
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+  
+        return api(originalRequest)
+      } catch (error) {
+        store.dispatch(userLogout())
+        window.location.href = '/login';
+        return Promise.reject(error);
+      }
+    } else if (error.response?.status === 401 && message == "Refresh token expired. Please relogin.") {
+      store.dispatch(userLogout());
+      window.location.href = "/login";
+      return Promise.reject(error);
     }
     return Promise.reject(error);
   }
@@ -80,7 +90,6 @@ api.interceptors.response.use(
 
 axiosPublic.interceptors.response.use(
   (response) => {
-    console.log("REERASP", response);
     if (response.status === 201 || response.status === 204 ) {
       MySwal.mixin(swalOptions).fire({
         icon: "success",
@@ -90,13 +99,11 @@ axiosPublic.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("ERROR", error);
     MySwal.mixin(swalOptions).fire({
       icon: "error",
       title: error?.response?.data?.message || "Internal Server Error",
     });
     if (error.response?.status === 401) {
-      localStorage.removeItem("token");
       window.location.href = "/login";
       // Handle unauthorized access
       // getAuthStore.getState().logout();

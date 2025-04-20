@@ -5,8 +5,9 @@ import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
 import { clientStatusOptions } from "@/utils/options";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
 
 const actions = [
   { label: "Edit", icon: <FiEdit3 />, permission: PERMISSIONS.APPOINTMENTS.UPDATE },
@@ -35,8 +36,13 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const AppointmentsTable = ({ appointments }) => {
-  const dispatch = useDispatch()
   const { currentUser } = useSelector(state => state.auth)
+  const { filterItemsByPermission, hasPermission } = useFilterByPermission()
+
+  const getActions = (id) => [
+    { label: "Edit", icon: <FiEdit3 />, link: `/appointments/${id}/edit` },
+    { label: "Delete", icon: <FiTrash2 /> },
+  ];
 
   const columns = [
     {
@@ -78,10 +84,10 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "clientName",
       header: () => "Client Name",
       cell: (info) => {
-        const appointmentId = info.row.original.id;
+        const { clientId } = info.row.original;
         const clientName = info.getValue();
         return (
-          <Link to={`/appointments/${appointmentId}`}>{clientName}</Link>
+          <Link to={`/clients/${clientId}`}>{clientName}</Link>
           // <a href={`/appointments/${appointmentId}`} className="hstack gap-3">
           //   <div>
           //     <span className="text-truncate-1-line">{clientName}</span>
@@ -122,9 +128,7 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "actions",
       header: () => "Actions",
       cell: ({ row }) => {
-        const permittedActions = actions.filter(action =>
-          currentUser.permissions?.includes(action.permission)
-        )
+        const permittedActions = filterItemsByPermission(getActions(row.original.id))
 
         return (
           <div className="hstack gap-2 justify-content-end">
@@ -134,14 +138,14 @@ const AppointmentsTable = ({ appointments }) => {
             >
               <FiEye />
             </Link>
-            {currentUser.permissions?.includes(PERMISSIONS.APPOINTMENTS.UPDATE || PERMISSIONS.APPOINTMENTS.DELETE) &&
+            {permittedActions.length > 0 && (
               <Dropdown
                 dropdownItems={permittedActions}
                 triggerClass="avatar-md"
                 triggerPosition={"0,21"}
                 triggerIcon={<FiMoreHorizontal />}
               />
-            }
+            )}
           </div>
         )
       },

@@ -397,7 +397,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
             <HourCard
               icon="feather-clock"
               color="warning"
-              title="Appointment Hours"
+              title="Appointment Time"
               hours={appointmentData?.appointmentTime}
             />
           </div>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { clientStatusOptions } from "@/utils/options";
 import { useSelector } from "react-redux";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,6 +26,7 @@ TableCell.displayName = "TableCell";
 
 const ClientsTable = ({ clients }) => {
   const { currentUser } = useSelector(state => state.auth)
+  const { filterItemsByPermission } = useFilterByPermission();
 
   const getActions = (uuid) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit` },
@@ -170,15 +172,17 @@ const ClientsTable = ({ clients }) => {
     {
       accessorKey: "actions",
       header: () => "Actions",
-      cell: ({ row }) => (
-        <div className="hstack gap-2 justify-content-end">
+      cell: ({ row }) => {
+        const permittedActions = filterItemsByPermission(getActions(row.original.uuid))
+
+        return <div className="hstack gap-2 justify-content-end">
           <Link
             to={`/clients/${row.original.uuid}`}
             className="avatar-text avatar-md"
           >
             <FiEye />
           </Link>
-          {currentUser.permissions?.includes(PERMISSIONS.CLIENTS.UPDATE) && 
+          {permittedActions.length > 0 && 
             <Dropdown
               dropdownItems={getActions(row.original.uuid)}
               triggerClass="avatar-md"
@@ -187,7 +191,7 @@ const ClientsTable = ({ clients }) => {
             />
           }
         </div>
-      ),
+      },
       meta: {
         headerClassName: "text-end",
       },

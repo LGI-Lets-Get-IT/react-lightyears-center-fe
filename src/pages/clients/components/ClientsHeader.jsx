@@ -26,6 +26,7 @@ import CustomersStatistics from "../../../components/widgetsStatistics/Customers
 import { ROLES } from "../../../shared/rolesConstant";
 import { useSelector } from "react-redux";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
 
 const filterAction = [
   { label: "All", icon: <FiEye /> },
@@ -46,11 +47,11 @@ const fileType = [
 ];
 
 const CustomersHeader = () => {
-  const { currentUser } = useSelector(state => state.auth)
+  const { hasPermission } = useFilterByPermission()
   return (
     <>
       <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
-        <a
+        {/* <a
           href="#"
           className="btn btn-icon btn-light-brand"
           data-bs-toggle="collapse"
@@ -72,8 +73,8 @@ const CustomersHeader = () => {
           triggerClass="btn btn-icon btn-light-brand"
           iconStrokeWidth={0}
           isAvatar={false}
-        />
-        {currentUser.permissions?.includes(PERMISSIONS.CLIENTS.CREATE) &&
+        /> */}
+        {hasPermission(PERMISSIONS.CLIENTS.CREATE) &&
         <Link to="/clients/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Client</span>

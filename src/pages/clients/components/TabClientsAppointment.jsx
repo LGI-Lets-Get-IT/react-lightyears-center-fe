@@ -21,8 +21,8 @@ const TabClientsAppointment = () => {
         <div className="col">
             <div className="card stretch stretch-full">
                 <div className="card-body custom-card-action">
-                    {currentClient && currentClient.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
-                            const badgeColor = status == 'Upcoming' ? 'primary' : status == 'Ongoing ' ? 'warning' : status == 'Done' ? 'success' : 'danger'
+                    {currentClient?.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
+                            const badgeColor = status == 'Upcoming' ? 'warning' : status == 'Ongoing' ? 'primary' : "success"
                             return (
                                 <Fragment key={index}>
                                     <div className="d-flex align-items-center">
