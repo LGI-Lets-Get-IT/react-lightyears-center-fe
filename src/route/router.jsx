@@ -8,6 +8,7 @@ import PlansView from "@/pages/treatment-plans/plans-view";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
 import AssessmentsList from "@/pages/assessments/assessments-list";
+import AssessmentsView from "@/pages/assessments/assessments-view";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -164,7 +165,7 @@ export const router = createBrowserRouter([
       {
         path: "/assessments/:id",
         element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
-          {/* <AppointmentsView/> */}
+          <AssessmentsView />
         </ProtectedRoute>,
       },
       {

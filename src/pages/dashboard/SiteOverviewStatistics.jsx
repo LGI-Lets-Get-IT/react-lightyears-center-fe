@@ -11,13 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
 import { format } from "date-fns";
 import { PERMISSIONS } from "../../shared/permissionsConstant";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
 
 const SiteOverviewStatistics = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { currentUser } = useSelector(state => state.auth)
   const { appointments } = useSelector((state) => state.appointments)
+  const { hasPermission } = useFilterByPermission();
 
   useEffect(() => {
     dispatch(fetchAllAppointments())
@@ -84,38 +84,47 @@ const SiteOverviewStatistics = () => {
           </div>
         )
       )} */}
-      {currentUser.permissions?.includes(PERMISSIONS.APPOINTMENTS.VIEW) &&
+      
+      {hasPermission(PERMISSIONS.APPOINTMENTS.VIEW) &&
               <div className="card">
-                  <div className="card-body">
-                      <div className="card-body custom-card-action p-0">
-                      <FullCalendar
-                        height={500}
-                        plugins={[timeGridPlugin, interactionPlugin]}
-                        initialView="timeGridWeek"
-                        eventDisplay="auto"
-                        firstDay={1}
-                        hiddenDays={[7]}
-                        eventMaxStack={1}
-                        slotMinTime={"10:00:00"}
-                        eventClick={(info) => navigate(`/appointments/${info.event.id}`)}
-                        eventTimeFormat={{
-                          hour: 'numeric',
-                          minute: '2-digit',
-                          hour12: false,
-                        }}
-                        eventBackgroundColor="red"
-                        headerToolbar={{
-                          left: 'prev,next',
-                          center: 'title',
-                          right: 'timeGridDay,timeGridWeek'
-                        }}
-                        events={appointments.map(item => ({
-                          id: item.id,
-                          title: item.title,
-                          start: `${format(item.appointmentDate, 'yyyy-MM-dd')} ${item.appointmentTime.split(' - ')[0]}`,
-                          end: `${format(item.appointmentDate, 'yyyy-MM-dd')} ${item.appointmentTime.split(' - ')[1]}`,
-                        }))}
-                    />
+                <div className="card-footer">
+                    <div className="row g-4">
+                        <Card bg_color={"bg-primary"} price={appointments.length} progress={"81%"} title={"Appointments"} />
+                        <Card bg_color={"bg-success"} price={"9,275"} progress={"81%"} title={"Assessments Task"} />
+                        <Card bg_color={"bg-danger"} price={"3,868"} progress={"81%"} title={"Rejected"} />
+                        <Card bg_color={"bg-dark"} price={"50,668"} progress={"81%"} title={"Revenue"} />
+                    </div>
+                </div>
+                <div className="card-body">
+                  <div className="card-body custom-card-action p-0">
+                    <FullCalendar
+                      height={500}
+                      plugins={[timeGridPlugin, interactionPlugin]}
+                      initialView="timeGridWeek"
+                      eventDisplay="auto"
+                      firstDay={1}
+                      hiddenDays={[7]}
+                      eventMaxStack={1}
+                      slotMinTime={"10:00:00"}
+                      eventClick={(info) => navigate(`/appointments/${info.event.id}`)}
+                      eventTimeFormat={{
+                        hour: 'numeric',
+                        minute: '2-digit',
+                        hour12: false,
+                      }}
+                      eventBackgroundColor="red"
+                      headerToolbar={{
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'timeGridDay,timeGridWeek'
+                      }}
+                      events={appointments.map(item => ({
+                        id: item.id,
+                        title: item.title,
+                        start: `${format(item.appointmentDate, 'yyyy-MM-dd')} ${item.appointmentTime.split(' - ')[0]}`,
+                        end: `${format(item.appointmentDate, 'yyyy-MM-dd')} ${item.appointmentTime.split(' - ')[1]}`,
+                      }))}
+                  />
               </div>
           </div>
       </div>}
@@ -123,4 +132,19 @@ const SiteOverviewStatistics = () => {
   );
 };
 
+
 export default SiteOverviewStatistics;
+
+const Card = ({ title, price, progress, bg_color }) => {
+  return (
+      <div className="col-lg-3">
+          <div className="p-3 border border-dashed rounded">
+              <div className="fs-12 text-muted mb-1">{title}</div>
+              <h6 className="fw-bold text-dark">{price}</h6>
+              <div className="progress mt-2 ht-3">
+                  <div className={`progress-bar ${bg_color}`} role="progressbar" style={{ width: progress }}></div>
+              </div>
+          </div>
+      </div>
+  )
+}

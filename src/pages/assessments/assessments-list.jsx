@@ -2,10 +2,9 @@ import { useEffect } from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import Footer from "@/components/shared/Footer";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
-import AppointmentsHeader from "./components/AssessmentsHeader";
 import AssessmentsTable from "./components/AssessmentsTable";
 import { fetchAllAssessments } from "@/store/slice/assessmentSlice";
+import AssessmentsHeader from "./components/AssessmentsHeader";
 
 const AssessmentsList = () => {
   const dispatch = useDispatch();
@@ -18,7 +17,7 @@ const AssessmentsList = () => {
   return (
     <>
       <PageHeader>
-        <AppointmentsHeader />
+        <AssessmentsHeader />
       </PageHeader>
       <div className="main-content">
         <div className="row">
