@@ -31,7 +31,7 @@ const ProfileModal = () => {
                         <div>
                             <h6 className="text-dark mb-0">{currentUser?.fullName}
                                 {currentUser?.role && 
-                                <span className="badge bg-soft-success text-success ms-1">{currentUser?.role}</span>
+                                    <span className="badge bg-soft-primary text-primary ms-1">{currentUser.role}</span>
                                 }
                             </h6>
                             <span className="fs-12 fw-medium text-muted">{currentUser?.email}</span>

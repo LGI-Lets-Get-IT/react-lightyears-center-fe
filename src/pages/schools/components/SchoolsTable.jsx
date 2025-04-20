@@ -17,6 +17,8 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import { clientStatusOptions } from "@/utils/options";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
 
 const actions = [
   { label: "Edit", icon: <FiEdit3 /> },
@@ -44,7 +46,9 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const SchoolsTable = ({ schools }) => {
+const SchoolsTable = ({ data }) => {
+  const { hasPermission } = useFilterByPermission()
+  
   const columns = [
     {
       accessorKey: "id",
@@ -104,12 +108,17 @@ const SchoolsTable = ({ schools }) => {
     {
       accessorKey: "isActive",
       header: () => "Is Active",
-      cell: (info) => (
-        <TableCell
-          options={clientStatusOptions}
-          defaultSelect={info?.getValue().toString()}
-        />
-      ),
+      cell: (info) => {
+        const isActive = info.getValue() == true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'}
+        return hasPermission(PERMISSIONS.SCHOOLS.UPDATE) ?
+          <TableCell
+            options={clientStatusOptions}
+            defaultSelect={info?.getValue().toString()}
+          />
+          : (
+            <span className={`badge bg-soft-${isActive.color} text-${isActive.color}`}>{isActive.text}</span>
+          )
+      },
     },
     {
       accessorKey: "actions",
@@ -138,7 +147,7 @@ const SchoolsTable = ({ schools }) => {
 
   return (
     <div>
-      <Table data={schools} columns={columns} />
+      <Table data={data} columns={columns} />
     </div>
   );
 };

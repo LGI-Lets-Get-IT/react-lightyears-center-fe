@@ -25,8 +25,7 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const ClientsTable = ({ clients }) => {
-  const { currentUser } = useSelector(state => state.auth)
-  const { filterItemsByPermission } = useFilterByPermission();
+  const { filterItemsByPermission, hasPermission } = useFilterByPermission();
 
   const getActions = (uuid) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit` },
@@ -153,7 +152,7 @@ const ClientsTable = ({ clients }) => {
       header: () => "Is Active",
       cell: (info) => {
         const isActive = info.getValue() == true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
-        return currentUser.permissions?.includes(PERMISSIONS.CLIENTS.UPDATE) ?
+        return hasPermission(PERMISSIONS.CLIENTS.UPDATE) ?
             <TableCell
             options={clientStatusOptions}
             defaultSelect={info?.getValue().toString()}
@@ -162,12 +161,6 @@ const ClientsTable = ({ clients }) => {
               <span className={`badge bg-soft-${isActive.color} text-${isActive.color}`}>{isActive.text}</span>
             )
         }
-        //
-        // <TableCell
-        //   options={clientStatusOptions}
-        //   defaultSelect={info?.getValue().toString()}
-        // />
-      // ),
     },
     {
       accessorKey: "actions",

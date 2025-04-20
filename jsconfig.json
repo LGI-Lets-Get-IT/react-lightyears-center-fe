@@ -10,7 +10,8 @@
       "@/pages/*": ["pages/*"],
       "@/layout/*": ["layout/*"],
       "@/lib/*": ["lib/*"],
-      "@/store/*": ["store/*"]
+      "@/store/*": ["store/*"],
+      "@/shared/*": ["shared/*"],
     }
   }
 }

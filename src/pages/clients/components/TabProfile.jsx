@@ -20,8 +20,6 @@ const TabProfile = () => {
   const [selectedOption, setSelectedOption] = useState({});
   const { startDate, setStartDate, renderFooter } = useDatePicker();
   const { countries } = useLocationData();
-  // const group = customerListTagsOptions
-  // const status = customerListStatusOptions
   const relationships = relationshipOptions;
   const gender = genderOptions;
 
@@ -75,15 +73,6 @@ const TabProfile = () => {
             name={"fullName"}
             onChange={handleChange}
             value={userInput.fullName || ""}
-          />
-          <Input
-            icon="feather-link-2"
-            label={"Age"}
-            labelId={"ageInput"}
-            placeholder={"Age"}
-            name={"age"}
-            onChange={handleChange}
-            value={userInput.age || ""}
           />
           <div className="row mb-4 align-items-center">
             <div className="col-lg-4">

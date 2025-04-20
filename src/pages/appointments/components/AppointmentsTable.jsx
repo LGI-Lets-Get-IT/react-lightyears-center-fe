@@ -36,8 +36,7 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const AppointmentsTable = ({ appointments }) => {
-  const { currentUser } = useSelector(state => state.auth)
-  const { filterItemsByPermission, hasPermission } = useFilterByPermission()
+  const { filterItemsByPermission } = useFilterByPermission()
 
   const getActions = (id) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/appointments/${id}/edit` },
@@ -120,8 +119,9 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "status",
       header: () => "Status",
       cell: (info) => {
-        const statusColor = info.getValue() == 'Upcoming' ? 'warning' : info.getValue() == 'Ongoing' ? 'primary' : "success"
-        return <span className={`badge bg-soft-${statusColor} text-${statusColor}`}>{info.getValue()}</span>
+        const statusText = info.getValue()
+        const statusColor = statusText == 'Upcoming' ? 'warning' : statusText == 'Ongoing' ? 'primary' : "success"
+        return <span className={`badge bg-soft-${statusColor} text-${statusColor}`}>{statusText}</span>
       }
     },
     {

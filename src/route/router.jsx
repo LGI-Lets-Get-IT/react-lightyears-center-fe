@@ -7,6 +7,7 @@ import PlansList from "@/pages/treatment-plans/plans-list";
 import PlansView from "@/pages/treatment-plans/plans-view";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
+import AssessmentsList from "@/pages/assessments/assessments-list";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -150,6 +151,26 @@ export const router = createBrowserRouter([
         path: "/appointments/create",
         element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.CREATE}>
           <AppointmentsCreate/>
+        </ProtectedRoute>,
+      },
+
+      // Assessments
+      {
+        path: "/assessments",
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
+          <AssessmentsList/>
+        </ProtectedRoute>,
+      },
+      {
+        path: "/assessments/:id",
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
+          {/* <AppointmentsView/> */}
+        </ProtectedRoute>,
+      },
+      {
+        path: "/assessments/create",
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.CREATE}>
+          {/* <AppointmentsCreate/> */}
         </ProtectedRoute>,
       },
 

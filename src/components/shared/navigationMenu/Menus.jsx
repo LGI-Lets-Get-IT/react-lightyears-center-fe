@@ -21,12 +21,12 @@ const Menus = () => {
 
         // Filter dropdownMenu if present
         if (clonedMenu.dropdownMenu?.length) {
-        clonedMenu.dropdownMenu = clonedMenu.dropdownMenu.filter((item) => {
-            if (item?.permissions?.length) {
-            return item.permissions.some((p) => permissions?.includes(p));
-            }
-            return true;
-        });
+            clonedMenu.dropdownMenu = clonedMenu.dropdownMenu.filter((item) => {
+                if (item?.permissions?.length) {
+                return item.permissions.some((p) => permissions?.includes(p));
+                }
+                return true;
+            });
         }
 
         return clonedMenu;

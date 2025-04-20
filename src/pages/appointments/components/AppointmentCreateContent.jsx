@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TabProjectType from "./appointmentCreateTabs/TabProjectType";
 import TabProjectDetails from "./appointmentCreateTabs/TabProjectPIC";
 import TabCompleted from "./appointmentCreateTabs/TabCompleted";
@@ -7,6 +7,7 @@ import { makeAppointment } from "@/store/slice/appointmentSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { step0Schema, step1Schema, step2Schema } from "../../../schemas/appointmentSchema";
+import { fetchAllEmployees } from "@/store/slice/employeeSlice";
 
 const steps = [
   { name: "Type", required: true },
@@ -29,6 +30,25 @@ const AppointmentCreateContent = () => {
     timeStart: null,
     timeEnd: null,
   });
+
+
+  const handleInputChange = () => {
+    try {
+      if (currentStep === 0) {
+        step0Schema.validate(formData, { abortEarly: false });
+      } else if (currentStep === 1) {
+        step1Schema.validate(formData, { abortEarly: false });
+      } else if (currentStep === 2) {
+        step2Schema.validate(formData, { abortEarly: false });
+      }
+    } catch (error) {
+      const newError = {}
+      error.inner.forEach((err) => {
+        newError[err.path] = err.message
+      })
+      setErrors(newError)
+    }
+  }
 
   const handleNext = async (e) => {
     e.preventDefault();
@@ -76,12 +96,15 @@ const AppointmentCreateContent = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(fetchAllEmployees());
+  }, [])
+
   return (
     <div className="col-lg-12">
       <div className="card border-top-0">
         <div className="card-body p-0 wizard" id="project-create-steps">
           <div className="steps clearfix">
-            {console.log('FORMDATAAA', formData)}
             <ul role="tablist">
               {steps.map((step, index) => (
                 <li
@@ -104,6 +127,7 @@ const AppointmentCreateContent = () => {
               <TabProjectType
                 setFormData={setFormData}
                 formData={formData}
+                onInputChange={handleInputChange}
                 error={errors}
                 setError={setErrors}
               />
@@ -112,6 +136,7 @@ const AppointmentCreateContent = () => {
               <TabProjectDetails
                 setFormData={setFormData}
                 formData={formData}
+                onInputChange={handleInputChange}
                 error={errors}
                 setError={setErrors}
               />

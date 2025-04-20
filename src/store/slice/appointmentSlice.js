@@ -33,11 +33,10 @@ export const fetchAllAppointments = createAsyncThunk(
 );
 
 export const fetchAppointmentById = createAsyncThunk(
-  "appointements/getAppointmentById",
+  "appointments/getAppointmentById",
   async (id, { rejectWithValue }) => {
     try {
       const response = await appointmentsApi.getAppointmentById(id);
-      // console.log("RESPONSE", response.data);
       return response.data?.data;
     } catch (error) {
       return rejectWithValue(error.message);

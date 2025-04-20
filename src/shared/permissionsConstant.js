@@ -3,6 +3,10 @@ export const PERMISSIONS = {
       VIEW: 'view_dashboard',
     },
 
+    SETTINGS: {
+      VIEW: 'view_settings',
+    },
+
     APPOINTMENTS: {
       CREATE: 'create_appointments',
       VIEW: 'view_appointments',

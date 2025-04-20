@@ -90,15 +90,6 @@ const TabProfile = ({ userData }) => {
             onChange={handleChange}
             value={userInput.fullName}
           />
-          <Input
-            icon="feather-link-2"
-            label={"Age"}
-            labelId={"ageInput"}
-            placeholder={"Age"}
-            name={"age"}
-            onChange={handleChange}
-            value={userInput.age}
-          />
           <div className="row mb-4 align-items-center">
             <div className="col-lg-4">
               <label htmlFor="dateofBirth" className="fw-semibold">

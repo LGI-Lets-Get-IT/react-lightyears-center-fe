@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import appointmentReducer from "./slice/appointmentSlice";
+import assessmentReducer from "./slice/assessmentSlice";
 import clientReducer from "./slice/clientSlice";
 import employeeReducer from "./slice/employeeSlice";
 import schoolReducer from "./slice/schoolSlice";
@@ -23,6 +24,7 @@ export const store = configureStore({
     auth: persistReducer(authPersistConfig, authReducer),
     treatmentPlans: treatmentPlanReducer,
     appointments: appointmentReducer,
+    assessments: assessmentReducer,
     clients: clientReducer,
     employees: employeeReducer,
     schools: schoolReducer,

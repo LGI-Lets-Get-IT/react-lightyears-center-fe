@@ -6,12 +6,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 
 const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
-  const dispatch = useDispatch();
   const { employees } = useSelector((state) => state.employees);
-
-  useEffect(() => {
-    dispatch(fetchAllEmployees());
-  }, [])
 
   return (
     <section className="step-body mt-4 body current">

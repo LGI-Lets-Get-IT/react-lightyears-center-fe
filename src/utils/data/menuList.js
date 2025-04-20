@@ -72,14 +72,14 @@ export const menuList = [
     name: "Settings",
     path: "#",
     icon: "io-settings-outline",
-    permissions: [PERMISSIONS.SCHOOLS.CREATE, PERMISSIONS.TEST_TYPES.CREATE, PERMISSIONS.TREATMENT_TYPES.CREATE],
+    permissions: [PERMISSIONS.SETTINGS.VIEW],
     dropdownMenu: [
       {
         id: 1,
         name: "Schools",
         path: "/settings/schools",
         icon: "lu-school",
-        permissions: [PERMISSIONS.SCHOOLS.CREATE],
+        permissions: [PERMISSIONS.SCHOOLS.VIEW],
         subdropdownMenu: false,
       },
       {

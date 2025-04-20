@@ -1,34 +1,49 @@
 import React, { useState } from 'react'
 import { userLogin } from '../../store/slice/authSlice'
-import { FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
+import { FiAlertTriangle, FiFacebook, FiGithub, FiTwitter } from 'react-icons/fi'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Input from '../shared/Input'
+import { loginSchema } from '../../schemas/authSchema'
+import useFormValidation from '@/hooks/useFormValidation'
 
 const LoginForm = ({ resetPath }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [loginData, setLoginData] = useState({})
-
-
-    const handleUserLogin = async (e) => {
-        e.preventDefault();
-        dispatch(userLogin(loginData))
+    
+    const handleUserLogin = async () => {
+        dispatch(userLogin(values))
         .unwrap()
         .then(() => navigate('/'))
         .catch((error) => console.error("handle error", error));
     }
+
+    const { values, errors, handleInputChange, handleSubmit } = useFormValidation(loginSchema, {
+        email: '',
+        password: '',
+    }, handleUserLogin);
+
     return (
         <>
             <h2 className="fs-20 fw-bolder mb-4">Login</h2>
             <h4 className="fs-13 fw-bold mb-2">Login to your account</h4>
             {/* <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p> */}
-            <form onSubmit={handleUserLogin} className="w-100 mt-4 pt-2">
+            <form onSubmit={handleSubmit} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
-                    <input type="email" className="form-control" placeholder="Email" onInput={(event) => setLoginData({ ...loginData, email: event.target.value})} required />
+                    {errors.email && (
+                        <label id="project-type-error" className="error">
+                        <FiAlertTriangle /> {errors.email}
+                        </label>
+                    )}
+                    <input name="email" id="email" type="email" className={`form-control ${errors.title ? "is-invalid" : ""}`} placeholder="Email" onInput={handleInputChange} required />
                 </div>
                 <div className="mb-3">
-                    <input type="password" className="form-control" placeholder="Password" onInput={(event) => setLoginData({ ...loginData, password: event.target.value })} required />
+                    {errors.password && (
+                        <label id="project-type-error" className="error">
+                        <FiAlertTriangle /> {errors.password}
+                        </label>
+                    )}
+                    <input name="password" id="password" type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`} placeholder="Password" onInput={handleInputChange} required />
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                     <div>

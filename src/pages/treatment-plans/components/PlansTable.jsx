@@ -9,17 +9,18 @@ import {
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
-import { clientStatusOptions } from "@/utils/options";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
 
 const actions = [
-  { label: "Edit", icon: <FiEdit3 /> },
+  { label: "Edit", icon: <FiEdit3 />, permission: PERMISSIONS.TREATMENT_PLANS.UPDATE },
   // { label: "Print", icon: <FiPrinter /> },
   //   { label: "Remind", icon: <FiClock /> },
   // { type: "divider" },
   // { label: "Archive", icon: <FiArchive /> },
   // { label: "Report Spam", icon: <FiAlertOctagon />, },
   //   { type: "divider" },
-  { label: "Delete", icon: <FiTrash2 /> },
+  { label: "Delete", icon: <FiTrash2 />, permission: PERMISSIONS.TREATMENT_PLANS.DELETE },
 ];
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -38,6 +39,13 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const PlansTable = ({ plans }) => {
+  const { filterItemsByPermission } = useFilterByPermission();
+
+  const getActions = (id) => [
+    { label: "Edit", icon: <FiEdit3 />, link: `/treatment-plans/${id}/edit` },
+    { label: "Delete", icon: <FiTrash2 /> },
+  ];
+  
   const columns = [
     {
       accessorKey: "id",
@@ -77,42 +85,52 @@ const PlansTable = ({ plans }) => {
     {
       accessorKey: "clientName",
       header: () => "Client Name",
+      cell: (info) => {
+        const { clientId } = info.row.original
+        const clientName = info.getValue();
+        return (
+          <Link to={`/clients/${clientId}`} className="text-wrap">{clientName}</Link>
+        )
+      }
+    },
+    {
+      accessorKey: "therapistName",
+      header: () => "Therapist Name",
       cell: (info) => <a className="text-wrap">{info.getValue()}</a>
     },
-    // {
-    //   accessorKey: "psychologistName",
-    //   header: () => "Psychologist Name",
-    //   cell: (info) => <a className="text-wrap">{info.getValue()}</a>
-    // },
     {
-      accessorKey: "treatmentCount",
-      header: () => "Treatments Count",
+      accessorKey: "totalTreatments",
+      header: () => "Total Treatments",
       cell: (info) => <a className="text-wrap">{info.getValue()}</a>
     },
     {
       accessorKey: "behaviorTargetCount",
-      header: () => "Target Behaviors Count",
+      header: () => "Total Target Behaviors",
       cell: (info) => <a href={`mailto:${info.getValue()}`} className="text-wrap">{info.getValue()}</a>,
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
-      cell: ({ row }) => (
-        <div className="hstack gap-2 justify-content-end">
-          <Link
-            to={`/treatment-plans/${row.original.id}`}
-            className="avatar-text avatar-md"
-          >
-            <FiEye />
-          </Link>
-          <Dropdown
-            dropdownItems={actions}
-            triggerClass="avatar-md"
-            triggerPosition={"0,21"}
-            triggerIcon={<FiMoreHorizontal />}
-          />
-        </div>
-      ),
+      cell: ({ row }) => {
+        const permittedActions = filterItemsByPermission(getActions(row.original.uuid))
+        
+        return (
+          <div className="hstack gap-2 justify-content-end">
+            <Link
+              to={`/treatment-plans/${row.original.id}`}
+              className="avatar-text avatar-md"
+            >
+              <FiEye />
+            </Link>
+            <Dropdown
+              dropdownItems={permittedActions}
+              triggerClass="avatar-md"
+              triggerPosition={"0,21"}
+              triggerIcon={<FiMoreHorizontal />}
+            />
+          </div>
+        );
+      },
       meta: {
         headerClassName: "text-end",
       },

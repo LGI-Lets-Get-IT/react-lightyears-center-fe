@@ -21,7 +21,7 @@ const SchoolsList = () => {
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <SchoolsTable schools={schools} />
+          <SchoolsTable data={schools} />
         </div>
       </div>
       <Footer />
