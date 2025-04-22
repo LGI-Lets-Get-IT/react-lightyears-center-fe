@@ -42,8 +42,8 @@ const PlansTable = ({ plans }) => {
   const { filterItemsByPermission } = useFilterByPermission();
 
   const getActions = (id) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/treatment-plans/${id}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
+    { label: "Edit", icon: <FiEdit3 />, link: `/treatment-plans/${id}/edit`, permission: PERMISSIONS.TREATMENT_PLANS.UPDATE },
+    { label: "Delete", icon: <FiTrash2 />, permission: PERMISSIONS.TREATMENT_PLANS.DELETE},
   ];
   
   const columns = [
@@ -94,8 +94,8 @@ const PlansTable = ({ plans }) => {
       }
     },
     {
-      accessorKey: "therapistName",
-      header: () => "Therapist Name",
+      accessorKey: "plannedBy",
+      header: () => "Planned By",
       cell: (info) => <a className="text-wrap">{info.getValue()}</a>
     },
     {
@@ -104,15 +104,24 @@ const PlansTable = ({ plans }) => {
       cell: (info) => <a className="text-wrap">{info.getValue()}</a>
     },
     {
-      accessorKey: "behaviorTargetCount",
+      accessorKey: "totalTargetedBehaviors",
       header: () => "Total Target Behaviors",
       cell: (info) => <a href={`mailto:${info.getValue()}`} className="text-wrap">{info.getValue()}</a>,
     },
     {
+      accessorKey: 'consultDate',
+      header: () => 'Consult Date',
+      cell: (info) => {
+        const date = new Date(info.getValue());
+        return <a>{date.toLocaleDateString()}</a>;
+      }
+    },
+    {
       accessorKey: "actions",
       header: () => "Actions",
+      enableSorting: false,
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.uuid))
+        const permittedActions = filterItemsByPermission(getActions(row.original.id))
         
         return (
           <div className="hstack gap-2 justify-content-end">
@@ -122,12 +131,14 @@ const PlansTable = ({ plans }) => {
             >
               <FiEye />
             </Link>
-            <Dropdown
+            {permittedActions.length > 0 && 
+              <Dropdown
               dropdownItems={permittedActions}
               triggerClass="avatar-md"
               triggerPosition={"0,21"}
               triggerIcon={<FiMoreHorizontal />}
-            />
+              />
+            }
           </div>
         );
       },

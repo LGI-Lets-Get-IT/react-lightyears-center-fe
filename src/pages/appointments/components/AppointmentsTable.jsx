@@ -127,6 +127,7 @@ const AppointmentsTable = ({ appointments }) => {
     {
       accessorKey: "actions",
       header: () => "Actions",
+      enableSorting: false,
       cell: ({ row }) => {
         const permittedActions = filterItemsByPermission(getActions(row.original.id))
 

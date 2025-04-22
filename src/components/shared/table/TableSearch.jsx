@@ -14,7 +14,7 @@ const TableSearch = ({table, setGlobalFilter, globalFilter}) => {
                                 table.setPageSize(Number(e.target.value))
                             }}
                         >
-                            {[10, 20, 30, 40, 50].map(pageSize => (
+                            {[5, 10, 25, 50, 100].map(pageSize => (
                                 <option key={pageSize} value={pageSize}>
                                     {pageSize}
                                 </option>

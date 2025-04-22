@@ -23,6 +23,7 @@ const Table = ({ data, columns }) => {
   const table = useReactTable({
     data,
     columns,
+    enableSorting: true,
     state: {
       globalFilter,
       pagination,

@@ -44,6 +44,7 @@ api.interceptors.request.use(
   }
 );
 
+let isRefreshing = false;
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
@@ -67,22 +68,32 @@ api.interceptors.response.use(
         message == "Token expired. Please refresh the page." &&
         !originalRequest._retry
       ) {
-      try {
-        originalRequest._retry = true;
-        await store.dispatch(userRefreshToken()).unwrap();
-        const newAccessToken = store.getState().auth.accessToken;
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-  
-        return api(originalRequest)
-      } catch (error) {
-        store.dispatch(userLogout())
-        window.location.href = '/login';
-        return Promise.reject(error);
-      }
+        if(!isRefreshing) {
+          isRefreshing = true;
+
+          try {
+            originalRequest._retry = true;
+            await store.dispatch(userRefreshToken()).unwrap();
+            const newAccessToken = store.getState().auth.accessToken;
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            
+            isRefreshing = false;
+    
+            return api(originalRequest)
+          } catch (error) {
+            isRefreshing = false;
+            store.dispatch(userLogout())
+            window.location.href = '/login';
+            return Promise.reject(error);
+          }
+        }
     } else if (error.response?.status === 401 && message == "Refresh token expired. Please relogin.") {
       store.dispatch(userLogout());
       window.location.href = "/login";
       return Promise.reject(error);
+    } else if (error.response?.status === 404) {
+      console.log('KSJFJFAKFJKFJS', window.history)
+      window.history.back();
     }
     return Promise.reject(error);
   }
