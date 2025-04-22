@@ -9,6 +9,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
 import AssessmentsList from "@/pages/assessments/assessments-list";
 import AssessmentsView from "@/pages/assessments/assessments-view";
+import TreatmentTypesList from "@/pages/treatment-types/treatment-types-list";
+import TestTypesList from "@/pages/test-types/test-types-list";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -212,6 +214,12 @@ export const router = createBrowserRouter([
           <PlansView/>
         </ProtectedRoute>,
       },
+      {
+        path: '/treatment-plans/:id/edit',
+        element: <ProtectedRoute requiredPermissions={PERMISSIONS.TREATMENT_PLANS.UPDATE}>
+          <PlansView/>
+        </ProtectedRoute>,
+      },
       // schools
       {
         path: "/settings",
@@ -220,6 +228,14 @@ export const router = createBrowserRouter([
             path: "schools",
             element: <SchoolsList />,
           },
+          {
+            path: 'test-types',
+            element: <TestTypesList/>
+          },
+          {
+            path: 'treatment-types',
+            element: <TreatmentTypesList/>
+          }
         ],
       },
       // {

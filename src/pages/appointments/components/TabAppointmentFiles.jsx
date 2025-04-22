@@ -1,88 +1,63 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Pagination from '@/components/shared/Pagination'
 import HorizontalProgress from '@/components/shared/HorizontalProgress'
 import { projectsData } from '@/utils/data/projectsData'
 import { FiBell, FiGlobe, FiPrinter } from 'react-icons/fi'
 import { PiFilePdf } from 'react-icons/pi'
+import ProjectFilteTable from '@/components/storage/ProjectFilteTable'
+import RecentFileCard from '@/components/storage/RecentFileCard'
+import { storageFolderData } from '@/utils/data/storageData'
 
 const TabAppointmentFiles = () => {
+        const [fileData, setFileData] = useState(storageFolderData(0, 4))
     const data = projectsData.trackerProjects
     return (
         <div className="tab-pane fade active show" id="filesTab">
-            <div className="col-lg-12">
-                <div className="card stretch stretch-full">
-                    <div className="card-body custom-card-action p-0">
-                        <div className="table-responsive">
-                            <table className="table table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">File Name</th>
-                                        <th scope="col" className="w-25">File Path</th>
-                                        <th scope="col">Uploaded By</th>
-                                        <th scope="col">Uploaded At</th>
-                                        <th scope="col" className="text-end">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        data.map(({ comment, logged_time, progress, remaing_time, working_time, title, icon, brColor }, index) => (
-                                            <tr key={index}>
-                                                <td>
-                                                    <div className="hstack gap-3">
-                                                        <div className="avatar-text bg-soft-primary text-primary">
-                                                            {/* <FiClock size={16} /> */}
-                                                            <PiFilePdf size={25} color='red'/>
-                                                            {/* <PiFileCsv SIZE={20} color='green'/> */}
-                                                        </div>
-                                                        <div>
-                                                            <a href="#" className="fw-bold d-block mb-1">{title}</a>
-                                                            <div className="d-flex gap-3">
-                                                                <a href="#" className="hstack gap-1 fs-11 fw-normal text-muted">
-                                                                    <i className="feather-clock fs-10"></i>
-                                                                    <span>{remaing_time}</span>
-                                                                </a>
-                                                                <a href="#" className="hstack gap-1 fs-11 fw-normal text-muted">
-                                                                    <i className="feather-message-square fs-10"></i>
-                                                                    <span>{comment} comments</span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="fs-12 fw-medium mb-2">{progress}% Completed</div>
-                                                    <HorizontalProgress progress={progress} barColor={brColor} />
-                                                </td>
-                                                <td>{working_time}</td>
-                                                <td className="fw-bold">{logged_time}</td>
-                                                <td>
-                                                    <div className="hstack gap-2 justify-content-end">
-                                                        <a href="#" className="avatar-text avatar-md">
-                                                            <FiGlobe strokeWidth={1.6} />
-                                                        </a>
-                                                        <a href="#" className="avatar-text avatar-md">
-                                                            <FiPrinter strokeWidth={1.6} />
-                                                        </a>
-                                                        <a href="#" className="avatar-text avatar-md">
-                                                            <FiBell />
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    }
+            <div className='content-area-body'>
+                <div className="recent-section mb-5">
+                    <SectionTitle
+                        sectionName={"Recent Files"}
+                        sectionDescription={"Recent access files (Last access 24 min ago)"}
+                    />
+                    <div className="row">
+                        {
+                            fileData.map(({ id, iconSrc, title }) => (
+                                <RecentFileCard
+                                    key={id}
+                                    imgSrc={iconSrc}
+                                    title={title}
+                                    projectLink="Project"
+                                    dashboardLink="Dashboard"
+                                    category="Webapps"
+                                    id={id}
+                                />
+                            ))
+                        }
+                    </div>
+                </div>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div className="card-footer">
-                        <Pagination />
-                    </div>
+                <div className="project-section">
+                        <SectionTitle
+                            sectionName={"Project Files"}
+                            sectionDescription={"Recent project files (Last access 24 min ago)"}
+                        />
+                    <ProjectFilteTable />
                 </div>
             </div>
         </div>
     )
 }
 
-export default TabAppointmentFiles
+export default TabAppointmentFiles;
+
+const SectionTitle = ({ sectionName, sectionDescription }) => {
+    return (
+        <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="me-4">
+                <h2 className="fs-16 fw-bold mb-1">{sectionName}</h2>
+                <div className="fs-12 text-muted text-truncate-1-line">{sectionDescription}</div>
+            </div>
+            <a href="#" className="btn btn-sm btn-light-brand">View More</a>
+        </div>
+    )
+}

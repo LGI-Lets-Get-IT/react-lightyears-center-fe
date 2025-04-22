@@ -85,7 +85,7 @@ export const menuList = [
       {
         id: 2,
         name: "Test Types",
-        path: "/tests",
+        path: "/settings/test-types",
         icon: "pi-notepencil-light",
         permissions: [PERMISSIONS.TEST_TYPES.CREATE],
         subdropdownMenu: false,
@@ -93,20 +93,20 @@ export const menuList = [
       {
         id: 3,
         name: "Treatment Types",
-        path: "/treatment-types",
+        path: "/settings/treatment-types",
         icon: "lia-file-medical",
         permissions: [PERMISSIONS.TREATMENT_TYPES.CREATE]
       },
       {
         id: 4,
         name: 'Psychologists',
-        path: '/psychologists',
+        path: '/settings/psychologists',
         icon: 'lia-file-medical',
       },
       {
         id: 5,
         name: 'Therapists',
-        path: '/therapists',
+        path: '/settings/therapists',
         icon: 'lia-file-medical',
       },
     ]

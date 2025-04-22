@@ -1,6 +1,6 @@
 import React from 'react'
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { FiCheckCircle, FiList, FiPlus, FiWatch } from 'react-icons/fi'
+import { FiActivity, FiCheckCircle, FiHash, FiList, FiPlus, FiWatch } from 'react-icons/fi'
 
 const TaskSidebar = ({ sidebarOpen }) => {
     return (
@@ -15,7 +15,7 @@ const TaskSidebar = ({ sidebarOpen }) => {
                         <span>Add Progress</span>
                     </a>
                 </div>
-                <div className="content-sidebar-body">
+                {/* <div className="content-sidebar-body">
                     <ul className="nav flex-column nxl-content-sidebar-item">
                         <li className="nav-item">
                             <a className="nav-link" href="#">
@@ -29,12 +29,12 @@ const TaskSidebar = ({ sidebarOpen }) => {
                                 <span>In Progress</span>
                             </a>
                         </li>
-                        {/* <li className="nav-item">
+                        <li className="nav-item">
                             <a className="nav-link" href="#">
                                 <FiActivity size={16} strokeWidth={1.6} />
                                 <span>Done</span>
                             </a>
-                        </li> */}
+                        </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#">
                                 <FiCheckCircle size={16} strokeWidth={1.6} />
@@ -42,7 +42,7 @@ const TaskSidebar = ({ sidebarOpen }) => {
                             </a>
                         </li>
                     </ul>
-                    {/* <ul className="nav flex-column nxl-content-sidebar-item">
+                    <ul className="nav flex-column nxl-content-sidebar-item">
                         <li className="px-4 my-2 fs-10 fw-bold text-uppercase text-muted text-spacing-1 d-flex align-items-center justify-content-between">
                             <span>Priority</span>
                             <a href="#">
@@ -79,8 +79,8 @@ const TaskSidebar = ({ sidebarOpen }) => {
                                 <span>Urgent</span>
                             </a>
                         </li>
-                    </ul> */}
-                    {/* <ul className="nav flex-column nxl-content-sidebar-item">
+                    </ul>
+                    <ul className="nav flex-column nxl-content-sidebar-item">
                         <li className="px-4 my-2 fs-10 fw-bold text-uppercase text-muted text-spacing-1 d-flex align-items-center justify-content-between">
                             <span>Overview</span>
                             <a href="#">
@@ -111,8 +111,8 @@ const TaskSidebar = ({ sidebarOpen }) => {
                                 <span>Tasks Attachments</span>
                             </a>
                         </li>
-                    </ul> */}
-                </div>
+                    </ul>
+                </div> */}
             </PerfectScrollbar>
         </div>
     )

@@ -122,7 +122,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
             <div className="card-body task-header d-md-flex align-items-center justify-content-between">
               <div className="me-4">
                 <h4 className="mb-4 fw-bold d-flex">
-                  <span className="text-truncate-1-line">
+                  <span className="text-truncate-1-line text-capitalize">
                     {appointmentData ? <>[{appointmentData?.appointmentType}] {appointmentData?.title}</> : <>-</>}
                     {/* <span className="text-muted">
                       {appointmentData?.appointmentType}

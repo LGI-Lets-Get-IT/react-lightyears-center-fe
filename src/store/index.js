@@ -8,6 +8,8 @@ import authReducer from './slice/authSlice';
 import { persistReducer, persistStore } from "redux-persist";
 import storage from 'redux-persist/lib/storage';
 import treatmentPlanReducer from "./slice/treatmentPlanSlice";
+import treatmentTypeReducer from "./slice/treatmentTypeSlice";
+import testTypeReducer from "./slice/testTypeSlice";
 
 const authPersistConfig = {
   key: 'root',
@@ -28,6 +30,8 @@ export const store = configureStore({
     clients: clientReducer,
     employees: employeeReducer,
     schools: schoolReducer,
+    treatmentTypes: treatmentTypeReducer,
+    testTypes: testTypeReducer,
   },
   // middleware
 });
