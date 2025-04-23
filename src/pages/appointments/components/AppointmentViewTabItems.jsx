@@ -1,6 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const AppointmentViewTabItems = () => {
+  const { currentAppointment } = useSelector(
+    (state) => state.appointments
+  );
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
       <div className="d-md-none d-flex align-items-center justify-content-between">
@@ -48,6 +52,17 @@ const AppointmentViewTabItems = () => {
                 Files
               </button>
             </li>
+            {currentAppointment?.appointmentType?.toLowerCase() === "assessment" && (
+              <li className="nav-item" role="presentation">
+                <button
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#assessmentsTab"
+                  >
+                  Result
+                </button>
+              </li>
+            )}
             {/* <li className="nav-item" role="presentation">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#timesheetsTab">Timesheets</button>
                         </li>

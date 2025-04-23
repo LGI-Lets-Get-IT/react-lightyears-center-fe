@@ -29,7 +29,7 @@ const TestTypesTable = ({ data }) => {
   const { filterItemsByPermission } = useFilterByPermission()
 
   const getActions = (id) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/test-types/${id}/edit` },
+    { label: "Edit", icon: <FiEdit3 />, link: `/settings/test-types/${id}/edit` },
     { label: "Delete", icon: <FiTrash2 />, OnClick: console.log("Delete") },
   ];
 
@@ -91,12 +91,12 @@ const TestTypesTable = ({ data }) => {
 
         return (
           <div className="hstack gap-2 justify-content-end">
-            <Link
-              to={`/test-types/${row.original.id}`}
+            {/* <Link
+              to={`/settings/test-types/${row.original.id}`}
               className="avatar-text avatar-md"
             >
               <FiEye />
-            </Link>
+            </Link> */}
             {permittedActions.length > 0 && (
               <Dropdown
                 dropdownItems={permittedActions}

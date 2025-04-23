@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import storage from 'redux-persist/lib/storage';
 import appointmentReducer from "./slice/appointmentSlice";
 import assessmentReducer from "./slice/assessmentSlice";
 import clientReducer from "./slice/clientSlice";
@@ -6,10 +7,10 @@ import employeeReducer from "./slice/employeeSlice";
 import schoolReducer from "./slice/schoolSlice";
 import authReducer from './slice/authSlice';
 import { persistReducer, persistStore } from "redux-persist";
-import storage from 'redux-persist/lib/storage';
 import treatmentPlanReducer from "./slice/treatmentPlanSlice";
 import treatmentTypeReducer from "./slice/treatmentTypeSlice";
 import testTypeReducer from "./slice/testTypeSlice";
+import fileReducer from "./slice/fileSlice";
 
 const authPersistConfig = {
   key: 'root',
@@ -29,6 +30,7 @@ export const store = configureStore({
     assessments: assessmentReducer,
     clients: clientReducer,
     employees: employeeReducer,
+    files: fileReducer,
     schools: schoolReducer,
     treatmentTypes: treatmentTypeReducer,
     testTypes: testTypeReducer,

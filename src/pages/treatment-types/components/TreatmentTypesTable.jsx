@@ -28,7 +28,7 @@ const TreatmentTypesTable = ({ data }) => {
   const { filterItemsByPermission } = useFilterByPermission()
 
   const getActions = (id) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/treatment-types/${id}/edit` },
+    { label: "Edit", icon: <FiEdit3 />, link: `/settings/treatment-types/${id}/edit` },
     { label: "Delete", icon: <FiTrash2 /> },
   ];
 
@@ -90,12 +90,12 @@ const TreatmentTypesTable = ({ data }) => {
 
         return (
           <div className="hstack gap-2 justify-content-end">
-            <Link
-              to={`/assessments/${row.original.id}`}
+            {/* <Link
+              to={`/settings/treatment-types/${row.original.id}`}
               className="avatar-text avatar-md"
             >
               <FiEye />
-            </Link>
+            </Link> */}
             {permittedActions.length > 0 && (
               <Dropdown
                 dropdownItems={permittedActions}

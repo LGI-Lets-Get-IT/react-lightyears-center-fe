@@ -11,6 +11,8 @@ import AssessmentsList from "@/pages/assessments/assessments-list";
 import AssessmentsView from "@/pages/assessments/assessments-view";
 import TreatmentTypesList from "@/pages/treatment-types/treatment-types-list";
 import TestTypesList from "@/pages/test-types/test-types-list";
+import TestTypesCreate from "@/pages/test-types/test-types-create";
+import TreatmentTypesCreate from "@/pages/treatment-types/treatment-types-create";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -233,9 +235,17 @@ export const router = createBrowserRouter([
             element: <TestTypesList/>
           },
           {
+            path: 'test-types/create',
+            element: <TestTypesCreate/>
+          },
+          {
             path: 'treatment-types',
             element: <TreatmentTypesList/>
-          }
+          },
+          {
+            path: 'treatment-types/create',
+            element: <TreatmentTypesCreate/>
+          },
         ],
       },
       // {

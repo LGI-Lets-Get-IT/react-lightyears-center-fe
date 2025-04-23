@@ -43,6 +43,12 @@ const AppointmentsView = () => {
               description="There is no files on this appointment"
             /> */}
           </div>
+          <div className="tab-pane fade" id="assessmentsTab">
+            <LeadsEmptyCard
+              title="No assessments yet!"
+              description="There is no assessments on this appointment"
+            />
+          </div>
         </div>
       </div>
     </>
