@@ -98,9 +98,9 @@ const SiteOverviewStatistics = () => {
                 <div className="card-body">
                   <div className="card-body custom-card-action p-0">
                     <FullCalendar
-                      height={500}
-                      plugins={[timeGridPlugin, interactionPlugin]}
-                      initialView="timeGridWeek"
+                      height={'auto'}
+                      plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+                      initialView="timeGridDay"
                       eventDisplay="auto"
                       firstDay={1}
                       hiddenDays={[7]}
@@ -116,7 +116,7 @@ const SiteOverviewStatistics = () => {
                       headerToolbar={{
                         left: 'prev,next',
                         center: 'title',
-                        right: 'timeGridDay,timeGridWeek'
+                        right: 'timeGridDay,timeGridWeek,dayGridMonth'
                       }}
                       events={appointments.map(item => ({
                         id: item.id,

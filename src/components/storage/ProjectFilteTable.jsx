@@ -6,8 +6,11 @@ import Dropdown from '@/components/shared/Dropdown'
 import Pagination from '@/components/shared/Pagination'
 import { storageProjectData } from '@/utils/data/storageData'
 import { confirmDelete } from '@/utils/confirmDelete'
+import { useSelector } from 'react-redux'
+import { format } from 'date-fns'
 
 const ProjectFilteTable = () => {
+    const { files } = useSelector(state => state.files)
     const [data, setData] = useState(storageProjectData)
 
     const handleDelete = (label, id) => {
@@ -26,27 +29,31 @@ const ProjectFilteTable = () => {
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Size</th>
-                                <th scope="col">Upload</th>
-                                <th scope="col">Members</th>
+                                <th scope="col">File Name</th>
+                                <th scope="col">File Size</th>
+                                <th scope="col">Created At</th>
+                                {/* <th scope="col">Members</th> */}
                                 <th scope="col" className="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
-                                data.map(({ id, fileSIze, iconSrc, members, title, uploadDate }) =>
-                                    <TableRow
+                                files.map(({ id, mimeType, name, webViewLink, size, createdTime }) => {
+                                    const icon = mimeType == 'application/pdf' ?  '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
+                                    return (
+                                        <TableRow
                                         key={id}
-                                        fileSIze={fileSIze}
-                                        iconSrc={iconSrc}
-                                        members={members}
-                                        title={title}
-                                        uploadDate={uploadDate}
+                                        fileSIze={size/1000000}
+                                        iconSrc={icon}
+                                        // members={members}
+                                        link={webViewLink}
+                                        title={name}
+                                        uploadDate={format(createdTime, 'dd-MM-yyyy hh:mm')}
                                         id={id}
                                         handleDelete={handleDelete}
-                                    />
-                                )
+                                        />
+                                    )
+                                })
                             }
                         </tbody>
                     </table>
@@ -61,25 +68,25 @@ const ProjectFilteTable = () => {
 
 export default ProjectFilteTable
 
-const TableRow = ({ fileSIze, iconSrc, title, uploadDate, members, handleDelete, id }) => {
+const TableRow = ({ link, fileSIze, iconSrc, title, uploadDate, members, handleDelete, id }) => {
     return (
         <tr>
             <td>
                 <div className="d-flex align-items-center gap-3">
                     <img src={iconSrc} className="img-fluid rounded wd-30" alt="" />
-                    <Link to="#">{title}</Link>
+                    <Link to={link}>{title}</Link>
                 </div>
             </td>
-            <td>{fileSIze}</td>
+            <td>{fileSIze} MB</td>
             <td>{uploadDate}</td>
-            <td>
+            {/* <td>
                 <div className="img-group lh-lg">
                     <ImageGroup data={members.user_list} avatarStyle={"avatar-sm bg-soft-primary"} />
                     <div>
                         <span className="text-muted fs-12 ms-2">{members.total_user}</span>
                     </div>
                 </div>
-            </td>
+            </td> */}
             <td>
                 <Dropdown dropdownItems={tableActons} dropdownParentStyle={"hstack text-end justify-content-end"} id={id} onClick={handleDelete} />
             </td>
@@ -89,8 +96,8 @@ const TableRow = ({ fileSIze, iconSrc, title, uploadDate, members, handleDelete,
 
 const tableActons = [
     { label: "Open", icon: <FiEye /> },
-    { label: "Share", icon: <FiShare2 /> },
-    { type: "divider" },
-    { label: "Backup", icon: <FiScissors /> },
+    // { label: "Share", icon: <FiShare2 /> },
+    // { type: "divider" },
+    // { label: "Backup", icon: <FiScissors /> },
     { label: "Delete", icon: <FiX />, },
 ];

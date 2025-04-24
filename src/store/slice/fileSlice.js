@@ -10,9 +10,9 @@ const initialState = {
 
 export const fetchAllFiles = createAsyncThunk(
   "files/getAllFiles",
-  async (_, { rejectWithValue }) => {
+  async (query, { rejectWithValue }) => {
     try {
-      const response = await filesApi.getAllFiles();
+      const response = await filesApi.getAllFiles(query);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
