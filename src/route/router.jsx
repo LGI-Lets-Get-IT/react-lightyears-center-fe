@@ -75,7 +75,6 @@ const OtpCreative = lazy(() => import("@/pages/otp-creative"));
 const MaintenanceCover = lazy(() => import("@/pages/maintenance-cover"));
 const MaintenanceMinimal = lazy(() => import("@/pages/maintenance-minimal"));
 const MaintenanceCreative = lazy(() => import("@/pages/maintenance-creative"));
-const HelpKnowledgebase = lazy(() => import("@/pages/help-knowledgebase"));
 const WidgetsLists = lazy(() => import("@/pages/widgets-lists"));
 const WidgetsTables = lazy(() => import("@/pages/widgets-tables"));
 const WidgetsCharts = lazy(() => import("@/pages/widgets-charts"));
@@ -222,6 +221,10 @@ export const router = createBrowserRouter([
           <PlansView/>
         </ProtectedRoute>,
       },
+      {
+        path: '/asdsa',
+        element: <AppsTasks/>
+      },
       // schools
       {
         path: "/settings",
@@ -354,10 +357,6 @@ export const router = createBrowserRouter([
       {
         path: "/widgets/miscellaneous",
         element: <WidgetsMiscellaneous />,
-      },
-      {
-        path: "/help/knowledgebase",
-        element: <HelpKnowledgebase />,
       },
     ],
   },

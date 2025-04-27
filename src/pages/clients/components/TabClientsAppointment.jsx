@@ -21,7 +21,7 @@ const TabClientsAppointment = () => {
         <div className="col">
             <div className="card stretch stretch-full">
                 <div className="card-body custom-card-action">
-                    {currentClient?.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
+                    {currentClient?.appointments.length > 0 ? currentClient?.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
                             const badgeColor = status == 'Upcoming' ? 'warning' : status == 'Ongoing' ? 'primary' : "success"
                             return (
                                 <Fragment key={index}>
@@ -41,7 +41,7 @@ const TabClientsAppointment = () => {
                                     {todos.length - 1 === index ? "" : <hr className="border-dashed my-3" />}
                                 </Fragment>
                             )
-                        })
+                        }) : <p className='text-center'>No appointments found</p>
                     }
                 </div>
             </div>

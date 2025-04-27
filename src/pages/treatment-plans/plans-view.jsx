@@ -29,10 +29,10 @@ const PlansView = () => {
           {/* <TabAppointmentOverview appointmentData={appointment} /> */}
           <div className="tab-pane fade" id="progressTab">
             <TabPlanProgress/>
-            <LeadsEmptyCard
+            {/* <LeadsEmptyCard
               title="No reports yet!"
               description="There are no reports to be viewed"
-            />
+            /> */}
           </div>
           <div className="tab-pane fade" id="activityTab">
             <LeadsEmptyCard

@@ -3,57 +3,55 @@ import { tasksListData } from '@/utils/data/tasksListData';
 import { FiEdit, FiStar } from 'react-icons/fi';
 import Dropdown from '@/components/shared/Dropdown';
 import PerfectScrollbar from "react-perfect-scrollbar";
-import TaskHeader from './TaskHeader';
 import Footer from '@/components/shared/Footer';
-import TaskSidebar from './TaskSidebar';
-import { Link } from 'react-router-dom';
-import { upcomingScheduleList } from '@/utils/data/upcomingScheduleList';
-import ImageGroup from '@/components/shared/ImageGroup';
+import ProgressSidebar from './ProgressSidebar';
 
 const actions = [
     { label: "Edit Task", icon: "" },
     { label: "View Task", icon: "" },
     { label: "Delete Task", icon: "" },
 ]
-const TabPlanProgress = () => {
+const TaskPlanProgress = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
     const groupedTasks = groupTasksByDate(tasksListData);
 
     return (
         <div className="d-flex">
-            <TaskSidebar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen} />
+            <ProgressSidebar />
             <div className='content-area'>
                 <PerfectScrollbar>
-                    <div className="ms-4">
-                        <div className="">
-                            <div className="card stretch stretch-full">
-                                <div className="card-body">
-                                    {upcomingScheduleList.map(({ date, id, schedule_name, color }) => {
-                                            return (
-                                                <div key={id} className="p-3 border border-dashed rounded-3 schedule-card">
-                                                    <div className="d-flex justify-content-between">
-                                                        <div className="d-flex align-items-center gap-3">
-                                                            <div className={`wd-50 ht-50 lh-1 d-flex align-items-center justify-content-center flex-column rounded-2 bg-soft-${color} text-${color} schedule-date`}>
-                                                                <span className="fs-18 fw-bold mb-1 d-block">{date.day}</span>
-                                                                <span className="fs-10 fw-semibold text-uppercase d-block">{date.month}</span>
-                                                            </div>
-                                                            <div className="text-dark">
-                                                                <Link to="#" className="fw-bold mb-2 text-truncate-1-line">{schedule_name}</Link>
-                                                                <span className="fs-11 fw-normal text-muted text-truncate-1-line">{date.time}</span>
-                                                            </div>
-                                                        </div>
-                                                        {/* <div className="img-group lh-0 ms-3 justify-content-start d-none d-sm-flex">
-                                                            <ImageGroup data={team_members} avatarSize='avatar-md' />
-                                                        </div> */}
-                                                    </div>
-                                                </div>
-                                            )
-                                        })
-                                    }
+                    <div className="content-area-body">
+                        {Object.keys(groupedTasks).map((group, index) => (
+                            <div key={group} className="card stretch stretch-full" style={{ marginBottom: index === Object.keys(groupedTasks).length - 1 ? "0px" : "" }}>
+                                <a
+                                    href="#"
+                                    className="card-header"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target={`#tasks_collapse_${index}`}
+                                >
+                                    <h5 className="mb-0">{group}</h5>
+                                </a>
+                                <div className="card-body collapse show" id={`tasks_collapse_${index}`}>
+                                    <ul className="list-unstyled mb-0">
+                                        {groupedTasks[group].map(({ title, priority, taskType, user_img, priorityColor, priorityBgColor, taskTypeColor, taskTypeBgColor }, index) => (
+                                            <List
+                                                key={index}
+                                                title={title}
+                                                priority={priority}
+                                                taskType={taskType}
+                                                user_img={user_img}
+                                                priorityColor={priorityColor}
+                                                priorityBgColor={priorityBgColor}
+                                                taskTypeColor={taskTypeColor}
+                                                taskTypeBgColor={taskTypeBgColor}
+                                            />
+                                        ))}
+
+                                    </ul>
                                 </div>
-                                <Link to="#" className="card-footer fs-11 fw-bold text-uppercase text-center py-4">Upcomming Schedule</Link>
                             </div>
-                        </div>
+                        ))}
+
                     </div>
                     <Footer />
                 </PerfectScrollbar>
@@ -62,22 +60,40 @@ const TabPlanProgress = () => {
     )
 }
 
-export default TabPlanProgress
+export default TaskPlanProgress
 
-const List = ({ title, priority, taskType, priorityColor, priorityBgColor, taskTypeColor, taskTypeBgColor }) => {
+const List = ({ title, priority, taskType, user_img, priorityColor, priorityBgColor, taskTypeColor, taskTypeBgColor }) => {
     return (
         <li className="single-task-list p-3 mb-3 border border-dashed rounded-3">
             <div className="d-flex align-items-center justify-content-between">
                 <div className="d-flex align-items-center gap-3 me-3">
+                    <div className="custom-control custom-checkbox me-2">
+                        <input
+                            type="checkbox"
+                            className="custom-control-input"
+                            id="customCheckTask1"
+                            data-checked-action="task-action"
+                        />
+                        <label
+                            className="custom-control-label c-pointer"
+                            htmlFor="customCheckTask1"
+                        />
+                    </div>
                     <div className="d-flex align-items-center gap-3">
+                        <div className="lh-base">
+                            <FiStar />
+                        </div>
                         <a
-                            href={`/appointments/2`}
+                            href="#"
                             className="single-task-list-link"
                             data-bs-toggle="offcanvas"
                             data-bs-target="#tasksDetailsOffcanvas"
                         >
                             <div className="fs-13 fw-bold text-truncate-1-line">
                                 {title}
+                                <span className={`ms-2 badge bg-${priorityBgColor} text-${priorityColor} text-capitalize`}>
+                                    {priority}
+                                </span>
                             </div>
                             <div className="fs-12 fw-normal text-muted text-truncate-1-line">
                                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
@@ -87,9 +103,17 @@ const List = ({ title, priority, taskType, priorityColor, priorityBgColor, taskT
                 </div>
                 <div className="d-flex flex-shrink-0 align-items-center gap-3">
                     <div className={`badge bg-${taskTypeBgColor} text-${taskTypeColor} d-md-inline-block d-none text-capitalize`}>
-                        [Appointment Type]
+                        {taskType}
                     </div>
-                    <div className="d-md-inline-block d-none me-3">[Appointment Date]</div>
+                    <div className="d-md-inline-block d-none me-3">27 Nov, 2023</div>
+                    <div className="avatar-image avatar-md d-sm-inline-block d-none">
+                        <img
+                            src={user_img}
+                            alt="user"
+                            className="img-fluid"
+                        />
+                    </div>
+                    <Dropdown dropdownItems={actions} triggerClass='avatar-md' />
                 </div>
             </div>
         </li>
