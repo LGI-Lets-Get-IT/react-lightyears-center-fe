@@ -8,7 +8,6 @@ import { clientStatusOptions } from "@/utils/options";
 import { useSelector } from "react-redux";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
-import { O } from "../../../../dist/assets/format-Dl4kvTJg";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
