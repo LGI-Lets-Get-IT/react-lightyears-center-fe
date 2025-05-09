@@ -5,13 +5,14 @@ import React from "react";
 // import Project from "@/components/widgetsList/Project";
 // import TeamProgress from "@/components/widgetsList/Progress";
 // import PaymentRecordChart from "@/components/widgetsCharts/PaymentRecordChart";
-import SiteOverviewStatistics from "./SiteOverviewStatistics";
 // import TasksOverviewChart from "@/components/widgetsCharts/TasksOverviewChart";
 // import SalesMiscellaneous from "@/components/widgetsMiscellaneous/SalesMiscellaneous";
 import PageHeaderDate from "@/components/shared/pageHeader/PageHeaderDate";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import Footer from "@/components/shared/Footer";
 import { projectsDataTwo } from "@/utils/data/projectsDataTwo";
+import AppointmentCalendar from "./components/AppointmentCalendar";
+import DashboardStatistics from "./components/DashboardStatistics";
 
 const Home = () => {
   return (
@@ -21,7 +22,8 @@ const Home = () => {
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <SiteOverviewStatistics />
+          <DashboardStatistics/>
+          <AppointmentCalendar />
           {/* <PaymentRecordChart /> */}
           {/* <SalesMiscellaneous isFooterShow={true} dataList={projectsDataTwo} /> */}
           {/* <TasksOverviewChart /> */}

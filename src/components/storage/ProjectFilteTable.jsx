@@ -37,13 +37,12 @@ const ProjectFilteTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                                files.map(({ id, mimeType, name, webViewLink, size, createdTime }) => {
+                            {files && files.length > 0 ? files.map(({ id, mimeType, name, webViewLink, size, createdTime }) => {
                                     const icon = mimeType == 'application/pdf' ?  '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
                                     return (
                                         <TableRow
                                         key={id}
-                                        fileSIze={size/1000000}
+                                        fileSIze={size/100000}
                                         iconSrc={icon}
                                         // members={members}
                                         link={webViewLink}
@@ -53,7 +52,7 @@ const ProjectFilteTable = () => {
                                         handleDelete={handleDelete}
                                         />
                                     )
-                                })
+                                }) : <tr className='text-center'><td colSpan={4}>No files found</td></tr>
                             }
                         </tbody>
                     </table>

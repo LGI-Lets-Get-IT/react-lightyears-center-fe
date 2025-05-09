@@ -122,6 +122,8 @@ import { LuSchool } from "react-icons/lu";
 import { LiaFileMedicalSolid, LiaNotesMedicalSolid } from "react-icons/lia";
 import { CiMedicalClipboard } from "react-icons/ci";
 import { IoSettingsOutline } from "react-icons/io5"
+import { TbTargetArrow } from "react-icons/tb";
+import { MdOutlineEventAvailable } from "react-icons/md";
 
 const getIcon = (name) => {
   switch (name) {
@@ -367,7 +369,13 @@ const getIcon = (name) => {
       return <LuSchool />;
 
     case "io-settings-outline":
-      return <IoSettingsOutline/>
+      return <IoSettingsOutline/>;
+
+    case "tb-target-arrow":
+      return <TbTargetArrow />;
+    
+    case "md-outline-event-available":
+      return <MdOutlineEventAvailable/>
 
     default:
       break;

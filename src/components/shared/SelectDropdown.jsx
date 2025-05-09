@@ -43,12 +43,12 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
     //     }
     // }, [selectedOption]);
 
-    useEffect(() => {
-        if (selectedOption) {
-            const selectedOpt = options?.find(option => option.value === selectedOption);
-            setLocalSelectedOption(selectedOpt);
-        }
-    }, [selectedOption]);
+    // useEffect(() => {
+    //     if (selectedOption) {
+    //         const selectedOpt = options?.find(option => option.value === selectedOption);
+    //         setLocalSelectedOption(selectedOpt);
+    //     }
+    // }, [selectedOption]);
     
 
     useEffect(() => {
@@ -76,7 +76,7 @@ const SelectDropdown = ({ options, selectedOption, onSelectOption, className, de
             <div className={"select-box"} onClick={toggleDropdown}>
                 <span className="selected-label">
                     {!selectedOption && placeholder}
-                    {!localSelectedOption && placeholder}
+                    {/* {!localSelectedOption && placeholder} */}
                     {localSelectedOption?.color ? <span className="status-dot" style={{ backgroundColor: localSelectedOption?.color }}></span> : ""}
                     {localSelectedOption?.icon ? <span className={`lh-1 fs-16 ${localSelectedOption.iconClassName}`}>{getIcon(localSelectedOption?.icon)} </span> : ""}
                     {localSelectedOption?.img ? <img src={localSelectedOption.img} className="avatar-image avatar-sm" /> : ""}

@@ -13,6 +13,9 @@ import TreatmentTypesList from "@/pages/treatment-types/treatment-types-list";
 import TestTypesList from "@/pages/test-types/test-types-list";
 import TestTypesCreate from "@/pages/test-types/test-types-create";
 import TreatmentTypesCreate from "@/pages/treatment-types/treatment-types-create";
+import EmployeesList from "@/pages/employees/employees-list";
+import EmployeesEdit from "@/pages/employees/employees-edit";
+import EmployeesView from "@/pages/employees/employees-view";
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -85,10 +88,10 @@ const WidgetsStatistics = lazy(() => import("@/pages/widgets-statistics"));
 // *
 const Home = lazy(() => import("@/pages/dashboard/home"));
 
-const CustomersView = lazy(() => import("@/pages/clients/clients-view"));
-const CustomersCreate = lazy(() => import("@/pages/clients/clients-create"));
-const CustomersList = lazy(() => import("@/pages/clients/clients-list"));
-const CustomersEdit = lazy(() => import("@/pages/clients/clients-edit"));
+const ClientsView = lazy(() => import("@/pages/clients/clients-view"));
+const ClientsCreate = lazy(() => import("@/pages/clients/clients-create"));
+const ClientsList = lazy(() => import("@/pages/clients/clients-list"));
+const ClientsEdit = lazy(() => import("@/pages/clients/clients-edit"));
 
 const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
 const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));
@@ -182,25 +185,25 @@ export const router = createBrowserRouter([
       {
         path: "/clients",
         element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
-          <CustomersList />
+          <ClientsList />
         </ProtectedRoute>,
       },
       {
         path: "/clients/:uuid",
         element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
-          <CustomersView />
+          <ClientsView />
         </ProtectedRoute>,
       },
       {
         path: "/clients/:uuid/edit",
         element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.UPDATE}>
-          <CustomersEdit />
+          <ClientsEdit />
         </ProtectedRoute>,
       },
       {
         path: "/clients/create",
         element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.CREATE}>
-          <CustomersCreate />
+          <ClientsCreate />
         </ProtectedRoute>,
       },
       {
@@ -226,31 +229,68 @@ export const router = createBrowserRouter([
         element: <AppsTasks/>
       },
       // schools
-      {
-        path: "/settings",
-        children: [
-          {
-            path: "schools",
-            element: <SchoolsList />,
-          },
-          {
-            path: 'test-types',
-            element: <TestTypesList/>
-          },
-          {
-            path: 'test-types/create',
-            element: <TestTypesCreate/>
-          },
-          {
-            path: 'treatment-types',
-            element: <TreatmentTypesList/>
-          },
-          {
-            path: 'treatment-types/create',
-            element: <TreatmentTypesCreate/>
-          },
-        ],
-      },
+        {
+          path: 'employees',
+          element: <EmployeesList/>,
+        },
+        {
+          path: 'employees/:id',
+          element: <EmployeesView/>,
+        },
+        {
+
+          path: 'employees/:id/edit',
+          element: <EmployeesEdit/>
+        },
+        {
+          path: "schools",
+          element: <SchoolsList />,
+        },
+        {
+          path: 'test-types',
+          element: <TestTypesList/>
+        },
+        {
+          path: 'test-types/create',
+          element: <TestTypesCreate/>
+        },
+        {
+          path: 'treatment-types',
+          element: <TreatmentTypesList/>
+        },
+        {
+          path: 'treatment-types/create',
+          element: <TreatmentTypesCreate/>
+        },
+      // {
+      //   path: "/settings",
+      //   children: [
+      //     {
+      //       path: 'employees',
+      //       element: <EmployeesList/>,
+      //     },
+      //     {
+      //       path: "schools",
+      //       element: <SchoolsList />,
+      //     },
+      //     {
+      //       path: 'test-types',
+      //       element: <TestTypesList/>
+      //     },
+      //     {
+      //       path: 'test-types/create',
+      //       element: <TestTypesCreate/>
+      //     },
+      //     {
+      //       path: 'treatment-types',
+      //       element: <TreatmentTypesList/>
+      //     },
+      //     {
+      //       path: 'treatment-types/create',
+      //       element: <TreatmentTypesCreate/>
+      //     },
+      //   ],
+      // },
       // {
       //   path: "/settings/schools",
       //   element: <SchoolsList />,

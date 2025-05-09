@@ -42,7 +42,6 @@ const TabAppointmentOverview = ({ appointmentData }) => {
     const timer = setInterval(() => {
       setNow(new Date());
     }, 1000); // update tiap detik
-    console.log('ASD')
 
     return () => clearInterval(timer);
   }, []);
@@ -407,7 +406,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 <div className="card-body">
                   <div className="d-flex justify-content-between">
                     <div className="fw-semibold">{statusText}</div>
-                    <i className={isOverdue ? "text-danger" : "text-success"}>
+                    <i className={isOverdue ? "text-success" : "text-warning"}>
                       <FiCalendar size={16} />
                     </i>
                   </div>
@@ -415,10 +414,10 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                     <div
                       className={`progress-bar ${
                         isOverdue
-                          ? "bg-danger"
+                          ? "bg-success"
                           : isOngoing
-                          ? "bg-warning"
-                          : "bg-success"
+                          ? "bg-primary"
+                          : "bg-warning"
                       }`}
                       role="progressbar"
                       style={{ width: `${progress}%` }}

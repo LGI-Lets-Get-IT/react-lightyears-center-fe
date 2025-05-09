@@ -18,7 +18,6 @@ const RootLayout = () => {
           <Outlet />
         </div>
       </main>
-      <AddProgressModal/>
     </>
   );
 };

@@ -1,6 +1,31 @@
+import { generatePlanReport } from "@/store/slice/fileSlice";
 import React from "react";
+import { FiCheckCircle, FiEdit, FiEye, FiMail, FiPrinter } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 
 const PlanViewTabItems = () => {
+  const dispatch = useDispatch();
+  const { plan } = useSelector(state => state.treatmentPlans);
+  const { isLoading: downloadLoading } = useSelector(state => state.files)
+
+  const generateTreatmentPlanReport = () => {
+    dispatch(generatePlanReport())
+    .then((response) => {
+        const blob = new Blob([response.payload], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'asd.pdf'; // Set your desired filename here
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    })
+
+    const markAsDone = () => {
+      console.log('Marked plan as done')
+    }
+}
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
       <div className="d-md-none d-flex align-items-center justify-content-between">
@@ -8,14 +33,14 @@ const PlanViewTabItems = () => {
           <i className="feather-align-left fs-20"></i>
         </a>
       </div>
-      <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex align-items-center justify-content-between w-100 overflow-auto">
         <div className="nav-tabs-wrapper page-content-left-sidebar-wrapper">
           <ul
-            className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs"
-            id="myTab"
+            className="nav nav-tabs nav-tabs-custom-style flex-nowrap"
+            id="treatmentPlanTab"
             role="tablist"
           >
-            <li className="nav-item flex-fill border-top" role="presentation">
+            <li className="nav-item" role="presentation">
               <button
                 className="nav-link active"
                 data-bs-toggle="tab"
@@ -24,7 +49,7 @@ const PlanViewTabItems = () => {
                 Overview
               </button>
             </li>
-            <li className="nav-item flex-fill border-top" role="presentation">
+            <li className="nav-item" role="presentation">
               <button
                 className="nav-link"
                 data-bs-toggle="tab"
@@ -33,25 +58,47 @@ const PlanViewTabItems = () => {
                 Progress
               </button>
             </li>
-            {/* <li className="nav-item" role="presentation">
-              <button
-                className="nav-link"
-                data-bs-toggle="tab"
-                data-bs-target="#filesTab"
-              >
-                Files
-              </button>
-            </li> */}
-            {/* <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#timesheetsTab">Timesheets</button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#milestonesTab">Milestones</button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#discussionsTab">Discussions</button>
-                        </li> */}
           </ul>
+        </div>
+        <div className="page-content-right-sidebar-wrapper">
+          <div className="proposal-action-btn">
+              <div className="d-md-none d-lg-flex">
+              {plan?.programs.every(program => program.isDone) ? (
+                <a
+                  onClick={markAsDone}
+                  className="action-btn text-success"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="left"
+                  title="Mark Plan as Done"
+                >
+                  <FiCheckCircle size={16} />
+                </a>
+              ) : (
+                <span
+                  className="action-btn text-secondary disabled"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="left"
+                  title="Please complete the remaining sessions first"
+                >
+                  <FiCheckCircle size={16} />
+                </span>
+              )}
+              </div>
+              <div className="d-md-none d-lg-flex">
+                <a href="#" onClick={generateTreatmentPlanReport} className="action-btn" data-bs-toggle="tooltip" title="Print Plan Report">
+                  {downloadLoading ?
+                    <div className="spinner-border spinner-border-sm text-primary" role="status" />
+                  :
+                      <FiPrinter size={16} />
+                  }
+                  </a>
+              </div>
+              <div className="d-md-none d-lg-flex">
+                  <a href="/proposal/edit" className="action-btn" data-bs-toggle="tooltip" title="Edit Plan">
+                      <FiEdit size={16} />
+                  </a>
+              </div>
+          </div>
         </div>
       </div>
     </div>

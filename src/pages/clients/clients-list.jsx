@@ -6,7 +6,7 @@ import Footer from "@/components/shared/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllClients } from "../../store/slice/clientSlice";
 
-const CustomersList = () => {
+const ClientsList = () => {
   const dispatch = useDispatch();
 
   const { clients } = useSelector((state) => state.clients);
@@ -29,4 +29,4 @@ const CustomersList = () => {
   );
 };
 
-export default CustomersList;
+export default ClientsList;

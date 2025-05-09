@@ -17,8 +17,12 @@ const TabDateTime = ({ error, setError, formData, setFormData }) => {
 
   const handleTimeChange = (e) => {
     const { name, value } = e.target; // name: timeStart / timeEnd
+    console.log('name,', name, value)
 
-    const datePart = formData.appointmentDate;
+    const datePart = formData.appointmentDate
+    ? format(new Date(formData.appointmentDate), "yyyy-MM-dd")
+    : null;
+    console.log('DATEPART', datePart)
     if (!datePart || !value) {
       setFormData({ ...formData, [name]: "" });
       return;

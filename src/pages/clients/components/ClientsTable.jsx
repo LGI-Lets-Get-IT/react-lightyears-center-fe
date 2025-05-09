@@ -151,16 +151,9 @@ const ClientsTable = ({ clients }) => {
       accessorKey: "isActive",
       header: () => "Is Active",
       cell: (info) => {
-        const isActive = info.getValue() == true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
-        return hasPermission(PERMISSIONS.CLIENTS.UPDATE) ?
-            <TableCell
-            options={clientStatusOptions}
-            defaultSelect={info?.getValue().toString()}
-            />
-            : (
-              <span className={`badge bg-soft-${isActive.color} text-${isActive.color}`}>{isActive.text}</span>
-            )
-        }
+        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
+        return <span className={`badge bg-soft-${status.color} text-${status.color}`}>{status.text}</span>
+      }
     },
     {
       accessorKey: "actions",

@@ -36,13 +36,26 @@ export const createFile = createAsyncThunk(
   "files/createFile",
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const response = await filesApi.getAllFiles(data);
+      const response = await filesApi.uploadFile(data);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
+export const generatePlanReport = createAsyncThunk(
+  "files/generatePlanReport",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await filesApi.generatePlanReport();
+      console.log('TESTT', response.data)
+      return response.data
+    } catch (error) {
+      return rejectWithValue(error.message)
+    }
+  }
+)
 
 export const fileSlice = createSlice({
   name: "file",
@@ -53,7 +66,7 @@ export const fileSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllFiles.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.files = action.payload;
     });
     builder.addCase(fetchAllFiles.rejected, (state, action) => {
@@ -64,10 +77,21 @@ export const fileSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchFileById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.file = action.payload;
     });
     builder.addCase(fetchFileById.rejected, (state, action) => {
+      state.isLoading = true;
+      state.error = action.payload;
+    });
+    builder.addCase(generatePlanReport.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(generatePlanReport.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.file = action.payload;
+    });
+    builder.addCase(generatePlanReport.rejected, (state, action) => {
       state.isLoading = true;
       state.error = action.payload;
     });

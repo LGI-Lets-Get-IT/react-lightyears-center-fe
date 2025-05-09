@@ -10,10 +10,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllAppointments } from "@/store/slice/appointmentSlice";
 import { format } from "date-fns";
-import { PERMISSIONS } from "../../shared/permissionsConstant";
+import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 
-const SiteOverviewStatistics = () => {
+const AppointmentCalendar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { appointments } = useSelector((state) => state.appointments)
@@ -87,14 +87,6 @@ const SiteOverviewStatistics = () => {
       
       {hasPermission(PERMISSIONS.APPOINTMENTS.VIEW) &&
               <div className="card">
-                <div className="card-footer">
-                    <div className="row g-4">
-                        <Card bg_color={"bg-primary"} price={appointments.length} progress={"81%"} title={"Appointments"} />
-                        <Card bg_color={"bg-success"} price={"9,275"} progress={"81%"} title={"Assessments Task"} />
-                        <Card bg_color={"bg-danger"} price={"3,868"} progress={"81%"} title={"Rejected"} />
-                        <Card bg_color={"bg-dark"} price={"50,668"} progress={"81%"} title={"Revenue"} />
-                    </div>
-                </div>
                 <div className="card-body">
                   <div className="card-body custom-card-action p-0">
                     <FullCalendar
@@ -133,7 +125,7 @@ const SiteOverviewStatistics = () => {
 };
 
 
-export default SiteOverviewStatistics;
+export default AppointmentCalendar;
 
 const Card = ({ title, price, progress, bg_color }) => {
   return (

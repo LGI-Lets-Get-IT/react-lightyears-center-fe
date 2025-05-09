@@ -56,7 +56,7 @@ export const menuList = [
     id: 4,
     name: "Treatment Plans",
     path: '/treatment-plans',
-    icon: 'feather-calendar',
+    icon: 'tb-target-arrow',
     permissions: [PERMISSIONS.TREATMENT_PLANS.VIEW]
     // dropdownMenu: [
     //   {
@@ -76,38 +76,33 @@ export const menuList = [
     dropdownMenu: [
       {
         id: 1,
+        name: 'Employees',
+        path: '/employees',
+        icon: '',
+        permissions: [PERMISSIONS.EMPLOYEES.VIEW],
+      },
+      {
+        id: 2,
         name: "Schools",
-        path: "/settings/schools",
+        path: "/schools",
         icon: "lu-school",
         permissions: [PERMISSIONS.SCHOOLS.VIEW],
         subdropdownMenu: false,
       },
       {
-        id: 2,
+        id: 3,
         name: "Test Types",
-        path: "/settings/test-types",
+        path: "/test-types",
         icon: "pi-notepencil-light",
         permissions: [PERMISSIONS.TEST_TYPES.CREATE],
         subdropdownMenu: false,
       },
       {
-        id: 3,
+        id: 4,
         name: "Treatment Types",
-        path: "/settings/treatment-types",
+        path: "/treatment-types",
         icon: "lia-file-medical",
         permissions: [PERMISSIONS.TREATMENT_TYPES.CREATE]
-      },
-      {
-        id: 4,
-        name: 'Psychologists',
-        path: '/settings/psychologists',
-        icon: 'lia-file-medical',
-      },
-      {
-        id: 5,
-        name: 'Therapists',
-        path: '/settings/therapists',
-        icon: 'lia-file-medical',
       },
     ]
   }

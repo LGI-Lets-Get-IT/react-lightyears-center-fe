@@ -14,15 +14,9 @@ const AppointmentViewTabItems = () => {
       </div>
       <div className="d-flex align-items-center justify-content-between">
         <div className="nav-tabs-wrapper page-content-left-sidebar-wrapper">
-          <div className="d-flex d-md-none">
-            <a href="#" className="page-content-left-close-toggle">
-              <i className="feather-arrow-left me-2"></i>
-              <span>Back</span>
-            </a>
-          </div>
           <ul
             className="nav nav-tabs nav-tabs-custom-style"
-            id="myTab"
+            id="appointmentTab"
             role="tablist"
           >
             <li className="nav-item" role="presentation">
@@ -63,15 +57,6 @@ const AppointmentViewTabItems = () => {
                 </button>
               </li>
             )}
-            {/* <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#timesheetsTab">Timesheets</button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#milestonesTab">Milestones</button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#discussionsTab">Discussions</button>
-                        </li> */}
           </ul>
         </div>
       </div>

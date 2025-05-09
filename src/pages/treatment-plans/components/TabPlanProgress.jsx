@@ -1,66 +1,130 @@
 import React, { useState } from 'react'
 import { tasksListData } from '@/utils/data/tasksListData';
-import { FiEdit, FiStar } from 'react-icons/fi';
+import { FiEdit, FiStar, FiTrash2 } from 'react-icons/fi';
 import Dropdown from '@/components/shared/Dropdown';
 import PerfectScrollbar from "react-perfect-scrollbar";
 import Footer from '@/components/shared/Footer';
 import ProgressSidebar from './ProgressSidebar';
+import { BsCircleFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 
 const actions = [
     { label: "Edit Task", icon: "" },
     { label: "View Task", icon: "" },
     { label: "Delete Task", icon: "" },
 ]
-const TaskPlanProgress = () => {
+const TabPlanProgress = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const groupedTasks = groupTasksByDate(tasksListData);
+
+    const { plan } = useSelector(state => state.treatmentPlans)
 
     return (
         <div className="d-flex">
             <ProgressSidebar />
             <div className='content-area'>
                 <PerfectScrollbar>
-                    <div className="content-area-body">
-                        {Object.keys(groupedTasks).map((group, index) => (
-                            <div key={group} className="card stretch stretch-full" style={{ marginBottom: index === Object.keys(groupedTasks).length - 1 ? "0px" : "" }}>
-                                <a
-                                    href="#"
-                                    className="card-header"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target={`#tasks_collapse_${index}`}
-                                >
-                                    <h5 className="mb-0">{group}</h5>
-                                </a>
-                                <div className="card-body collapse show" id={`tasks_collapse_${index}`}>
-                                    <ul className="list-unstyled mb-0">
-                                        {groupedTasks[group].map(({ title, priority, taskType, user_img, priorityColor, priorityBgColor, taskTypeColor, taskTypeBgColor }, index) => (
-                                            <List
-                                                key={index}
-                                                title={title}
-                                                priority={priority}
-                                                taskType={taskType}
-                                                user_img={user_img}
-                                                priorityColor={priorityColor}
-                                                priorityBgColor={priorityBgColor}
-                                                taskTypeColor={taskTypeColor}
-                                                taskTypeBgColor={taskTypeBgColor}
-                                            />
-                                        ))}
-
-                                    </ul>
-                                </div>
-                            </div>
-                        ))}
-
+                <div className="content-area-body pb-0">
+                        <div className="row note-has-grid" id="note-full-container">
+                            {/* {plan?.sessions?.map(({ category, content, date, id, title }) => (
+                                    <NoteCard
+                                        key={id}
+                                        id={id}
+                                        title={title}
+                                        date={date}
+                                        content={content}
+                                        category={category}
+                                        // handleFavourite={handleFavourite}
+                                        // handleDeleteNote={handleDeleteNote}
+                                        // filteredCategory={filteredCategory}
+                                        // favourites={favourites}
+                                        // onCategory={onCategory}
+                                        // selectCategory={selectCategory}
+                                    />
+                                ))
+                            } */}
+                        </div>
                     </div>
-                    <Footer />
                 </PerfectScrollbar>
             </div>
         </div>
+        
     )
 }
 
-export default TaskPlanProgress
+export default TabPlanProgress
+
+const NoteCard = ({ title, date, content, category, handleFavourite, handleDeleteNote, filteredCategory, id, favourites, onCategory, selectCategory }) => {
+
+    return (
+        <div className="col-xxl-4 col-xl-6 col-lg-4 col-sm-6 single-note-item all-category">
+            <div className="card card-body mb-4 stretch stretch-full">
+                <span className={`side-stick bg-${getColor(selectCategory.id == id ? selectCategory.name : category)}`}></span>
+                <h5 className="note-title text-truncate w-75 mb-1 d-flex align-items-center" data-noteheading={title}>
+                    {title}
+                    <i className={`point ms-2 fs-7 text-${getColor(selectCategory.id == id ? selectCategory.name : category)}`}><BsCircleFill /></i>
+                </h5>
+                <p className="fs-11 text-muted note-date">{date}</p>
+                <div className="note-content flex-grow-1">
+                    <p className="text-muted note-inner-content text-truncate-3-line" data-notecontent={content}>
+                        {content}
+                    </p>
+                </div>
+                <div className="d-flex align-items-center gap-1">
+                    <span className={`avatar-text avatar-sm ${favourites.includes(id) ? 'favourite' : ''}`} onClick={() => handleFavourite(id)}>
+                        <FiStar />
+                    </span>
+                    <span className="avatar-text avatar-sm" onClick={() => handleDeleteNote(id)}>
+                        <FiTrash2 />
+                    </span>
+                    <div className="ms-auto">
+                        <div className="filter-dropdown btn-group category-selector">
+                            <a className="nav-link dropdown-toggle category-dropdown label-group p-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                            </a>
+                            <div className="dropdown-menu dropdown-menu-right category-menu">
+                                {
+                                    filteredCategory?.map((name, index) => (
+                                        <Link
+                                            key={index}
+                                            onClick={(e) => onCategory(e, name, id)}
+                                            className="note-tasks badge-group-item badge-tasks dropdown-item position-relative category-tasks text-capitalize" href="#">
+                                            <span className={`wd-5 ht-5 rounded-circle me-3 bg-${getColor(name)}`}></span>
+                                            {name}
+                                        </Link>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const getColor = (name) => {
+    switch (name) {
+        case 'tasks':
+            return "danger"
+        case 'works':
+            return "primary"
+        case 'social':
+            return "info"
+        case 'archive':
+            return "dark"
+        case 'priority':
+            return "danger"
+        case 'personal':
+            return "primary"
+        case 'business':
+            return "warning"
+        case 'important':
+            return "success"
+
+        default:
+            return null;
+    }
+}
+
 
 const List = ({ title, priority, taskType, user_img, priorityColor, priorityBgColor, taskTypeColor, taskTypeBgColor }) => {
     return (
@@ -119,45 +183,6 @@ const List = ({ title, priority, taskType, user_img, priorityColor, priorityBgCo
         </li>
     )
 }
-
-
-const groupTasksByDate = (tasks) => {
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-
-    const groupedTasks = {
-        "Recently Assigned": [],
-        "Yesterday": [],
-    };
-
-    tasks.forEach(task => {
-        const taskDate = new Date(task.date);
-        if (taskDate.toDateString() === today.toDateString()) {
-            groupedTasks["Recently Assigned"].push(task);
-        } else if (taskDate.toDateString() === yesterday.toDateString()) {
-            groupedTasks["Yesterday"].push(task);
-        }
-        else {
-            const weekStart = getStartOfWeekGroup(taskDate).toDateString();
-
-            if (!groupedTasks[weekStart]) {
-                groupedTasks[weekStart] = [];
-            }
-            groupedTasks[weekStart].push(task);
-        }
-    });
-
-    return groupedTasks;
-};
-
-const getStartOfWeekGroup = (taskDate) => {
-    const startOfWeekGroup = new Date(taskDate);
-    // Move back to the nearest start of a 7-day block (if today is Day 0, it's the start)
-    const dayOffset = taskDate.getDate() % 7;
-    startOfWeekGroup.setDate(taskDate.getDate() - dayOffset);
-    return startOfWeekGroup;
-};
 
 
 

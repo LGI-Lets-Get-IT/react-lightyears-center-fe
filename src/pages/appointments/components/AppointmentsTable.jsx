@@ -96,8 +96,8 @@ const AppointmentsTable = ({ appointments }) => {
       },
     },
     {
-      accessorKey: "psychologistName",
-      header: () => "Psychologist Name",
+      accessorKey: "picName",
+      header: () => "PIC Name",
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
@@ -114,6 +114,13 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "appointmentTime",
       header: () => "Appointment Time",
       cell: (info) => <a>{info.getValue()}</a>,
+    },
+    {
+      accessorKey: "appointmentType",
+      header: () => "Type",
+      cell: (info) => {
+        return <span className="text-capitalize badge bg-primary">{info.getValue()}</span>
+      }
     },
     {
       accessorKey: "status",

@@ -3,12 +3,12 @@ import * as Yup from "yup";
 
 export const step0Schema = Yup.object({
   title: Yup.string().required("Title is required").min(3, "Title is too short"),
-  client: Yup.object().required("Client is required"),
+  client: Yup.number().required("Client is required"),
   appointmentType: Yup.string().required("Appointment type is required"),
 });
 
 export const step1Schema = Yup.object({
-  psychologistId: Yup.number().required("Psychologist is required"),
+  picId: Yup.number().typeError('PIC is required').required("PIC is required"),
 });
 
 export const step2Schema = Yup.object({

@@ -1,21 +1,7 @@
 import React from 'react'
-import { FiMoreVertical, FiPlus, FiShare2 } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { FiMoreVertical} from 'react-icons/fi'
 import getIcon from '@/utils/getIcon'
 
-const socialLinkOptions = [
-    { label: "Github", icon: "feather-github", shareCount: "39.57K" },
-    { label: "Twitter", icon: "feather-twitter", shareCount: "64.37K" },
-    { label: "Youtube", icon: "feather-youtube", shareCount: "53.76K" },
-    { label: "Linkedin", icon: "feather-linkedin", shareCount: "42.69K" },
-    { label: "Facebook", icon: "feather-facebook", shareCount: "95.65K" },
-    { label: "Instagram", icon: "feather-instagram", shareCount: "32.69K" },
-    { type: "divider" },
-    { label: "Copy Link", icon: "feather-link", shareCount: "" },
-    { label: "Share via QR", icon: "feather-grid", shareCount: "" },
-    { label: "Share via Email", icon: "feather-mail", shareCount: "" },
-    { label: "Share via Message", icon: "feather-message-square", shareCount: "" },
-]
 const moreOptions = [
     { label: "Pin Project", icon: "feather-map-pin" },
     { label: "Edit Project", icon: "feather-edit" },
@@ -56,30 +42,10 @@ const PlanViewHeader = () => {
                     }
                 </div>
             </div>
-            <Link to="/appointments/create" className="btn btn-primary">
+            {/* <Link to="/appointments/create" className="btn btn-primary">
                 <FiPlus size={16} className='me-2' />
                 <span>Create New Appointment</span>
-            </Link>
-            <div className="filter-dropdown">
-                <ul className="dropdown-menu dropdown-menu-start">
-                    {
-                        socialLinkOptions.map(({ icon, label, shareCount, type }, index) => {
-                            if (type === "divider") {
-                                return <li key={index} className="dropdown-divider"></li>
-                            }
-                            return (
-                                <li key={index}>
-                                    <a href="#" className="dropdown-item">
-                                        <i className='me-3'>{getIcon(icon)}</i>
-                                        <span>{label}</span>
-                                        <span className="fs-10 text-gray-500 ms-2">({shareCount})</span>
-                                    </a>
-                                </li>
-                            )
-                        })
-                    }
-                </ul>
-            </div>
+            </Link> */}
         </div>
 
 

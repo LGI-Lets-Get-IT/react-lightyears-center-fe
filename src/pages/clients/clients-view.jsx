@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchClientByUuid } from "../../store/slice/clientSlice";
 import { useParams } from "react-router-dom";
 
-const CustomersView = () => {
+const ClientsView = () => {
   const dispatch = useDispatch();
   const { uuid } = useParams();
   const { currentClient } = useSelector((state) => state.clients);
@@ -30,4 +30,4 @@ const CustomersView = () => {
   );
 };
 
-export default CustomersView;
+export default ClientsView;

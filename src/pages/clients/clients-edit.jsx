@@ -2,7 +2,7 @@
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import ClientsEditContent from "./components/ClientsEditContent";
 import ClientsEditHeader from "./components/ClientsEditHeader";
-const CustomersCreate = () => {
+const ClientsEdit = () => {
   return (
     <>
       <PageHeader>
@@ -17,4 +17,4 @@ const CustomersCreate = () => {
   );
 };
 
-export default CustomersCreate;
+export default ClientsEdit;

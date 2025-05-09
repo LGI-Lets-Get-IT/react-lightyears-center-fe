@@ -25,7 +25,7 @@ const AppointmentCreateContent = () => {
     client: null,
     title: null,
     appointmentType: "",
-    psychologistId: null,
+    picId: null,
     appointmentDate: null,
     timeStart: null,
     timeEnd: null,
@@ -52,6 +52,7 @@ const AppointmentCreateContent = () => {
 
   const handleNext = async (e) => {
     e.preventDefault();
+    
     try {
       if(currentStep === 0) {
         await step0Schema.validate(formData, { abortEarly: false })
@@ -95,10 +96,6 @@ const AppointmentCreateContent = () => {
       setCurrentStep(index); // allow backward
     }
   };
-
-  useEffect(() => {
-    dispatch(fetchAllEmployees());
-  }, [])
 
   return (
     <div className="col-lg-12">

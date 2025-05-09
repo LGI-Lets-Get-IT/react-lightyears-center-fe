@@ -62,7 +62,8 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               onChange={(e) => {
                 const selectedId = parseInt(e.target.value);
                 const selectedClient = clients.find((c) => c.id === selectedId);
-                setFormData({ ...formData, client: selectedClient }); // 👈 fix is here
+                console.log('SELECTEDCLIENT', selectedClient.id)
+                setFormData({ ...formData, client: selectedClient.id}); // 👈 fix is here
               }}
               required
             >

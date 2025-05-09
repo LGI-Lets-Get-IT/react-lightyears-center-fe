@@ -3,7 +3,7 @@ import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import ClientsCreateContent from "./components/ClientsCreateContent";
 import ClientsCreateHeader from "./components/ClientsCreateHeader";
 
-const CustomersCreate = () => {
+const ClientsCreate = () => {
   return (
     <>
       <PageHeader>
@@ -18,4 +18,4 @@ const CustomersCreate = () => {
   );
 };
 
-export default CustomersCreate;
+export default ClientsCreate;

@@ -101,16 +101,16 @@ const PlansTable = ({ plans }) => {
     {
       accessorKey: "totalTreatments",
       header: () => "Total Treatments",
-      cell: (info) => <a className="text-wrap">{info.getValue()}</a>
+      cell: (info) => <a className="text-wrap">{info.getValue()} Programs</a>
     },
     {
       accessorKey: "totalTargetedBehaviors",
       header: () => "Total Target Behaviors",
-      cell: (info) => <a href={`mailto:${info.getValue()}`} className="text-wrap">{info.getValue()}</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue()} Targets</a>,
     },
     {
       accessorKey: 'consultDate',
-      header: () => 'Consult Date',
+      header: () => 'Consultation Date',
       cell: (info) => {
         const date = new Date(info.getValue());
         return <a>{date.toLocaleDateString()}</a>;
