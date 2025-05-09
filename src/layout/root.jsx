@@ -7,7 +7,7 @@ import AddProgressModal from "@/pages/treatment-plans/components/AddProgressModa
 
 const RootLayout = () => {
   const pathName = useLocation().pathname;
-  useBootstrapUtils(pathName);
+  // useBootstrapUtils(pathName);
 
   return (
     <>
