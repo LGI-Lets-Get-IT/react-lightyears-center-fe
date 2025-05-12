@@ -13,7 +13,7 @@ const CustomerCreateContent = () => {
   const { currentClient } = useSelector((state) => state.clients);
 
   useEffect(() => {
-    console.log("PARAMS", uuid);
+    // console.log("PARAMS", uuid);
     dispatch(fetchClientByUuid(uuid));
   }, []);
 

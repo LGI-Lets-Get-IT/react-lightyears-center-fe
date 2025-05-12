@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchEmployeeById } from "@/store/slice/employeeSlice";
 import EmployeesViewHeader from "./components/EmployeesViewHeader";
-import EmployeesEditContent from "./components/EmployeesEditContent";
+import EmployeeDetailContent from "./components/EmployeeDetailContent";
 
 const EmployeesView = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const EmployeesView = () => {
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          {/* <EmployeesEditContent /> */}
+          <EmployeeDetailContent employeeData={employee} />
         </div>
       </div>
     </>

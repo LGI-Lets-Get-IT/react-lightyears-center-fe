@@ -69,6 +69,20 @@ export const createEmployee = createAsyncThunk(
   }
 );
 
+export const updateEmployeeById = createAsyncThunk(
+  "clients/updateEmployeeById",
+  async (clientData, { rejectWithValue, dispatch }) => {
+    try {
+      const { id, ...data } = clientData;
+      const response = await employeesApi.updateEmployeeById(id, data);
+      // dispatch(fetchAllClients());
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const employeeSlice = createSlice({
   name: "employee",
   initialState,

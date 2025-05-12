@@ -2,15 +2,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchClientByUuid } from "@/store/slice/clientSlice";
+import { fetchEmployeeById } from "@/store/slice/employeeSlice";
+import EmployeeEdit from "./employeeEdit/EmployeeEdit";
 
-const EmployeesEditContent = () => {
+const EmployeesEditContent = ({ employeeData }) => {
   const dispatch = useDispatch();
-  const { uuid } = useParams();
-  const { currentClient } = useSelector((state) => state.clients);
+  const { id } = useParams();
+  const { currentEmp } = useSelector((state) => state.clients);
 
   useEffect(() => {
-    dispatch(fetchClientByUuid(uuid));
+    dispatch(fetchEmployeeById(id));
   }, []);
 
   return (
@@ -47,8 +48,8 @@ const EmployeesEditContent = () => {
           </ul>
         </div>
         <div className="tab-content">
-          {/* <TabProfile userData={currentClient} />
-          <TabPassword /> */}
+          <EmployeeEdit empData={employeeData} />
+          {/* <TabPassword /> */}
         </div>
       </div>
     </div>
