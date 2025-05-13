@@ -55,15 +55,13 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
             </label>
             <select
               id="client"
-              className={`form-control ${
-                error.client ? "is-invalid" : ""
-              }`}
-              value={formData.client?.id || ""}
+              className={`form-control ${error.client ? "is-invalid" : ""}`}
+              value={formData?.client || ""}
               onChange={(e) => {
                 const selectedId = parseInt(e.target.value);
                 const selectedClient = clients.find((c) => c.id === selectedId);
-                console.log('SELECTEDCLIENT', selectedClient.id)
-                setFormData({ ...formData, client: selectedClient.id}); // 👈 fix is here
+                console.log("SELECTEDCLIENT", selectedClient.id);
+                setFormData({ ...formData, client: selectedClient.id }); // 👈 fix is here
               }}
               required
             >

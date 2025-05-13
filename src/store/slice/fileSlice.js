@@ -46,16 +46,16 @@ export const createFile = createAsyncThunk(
 
 export const generatePlanReport = createAsyncThunk(
   "files/generatePlanReport",
-  async (_, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await filesApi.generatePlanReport();
-      console.log('TESTT', response.data)
-      return response.data
+      const response = await filesApi.generatePlanReport(id);
+      console.log("TESTT", response.data);
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue(error.message);
     }
   }
-)
+);
 
 export const fileSlice = createSlice({
   name: "file",
@@ -92,7 +92,7 @@ export const fileSlice = createSlice({
       state.file = action.payload;
     });
     builder.addCase(generatePlanReport.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

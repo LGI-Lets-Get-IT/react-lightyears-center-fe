@@ -10,7 +10,7 @@ const TabPassword = () => {
                         <span className="d-block mb-2">Password Information:</span>
                         <span className="fs-12 fw-normal text-muted text-truncate-1-line">You can only change your password twice within 24 hours! </span>
                     </h5>
-                    <a href="#" className="btn btn-sm btn-light-brand">Reset</a>
+                    {/* <a href="#" className="btn btn-sm btn-light-brand">Reset</a> */}
                 </div>
                 <div className="row mb-4 align-items-center">
                     <div className="col-lg-4">
@@ -31,15 +31,15 @@ const TabPassword = () => {
                         <div className="input-group field">
                             <div className="input-group-text"><FiKey /></div>
                             <input type="password" className="form-control password" id="newPassword" placeholder="Password Confirm" />
-                            <div className="input-group-text c-pointer gen-pass"><FiHash /></div>
-                            <div className="input-group-text border-start bg-gray-2 c-pointer"><FiEye /></div>
+                            {/* <div className="input-group-text c-pointer gen-pass"><FiHash /></div>
+                            <div className="input-group-text border-start bg-gray-2 c-pointer"><FiEye /></div> */}
                         </div>
-                        <div className="progress-bar mt-2">
+                        {/* <div className="progress-bar mt-2">
                             <div></div>
                             <div></div>
                             <div></div>
                             <div></div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="pass-hint">
@@ -52,7 +52,7 @@ const TabPassword = () => {
                 </div>
             </div>
             <hr className="my-0" />
-            <div className="card-body pass-security">
+            {/* <div className="card-body pass-security">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                     <h5 className="fw-bold mb-0 me-4">
                         <span className="d-block mb-2">Security preferences:</span>
@@ -74,7 +74,7 @@ const TabPassword = () => {
                     isChecked={false}
                     id="two"
                 />
-            </div>
+            </div> */}
         </div>
     )
 }

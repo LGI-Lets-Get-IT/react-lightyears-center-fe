@@ -89,7 +89,7 @@ const Table = ({ data, columns }) => {
                       ))}
                     </thead>
                     <tbody>
-                      {table.getRowModel().rows.map((row) => (
+                      {table.getRowModel().rows.length > 0 ? table.getRowModel().rows.map((row) => (
                         <tr
                           key={row.id}
                           className="single-item chat-single-item"
@@ -110,7 +110,13 @@ const Table = ({ data, columns }) => {
                             );
                           })}
                         </tr>
-                      ))}
+                      )) :
+                      <tr>
+                        <td colSpan={columns.length} className="text-center py-4">
+                          No data available.
+                        </td>
+                      </tr>
+                      }
                     </tbody>
                   </table>
                 </div>

@@ -115,6 +115,7 @@ const TabProfile = () => {
             </div>
             <div className="col-lg-8">
               <SelectDropdown
+                name={"gender"}
                 options={gender}
                 selectedOption={selectedOption?.gender}
                 placeholder={"Select Child Gender"}
@@ -131,6 +132,7 @@ const TabProfile = () => {
             </div>
             <div className="col-lg-8">
               <SelectDropdown
+                name="nationality"
                 options={countries}
                 selectedOption={selectedOption?.nationality}
                 placeholder={"Select Child Nationality"}
@@ -149,6 +151,7 @@ const TabProfile = () => {
             </div>
             <div className="col-lg-8">
               <SelectDropdown
+                name={"school"}
                 options={schools.map((school) => ({
                   label: school.name,
                   value: school.id,
@@ -208,6 +211,7 @@ const TabProfile = () => {
             </div>
             <div className="col-lg-8">
               <SelectDropdown
+                name="guardianNationality"
                 options={countries}
                 selectedOption={selectedOption?.guardianNationality}
                 placeholder={"Select Guardian Nationality"}
@@ -230,6 +234,7 @@ const TabProfile = () => {
             </div>
             <div className="col-lg-8">
               <SelectDropdown
+                name="relationship"
                 options={relationships}
                 selectedOption={selectedOption?.relationship}
                 placeholder="Select Gender"

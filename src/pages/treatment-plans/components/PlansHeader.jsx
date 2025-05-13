@@ -64,7 +64,7 @@ const PlansHeader = () => {
           iconStrokeWidth={0}
           isAvatar={false}
         /> */}
-        <Link to="/schools/create" className="btn btn-primary">
+        <Link to="/treatment-plans/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Plan</span>
         </Link>

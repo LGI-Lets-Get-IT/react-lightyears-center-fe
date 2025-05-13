@@ -1,7 +1,7 @@
 // import React, { useEffect } from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchPlanById } from "@/store/slice/treatmentPlanSlice";
 import PlanViewHeader from "./components/PlanViewHeader";

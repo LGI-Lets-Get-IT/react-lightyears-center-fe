@@ -1,7 +1,7 @@
 // import React from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import AppointmentCreateHeader from "./components/AppointmentCreateHeader";
-import AppointmentCreateContent from "./components/AppointmentCreateContent";
+import AppointmentCreateHeader from "@/components/AppointmentCreateHeader";
+import AppointmentCreateContent from "@/components/AppointmentCreateContent";
 
 const AssessmentsCreate = () => {
   return (

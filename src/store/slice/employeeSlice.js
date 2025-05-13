@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { schoolsApi } from "../../services/schoolService";
 import { employeesApi } from "@/services/employeeService";
 
 const initialState = {
   employees: [],
   employee: null,
+  psychologists: [],
+  therapists: [],
   isLoading: false,
   error: null,
 };
@@ -104,7 +105,7 @@ export const employeeSlice = createSlice({
     });
     builder.addCase(fetchAllPsychologists.fulfilled, (state, action) => {
       state.isLoading = true;
-      state.employees = action.payload;
+      state.psychologists = action.payload;
     });
     builder.addCase(fetchAllPsychologists.rejected, (state, action) => {
       state.isLoading = true;
@@ -115,7 +116,7 @@ export const employeeSlice = createSlice({
     });
     builder.addCase(fetchAllTherapists.fulfilled, (state, action) => {
       state.isLoading = true;
-      state.employees = action.payload;
+      state.therapists = action.payload;
     });
     builder.addCase(fetchAllTherapists.rejected, (state, action) => {
       state.isLoading = true;

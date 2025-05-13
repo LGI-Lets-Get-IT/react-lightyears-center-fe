@@ -30,20 +30,20 @@ const LoginForm = ({ resetPath }) => {
             {/* <p className="fs-12 fw-medium text-muted">Thank you for get back <strong>Nelel</strong> web applications, let's access our the best recommendation for you.</p> */}
             <form onSubmit={handleSubmit} className="w-100 mt-4 pt-2">
                 <div className="mb-4">
-                    {errors.email && (
-                        <label id="project-type-error" className="error">
-                        <FiAlertTriangle /> {errors.email}
-                        </label>
-                    )}
                     <input name="email" id="email" type="email" className={`form-control ${errors.title ? "is-invalid" : ""}`} placeholder="Email" onInput={handleInputChange} required />
+                    {errors.email && (
+                        <div className="text-danger mt-2">
+                            {errors.email}
+                        </div>
+                    )}
                 </div>
                 <div className="mb-3">
-                    {errors.password && (
-                        <label id="project-type-error" className="error">
-                        <FiAlertTriangle /> {errors.password}
-                        </label>
-                    )}
                     <input name="password" id="password" type="password" className={`form-control ${errors.password ? 'is-invalid' : ''}`} placeholder="Password" onInput={handleInputChange} required />
+                    {errors.password && (
+                        <div className="text-danger mt-2">
+                            {errors.password}
+                        </div>
+                    )}
                 </div>
                 <div className="d-flex align-items-center justify-content-between">
                     <div>

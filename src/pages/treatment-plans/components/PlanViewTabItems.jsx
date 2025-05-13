@@ -1,31 +1,32 @@
 import { generatePlanReport } from "@/store/slice/fileSlice";
 import React from "react";
-import { FiCheckCircle, FiEdit, FiEye, FiMail, FiPrinter } from "react-icons/fi";
+import { FiCheckCircle, FiEdit, FiPrinter } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const PlanViewTabItems = () => {
   const dispatch = useDispatch();
-  const { plan } = useSelector(state => state.treatmentPlans);
-  const { isLoading: downloadLoading } = useSelector(state => state.files)
+  const { id } = useParams();
+  const { plan } = useSelector((state) => state.treatmentPlans);
+  const { isLoading: downloadLoading } = useSelector((state) => state.files);
 
   const generateTreatmentPlanReport = () => {
-    dispatch(generatePlanReport())
-    .then((response) => {
-        const blob = new Blob([response.payload], { type: 'application/pdf' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'asd.pdf'; // Set your desired filename here
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        window.URL.revokeObjectURL(url);
-    })
+    dispatch(generatePlanReport(id)).then((response) => {
+      const blob = new Blob([response.payload], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${plan.clientName}_TREATMENT-PLAN-REPORT.pdf`; // Set your desired filename here
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    });
 
     const markAsDone = () => {
-      console.log('Marked plan as done')
-    }
-}
+      console.log("Marked plan as done");
+    };
+  };
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
       <div className="d-md-none d-flex align-items-center justify-content-between">
@@ -62,8 +63,8 @@ const PlanViewTabItems = () => {
         </div>
         <div className="page-content-right-sidebar-wrapper">
           <div className="proposal-action-btn">
-              <div className="d-md-none d-lg-flex">
-              {plan?.programs.every(program => program.isDone) ? (
+            <div className="d-md-none d-lg-flex">
+              {plan?.programs.every((program) => program.isDone) ? (
                 <a
                   onClick={markAsDone}
                   className="action-btn text-success"
@@ -83,21 +84,35 @@ const PlanViewTabItems = () => {
                   <FiCheckCircle size={16} />
                 </span>
               )}
-              </div>
-              <div className="d-md-none d-lg-flex">
-                <a href="#" onClick={generateTreatmentPlanReport} className="action-btn" data-bs-toggle="tooltip" title="Print Plan Report">
-                  {downloadLoading ?
-                    <div className="spinner-border spinner-border-sm text-primary" role="status" />
-                  :
-                      <FiPrinter size={16} />
-                  }
-                  </a>
-              </div>
-              <div className="d-md-none d-lg-flex">
-                  <a href="/proposal/edit" className="action-btn" data-bs-toggle="tooltip" title="Edit Plan">
-                      <FiEdit size={16} />
-                  </a>
-              </div>
+            </div>
+            <div className="d-md-none d-lg-flex">
+              <a
+                href="#"
+                onClick={generateTreatmentPlanReport}
+                className="action-btn"
+                data-bs-toggle="tooltip"
+                title="Print Plan Report"
+              >
+                {downloadLoading ? (
+                  <div
+                    className="spinner-border spinner-border-sm text-primary"
+                    role="status"
+                  />
+                ) : (
+                  <FiPrinter size={16} />
+                )}
+              </a>
+            </div>
+            <div className="d-md-none d-lg-flex">
+              <a
+                href="/proposal/edit"
+                className="action-btn"
+                data-bs-toggle="tooltip"
+                title="Edit Plan"
+              >
+                <FiEdit size={16} />
+              </a>
+            </div>
           </div>
         </div>
       </div>

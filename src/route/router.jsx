@@ -3,19 +3,21 @@ import { lazy, Suspense } from "react";
 import "../index.css";
 import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
-import PlansList from "@/pages/treatment-plans/plans-list";
-import PlansView from "@/pages/treatment-plans/plans-view";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
-import AssessmentsList from "@/pages/assessments/assessments-list";
-import AssessmentsView from "@/pages/assessments/assessments-view";
-import TreatmentTypesList from "@/pages/treatment-types/treatment-types-list";
-import TestTypesList from "@/pages/test-types/test-types-list";
-import TestTypesCreate from "@/pages/test-types/test-types-create";
-import TreatmentTypesCreate from "@/pages/treatment-types/treatment-types-create";
-import EmployeesList from "@/pages/employees/employees-list";
-import EmployeesEdit from "@/pages/employees/employees-edit";
-import EmployeesView from "@/pages/employees/employees-view";
+const AssessmentsList = lazy(() => import("@/pages/assessments/assessments-list"));
+const AssessmentsView = lazy(() => import("@/pages/assessments/assessments-view"));
+const TreatmentTypesList = lazy(() => import("@/pages/treatment-types/treatment-types-list"));
+const TestTypesList = lazy(() => import("@/pages/test-types/test-types-list"));
+const TestTypesCreate = lazy(() => import("@/pages/test-types/test-types-create"));
+const TreatmentTypesCreate = lazy(() => import("@/pages/treatment-types/treatment-types-create"));
+const EmployeesList = lazy(() => import("@/pages/employees/employees-list"));
+const EmployeesEdit = lazy(() => import("@/pages/employees/employees-edit"));
+const EmployeesView = lazy(() => import("@/pages/employees/employees-view"));
+
+const PlansList = lazy(() => import("@/pages/treatment-plans/plans-list"));
+const PlansView = lazy(() => import("@/pages/treatment-plans/plans-view"));
+const PlansCreate = lazy(() => import("@/pages/treatment-plans/plans-create"));
 
 const Analytics = lazy(() => import("@/pages/analytics"));
 const ReportsSales = lazy(() => import("@/pages/reports-sales"));
@@ -144,124 +146,165 @@ export const router = createBrowserRouter([
       },
       {
         path: "/appointments",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
-          <AppointmentsList/>
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
+            <AppointmentsList />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/appointments/:id",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
-          <AppointmentsView/>
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.VIEW}>
+            <AppointmentsView />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/appointments/create",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.CREATE}>
-          <AppointmentsCreate/>
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.CREATE}>
+            <AppointmentsCreate />
+          </ProtectedRoute>
+        ),
       },
 
       // Assessments
       {
         path: "/assessments",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
-          <AssessmentsList/>
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
+            <AssessmentsList />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/assessments/:id",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
-          <AssessmentsView />
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.VIEW}>
+            <AssessmentsView />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/assessments/create",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.CREATE}>
-          {/* <AppointmentsCreate/> */}
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.CREATE}>
+            {/* <AppointmentsCreate/> */}
+          </ProtectedRoute>
+        ),
       },
 
       // clients
       {
         path: "/clients",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
-          <ClientsList />
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
+            <ClientsList />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/clients/:uuid",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
-          <ClientsView />
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.VIEW}>
+            <ClientsView />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/clients/:uuid/edit",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.UPDATE}>
-          <ClientsEdit />
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.UPDATE}>
+            <ClientsEdit />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/clients/create",
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.CREATE}>
-          <ClientsCreate />
-        </ProtectedRoute>,
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.CLIENTS.CREATE}>
+            <ClientsCreate />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: '/treatment-plans',
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.TREATMENT_PLANS.VIEW}>
-          <PlansList/>
-        </ProtectedRoute>,
+        path: "/treatment-plans",
+        element: (
+          <ProtectedRoute
+            requiredPermissions={PERMISSIONS.TREATMENT_PLANS.VIEW}
+          >
+            <PlansList />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: '/treatment-plans/:id',
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.TREATMENT_PLANS.VIEW}>
-          <PlansView/>
-        </ProtectedRoute>,
+        path: "/treatment-plans/:id",
+        element: (
+          <ProtectedRoute
+            requiredPermissions={PERMISSIONS.TREATMENT_PLANS.VIEW}
+          >
+            <PlansView />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: '/treatment-plans/:id/edit',
-        element: <ProtectedRoute requiredPermissions={PERMISSIONS.TREATMENT_PLANS.UPDATE}>
-          <PlansView/>
-        </ProtectedRoute>,
+        path: "/treatment-plans/:id/edit",
+        element: (
+          <ProtectedRoute
+            requiredPermissions={PERMISSIONS.TREATMENT_PLANS.UPDATE}
+          >
+            <PlansView />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: '/asdsa',
-        element: <AppsTasks/>
+        path: "/treatment-plans/create",
+        element: (
+          <ProtectedRoute
+            requiredPermissions={PERMISSIONS.TREATMENT_PLANS.CREATE}
+          >
+            <PlansCreate />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/asdsa",
+        element: <AppsTasks />,
       },
       // schools
-        {
-          path: 'employees',
-          element: <EmployeesList/>,
-        },
-        {
-          path: 'employees/:id',
-          element: <EmployeesView/>,
-        },
-        {
-
-          path: 'employees/:id/edit',
-          element: <EmployeesEdit/>
-        },
-        {
-          path: "schools",
-          element: <SchoolsList />,
-        },
-        {
-          path: 'test-types',
-          element: <TestTypesList/>
-        },
-        {
-          path: 'test-types/create',
-          element: <TestTypesCreate/>
-        },
-        {
-          path: 'treatment-types',
-          element: <TreatmentTypesList/>
-        },
-        {
-          path: 'treatment-types/create',
-          element: <TreatmentTypesCreate/>
-        },
+      {
+        path: "employees",
+        element: <EmployeesList />,
+      },
+      {
+        path: "employees/:id",
+        element: <EmployeesView />,
+      },
+      {
+        path: "employees/:id/edit",
+        element: <EmployeesEdit />,
+      },
+      {
+        path: "schools",
+        element: <SchoolsList />,
+      },
+      {
+        path: "test-types",
+        element: <TestTypesList />,
+      },
+      {
+        path: "test-types/create",
+        element: <TestTypesCreate />,
+      },
+      {
+        path: "treatment-types",
+        element: <TreatmentTypesList />,
+      },
+      {
+        path: "treatment-types/create",
+        element: <TreatmentTypesCreate />,
+      },
       // {
       //   path: "/settings",
       //   children: [

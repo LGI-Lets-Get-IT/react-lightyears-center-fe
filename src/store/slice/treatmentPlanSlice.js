@@ -32,7 +32,6 @@ export const fetchPlanById = createAsyncThunk(
   }
 );
 
-
 export const createPlan = createAsyncThunk(
   "treatmentplan/createPlan",
   async (planData, { rejectWithValue }) => {
