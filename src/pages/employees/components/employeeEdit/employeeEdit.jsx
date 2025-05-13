@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import Input from "@/components/shared/Input";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { format } from "date-fns";
 import { updateEmployeeById } from "@/store/slice/employeeSlice";
 import { FiCheck, FiX } from "react-icons/fi";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { isActiveOptions, roleIdOptions } from "@/utils/options";
 import { Form, Formik } from "formik";
+import { employeeSchema } from "@/schemas/employeeSchema";
 
 const EmployeeEdit = ({ empData }) => {
   const dispatch = useDispatch();
@@ -18,24 +18,16 @@ const EmployeeEdit = ({ empData }) => {
   const roleId = roleIdOptions;
 
   const handleSubmit = (values, actions) => {
-    console.log('HANDLESUBMIT', values);
+    console.log('ID', id)
+    console.log('HANDLESUBMIT', values, actions);
 
-
-    // Make sure selectedOption exists and has the necessary properties
-    // const isActive = selectedOption?.isActive?.value ?? null;
-    // const roleId = selectedOption?.roleId?.value ?? null;
-
-    // const body = {
-    //   ...userInput,
-    //   id,
-    //   isActive,
-    //   roleId,
-    // };
-
-    // dispatch(updateEmployeeById(values))
-    //   .unwrap()
-    //   .then(() => navigate(`/employees/${id}`))
-    //   .catch((error) => console.error("handle error", error));
+    dispatch(updateEmployeeById({ id, ...values }))
+      .unwrap()
+      .then(() => {
+        actions.resetForm()
+        navigate(`/employees/${id}`)
+      })
+      .catch((error) => console.error("handle error", error));
   };
 
   return (
@@ -59,6 +51,7 @@ const EmployeeEdit = ({ empData }) => {
           isActive: empData?.isActive,
         }}
           enableReinitialize
+          validationSchema={employeeSchema}
           onSubmit={handleSubmit}
         >
           {({ values, setFieldValue, getFieldProps }) => (

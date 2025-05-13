@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchEmployeeById } from "@/store/slice/employeeSlice";
-import EmployeeEdit from "./employeeEdit/EmployeeEdit";
+import EmployeeEdit from "./employeeEdit/employeeEdit";
 
 const EmployeesEditContent = ({ employeeData }) => {
   const dispatch = useDispatch();
