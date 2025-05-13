@@ -1,3 +1,5 @@
+import { ROLES } from '@/shared/rolesConstant'
+
 const propsalRelatedOptions = [
   { value: "lead", label: "Lead", icon: "feather-at-sign" },
   { value: "coustomer", label: "Coustomer", icon: "feather-users" },
@@ -247,13 +249,17 @@ const genderOptions = [
 ];
 
 const isActiveOptions = [
-  { value: true, label: "True" },
-  { value: false, label: "False" },
+  { value: true, label: "Active", color: '#17c666' },
+  { value: false, label: "Inactive", color: '#ea4d4d' },
 ];
 
 const roleIdOptions = [
-  { value: 1, label: "Admin" },
-  { value: 2, label: "Manager" },
+  { value: ROLES.STAFF.value, label: ROLES.STAFF.label, },
+  { value: ROLES.PSYCHOLOGIST.value, label: ROLES.PSYCHOLOGIST.label, },
+  { value: ROLES.THERAPIST.value, label: ROLES.THERAPIST.label },
+  { value: ROLES.SPED_TEACHER.value, label: ROLES.SPED_TEACHER.label },
+  { value: ROLES.SCHOOL_PIC.value, label: ROLES.SCHOOL_PIC.label },
+  { value: ROLES.SUPER_ADMIN.value, label: ROLES.SUPER_ADMIN.label },
 ];
 
 const relationshipOptions = [

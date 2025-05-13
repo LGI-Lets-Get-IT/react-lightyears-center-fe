@@ -220,16 +220,19 @@ const SelectDropdown = ({
   placeholder,
   isDisabled,
   className,
+  defaultSelect,
+  selectedOption,
 }) => {
   const [field, meta, helpers] = useField(name);
   const { setValue } = helpers;
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [openUpwards, setOpenUpwards] = useState(false);
+  const [localSelectedOption, setLocalSelectedOption] = useState();
 
   const dropdownRef = useRef(null);
 
-  const localSelectedOption = options.find((opt) => opt.value === field.value);
+  // const localSelectedOption = options.find((opt) => opt.value === field.value);
 
   const toggleDropdown = () => {
     if (!isDisabled) {
@@ -240,6 +243,7 @@ const SelectDropdown = ({
   const handleOptionClick = (option) => {
     if (!isDisabled) {
       setValue(option.value); // ⬅️ update Formik field value
+      setLocalSelectedOption(option)
       setIsOpen(false);
     }
   };
@@ -249,6 +253,20 @@ const SelectDropdown = ({
   );
 
   useEffect(() => {
+    if (selectedOption) {
+      const selectedOpt = options?.find(option => option.value === selectedOption);
+      setLocalSelectedOption(selectedOpt);
+    }
+  }, [selectedOption]);
+
+  useEffect(() => {
+    if (defaultSelect) {
+      const defaultOption = options?.find(
+        (option) => option.value === defaultSelect
+      );
+      setLocalSelectedOption(defaultOption || null); // Set default if found
+    }
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -258,13 +276,12 @@ const SelectDropdown = ({
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [defaultSelect, options]);
 
   return (
     <div
-      className={`select-dropdown ${className || ""} ${
-        openUpwards ? "open-upwards" : ""
-      } ${isDisabled ? "pe-none" : ""}`}
+      className={`select-dropdown ${className || ""} ${openUpwards ? "open-upwards" : ""
+        } ${isDisabled ? "pe-none" : ""}`}
       ref={dropdownRef}
     >
       <div className="select-box" onClick={toggleDropdown}>
