@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import Input from "@/components/shared/Input";
-import useDatePicker from "@/hooks/useDatePicker";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllSchools } from "../../../../store/slice/schoolSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { updateEmployeeById } from "@/store/slice/employeeSlice";
+import { FiCheck, FiX } from "react-icons/fi";
+import SelectDropdown from "@/components/shared/SelectDropdown";
+import { isActiveOptions, roleIdOptions } from "@/utils/options";
+import { is } from "date-fns/locale";
 
-const TabProfile = ({ empData }) => {
+const EmployeeEdit = ({ empData }) => {
   const [userInput, setEmployeeInput] = useState({});
   const [selectedOption, setSelectedOption] = useState({});
 
@@ -15,17 +17,16 @@ const TabProfile = ({ empData }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { startDate, setStartDate, renderFooter } = useDatePicker();
-
-  useEffect(() => {
-    dispatch(fetchAllSchools());
-  }, []);
+  const isActive = isActiveOptions;
+  const roleId = roleIdOptions;
 
   useEffect(() => {
     setEmployeeInput({
       fullName: empData?.fullName,
       phoneNumber: empData?.phoneNumber,
       email: empData?.email,
+      isActive: empData?.isActive,
+      roleId: empData?.roleId,
     });
   }, [empData]);
 
@@ -38,22 +39,16 @@ const TabProfile = ({ empData }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const formattedDate = startDate
-      ? format(startDate, "yyyy-MM-dd")
-      : format(empData?.dateOfBirth, "yyyy-MM-dd");
+
+    // Make sure selectedOption exists and has the necessary properties
+    const isActive = selectedOption?.isActive?.value ?? null;
+    const roleId = selectedOption?.roleId?.value ?? null;
 
     const body = {
       ...userInput,
-      id: id,
-      fullName: userInput.fullName,
-      phoneNumber: userInput.phoneNumber,
-      email: userInput.email,
-      dateOfBirth: formattedDate,
-      nationality: selectedOption["nationality"]?.label,
-      schoolId: selectedOption["school"]?.value,
-      guardianNationality: selectedOption["guardianNationality"]?.label,
-      guardianRelationship: selectedOption["relationship"]?.label,
-      gender: selectedOption["gender"]?.label,
+      id,
+      isActive,
+      roleId,
     };
 
     dispatch(updateEmployeeById(body))
@@ -72,7 +67,7 @@ const TabProfile = ({ empData }) => {
                 {empData?.fullName}&apos;s Information Edit:
               </span>
               <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                Edit {empData?.fullName} Information.{" "}
+                Last Edited: {empData?.updatedAt}.{" "}
               </span>
             </h5>
           </div>
@@ -103,10 +98,61 @@ const TabProfile = ({ empData }) => {
             onChange={handleChange}
             value={userInput.email}
           />
+          <div className="row mb-4 align-items-center">
+            <div className="col-lg-4">
+              <label className="fw-semibold">Role: </label>
+            </div>
+            <div className="col-lg-8">
+              <SelectDropdown
+                options={roleId}
+                selectedOption={selectedOption?.roleId}
+                placeholder={`${userInput?.roleId}`}
+                // selectedOption={selectedOption?.gender}
+                // defaultSelect={userData?.gender}
+                onSelectOption={(option) => {
+                  setSelectedOption({
+                    ...selectedOption,
+                    roleId: option,
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className="row mb-4 align-items-center">
+            <div className="col-lg-4">
+              <label className="fw-semibold">isActive?: </label>
+            </div>
+            <div className="col-lg-8">
+              <SelectDropdown
+                options={isActive}
+                selectedOption={selectedOption?.isActive}
+                placeholder={`${userInput?.isActive}`}
+                // selectedOption={selectedOption?.gender}
+                // defaultSelect={userData?.gender}
+                onSelectOption={(option) => {
+                  setSelectedOption({
+                    ...selectedOption,
+                    isActive: option,
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+            <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
+              <FiX size={16} className="me-2" />
+              <span>Cancel</span>
+            </a>
+
+            <button type="submit" className="btn btn-primary">
+              <FiCheck size={16} className="me-2" />
+              <span>Edit Employee</span>
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default TabProfile;
+export default EmployeeEdit;

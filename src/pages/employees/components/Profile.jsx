@@ -14,8 +14,8 @@ const Profile = ({ id, fullName, phoneNumber, email }) => {
   const [showModal, setShowModal] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  console.log("ID", id);
-  console.log("UUID", uuid);
+  // console.log("ID", id);
+  // console.log("UUID", uuid);
 
   // Actual delete function which will be called on confirmation
   const handleDeleteConfirmed = () => {

@@ -246,6 +246,16 @@ const genderOptions = [
   { value: "female", label: "Female" },
 ];
 
+const isActiveOptions = [
+  { value: true, label: "True" },
+  { value: false, label: "False" },
+];
+
+const roleIdOptions = [
+  { value: 1, label: "Admin" },
+  { value: 2, label: "Manager" },
+];
+
 const relationshipOptions = [
   { value: "father", label: "Father" },
   { value: "mother", label: "Mother" },
@@ -283,4 +293,6 @@ export {
   taskTypeOptions,
   genderOptions,
   relationshipOptions,
+  isActiveOptions,
+  roleIdOptions,
 };
