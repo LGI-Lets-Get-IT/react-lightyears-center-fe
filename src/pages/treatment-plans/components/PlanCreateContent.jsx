@@ -25,7 +25,7 @@ const PlanCreateContent = () => {
 
   const onSubmit = async (values, actions) => {
     console.log("ASFASFS", values, actions);
-    dispatch(createPlan(values));
+    // dispatch(createPlan(values));
   };
 
   useEffect(() => {
@@ -74,9 +74,11 @@ const PlanCreateContent = () => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        selectedOption={selectedOption}
+                        selectedOption={values.clientId}
                         placeholder={"Select Client"}
-                        onSelectOption={(option) => setSelectedOption(option)}
+                        onSelectOption={(option) => {
+                          setFieldValue('clientId', option)
+                        }}
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
@@ -97,7 +99,9 @@ const PlanCreateContent = () => {
                         }
                         selectedOption={selectedOption}
                         placeholder={"Select Psychologist In Charge"}
-                        onSelectOption={(option) => setSelectedOption(option)}
+                        onSelectOption={(option) => {
+                          setFieldValue('psychologistId', option)
+                        }}
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
@@ -122,9 +126,8 @@ const PlanCreateContent = () => {
                                     // format(date, "yyyy-MM-dd")
                                   );
                                 }}
-                                className={`form-control ${
-                                  meta.error ? "is-invalid" : ""
-                                }`}
+                                className={`form-control ${meta.error ? "is-invalid" : ""
+                                  }`}
                                 popperPlacement="bottom-start"
                                 calendarContainer={({ children }) => (
                                   <div className="bg-white react-datepicker">
@@ -132,8 +135,8 @@ const PlanCreateContent = () => {
                                   </div>
                                 )}
                               />
-                              {meta.touched && meta.error && (
-                                <div className="text-danger">{meta.error}</div>
+                              {meta.error && (
+                                <div className="mt-1 text-danger">{meta.error}</div>
                               )}
                             </>
                           )}
@@ -150,15 +153,14 @@ const PlanCreateContent = () => {
                             <textarea
                               id="presentProblem"
                               rows={6}
-                              className={`form-control ${
-                                meta.error ? "is-invalid" : ""
-                              }`}
+                              className={`form-control ${meta.error ? "is-invalid" : ""
+                                }`}
                               placeholder="Please specify the problem here"
                               defaultValue={""}
                               {...field}
                             />
-                            {meta.touched && meta.error && (
-                              <div className="text-danger">{meta.error}</div>
+                            {meta.error && (
+                              <div className="mt-1 text-danger">{meta.error}</div>
                             )}
                           </>
                         )}
@@ -175,15 +177,14 @@ const PlanCreateContent = () => {
                             <textarea
                               id="parentPlan"
                               rows={6}
-                              className={`form-control ${
-                                meta.error ? "is-invalid" : ""
-                              }`}
+                              className={`form-control ${meta.error ? "is-invalid" : ""
+                                }`}
                               placeholder="Please specify the plan here"
                               defaultValue={""}
                               {...field}
                             />
-                            {meta.touched && meta.error && (
-                              <div className="text-danger">{meta.error}</div>
+                            {meta.error && (
+                              <div className="mt-1 text-danger">{meta.error}</div>
                             )}
                           </>
                         )}
@@ -251,10 +252,10 @@ const PlanCreateContent = () => {
                                         label: item.name,
                                         value: item.id,
                                       }))}
-                                      selectedOption={selectedOption}
+                                      selectedOption={values.programs[index].treatmentId}
                                       placeholder={"Select Treatment"}
                                       onSelectOption={(option) =>
-                                        setSelectedOption(option)
+                                        setFieldValue(`programs[${index}].treatmentId`, option)
                                       }
                                     />
                                   </div>
@@ -271,10 +272,10 @@ const PlanCreateContent = () => {
                                         label: item.fullName,
                                         value: item.id,
                                       }))}
-                                      selectedOption={selectedOption}
+                                      selectedOption={values.programs[index].therapistId}
                                       placeholder={"Select Therapist"}
                                       onSelectOption={(option) =>
-                                        setSelectedOption(option)
+                                        setFieldValue(`programs[${index}].therapistId`, option)
                                       }
                                     />
                                   </div>
@@ -292,13 +293,12 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify aim of the treatment"
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>
@@ -321,14 +321,13 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="number"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify the session frequency"
                                             min={1}
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>
@@ -351,14 +350,13 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="number"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify the session duration"
                                             min={1}
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>
@@ -431,13 +429,12 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify the child's target behavior"
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>
@@ -460,13 +457,12 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify the child's current ability"
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>
@@ -489,13 +485,12 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify the short-term target"
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>
@@ -518,13 +513,12 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
+                                            className={`form-control ${meta.error ? "is-invalid" : ""
+                                              }`}
                                             placeholder="Please specify the media or tools"
                                             {...field}
                                           />
-                                          {meta.touched && meta.error && (
+                                          {meta.error && (
                                             <div className="text-danger">
                                               {meta.error}
                                             </div>

@@ -5,20 +5,19 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
 import { genderOptions, relationshipOptions } from "@/utils/options";
 import useLocationData from "@/hooks/useLocationData";
-import useDatePicker from "@/hooks/useDatePicker";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../store/slice/schoolSlice";
 import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { Field, Form, Formik } from "formik";
+import { createClientSchema } from "@/schemas/clientSchema";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { schools } = useSelector((state) => state.schools);
-  const [userInput, setUserInput] = useState({});
-  const [selectedOption, setSelectedOption] = useState({});
-  const { startDate, setStartDate, renderFooter } = useDatePicker();
+  // const { startDate, setStartDate, renderFooter } = useDatePicker();
   const { countries } = useLocationData();
   const relationships = relationshipOptions;
   const gender = genderOptions;
@@ -27,237 +26,283 @@ const TabProfile = () => {
     dispatch(fetchAllSchools());
   }, []);
 
-  const handleChange = (event) => {
-    setUserInput((values) => ({
-      ...values,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  const handleSubmit = (values, actions) => {
+    console.log('VALIESSS', values)
+    // event.preventDefault();
+    // const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
+    // const body = {
+    //   ...userInput,
+    //   // dateOfBirth: formattedDate,
+    //   nationality: selectedOption["nationality"]?.label,
+    //   gender: selectedOption["gender"]?.label,
+    //   schoolId: selectedOption["school"]?.value,
+    //   guardianNationality: selectedOption["guardianNationality"]?.label,
+    //   guardianRelationship: selectedOption["relationship"]?.label,
+    // };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
-    const body = {
-      ...userInput,
-      dateOfBirth: formattedDate,
-      nationality: selectedOption["nationality"]?.label,
-      gender: selectedOption["gender"]?.label,
-      schoolId: selectedOption["school"]?.value,
-      guardianNationality: selectedOption["guardianNationality"]?.label,
-      guardianRelationship: selectedOption["relationship"]?.label,
-    };
-
-    dispatch(createClient(body))
-      .unwrap()
-      .then(() => navigate("/clients"))
-      .catch((error) => console.error("handle error", error));
+    // dispatch(createClient(body))
+    //   .unwrap()
+    //   .then(() => navigate("/clients"))
+    //   .catch((error) => console.error("handle error", error));
   };
 
   return (
     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
-      <form onSubmit={handleSubmit}>
-        <div className="card-body personal-info">
-          <div className="mb-4 d-flex align-items-center justify-content-between">
-            <h5 className="fw-bold mb-0 me-4">
-              <span className="d-block mb-2">Child Information:</span>
-              <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                Following information is publicly displayed, be careful!{" "}
-              </span>
-            </h5>
-          </div>
-          <Input
-            icon="feather-user"
-            label={"Full Name"}
-            labelId={"nameInput"}
-            placeholder={"Full Name"}
-            name={"fullName"}
-            onChange={handleChange}
-            value={userInput.fullName || ""}
-          />
-          <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-              <label htmlFor="dateofBirth" className="fw-semibold">
-                Date of Birth:{" "}
-              </label>
-            </div>
-            <div className="col-lg-8">
-              <div className="input-group flex-nowrap">
-                <div className="input-group-text">
-                  <FiCalendar size={16} />
+      <Formik initialValues={{
+        fullName: null,
+        dateOfBirth: null,
+        gender: null,
+        nationality: null,
+        schoolId: null,
+        guardianName: null,
+        guardianEmail: null,
+        guardianPhone: null,
+        guardianNationality: null,
+        guardianRelationship: null,
+      }}
+        validationSchema={createClientSchema}
+        onSubmit={handleSubmit}>
+        {({ values, setFieldValue, getFieldProps }) => (
+          <Form>
+            <div className="card-body personal-info">
+              <div className="mb-4 d-flex align-items-center justify-content-between">
+                <h5 className="fw-bold mb-0 me-4">
+                  <span className="d-block mb-2">Child Information:</span>
+                  <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                    Following information is publicly displayed, be careful!{" "}
+                  </span>
+                </h5>
+              </div>
+              <Field name="fullName">
+                {({ meta }) => (
+                  <>
+                    <Input
+                      icon="feather-user"
+                      label={"Full Name"}
+                      labelId={"nameInput"}
+                      placeholder={"Full Name"}
+                      name={"fullName"}
+                      value={values.fullName}
+                      className={`${meta.error ? 'is-invalid' : ''}`}
+                      meta={meta}
+                      {...getFieldProps('fullName')}
+                    />
+                  </>
+                )}
+              </Field>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label htmlFor="dateofBirth" className="fw-semibold">
+                    Date of Birth:{" "}
+                  </label>
                 </div>
-                <div
-                  className="w-100 d-flex date  rounded-0"
-                  style={{ flexBasis: "95%" }}
-                >
-                  <DatePicker
-                    showYearDropdown
-                    placeholderText="Pick date of birth"
-                    selected={startDate}
-                    showPopperArrow={false}
-                    dateFormat="yyyy-MM-dd" // Updated format
-                    onChange={(date) => setStartDate(date)}
-                    className="form-control rounded-0"
-                    popperPlacement="bottom-start"
-                    calendarContainer={({ children }) => (
-                      <div className="bg-white react-datepicker">
-                        {children}
-                        {renderFooter("start")}
-                      </div>
+
+                <div className="col-lg-8">
+                  <Field name="dateOfBirth">
+                    {({ meta }) => (
+                      <>
+                        <div className="input-group flex-nowrap">
+                          <div className="input-group-text">
+                            <FiCalendar size={16} />
+                          </div>
+                          <div
+                            className="w-100 d-flex date  rounded-0"
+                            style={{ flexBasis: "95%" }}
+                          >
+                            <DatePicker
+                              showYearDropdown
+                              placeholderText="Pick date of birth"
+                              selected={values.dateOfBirth}
+                              showPopperArrow={false}
+                              dateFormat="yyyy-MM-dd"
+                              onChange={(date) => {
+                                setFieldValue('dateOfBirth', date)
+                              }}
+                              className={`form-control rounded-0 ${meta.error ? 'is-invalid' : ''}`}
+                              popperPlacement="bottom-start"
+                              calendarContainer={({ children }) => (
+                                <div className="bg-white react-datepicker">
+                                  {children}
+                                  {/* {renderFooter("start")} */}
+                                </div>
+                              )}
+                            />
+                          </div>
+                        </div>
+                        {meta.touched && meta.error && (
+                          <div className="mt-1 text-danger">{meta.error}</div>
+                        )}
+                      </>
                     )}
+                  </Field>
+                </div>
+              </div>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label className="fw-semibold">Gender: </label>
+                </div>
+                <div className="col-lg-8">
+                  <SelectDropdown
+                    name={"gender"}
+                    options={gender}
+                    selectedOption={values.gender}
+                    placeholder={"Select Child Gender"}
+                    onSelectOption={(option) => {
+                      setFieldValue('gender', option)
+                    }}
                   />
                 </div>
               </div>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label className="fw-semibold">Nationality: </label>
+                </div>
+                <div className="col-lg-8">
+                  <SelectDropdown
+                    name="nationality"
+                    options={countries}
+                    selectedOption={values.nationality}
+                    placeholder={"Select Child Nationality"}
+                    onSelectOption={(option) => {
+                      setFieldValue('nationality', option)
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label className="fw-semibold">School Name: </label>
+                </div>
+                <div className="col-lg-8">
+                  <SelectDropdown
+                    name={"schoolId"}
+                    options={schools.map((school) => ({
+                      label: school.name,
+                      value: school.id,
+                    }))}
+                    selectedOption={values.schoolId}
+                    placeholder={"Select School Name"}
+                    onSelectOption={(option) => {
+                      setFieldValue('schoolId', option)
+                    }}
+                  />
+                  <hr className="my-0" />
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-              <label className="fw-semibold">Gender: </label>
-            </div>
-            <div className="col-lg-8">
-              <SelectDropdown
-                name={"gender"}
-                options={gender}
-                selectedOption={selectedOption?.gender}
-                placeholder={"Select Child Gender"}
-                // defaultSelect="usa"
-                onSelectOption={(option) => {
-                  setSelectedOption({ ...selectedOption, gender: option });
-                }}
-              />
-            </div>
-          </div>
-          <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-              <label className="fw-semibold">Nationality: </label>
-            </div>
-            <div className="col-lg-8">
-              <SelectDropdown
-                name="nationality"
-                options={countries}
-                selectedOption={selectedOption?.nationality}
-                placeholder={"Select Child Nationality"}
-                // defaultSelect="usa"
-                onSelectOption={(option) => {
-                  // fetchStates(option.label);
-                  // fetchCities(option.label);
-                  setSelectedOption({ ...selectedOption, nationality: option });
-                }}
-              />
-            </div>
-          </div>
-          <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-              <label className="fw-semibold">School Name: </label>
-            </div>
-            <div className="col-lg-8">
-              <SelectDropdown
-                name={"school"}
-                options={schools.map((school) => ({
-                  label: school.name,
-                  value: school.id,
-                }))}
-                selectedOption={selectedOption?.school}
-                placeholder={"Select School Name"}
-                // defaultSelect="usa"
-                onSelectOption={(option) => {
-                  setSelectedOption({ ...selectedOption, school: option });
-                }}
-              />
-              <hr className="my-0" />
-            </div>
-          </div>
-        </div>
-        <hr className="my-0" />
-        <div className="card-body additional-info">
-          <div className="mb-4 d-flex align-items-center justify-content-between">
-            <h5 className="fw-bold mb-0 me-4">
-              <span className="d-block mb-2">Guardian Information:</span>
-              <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                Communication details for us to connect with.
-              </span>
-            </h5>
-          </div>
-          <Input
-            icon="feather-user"
-            label={"Guardian Name"}
-            labelId={"guardianNameInput"}
-            placeholder={"Guardian Name"}
-            name={"guardianName"}
-            onChange={handleChange}
-            value={userInput.guardianName || ""}
-          />
-          <Input
-            icon="feather-mail"
-            label={"Guardian Email"}
-            labelId={"emailInput"}
-            placeholder={"Guardian Email"}
-            name={"guardianEmail"}
-            type={"email"}
-            onChange={handleChange}
-            value={userInput.guardianEmail || ""}
-          />
-          <Input
-            icon="feather-phone"
-            label={"Guardian Phone"}
-            labelId={"phoneInput"}
-            placeholder={"Guardian Phone Number"}
-            name={"guardianPhone"}
-            onChange={handleChange}
-            value={userInput.guardianPhone || ""}
-          />
-          <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-              <label className="fw-semibold">Nationality: </label>
-            </div>
-            <div className="col-lg-8">
-              <SelectDropdown
-                name="guardianNationality"
-                options={countries}
-                selectedOption={selectedOption?.guardianNationality}
-                placeholder={"Select Guardian Nationality"}
-                // defaultSelect="usa"
-                onSelectOption={(option) => {
-                  // fetchStates(option.label);
-                  // fetchCities(option.label);
-                  setSelectedOption({
-                    ...selectedOption,
-                    guardianNationality: option,
-                  });
-                }}
-              />
-            </div>
-          </div>
+            <hr className="my-0" />
+            <div className="card-body additional-info">
+              <div className="mb-4 d-flex align-items-center justify-content-between">
+                <h5 className="fw-bold mb-0 me-4">
+                  <span className="d-block mb-2">Guardian Information:</span>
+                  <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                    Communication details for us to connect with.
+                  </span>
+                </h5>
+              </div>
+              <Field name="guardianName">
+                {({ meta }) => (
+                  <>
+                    <Input
+                      name={"guardianName"}
+                      icon="feather-user"
+                      label={"Guardian Name"}
+                      labelId={"guardianNameInput"}
+                      placeholder={"Guardian Name"}
+                      value={values.guardianName}
+                      className={`${meta.error ? 'is-invalid' : ''}`}
+                      meta={meta}
+                      {...getFieldProps('guardianName')}
+                    />
+                  </>
+                )}
+              </Field>
 
-          <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-              <label className="fw-semibold">Relationship with child: </label>
-            </div>
-            <div className="col-lg-8">
-              <SelectDropdown
-                name="relationship"
-                options={relationships}
-                selectedOption={selectedOption?.relationship}
-                placeholder="Select Gender"
-                onSelectOption={(option) =>
-                  setSelectedOption({ ...selectedOption, relationship: option })
-                }
-              />
-            </div>
-          </div>
+              <Field name="guardianEmail">
+                {({ meta }) => (
+                  <>
+                    <Input
+                      icon="feather-mail"
+                      label={"Guardian Email"}
+                      labelId={"emailInput"}
+                      placeholder={"Guardian Email"}
+                      name={"guardianEmail"}
+                      type={"email"}
+                      value={values.guardianEmail}
+                      className={`${meta.error ? 'is-invalid' : ''}`}
+                      meta={meta}
+                      {...getFieldProps('guardianEmail')}
+                    />
+                  </>
+                )}
+              </Field>
 
-          <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-            <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
-              <FiX size={16} className="me-2" />
-              <span>Cancel</span>
-            </a>
-            <button type="submit" className="btn btn-primary">
-              <FiCheck size={16} className="me-2" />
-              <span>Create Client</span>
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+              <Field name="guardianPhone">
+                {({ meta }) => (
+                  <>
+                    <Input
+                      icon="feather-phone"
+                      label={"Guardian Phone"}
+                      labelId={"phoneInput"}
+                      placeholder={"Guardian Phone Number"}
+                      name={"guardianPhone"}
+                      value={values.guardianPhone}
+                      className={`${meta.error ? 'is-invalid' : ''}`}
+                      meta={meta}
+                      {...getFieldProps('guardianPhone')}
+                    />
+                  </>
+                )}
+              </Field>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label className="fw-semibold">Nationality: </label>
+                </div>
+                <div className="col-lg-8">
+                  <SelectDropdown
+                    name="guardianNationality"
+                    options={countries}
+                    selectedOption={values.guardianNationality}
+                    placeholder={"Select Guardian Nationality"}
+                    onSelectOption={(option) => {
+                      setFieldValue('guardianNationality', option)
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label className="fw-semibold">Relationship with child: </label>
+                </div>
+                <div className="col-lg-8">
+                  <SelectDropdown
+                    name="guardianRelationship"
+                    options={relationships}
+                    selectedOption={values.guardianRelationship}
+                    placeholder="Select Relationship"
+                    onSelectOption={(option) =>
+                      setFieldValue('guardianRelationship', option)
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+                <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
+                  <FiX size={16} className="me-2" />
+                  <span>Cancel</span>
+                </a>
+                <button type="submit" className="btn btn-primary">
+                  <FiCheck size={16} className="me-2" />
+                  <span>Create Client</span>
+                </button>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+    </div >
   );
 };
 

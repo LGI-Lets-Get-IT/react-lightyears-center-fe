@@ -26,6 +26,7 @@ const AppointmentCreateContent = () => {
     title: null,
     appointmentType: "",
     picId: null,
+    picType: null,
     appointmentDate: null,
     timeStart: null,
     timeEnd: null,
@@ -52,9 +53,11 @@ const AppointmentCreateContent = () => {
 
   const handleNext = async (e) => {
     e.preventDefault();
-    
+
+    console.log('FORMDATA', formData)
+
     try {
-      if(currentStep === 0) {
+      if (currentStep === 0) {
         await step0Schema.validate(formData, { abortEarly: false })
         setErrors(false)
       } else if (currentStep === 1) {
@@ -65,14 +68,14 @@ const AppointmentCreateContent = () => {
         setErrors(false)
 
         dispatch(makeAppointment(formData))
-        .unwrap()
-        .then(() => {
-          setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-          navigate('/appointments')
-        })
-        .catch((rejectedValueOrSerializedError) => {
-          console.log('rejectedValueOrSerializedError', rejectedValueOrSerializedError)
-        });
+          .unwrap()
+          .then(() => {
+            setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
+            navigate('/appointments')
+          })
+          .catch((rejectedValueOrSerializedError) => {
+            console.log('rejectedValueOrSerializedError', rejectedValueOrSerializedError)
+          });
       }
       setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
     } catch (error) {
@@ -106,9 +109,8 @@ const AppointmentCreateContent = () => {
               {steps.map((step, index) => (
                 <li
                   key={index}
-                  className={`${currentStep === index ? "current" : ""} ${
-                    currentStep === index && errors ? "error" : ""
-                  }`}
+                  className={`${currentStep === index ? "current" : ""} ${currentStep === index && errors ? "error" : ""
+                    }`}
                   onClick={(e) => handleTabClick(e, index)}
                 >
                   <a href="#" className="d-block fw-bold">
@@ -159,9 +161,8 @@ const AppointmentCreateContent = () => {
                 <a href="#">Previous</a>
               </li>
               <li
-                className={`${
-                  currentStep === steps.length - 1 ? "disabled" : ""
-                }`}
+                className={`${currentStep === steps.length - 1 ? "disabled" : ""
+                  }`}
                 onClick={(e) => handleNext(e)}
               >
                 <a href="#">{currentStep === 2 ? "Submit" : "Next"}</a>

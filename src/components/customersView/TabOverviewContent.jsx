@@ -10,7 +10,7 @@ const childInfoData = [
   { label: "Age", key: "age", suffix: "years old" },
   { label: "Date of Birth", key: "dateOfBirth" },
   { label: "Nationality", key: "nationality" },
-  { label: "School Name", key: "schoolName"}
+  { label: "School Name", key: "schoolName" }
 ];
 
 const parentInfoData = [
@@ -36,9 +36,8 @@ const TabOverviewContent = ({ clientInformation }) => {
         {childInfoData.map((item, index) => (
           <div
             key={index}
-            className={`row g-0 ${
-              index === childInfoData.length - 1 ? "mb-0" : "mb-4"
-            }`}
+            className={`row g-0 ${index === childInfoData.length - 1 ? "mb-0" : "mb-4"
+              }`}
           >
             <div className="col-sm-6 text-muted">{item.label}:</div>
             <div className="col-sm-6 fw-semibold">
@@ -49,7 +48,7 @@ const TabOverviewContent = ({ clientInformation }) => {
       </div>
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
-          <h5 className="fw-bold mb-0">Parent Information:</h5>
+          <h5 className="fw-bold mb-0">Guardian Information:</h5>
           {/* <a href="#" className="btn btn-sm btn-light-brand gap-1">
             <FaPencil /> Edit Information
           </a> */}
@@ -57,9 +56,8 @@ const TabOverviewContent = ({ clientInformation }) => {
         {parentInfoData.map((item, index) => (
           <div
             key={index}
-            className={`row g-0 ${
-              index === parentInfoData.length - 1 ? "mb-0" : "mb-4"
-            }`}
+            className={`row g-0 ${index === parentInfoData.length - 1 ? "mb-0" : "mb-4"
+              }`}
           >
             <div className="col-sm-6 text-muted">{item.label}:</div>
             <div className="col-sm-6 fw-semibold">

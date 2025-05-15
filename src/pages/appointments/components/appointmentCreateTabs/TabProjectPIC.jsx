@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
   const dispatch = useDispatch()
-  const { employees } = useSelector((state) => state.employees);
+  const { therapists, psychologists } = useSelector((state) => state.employees);
 
-  
+
   useEffect(() => {
-    if(formData.appointmentType === 'treatment') {
+    if (formData.appointmentType === 'treatment') {
       dispatch(fetchAllTherapists())
     } else {
       dispatch(fetchAllPsychologists())
@@ -31,7 +31,7 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
 
           {error.picId && (
             <label
-              id="psychologistName-error"
+              id="picName-error"
               className="error text-danger mb-2 d-flex align-items-center gap-1"
             >
               <FiAlertTriangle /> {error.picId}
@@ -40,7 +40,7 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
 
           <fieldset>
             <div className="col-lg-8">
-              <label htmlFor="psychologistName" className="form-label">
+              <label htmlFor="picName" className="form-label">
                 PIC Name <span className="text-danger">*</span>
               </label>
               {/* <SelectDropdown
@@ -56,10 +56,9 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
                 }}
               /> */}
               <select
-                id="psychologist"
-                className={`form-control ${
-                  error && !formData.picId ? "is-invalid" : ""
-                }`}
+                id="picName"
+                className={`form-control ${error && !formData.picId ? "is-invalid" : ""
+                  }`}
                 value={formData.picId}
                 onChange={(e) => {
                   const selectedEmployeeId = parseInt(e.target.value) ?? null;
@@ -67,12 +66,19 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
                 }}
                 required
               >
-                <option value="">-- Select Psychologist --</option>
-                {employees?.map((employee) => (
-                  <option key={employee.id} value={employee.id}>
-                    {employee.fullName}
-                  </option>
-                ))}
+                <option value="">-- Select PIC --</option>
+                {formData.appointmentType === 'treatment' ? (
+                  therapists.map((therapist) => (
+                    <option key={therapist.id} value={therapist.id}>
+                      {therapist.fullName}
+                    </option>
+                  ))) :
+                  psychologists.map((psychologist) => (
+                    <option key={psychologist.id} value={psychologist.id}>
+                      {psychologist.fullName}
+                    </option>
+                  ))
+                }
               </select>
             </div>
           </fieldset>

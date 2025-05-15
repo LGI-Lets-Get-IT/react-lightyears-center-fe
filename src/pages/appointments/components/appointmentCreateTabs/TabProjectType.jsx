@@ -90,7 +90,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               icon={"feather-user"}
               title={"Assessment"}
               description={"Assessment appointment for the patient"}
-              id={"assessment"}
+              id={"Assessment"}
               name={"appointmentType"}
               setFormData={setFormData}
               formData={formData}
@@ -100,7 +100,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               icon={"feather-users"}
               title={"Consultation"}
               description={"Consultation appointment for the patient"}
-              id={"consultation"}
+              id={"Consultation"}
               name={"appointmentType"}
               setFormData={setFormData}
               formData={formData}
@@ -110,7 +110,7 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               icon={"feather-users"}
               title={"Treatment"}
               description={"Treatment appointment for the patient"}
-              id={"treatment"}
+              id={"Treatment"}
               name={"appointmentType"}
               setFormData={setFormData}
               formData={formData}
@@ -138,6 +138,15 @@ export const ProjectTypeCard = ({
   const { appointmentType } = formData;
 
   const handleChange = (e) => {
+    console.log('E.TARGET.VALUE', e.target.value)
+    if (e.target.value?.toLowerCase() === 'treatment') {
+      setFormData({ ...formData, picType: 'Therapist' })
+      console.log('TEST', formData)
+    } else {
+      setFormData({ ...formData, picType: 'Psychologist' })
+      console.log('TEST2', formData)
+    }
+    console.log('TEST3', formData)
     setFormData({
       ...formData,
       appointmentType: e.target.value,

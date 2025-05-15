@@ -15,7 +15,6 @@ const AppointmentsView = () => {
   const { id } = useParams();
   const { currentAppointment } = useSelector((state) => state.appointments);
 
-  // console.log("Current appointment data: ", appointment);
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
@@ -37,7 +36,7 @@ const AppointmentsView = () => {
             />
           </div>
           <div className="tab-pane fade" id="filesTab">
-            <TabAppointmentFiles/>
+            <TabAppointmentFiles />
             {/* <LeadsEmptyCard
               title="No files yet!"
               description="There is no files on this appointment"
@@ -46,7 +45,9 @@ const AppointmentsView = () => {
           <div className="tab-pane fade" id="assessmentsTab">
             <LeadsEmptyCard
               title="No assessments yet!"
-              description="There is no assessments on this appointment"
+              description="There are no assessments on this appointment"
+              link={'/assessments/create'}
+              buttonText="Create Client Assessment"
             />
           </div>
         </div>

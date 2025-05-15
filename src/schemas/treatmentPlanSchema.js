@@ -23,12 +23,12 @@ export const treatmentPlanSchema = Yup.object().shape({
       sessionDuration: Yup.number().required("Session Duration is required"),
     })
   ),
-  behaviorTargets: Yup.array().of(
+  targets: Yup.array().of(
     Yup.object().shape({
-      behavior: Yup.string().required(),
-      currentAbility: Yup.string().required(),
-      shortTermTarget: Yup.string().required(),
-      mediaTools: Yup.string().required(),
+      behavior: Yup.string().required('Target Behavior must be filled'),
+      currentAbility: Yup.string().required('Child Current Ability must be filled'),
+      shortTermTarget: Yup.string().required('Short-term Target must be filled'),
+      mediaTools: Yup.string().required('Media or Tools must be filled'),
     })
   ),
 });

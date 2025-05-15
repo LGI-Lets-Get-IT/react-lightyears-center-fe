@@ -253,8 +253,10 @@ const SelectDropdown = ({
   );
 
   useEffect(() => {
+    console.log('SELECTEDOPTion', options, selectedOption)
     if (selectedOption) {
       const selectedOpt = options?.find(option => option.value === selectedOption);
+      console.log('SELECTEDOPT', selectedOpt)
       setLocalSelectedOption(selectedOpt);
     }
   }, [selectedOption]);
@@ -284,14 +286,14 @@ const SelectDropdown = ({
         } ${isDisabled ? "pe-none" : ""}`}
       ref={dropdownRef}
     >
-      <div className="select-box" onClick={toggleDropdown}>
+      <div className={`select-box ${meta.error ? 'border-danger' : ''}`} onClick={toggleDropdown}>
         {isDisabled ? (
-          <span className="selected-label" style={{ color: "#bcbcbc" }}>
+          <span className="selected-label text-capitalize" style={{ color: "#bcbcbc" }}>
             {(!localSelectedOption && placeholder) ||
               localSelectedOption?.label}
           </span>
         ) : (
-          <span className="selected-label">
+          <span className="selected-label text-capitalize">
             {!localSelectedOption && placeholder}
             {localSelectedOption?.color && (
               <span
@@ -367,7 +369,7 @@ const SelectDropdown = ({
       )}
 
       {/* Show error if any */}
-      {meta.touched && meta.error && (
+      {meta.error && (
         <div className="text-danger mt-1">{meta.error}</div>
       )}
     </div>

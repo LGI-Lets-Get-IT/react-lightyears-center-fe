@@ -24,7 +24,7 @@ const AssessmentsList = () => {
           <AssessmentsTable data={assessments} />
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

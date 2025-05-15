@@ -5,6 +5,7 @@ import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
+import AssessmentsCreate from "@/pages/assessments/assessments-create";
 const AssessmentsList = lazy(() => import("@/pages/assessments/assessments-list"));
 const AssessmentsView = lazy(() => import("@/pages/assessments/assessments-view"));
 const TreatmentTypesList = lazy(() => import("@/pages/treatment-types/treatment-types-list"));
@@ -190,7 +191,7 @@ export const router = createBrowserRouter([
         path: "/assessments/create",
         element: (
           <ProtectedRoute requiredPermissions={PERMISSIONS.ASSESSMENTS.CREATE}>
-            {/* <AppointmentsCreate/> */}
+            <AssessmentsCreate />
           </ProtectedRoute>
         ),
       },

@@ -9,6 +9,7 @@ export const step0Schema = Yup.object({
 
 export const step1Schema = Yup.object({
   picId: Yup.number().typeError('PIC is required').required("PIC is required"),
+  picType: Yup.string().required('PIC Type is required')
 });
 
 export const step2Schema = Yup.object({

@@ -8,9 +8,10 @@ const Input = ({
   placeholder,
   labelId,
   name,
-  centerLink,
+  className,
   onChange,
   value,
+  meta,
 }) => {
   return (
     <div className="row mb-4 align-items-center">
@@ -22,23 +23,19 @@ const Input = ({
       <div className="col-lg-8">
         <div className="input-group">
           <div className="input-group-text">{getIcon(icon)}</div>
-          {centerLink ? (
-            <div className="input-group-text">
-              https://themeforest.net/user/theme_ocean
-            </div>
-          ) : (
-            ""
-          )}
           <input
             type={type}
             name={name}
             onChange={onChange}
-            className="form-control"
+            className={`form-control ${className}`}
             id={labelId}
             placeholder={placeholder}
             value={value}
           />
         </div>
+        {meta && meta.error && (
+          <div className="mt-1 text-danger">{meta.error}</div>
+        )}
       </div>
     </div>
   );

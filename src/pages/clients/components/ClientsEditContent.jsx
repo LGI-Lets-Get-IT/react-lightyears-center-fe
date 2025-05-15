@@ -1,5 +1,5 @@
 // import React from "react";
-import TabProfile from "./clientsEdit/TabClientsEdit";
+import TabClientsEdit from "./clientsEdit/TabClientsEdit";
 import TabPassword from "../../../components/customersCreate/TabPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -51,7 +51,7 @@ const CustomerCreateContent = () => {
           </ul>
         </div>
         <div className="tab-content">
-          <TabProfile userData={currentClient} />
+          <TabClientsEdit userData={currentClient} />
           <TabPassword />
         </div>
       </div>

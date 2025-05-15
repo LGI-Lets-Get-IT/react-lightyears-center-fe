@@ -13,7 +13,7 @@ export const createAssessment = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await assessmentsApi.createAssessment(data);
-      return response.data?.data;
+      return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -44,6 +44,18 @@ export const fetchAssessmentById = createAsyncThunk(
   }
 );
 
+export const fetchAssessmentByAppointmentId = createAsyncThunk(
+  "assessments/getAssessmentByAppointmentId",
+  async (appointmentId, { rejectWithValue }) => {
+    try {
+      const response = await assessmentsApi.getAssessmentByAppointmentId(appointmentId);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const assessmentSlice = createSlice({
   name: "assessment",
   initialState,
@@ -68,6 +80,17 @@ export const assessmentSlice = createSlice({
       state.currentAssessment = action.payload;
     });
     builder.addCase(fetchAssessmentById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchAssessmentByAppointmentId.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchAssessmentByAppointmentId.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentAssessment = action.payload;
+    });
+    builder.addCase(fetchAssessmentByAppointmentId.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
