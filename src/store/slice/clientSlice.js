@@ -48,11 +48,10 @@ export const createClient = createAsyncThunk(
 
 export const updateClientByUuid = createAsyncThunk(
   "clients/updateClientByUuid",
-  async (clientData, { rejectWithValue, dispatch }) => {
+  async (clientData, { rejectWithValue }) => {
     try {
       const { clientUuid, ...data } = clientData;
       const response = await clientsApi.updateClientByUuid(clientUuid, data);
-      // dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);

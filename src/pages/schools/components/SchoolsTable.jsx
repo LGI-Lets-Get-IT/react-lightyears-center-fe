@@ -47,8 +47,13 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const SchoolsTable = ({ data }) => {
-  const { hasPermission } = useFilterByPermission()
-  
+  const { filterItemsByPermission } = useFilterByPermission()
+
+  const getActions = (id) => [
+    { label: "Edit", icon: <FiEdit3 />, link: `/schools/${id}/edit` },
+    { label: "Delete", icon: <FiTrash2 /> },
+  ];
+
   const columns = [
     {
       accessorKey: "id",
@@ -109,29 +114,36 @@ const SchoolsTable = ({ data }) => {
       accessorKey: "isActive",
       header: () => "Is Active",
       cell: (info) => {
-        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
+        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger' };
         return <span className={`badge bg-soft-${status.color} text-${status.color}`}>{status.text}</span>
       }
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
-      cell: ({ row }) => (
-        <div className="hstack gap-2 justify-content-end">
-          <Link
-            to={`/schools/${row.original.id}`}
-            className="avatar-text avatar-md"
-          >
-            <FiEye />
-          </Link>
-          <Dropdown
-            dropdownItems={actions}
-            triggerClass="avatar-md"
-            triggerPosition={"0,21"}
-            triggerIcon={<FiMoreHorizontal />}
-          />
-        </div>
-      ),
+      enableSorting: false,
+      cell: ({ row }) => {
+        const permittedActions = filterItemsByPermission(getActions(row.original.id))
+
+        return (
+          <div className="hstack gap-2 justify-content-end">
+            <Link
+              to={`/schools/${row.original.id}`}
+              className="avatar-text avatar-md"
+            >
+              <FiEye />
+            </Link>
+            {permittedActions.length > 0 && (
+              <Dropdown
+                dropdownItems={permittedActions}
+                triggerClass="avatar-md"
+                triggerPosition={"0,21"}
+                triggerIcon={<FiMoreHorizontal />}
+              />
+            )}
+          </div>
+        )
+      },
       meta: {
         headerClassName: "text-end",
       },

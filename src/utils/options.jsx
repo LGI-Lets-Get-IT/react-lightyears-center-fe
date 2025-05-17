@@ -263,15 +263,15 @@ const roleIdOptions = [
 ];
 
 const relationshipOptions = [
-  { value: "father", label: "Father" },
-  { value: "mother", label: "Mother" },
-  { value: "sibling", label: "Sibling" },
-  { value: "aunt", label: "Aunt" },
-  { value: "uncle", label: "Uncle" },
-  { value: "niece", label: "Niece" },
-  { value: "nephew", label: "Nephew" },
-  { value: "grandFather", label: "Grand Father" },
-  { value: "grandMother", label: "Grand Mother" },
+  { value: "Father", label: "Father" },
+  { value: "Mother", label: "Mother" },
+  { value: "Sibling", label: "Sibling" },
+  { value: "Aunt", label: "Aunt" },
+  { value: "Uncle", label: "Uncle" },
+  { value: "Niece", label: "Niece" },
+  { value: "Nephew", label: "Nephew" },
+  { value: "GrandFather", label: "Grand Father" },
+  { value: "GrandMother", label: "Grand Mother" },
 ];
 
 export {

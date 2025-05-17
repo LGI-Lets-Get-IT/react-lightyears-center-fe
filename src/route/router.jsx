@@ -5,7 +5,8 @@ import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
-import AssessmentsCreate from "@/pages/assessments/assessments-create";
+const AssessmentsCreate = lazy(() => import("@/pages/assessments/assessments-create"));
+const AssessmentsEdit = lazy(() => import("@/pages/assessments/assessments-edit"));
 const AssessmentsList = lazy(() => import("@/pages/assessments/assessments-list"));
 const AssessmentsView = lazy(() => import("@/pages/assessments/assessments-view"));
 const TreatmentTypesList = lazy(() => import("@/pages/treatment-types/treatment-types-list"));
@@ -99,7 +100,7 @@ const ClientsEdit = lazy(() => import("@/pages/clients/clients-edit"));
 const SchoolsList = lazy(() => import("@/pages/schools/schools-list"));
 const SchoolsView = lazy(() => import("@/pages/schools/schools-view"));
 const SchoolsCreate = lazy(() => import("@/pages/schools/schools-create"));
-
+const SchoolsEdit = lazy(() => import('@/pages/schools/schools-edit'));
 const AppointmentsList = lazy(() =>
   import("@/pages/appointments/appointments-list")
 );
@@ -195,6 +196,12 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: '/assessments/:id/edit',
+        element: (
+          <AssessmentsEdit />
+        ),
+      },
 
       // clients
       {
@@ -255,7 +262,7 @@ export const router = createBrowserRouter([
           <ProtectedRoute
             requiredPermissions={PERMISSIONS.TREATMENT_PLANS.UPDATE}
           >
-            <PlansView />
+            {/* <PlansView /> */}
           </ProtectedRoute>
         ),
       },
@@ -346,6 +353,10 @@ export const router = createBrowserRouter([
       {
         path: "/schools/:id",
         element: <SchoolsView />,
+      },
+      {
+        path: '/schools/:id/edit',
+        element: <SchoolsEdit />,
       },
       // *
       // * The Light Years Routes END

@@ -20,6 +20,19 @@ export const createAssessment = createAsyncThunk(
   }
 );
 
+export const updateAssessmentById = createAsyncThunk(
+  "assessments/updateAssessmentById",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const { assessmentId, data } = bodyData;
+      const response = await assessmentsApi.updateAssessmentById(assessmentId, data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchAllAssessments = createAsyncThunk(
   "assessments/getAllAssessments",
   async (_, { rejectWithValue }) => {
@@ -46,9 +59,9 @@ export const fetchAssessmentById = createAsyncThunk(
 
 export const fetchAssessmentByAppointmentId = createAsyncThunk(
   "assessments/getAssessmentByAppointmentId",
-  async (appointmentId, { rejectWithValue }) => {
+  async (query, { rejectWithValue }) => {
     try {
-      const response = await assessmentsApi.getAssessmentByAppointmentId(appointmentId);
+      const response = await assessmentsApi.getAssessmentByAppointmentId(query);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -88,7 +101,7 @@ export const assessmentSlice = createSlice({
     });
     builder.addCase(fetchAssessmentByAppointmentId.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.currentAssessment = action.payload;
+      state.assessments = action.payload;
     });
     builder.addCase(fetchAssessmentByAppointmentId.rejected, (state, action) => {
       state.isLoading = false;
@@ -106,6 +119,19 @@ export const assessmentSlice = createSlice({
       .addCase(createAssessment.rejected, (state, action) => {
         state.isLoading = false;
         state.assessments = initialState.assessments
+        state.error = action.payload;
+      });
+    builder
+      .addCase(updateAssessmentById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateAssessmentById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentAssessment = action.payload;
+      })
+      .addCase(updateAssessmentById.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.payload;
       });
   },

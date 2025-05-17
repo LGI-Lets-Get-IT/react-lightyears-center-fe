@@ -41,9 +41,8 @@ const TabPlanOverview = () => {
                       className="progress-bar bg-primary"
                       role="progressbar"
                       style={{
-                        width: `${
-                          (plan?.programsDone / plan?.totalPrograms) * 100
-                        }`,
+                        width: `${(plan?.programsDone / plan?.totalPrograms) * 100
+                          }`,
                       }}
                     />
                   </div>
@@ -57,7 +56,7 @@ const TabPlanOverview = () => {
                   <p>{plan?.clientName}</p>
                 </div>
                 <div className="col-md-6 mb-4">
-                  <label className="form-label">Guardian Name </label>
+                  <label className="form-label">Guardian Contact </label>
                   <p>
                     {plan?.guardianName} -{" "}
                     <a
@@ -110,11 +109,10 @@ const TabPlanOverview = () => {
                       return (
                         <li key={id} className="d-flex align-items-start mb-3">
                           <span
-                            className={`avatar-text avatar-sm ${
-                              isCompleted
+                            className={`avatar-text avatar-sm ${isCompleted
                                 ? "bg-soft-success text-success"
                                 : "bg-gray-100"
-                            } me-3`}
+                              } me-3`}
                           >
                             <FiCheck className="fs-10" />
                           </span>

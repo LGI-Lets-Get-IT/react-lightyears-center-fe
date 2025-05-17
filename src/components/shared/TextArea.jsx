@@ -9,6 +9,8 @@ const TextArea = ({
   row = "3",
   onChange,
   name,
+  meta,
+  value,
 }) => {
   return (
     <div className="row mb-4 align-items-center">
@@ -28,8 +30,11 @@ const TextArea = ({
             placeholder={placeholder}
             name={name}
             onChange={onChange}
-          ></textarea>
+          >{value}</textarea>
         </div>
+        {meta && meta.error && (
+          <div className="mt-1 text-danger">{meta.error}</div>
+        )}
       </div>
     </div>
   );

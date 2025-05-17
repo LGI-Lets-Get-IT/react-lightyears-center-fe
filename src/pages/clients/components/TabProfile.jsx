@@ -9,13 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../store/slice/schoolSlice";
 import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
 import { createClientSchema } from "@/schemas/clientSchema";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: createLoading } = useSelector(state => state.clients)
   const { schools } = useSelector((state) => state.schools);
   // const { startDate, setStartDate, renderFooter } = useDatePicker();
   const { countries } = useLocationData();
@@ -294,7 +294,13 @@ const TabProfile = () => {
                   <span>Cancel</span>
                 </a>
                 <button type="submit" className="btn btn-primary">
-                  <FiCheck size={16} className="me-2" />
+                  {createLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : <FiCheck size={16} className="me-2" />
+                  }
                   <span>Create Client</span>
                 </button>
               </div>

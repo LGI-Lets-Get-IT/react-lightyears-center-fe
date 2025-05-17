@@ -1,9 +1,9 @@
-import { addHours, addMinutes, format, isAfter, isToday, startOfDay } from "date-fns";
+import { addHours, addMinutes, isAfter, isEqual, startOfDay } from "date-fns";
 import * as Yup from "yup";
 
 export const step0Schema = Yup.object({
   title: Yup.string().required("Title is required").min(3, "Title is too short"),
-  client: Yup.number().required("Client is required"),
+  clientId: Yup.number().required("Client Name is required"),
   appointmentType: Yup.string().required("Appointment type is required"),
 });
 
@@ -30,7 +30,8 @@ export const step2Schema = Yup.object({
       if (!value) return true;
       const now = new Date();
       const minStart = addHours(now, 6);
-      return isAfter(new Date(value), minStart);
+      console.log('MINSTART', minStart)
+      return isAfter(new Date(value), minStart) || isEqual(new Date(value), minStart);
     }
   ),
   timeEnd: Yup.date().required("End time is required").test(
@@ -41,7 +42,7 @@ export const step2Schema = Yup.object({
       if (!value || !timeStart) return true; // Skip validation if either is missing
 
       const minEndTime = addMinutes(new Date(timeStart), 30);
-      return isAfter(new Date(value), minEndTime);
+      return isAfter(new Date(value), minEndTime) || isEqual(new Date(value), minEndTime);
     }
   ),
 });

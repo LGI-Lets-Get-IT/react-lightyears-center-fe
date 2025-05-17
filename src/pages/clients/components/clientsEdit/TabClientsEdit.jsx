@@ -56,10 +56,10 @@ const TabProfile = ({ userData }) => {
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
-                    {userData?.fullName}&apos;s Information Edit:
+                    {userData?.fullName}
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Edit Child Information.{" "}
+                    Last Edited: {userData?.updatedAt}
                   </span>
                 </h5>
               </div>

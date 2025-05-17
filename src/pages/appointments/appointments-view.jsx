@@ -5,16 +5,17 @@ import AppointmentViewHeader from "./components/AppointmentViewHeader";
 import AppointmentViewTabItems from "./components/AppointmentViewTabItems";
 import TabAppointmentOverview from "./components/TabAppointmentOverview";
 import { fetchAppointmentById } from "@/store/slice/appointmentSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import TabAppointmentFiles from "./components/TabAppointmentFiles";
+import TabAppointmentResult from "./components/TabAppointmentResult";
 
 const AppointmentsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { currentAppointment } = useSelector((state) => state.appointments);
-
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
@@ -25,31 +26,36 @@ const AppointmentsView = () => {
       <PageHeader>
         <AppointmentViewHeader />
       </PageHeader>
-      <AppointmentViewTabItems />
+      <AppointmentViewTabItems activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="main-content">
         <div className="tab-content">
-          <TabAppointmentOverview appointmentData={currentAppointment} />
-          <div className="tab-pane fade" id="ReportsTab">
-            <LeadsEmptyCard
-              title="No reports yet!"
-              description="There are no reports to be viewed"
-            />
+          {activeTab === 'overview' && (
+            <div className="tab-pane fade show active" id="overviewTab">
+              <TabAppointmentOverview appointmentData={currentAppointment} />
+            </div>
+          )}
+          <div className="tab-pane fade show active" id="ReportsTab">
           </div>
-          <div className="tab-pane fade" id="filesTab">
-            <TabAppointmentFiles />
-            {/* <LeadsEmptyCard
+          {activeTab === 'files' && (
+            <div className="tab-pane fade show active" id="filesTab">
+              <TabAppointmentFiles />
+              {/* <LeadsEmptyCard
               title="No files yet!"
               description="There is no files on this appointment"
-            /> */}
-          </div>
-          <div className="tab-pane fade" id="assessmentsTab">
-            <LeadsEmptyCard
-              title="No assessments yet!"
-              description="There are no assessments on this appointment"
-              link={'/assessments/create'}
-              buttonText="Create Client Assessment"
-            />
-          </div>
+              /> */}
+            </div>
+          )}
+          {activeTab === 'result' && (
+            <div className="tab-pane fade show active">
+              <TabAppointmentResult />
+              {/* <LeadsEmptyCard
+                title="No assessments yet!"
+                description="There are no assessments on this appointment"
+                link={'/assessments/create'}
+                buttonText="Create Client Assessment"
+              /> */}
+            </div>
+          )}
         </div>
       </div>
     </>

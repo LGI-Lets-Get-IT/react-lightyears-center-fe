@@ -1,39 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 import getIcon from "@/utils/getIcon";
+import { format } from "date-fns";
 
-// const moreOptions = [
-//   { label: "Pin Project", icon: "feather-map-pin" },
-//   { label: "Edit Project", icon: "feather-edit" },
-// ];
-
-export const imageList = [
-  {
-    id: 1,
-    user_name: "Janette Dalton",
-    user_img: "/images/avatar/2.png",
-  },
-  {
-    id: 2,
-    user_name: "Mikal Bon",
-    user_img: "/images/avatar/3.png",
-  },
-  {
-    id: 3,
-    user_name: "Socrates Itumay",
-    user_img: "/images/avatar/4.png",
-  },
-  {
-    id: 4,
-    user_name: "Jakson Jak",
-    user_img: "/images/avatar/6.png",
-  },
-  {
-    id: 5,
-    user_name: "Socrates Itumay",
-    user_img: "/images/avatar/5.png",
-  },
-];
 const TabAppointmentOverview = ({ appointmentData }) => {
   // const chartOptions = projectViewAreaChartOptions();
   const [now, setNow] = useState(new Date());
@@ -138,8 +107,8 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   </span>
                 </h4>
                 <p>
-                  Psychologist:
-                  <b> {appointmentData?.psychologistName}</b>
+                  PIC Name:
+                  <strong> {appointmentData?.picName}</strong> ({appointmentData?.picType})
                 </p>
 
                 <div className="d-flex align-items-center">
@@ -310,7 +279,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Date of Birth</label>
-                  <p>{appointmentData?.client.dateOfBirth}</p>
+                  <p>{format(appointmentData?.client.dateOfBirth, 'dd MMM yyyy')}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Nationality</label>
@@ -412,13 +381,12 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   </div>
                   <div className="progress mt-2 ht-3">
                     <div
-                      className={`progress-bar ${
-                        isOverdue
-                          ? "bg-success"
-                          : isOngoing
+                      className={`progress-bar ${isOverdue
+                        ? "bg-success"
+                        : isOngoing
                           ? "bg-primary"
                           : "bg-warning"
-                      }`}
+                        }`}
                       role="progressbar"
                       style={{ width: `${progress}%` }}
                     />

@@ -1,9 +1,7 @@
 import React, { useEffect } from "react";
 import getIcon from "@/utils/getIcon";
-import { FiAlertTriangle } from "react-icons/fi";
 import { fetchAllClients } from "@/store/slice/clientSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Dropdown from "@/components/shared/Dropdown";
 
 const TabProjectType = ({ setFormData, formData, error, setError }) => {
   const dispatch = useDispatch();
@@ -26,52 +24,47 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
             <p className="text-muted">Detail for the appointment</p>
           </div>
           <div className="mb-4">
-            {error.title && (
-              <label id="project-type-error" className="error">
-                <FiAlertTriangle /> {error.title}
-              </label>
-            )}
             <label htmlFor="title" className="form-label">
               Title <span className="text-danger">*</span>
             </label>
             <input
+              name="title"
               type="text"
               className={`form-control ${error.title ? "is-invalid" : ""}`}
               id="title"
-              name="title"
               value={formData.title || ""}
               onChange={handleInputChange}
               required
             />
+            {error.title && (
+              <div className="mt-1 text-danger">{error.title}</div>
+            )}
           </div>
           <div className="mb-4">
-            {error.client && (
-              <label id="project-type-error" className="error">
-                <FiAlertTriangle /> {error.client}
-              </label>
-            )}
             <label htmlFor="client" className="form-label">
-              Client <span className="text-danger">*</span>
+              Client Name <span className="text-danger">*</span>
             </label>
             <select
-              id="client"
-              className={`form-control ${error.client ? "is-invalid" : ""}`}
-              value={formData?.client || ""}
+              id="clientId"
+              className={`form-control ${error.clientId ? "is-invalid" : ""}`}
+              value={formData?.clientId || ""}
               onChange={(e) => {
                 const selectedId = parseInt(e.target.value);
                 const selectedClient = clients.find((c) => c.id === selectedId);
-                console.log("SELECTEDCLIENT", selectedClient.id);
-                setFormData({ ...formData, client: selectedClient.id }); // 👈 fix is here
+                setFormData({ ...formData, clientId: selectedClient.id }); // 👈 fix is here
               }}
               required
             >
-              <option value="">-- Select Client --</option>
+              <option value="" disabled>-- Select Client --</option>
               {clients?.map((client) => (
                 <option key={client.id} value={client.id}>
                   {client.fullName}
                 </option>
               ))}
             </select>
+            {error.clientId && (
+              <div className="mt-1 text-danger">{error.clientId}</div>
+            )}
           </div>
         </fieldset>
         <hr className="mb-5" />
@@ -79,11 +72,6 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
           <div className="mb-5">
             <h2 className="fs-16 fw-bold">Appointment Type</h2>
             <p className="text-muted">Select the type of this appointment</p>
-            {error.appointmentType && (
-              <label id="project-type-error" className="error">
-                <FiAlertTriangle /> Appointment type is required.
-              </label>
-            )}
           </div>
           <fieldset>
             <ProjectTypeCard
@@ -117,6 +105,9 @@ const TabProjectType = ({ setFormData, formData, error, setError }) => {
               setError={setError}
             />
           </fieldset>
+          {error.appointmentType && (
+            <div className="mt-1 text-danger">{error.appointmentType}</div>
+          )}
         </fieldset>
       </form>
     </section>
@@ -138,19 +129,15 @@ export const ProjectTypeCard = ({
   const { appointmentType } = formData;
 
   const handleChange = (e) => {
-    console.log('E.TARGET.VALUE', e.target.value)
-    if (e.target.value?.toLowerCase() === 'treatment') {
-      setFormData({ ...formData, picType: 'Therapist' })
-      console.log('TEST', formData)
-    } else {
-      setFormData({ ...formData, picType: 'Psychologist' })
-      console.log('TEST2', formData)
-    }
-    console.log('TEST3', formData)
-    setFormData({
+    const newAppointmentType = e.target.value
+    const newPicType = newAppointmentType.toLowerCase() === 'treatment' ? 'Therapist' : 'Psychologist';
+    const updatedFormData = {
       ...formData,
-      appointmentType: e.target.value,
-    });
+      appointmentType: newAppointmentType,
+      picType: newPicType,
+    }
+
+    setFormData(updatedFormData)
     setError(false); // clear error if any
   };
 

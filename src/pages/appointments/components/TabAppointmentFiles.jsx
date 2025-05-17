@@ -12,22 +12,24 @@ import { fetchAllFiles } from '@/store/slice/fileSlice'
 
 const TabAppointmentFiles = () => {
     const dispatch = useDispatch()
-        const [fileData, setFileData] = useState(storageFolderData(0, 4))
-        const { currentAppointment } = useSelector((state) => state.appointments)
+    const [fileData, setFileData] = useState(storageFolderData(0, 4))
+    const { currentAppointment } = useSelector((state) => state.appointments)
 
     useEffect(() => {
         if (currentAppointment) {
-            dispatch(fetchAllFiles({params: {
-                appointmentId: currentAppointment?.id,
-                uuid: currentAppointment?.client?.uuid,
-                clientName: currentAppointment?.client?.fullName.replaceAll(' ', '')
-            }}))
+            dispatch(fetchAllFiles({
+                params: {
+                    appointmentId: currentAppointment?.id,
+                    uuid: currentAppointment?.client?.uuid,
+                    clientName: currentAppointment?.client?.fullName.replaceAll(' ', '')
+                }
+            }))
         }
     }, [currentAppointment])
     return (
-        <div className="tab-pane fade active show" id="filesTab">
-            <div className='content-area-body'>
-                {/* <div className="recent-section mb-5">
+        // <div className="tab-pane fade active show" id="filesTab">
+        <div className='content-area-body'>
+            {/* <div className="recent-section mb-5">
                     <SectionTitle
                         sectionName={"Recent Files"}
                         sectionDescription={"Recent access files (Last access 24 min ago)"}
@@ -49,15 +51,15 @@ const TabAppointmentFiles = () => {
                     </div>
                 </div> */}
 
-                <div className="project-section">
-                        {/* <SectionTitle
+            <div className="project-section">
+                {/* <SectionTitle
                             sectionName={"Project Files"}
                             sectionDescription={"Recent project files (Last access 24 min ago)"}
                         /> */}
-                    <ProjectFilteTable />
-                </div>
+                <ProjectFilteTable />
             </div>
         </div>
+        // </div>
     )
 }
 

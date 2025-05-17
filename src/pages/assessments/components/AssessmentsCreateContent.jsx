@@ -15,6 +15,7 @@ import { createAssessment } from '@/store/slice/assessmentSlice';
 const AssessmentsCreateContent = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { isLoading: createLoading } = useSelector(state => state.assessments)
     const { clients } = useSelector(state => state.clients)
     const { testTypes } = useSelector(state => state.testTypes)
     const { appointments } = useSelector(state => state.appointments)
@@ -22,7 +23,9 @@ const AssessmentsCreateContent = () => {
 
     const handleSubmit = (values, actions) => {
         console.log('VAVLUES', values)
-        dispatch(createAssessment(values))
+        dispatch(createAssessment(values)).unwrap()
+            .then(() => navigate('/assessments'))
+            .catch(error => console.error('handle error', error))
     }
 
     useEffect(() => {
@@ -38,7 +41,7 @@ const AssessmentsCreateContent = () => {
                     <div className="card-body lead-status">
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                             <h5 className="fw-bold mb-0 me-4">
-                                <span className="d-block mb-2">Create Client Assessment :</span>
+                                <span className="d-block mb-2">Create Client Assessment</span>
                                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">Typically refers to adding a new potential customer or sales prospect</span>
                             </h5>
                         </div>
@@ -137,7 +140,13 @@ const AssessmentsCreateContent = () => {
                                         </a>
 
                                         <button type="submit" className="btn btn-primary">
-                                            <FiCheck size={16} className="me-2" />
+                                            {createLoading ? (
+                                                <div
+                                                    className="spinner-border spinner-border-sm text-white me-2"
+                                                    role="status"
+                                                />
+                                            ) : <FiCheck size={16} className="me-2" />
+                                            }
                                             <span>Create Assessment</span>
                                         </button>
 

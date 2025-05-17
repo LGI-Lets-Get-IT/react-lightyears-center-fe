@@ -6,16 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import AssessmentViewHeader from "./components/AssessmentViewHeader";
 import AppointmentViewTabItems from "../appointments/components/AppointmentViewTabItems";
+import { fetchAssessmentById } from "@/store/slice/assessmentSlice";
 
 const AssessmentsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { currentAppointment } = useSelector((state) => state.appointments);
+  const { currentAssessment } = useSelector((state) => state.assessments);
 
   // console.log("Current appointment data: ", appointment);
 
   useEffect(() => {
-    dispatch(fetchAppointmentById(id));
+    dispatch(fetchAssessmentById(id));
   }, [dispatch, id]);
 
   return (

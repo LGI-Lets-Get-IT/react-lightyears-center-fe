@@ -151,7 +151,7 @@ const ClientsTable = ({ clients }) => {
       accessorKey: "isActive",
       header: () => "Is Active",
       cell: (info) => {
-        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
+        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger' };
         return <span className={`badge bg-soft-${status.color} text-${status.color}`}>{status.text}</span>
       }
     },
@@ -169,7 +169,7 @@ const ClientsTable = ({ clients }) => {
           >
             <FiEye />
           </Link>
-          {permittedActions.length > 0 && 
+          {permittedActions.length > 0 &&
             <Dropdown
               dropdownItems={getActions(row.original.uuid)}
               triggerClass="avatar-md"

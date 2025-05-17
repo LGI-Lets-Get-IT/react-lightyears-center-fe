@@ -11,7 +11,7 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
 
 
   useEffect(() => {
-    if (formData.appointmentType === 'treatment') {
+    if (formData.appointmentType.toLowerCase() === 'treatment') {
       dispatch(fetchAllTherapists())
     } else {
       dispatch(fetchAllPsychologists())
@@ -23,24 +23,14 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
       <form id="project-details">
         <fieldset>
           <div className="mb-5">
-            <h2 className="fs-16 fw-bold">{formData.appointmentType === 'treatment' ? 'Therapist' : 'Psychologist'} In Charge</h2>
+            <h2 className="fs-16 fw-bold">{formData.appointmentType.toLowerCase() === 'treatment' ? 'Therapist' : 'Psychologist'} In Charge</h2>
             <p className="text-muted">
-              {formData.appointmentType === 'treatment' ? 'Therapist' : 'Psychologist'}  in charge in this appointment.
+              {formData.appointmentType.toLowerCase() === 'treatment' ? 'Therapist' : 'Psychologist'}  in charge in this appointment.
             </p>
           </div>
-
-          {error.picId && (
-            <label
-              id="picName-error"
-              className="error text-danger mb-2 d-flex align-items-center gap-1"
-            >
-              <FiAlertTriangle /> {error.picId}
-            </label>
-          )}
-
           <fieldset>
             <div className="col-lg-8">
-              <label htmlFor="picName" className="form-label">
+              <label htmlFor="picId" className="form-label">
                 PIC Name <span className="text-danger">*</span>
               </label>
               {/* <SelectDropdown
@@ -56,18 +46,19 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
                 }}
               /> */}
               <select
-                id="picName"
+                id="picId"
                 className={`form-control ${error && !formData.picId ? "is-invalid" : ""
                   }`}
                 value={formData.picId}
                 onChange={(e) => {
                   const selectedEmployeeId = parseInt(e.target.value) ?? null;
+                  console.log('SELECTEDEMPLOYEEID', selectedEmployeeId)
                   setFormData({ ...formData, picId: selectedEmployeeId }); // 👈 fix is here
                 }}
                 required
               >
-                <option value="">-- Select PIC --</option>
-                {formData.appointmentType === 'treatment' ? (
+                <option value="" disabled>-- Select PIC --</option>
+                {formData.appointmentType.toLowerCase() === 'treatment' ? (
                   therapists.map((therapist) => (
                     <option key={therapist.id} value={therapist.id}>
                       {therapist.fullName}
@@ -80,6 +71,9 @@ const TabProjectPIC = ({ error, setError, formData, setFormData }) => {
                   ))
                 }
               </select>
+              {error.picId && (
+                <div className="mt-1 text-danger">{error.picId}</div>
+              )}
             </div>
           </fieldset>
         </fieldset>

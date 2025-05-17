@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const AppointmentViewTabItems = () => {
+const AppointmentViewTabItems = ({ activeTab, setActiveTab }) => {
   const { currentAppointment } = useSelector(
     (state) => state.appointments
   );
@@ -21,27 +21,20 @@ const AppointmentViewTabItems = () => {
           >
             <li className="nav-item" role="presentation">
               <button
-                className="nav-link active"
-                data-bs-toggle="tab"
-                data-bs-target="#overviewTab"
+                className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
+                onClick={() => setActiveTab('overview')}
+              // data-bs-toggle="tab"
+              // data-bs-target="#overviewTab"
               >
                 Overview
               </button>
             </li>
             <li className="nav-item" role="presentation">
               <button
-                className="nav-link"
-                data-bs-toggle="tab"
-                data-bs-target="#ReportsTab"
-              >
-                Reports
-              </button>
-            </li>
-            <li className="nav-item" role="presentation">
-              <button
-                className="nav-link"
-                data-bs-toggle="tab"
-                data-bs-target="#filesTab"
+                className={`nav-link ${activeTab === 'files' ? 'active' : ''}`}
+                onClick={() => setActiveTab('files')}
+              // data-bs-toggle="tab"
+              // data-bs-target="#filesTab"
               >
                 Files
               </button>
@@ -49,10 +42,11 @@ const AppointmentViewTabItems = () => {
             {currentAppointment?.appointmentType?.toLowerCase() === "assessment" && (
               <li className="nav-item" role="presentation">
                 <button
-                  className="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#assessmentsTab"
-                  >
+                  className={`nav-link ${activeTab === 'result' ? 'active' : ''}`}
+                  // data-bs-toggle="tab"
+                  // data-bs-target="#assessmentsTab"
+                  onClick={() => setActiveTab('result')}
+                >
                   Result
                 </button>
               </li>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TabProjectType from "./appointmentCreateTabs/TabProjectType";
-import TabProjectDetails from "./appointmentCreateTabs/TabProjectPIC";
+import TabProjectPIC from "./appointmentCreateTabs/TabProjectPIC";
 import TabCompleted from "./appointmentCreateTabs/TabCompleted";
 import TabDateTime from "./appointmentCreateTabs/TabDateTime";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
@@ -22,10 +22,10 @@ const AppointmentCreateContent = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [errors, setErrors] = useState(false);
   const [formData, setFormData] = useState({
-    client: null,
+    clientId: '',
     title: null,
     appointmentType: "",
-    picId: null,
+    picId: '',
     picType: null,
     appointmentDate: null,
     timeStart: null,
@@ -132,7 +132,7 @@ const AppointmentCreateContent = () => {
               />
             )}
             {currentStep === 1 && (
-              <TabProjectDetails
+              <TabProjectPIC
                 setFormData={setFormData}
                 formData={formData}
                 onInputChange={handleInputChange}

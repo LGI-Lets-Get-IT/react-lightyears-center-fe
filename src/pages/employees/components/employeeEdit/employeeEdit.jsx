@@ -39,7 +39,7 @@ const EmployeeEdit = ({ empData }) => {
               {empData?.fullName}&apos;s Information Edit:
             </span>
             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-              Last Edited: {empData?.updatedAt}.{" "}
+              Last Edited: {empData?.updatedAt}
             </span>
           </h5>
         </div>
