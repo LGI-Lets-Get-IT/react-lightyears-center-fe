@@ -4,9 +4,7 @@ import {
   FiBriefcase,
   FiDollarSign,
   FiEye,
-  FiFilter,
   FiFlag,
-  FiPaperclip,
   FiPlus,
   FiUserCheck,
   FiUserMinus,
@@ -54,7 +52,7 @@ const CustomersHeader = () => {
         >
           <FiBarChart size={16} strokeWidth={1.6} />
         </a>
-        {/* <Dropdown
+        <Dropdown
           dropdownItems={filterAction}
           triggerPosition={"0, 12"}
           triggerIcon={<FiFilter size={16} strokeWidth={1.6} />}
@@ -68,7 +66,7 @@ const CustomersHeader = () => {
           triggerClass="btn btn-icon btn-light-brand"
           iconStrokeWidth={0}
           isAvatar={false}
-        /> */}
+        />
         <Link to="/clients/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Client</span>

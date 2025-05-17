@@ -23,14 +23,15 @@ const TextArea = ({
         <div className="input-group">
           <div className="input-group-text">{getIcon(icon)}</div>
           <textarea
-            className="form-control"
+            className={`form-control ${meta.error ? 'is-invalid' : ''}`}
             id={labelId}
             cols="30"
             rows={row}
             placeholder={placeholder}
             name={name}
+            value={value}
             onChange={onChange}
-          >{value}</textarea>
+          ></textarea>
         </div>
         {meta && meta.error && (
           <div className="mt-1 text-danger">{meta.error}</div>

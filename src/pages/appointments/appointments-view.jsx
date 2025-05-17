@@ -24,7 +24,7 @@ const AppointmentsView = () => {
   return (
     <>
       <PageHeader>
-        <AppointmentViewHeader />
+        <AppointmentViewHeader id={id} />
       </PageHeader>
       <AppointmentViewTabItems activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="main-content">

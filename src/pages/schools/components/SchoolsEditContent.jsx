@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Input from "@/components/shared/Input";
 import TextArea from "@/components/shared/TextArea";
-import { FiCalendar, FiCheck, FiLayers, FiUserPlus, FiX } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux";
+import { FiCheck, FiX } from "react-icons/fi";
+import { useDispatch, useSelector, } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createSchool, fetchAllSchools } from "@/store/slice/schoolSlice";
+import { updateSchoolById } from "@/store/slice/schoolSlice";
 import { Field, Form, Formik } from "formik";
 import { schoolSchema } from "@/schemas/schoolSchema";
 
 const SchoolsEditContent = ({ schoolData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: updateLoading } = useSelector(state => state.schools)
 
   const handleSubmit = (values, actions) => {
     console.log('HANDLESUBMIT', values)
-    dispatch(createSchool(values))
+    dispatch(updateSchoolById({
+      schoolId: schoolData?.id,
+      data: values,
+    }))
       .unwrap()
       .then(() => navigate("/schools"))
       .catch((error) => "handle error");
@@ -42,7 +46,7 @@ const SchoolsEditContent = ({ schoolData }) => {
                   <h5 className="fw-bold mb-0 me-4">
                     <span className="d-block mb-2">Edit {schoolData?.name} Data</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-
+                      {schoolData?.updatedAt}
                     </span>
                   </h5>
                 </div>
@@ -168,8 +172,15 @@ const SchoolsEditContent = ({ schoolData }) => {
                     <span>Cancel</span>
                   </a>
                   <button type="submit" className="btn btn-primary">
-                    <FiCheck size={16} className="me-2" />
-                    <span>Create School</span>
+                    {console.log('updateLoading', updateLoading)}
+                    {updateLoading ? (
+                      <div
+                        className="spinner-border spinner-border-sm text-white me-2"
+                        role="status"
+                      />
+                    ) : <FiCheck size={16} className="me-2" />
+                    }
+                    <span>Edit School</span>
                   </button>
                 </div>
               </div>

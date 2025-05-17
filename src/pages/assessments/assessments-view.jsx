@@ -13,8 +13,6 @@ const AssessmentsView = () => {
   const { id } = useParams();
   const { currentAssessment } = useSelector((state) => state.assessments);
 
-  // console.log("Current appointment data: ", appointment);
-
   useEffect(() => {
     dispatch(fetchAssessmentById(id));
   }, [dispatch, id]);
@@ -22,7 +20,7 @@ const AssessmentsView = () => {
   return (
     <>
       <PageHeader>
-        <AssessmentViewHeader />
+        <AssessmentViewHeader id={id} />
       </PageHeader>
       <AppointmentViewTabItems />
       {/* <div className="main-content">

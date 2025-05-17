@@ -5,6 +5,7 @@ import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
+import PlansEdit from "@/pages/treatment-plans/plans-edit";
 const AssessmentsCreate = lazy(() => import("@/pages/assessments/assessments-create"));
 const AssessmentsEdit = lazy(() => import("@/pages/assessments/assessments-edit"));
 const AssessmentsList = lazy(() => import("@/pages/assessments/assessments-list"));
@@ -262,7 +263,7 @@ export const router = createBrowserRouter([
           <ProtectedRoute
             requiredPermissions={PERMISSIONS.TREATMENT_PLANS.UPDATE}
           >
-            {/* <PlansView /> */}
+            <PlansEdit />
           </ProtectedRoute>
         ),
       },

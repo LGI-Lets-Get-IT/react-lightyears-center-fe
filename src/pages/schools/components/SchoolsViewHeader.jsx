@@ -2,15 +2,16 @@ import React from 'react'
 import { FiEdit, FiMoreHorizontal, FiPause, FiPauseCircle, FiPlus, FiTrash, FiTrash2 } from 'react-icons/fi'
 import Dropdown from '@/components/shared/Dropdown'
 import { Link } from 'react-router-dom'
+import { LiaPencilAltSolid } from 'react-icons/lia'
 
 const options = [
-    { label: 'Active/Inactive School', icon: <FiPauseCircle/> },
-    { type: 'divider' },
-    { label: 'Edit School', icon: <FiEdit /> },
+    // { label: 'Active/Inactive School', icon: <FiPauseCircle /> },
+    // { type: 'divider' },
+    // { label: 'Edit School', icon: <FiEdit /> },
     { label: 'Delete School', icon: <FiTrash2 /> },
 ]
 
-const SchoolsViewHeader = () => {
+const SchoolsViewHeader = ({ id }) => {
     return (
         <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
             <div className="filter-dropdown">
@@ -22,9 +23,9 @@ const SchoolsViewHeader = () => {
                 triggerClass='btn btn-icon btn-light-brand'
                 triggerIcon={<FiMoreHorizontal size={16} />}
             />
-            <a href="/schools/create" className="btn btn-primary">
-                <FiPlus size={16} className='me-2' />
-                <span>Create New School</span>
+            <a href={`/schools/${id}/edit`} className="btn btn-primary">
+                <LiaPencilAltSolid size={16} className='me-2' />
+                <span>Edit School</span>
             </a>
         </div>
     )

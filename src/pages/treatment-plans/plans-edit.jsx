@@ -1,38 +1,28 @@
-// import React, { useEffect } from "react";
+import React, { useEffect } from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import PlanEditContent from "./components/PlanEditContent";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchPlanById } from "@/store/slice/treatmentPlanSlice";
-import PlanViewHeader from "./components/PlanViewHeader";
-import PlanViewTabItems from "./components/PlanViewTabItems";
-import TabPlanProgress from "./components/TabPlanProgress";
-import TabPlanOverview from "./components/TabPlanOverview";
+import { useParams } from "react-router-dom";
 
-const PlansView = () => {
+const PlansEdit = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const { plan } = useSelector(state => state.treatmentPlans);
 
   useEffect(() => {
-    dispatch(fetchPlanById(id));
-  }, [id]);
-
+    dispatch(fetchPlanById(id))
+  }, [])
   return (
     <>
-      <PageHeader>
-        <PlanViewHeader />
-      </PageHeader>
-      <PlanViewTabItems />
+      <PageHeader />
       <div className="main-content">
-        <div className="tab-content">
-          <TabPlanOverview/>
-          <div className="tab-pane fade" id="progressTab">
-            <TabPlanProgress/>
-          </div>
+        <div className="row">
+          <PlanEditContent planData={plan} />
         </div>
       </div>
     </>
   );
 };
 
-export default PlansView;
+export default PlansEdit;

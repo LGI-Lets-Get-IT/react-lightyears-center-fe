@@ -5,6 +5,6 @@ export const schoolsApi = {
   getAllSchools: () => api.get("/schools"),
   getSchoolById: (id) => api.get(`/schools/${id}`),
   getSchoolClientsById: (id) => api.get(`/schools/${id}/clients`),
-  updateSchoolById: (id) => api.get(`/schools/${id}`),
-  deleteSchoolById: (id) => api.get(`/schools/${id}`),
+  updateSchoolById: (id, requestBody) => api.put(`/schools/${id}`, requestBody),
+  deleteSchoolById: (id) => api.delete(`/schools/${id}`),
 };

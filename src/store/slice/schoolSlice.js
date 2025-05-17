@@ -62,6 +62,20 @@ export const createSchool = createAsyncThunk(
   }
 );
 
+export const updateSchoolById = createAsyncThunk(
+  "schools/updateSchoolById",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const { schoolId, data } = bodyData;
+      const response = await schoolsApi.updateSchoolById(schoolId, data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 export const schoolSlice = createSlice({
   name: "school",
   initialState,
@@ -98,6 +112,18 @@ export const schoolSlice = createSlice({
     });
     builder.addCase(fetchSchoolClientsById.rejected, (state, action) => {
       state.isLoading = true;
+      state.error = action.payload;
+    });
+    builder.addCase(updateSchoolById.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateSchoolById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.school = action.payload;
+    });
+    builder.addCase(updateSchoolById.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

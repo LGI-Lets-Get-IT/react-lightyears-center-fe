@@ -64,28 +64,6 @@ const PlanViewTabItems = () => {
         <div className="page-content-right-sidebar-wrapper">
           <div className="proposal-action-btn">
             <div className="d-md-none d-lg-flex">
-              {plan?.programs.every((program) => program.isDone) ? (
-                <a
-                  onClick={markAsDone}
-                  className="action-btn text-success"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="left"
-                  title="Mark Plan as Done"
-                >
-                  <FiCheckCircle size={16} />
-                </a>
-              ) : (
-                <span
-                  className="action-btn text-secondary disabled"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="left"
-                  title="Please complete the remaining sessions first"
-                >
-                  <FiCheckCircle size={16} />
-                </span>
-              )}
-            </div>
-            <div className="d-md-none d-lg-flex">
               <a
                 href="#"
                 onClick={generateTreatmentPlanReport}
@@ -105,10 +83,10 @@ const PlanViewTabItems = () => {
             </div>
             <div className="d-md-none d-lg-flex">
               <a
-                href="/proposal/edit"
+                href={`/treatment-plans/${id}/edit`}
                 className="action-btn"
                 data-bs-toggle="tooltip"
-                title="Edit Plan"
+                title="Edit Treatment Plan"
               >
                 <FiEdit size={16} />
               </a>
