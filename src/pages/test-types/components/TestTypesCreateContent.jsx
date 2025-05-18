@@ -17,92 +17,79 @@ import { genderOptions, relationshipOptions } from "@/utils/options";
 import { createSchool, fetchAllSchools } from "@/store/slice/schoolSlice";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { createTestType } from "@/store/slice/testTypeSlice";
+import { Field, Form, Formik } from "formik";
+import { testTypeSchema } from "@/schemas/testTypeSchema";
 
 const TestTypesCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { schools } = useSelector((state) => state.schools);
-  const [inputs, setInputs] = useState({});
-  const [selectedOption, setSelectedOption] = useState({});
-  const [nationalityOption, setNationalityOption] = useState({});
-  const [relationshipOption, setRelationshipOption] = useState({});
-  const [genderOption, setGenderOption] = useState({});
-  const [guardianNationalityOption, setGuardianNationalityOption] = useState(
-    {}
-  );
-  const [schoolOption, setSchoolOption] = useState({});
-  const { startDate, endDate, setStartDate, setEndDate, renderFooter } =
-    useDatePicker();
-  const { countries } = useLocationData();
-  // const group = customerListTagsOptions
-  // const status = customerListStatusOptions
-  const relationships = relationshipOptions;
-  const gender = genderOptions;
 
-  useEffect(() => {
-    dispatch(fetchAllSchools());
-  }, []);
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-
-    setInputs((values) => ({ ...values, [name]: value }));
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    dispatch(createTestType(inputs))
+  const handleSubmit = (values, actions) => {
+    // console.log('KJSFKAJSKASFJKJ', values)
+    dispatch(createTestType(values))
       .unwrap()
-      .then(() => navigate("/settings/test-types"))
+      .then(() => navigate("/test-types"))
       .catch((error) => "handle error");
   };
   return (
     <div className="col-lg-12">
       <div className="card border-top-0">
-        <form onSubmit={handleSubmit}>
-          <div className="card-body personal-info">
-            <div className="mb-4 d-flex align-items-center justify-content-between">
-              <h5 className="fw-bold mb-0 me-4">
-                <span className="d-block mb-2">Test Type Information:</span>
-                <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Lorem ipsum dolor sit amet
-                </span>
-              </h5>
+        <Formik initialValues={{
+          name: null,
+          description: null
+        }} validationSchema={testTypeSchema} onSubmit={handleSubmit}>
+          <Form>
+            <div className="card-body personal-info">
+              <div className="mb-4 d-flex align-items-center justify-content-between">
+                <h5 className="fw-bold mb-0 me-4">
+                  <span className="d-block mb-2">Test Type Information:</span>
+                  <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                    Information regarding the test type
+                  </span>
+                </h5>
+              </div>
+              <Field name="testName">
+                {({ field, meta }) => (
+                  <Input
+                    label={"Test Name"}
+                    labelId={"nameInput"}
+                    placeholder={"Test Name"}
+                    name={"testName"}
+                    meta={meta}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Field name="testDescription">
+                {({ field, meta }) => (
+                  <TextArea
+                    row={4}
+                    label={"Test Description"}
+                    placeholder={"Test Description"}
+                    labelId={"description"}
+                    name={"testDescription"}
+                    meta={meta}
+                    {...field}
+                  />
+                )}
+              </Field>
+
             </div>
-            <Input
-              icon="lu-school"
-              label={"Test Name"}
-              labelId={"testNameInput"}
-              placeholder={"Test Name"}
-              name={"testName"}
-              onChange={handleChange}
-              value={inputs.testName || ""}
-            />
-            <TextArea
-              label={"Test Description"}
-              icon="feather-map-pin"
-              placeholder={"Test Description"}
-              labelId={"testDescription"}
-              onChange={handleChange}
-              name={"testDescription"}
-            />
-          </div>
-          <hr className="my-0" />
-        <div className="card-body additional-info">
-          <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-              <a href="#" className="btn btn-light-brand">
-                <FiX size={16} className="me-2" />
-                <span>Cancel</span>
-              </a>
-              <button type="submit" className="btn btn-primary">
-                <FiCheck size={16} className="me-2" />
-                <span>Create Test</span>
-              </button>
+            <hr className="my-0" />
+            <div className="card-body additional-info">
+              <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+                <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
+                  <FiX size={16} className="me-2" />
+                  <span>Cancel</span>
+                </a>
+                <button type="submit" className="btn btn-primary">
+                  <FiCheck size={16} className="me-2" />
+                  <span>Create Test</span>
+                </button>
+              </div>
             </div>
-        </div>
-        </form>
+          </Form>
+        </Formik>
       </div>
     </div>
   );

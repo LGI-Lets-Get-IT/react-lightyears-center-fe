@@ -6,11 +6,12 @@ export const createSchema = Yup.object({
 });
 
 export const createClientSchema = Yup.object({
-  schoolId: Yup.number().required('School Name is required'),
+  schoolName: Yup.number().required('School Name is required'),
   fullName: Yup.string().min(3, 'Full Name must be at least 3 characters').required('Full Name must be filled'),
   nationality: Yup.string().required('Child Nationality is required'),
   dateOfBirth: Yup.date().required('Date of Birth must be filled'),
   gender: Yup.string().required('Gender is required'),
+  problem: Yup.string().required('Problem must be filled'),
   guardianName: Yup.string().min(3).required('Guardian Name must be filled'),
   guardianPhone: Yup.string().required('Guardian Phone Number must be filled'),
   guardianEmail: Yup.string().email('Guardian Email must be a valid email format').required('Guardian Email is required'),

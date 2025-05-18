@@ -1,12 +1,11 @@
 // import React, { useEffect } from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import { fetchAppointmentById } from "@/store/slice/appointmentSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import AssessmentViewHeader from "./components/AssessmentViewHeader";
-import AppointmentViewTabItems from "../appointments/components/AppointmentViewTabItems";
 import { fetchAssessmentById } from "@/store/slice/assessmentSlice";
+import AssessmentViewTabItems from "./components/AssessmentViewTabItems";
 
 const AssessmentsView = () => {
   const dispatch = useDispatch();
@@ -22,11 +21,11 @@ const AssessmentsView = () => {
       <PageHeader>
         <AssessmentViewHeader id={id} />
       </PageHeader>
-      <AppointmentViewTabItems />
-      {/* <div className="main-content">
+      <AssessmentViewTabItems />
+      <div className="main-content">
         <div className="tab-content">
           <TabAppointmentOverview appointmentData={currentAppointment} />
-          <div className="tab-pane fade" id="ReportsTab">
+          {/* <div className="tab-pane fade" id="ReportsTab">
             <LeadsEmptyCard
               title="No reports yet!"
               description="There are no reports to be viewed"
@@ -49,9 +48,9 @@ const AssessmentsView = () => {
               title="No discussions yet!"
               description="There is no discussions on this project"
             />
-          </div>
+          </div> */}
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

@@ -64,7 +64,7 @@ const TreatmentTypesHeader = () => {
           iconStrokeWidth={0}
           isAvatar={false}
         /> */}
-        <Link to="/settings/treatment-types/create" className="btn btn-primary">
+        <Link to="/treatment-types/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Treatment</span>
         </Link>

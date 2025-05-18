@@ -8,6 +8,7 @@ import { clientStatusOptions } from "@/utils/options";
 import { useSelector } from "react-redux";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
+import { format } from "date-fns";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -28,7 +29,7 @@ const TreatmentTypesTable = ({ data }) => {
   const { filterItemsByPermission } = useFilterByPermission()
 
   const getActions = (id) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/settings/treatment-types/${id}/edit` },
+    { label: "Edit", icon: <FiEdit3 />, link: `/treatment-types/${id}/edit` },
     { label: "Delete", icon: <FiTrash2 /> },
   ];
 
@@ -78,7 +79,16 @@ const TreatmentTypesTable = ({ data }) => {
       header: () => "Description",
       cell: (info) => {
         return (
-          <a>{info.getValue()}</a>
+          <a className="text-wrap">{info.getValue()}</a>
+        )
+      }
+    },
+    {
+      accessorKey: 'updatedAt',
+      header: () => "Last Edited",
+      cell: (info) => {
+        return (
+          <a>{format(info.getValue(), 'dd MMM yyyy, HH:mm aa')}</a>
         )
       }
     },
@@ -115,7 +125,6 @@ const TreatmentTypesTable = ({ data }) => {
 
   return (
     <div>
-      {console.log('DATAA', data)}
       <Table data={data} columns={columns} />
     </div>
   );

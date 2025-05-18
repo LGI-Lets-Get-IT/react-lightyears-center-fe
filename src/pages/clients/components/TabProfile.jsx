@@ -11,6 +11,7 @@ import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import { createClientSchema } from "@/schemas/clientSchema";
+import TextArea from "@/components/shared/TextArea";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,7 @@ const TabProfile = () => {
         gender: null,
         nationality: null,
         schoolId: null,
+        problem: null,
         guardianName: null,
         guardianEmail: null,
         guardianPhone: null,
@@ -187,6 +189,31 @@ const TabProfile = () => {
                     }}
                   />
                   <hr className="my-0" />
+                </div>
+              </div>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-4">
+                  <label className="fw-semibold">Problem: </label>
+                </div>
+                <div className="col-lg-8">
+                  <Field name="problem">
+                    {({ field, meta }) => (
+                      <>
+                        <textarea
+                          id="problem"
+                          rows={6}
+                          className={`form-control ${meta.error ? "is-invalid" : ""
+                            }`}
+                          placeholder="Please specify the problem here"
+                          defaultValue={""}
+                          {...field}
+                        />
+                        {meta.error && (
+                          <div className="mt-1 text-danger">{meta.error}</div>
+                        )}
+                      </>
+                    )}
+                  </Field>
                 </div>
               </div>
             </div>

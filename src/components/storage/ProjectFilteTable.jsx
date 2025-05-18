@@ -9,8 +9,7 @@ import { confirmDelete } from '@/utils/confirmDelete'
 import { useSelector } from 'react-redux'
 import { format } from 'date-fns'
 
-const ProjectFilteTable = () => {
-    const { files } = useSelector(state => state.files)
+const ProjectFilteTable = ({ files }) => {
     const [data, setData] = useState(storageProjectData)
 
     const handleDelete = (label, id) => {
@@ -38,11 +37,11 @@ const ProjectFilteTable = () => {
                         </thead>
                         <tbody>
                             {files && files.length > 0 ? files.map(({ id, mimeType, name, webViewLink, size, createdTime }) => {
-                                    const icon = mimeType == 'application/pdf' ?  '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
-                                    return (
-                                        <TableRow
+                                const icon = mimeType == 'application/pdf' ? '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
+                                return (
+                                    <TableRow
                                         key={id}
-                                        fileSIze={size/100000}
+                                        fileSIze={size / 100000}
                                         iconSrc={icon}
                                         // members={members}
                                         link={webViewLink}
@@ -50,9 +49,9 @@ const ProjectFilteTable = () => {
                                         uploadDate={format(createdTime, 'dd-MM-yyyy hh:mm')}
                                         id={id}
                                         handleDelete={handleDelete}
-                                        />
-                                    )
-                                }) : <tr className='text-center'><td colSpan={4}>No files found</td></tr>
+                                    />
+                                )
+                            }) : <tr className='text-center'><td colSpan={4}>No files found</td></tr>
                             }
                         </tbody>
                     </table>

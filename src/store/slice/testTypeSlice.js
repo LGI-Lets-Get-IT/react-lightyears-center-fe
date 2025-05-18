@@ -22,9 +22,9 @@ export const fetchAllTestTypes = createAsyncThunk(
 
 export const fetchTestTypeById = createAsyncThunk(
   "testtype/getTestTypeById",
-  async (planId, { rejectWithValue }) => {
+  async (testId, { rejectWithValue }) => {
     try {
-      const response = await testTypesApi.getTestTypeById(planId);
+      const response = await testTypesApi.getTestTypeById(testId);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -45,6 +45,19 @@ export const createTestType = createAsyncThunk(
   }
 );
 
+export const updateTestTypeById = createAsyncThunk(
+  "testtype/updateTestTypeById",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const { testTypeId, data } = bodyData
+      const response = await testTypesApi.updateTestTypeById(testTypeId, data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const testTypeSlice = createSlice({
   name: "testtype",
   initialState,
@@ -54,22 +67,33 @@ export const testTypeSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllTestTypes.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.testTypes = action.payload;
     });
     builder.addCase(fetchAllTestTypes.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchTestTypeById.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchTestTypeById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.type = action.payload;
     });
     builder.addCase(fetchTestTypeById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updateTestTypeById.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(updateTestTypeById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.type = action.payload;
+    });
+    builder.addCase(updateTestTypeById.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

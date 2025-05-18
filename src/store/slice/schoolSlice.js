@@ -85,33 +85,33 @@ export const schoolSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllSchools.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.schools = action.payload;
     });
     builder.addCase(fetchAllSchools.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchSchoolById.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchSchoolById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.school = action.payload;
     });
     builder.addCase(fetchSchoolById.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchSchoolClientsById.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchSchoolClientsById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.schoolClients = action.payload;
     });
     builder.addCase(fetchSchoolClientsById.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(updateSchoolById.pending, (state) => {

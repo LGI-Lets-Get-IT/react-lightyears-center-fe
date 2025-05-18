@@ -81,11 +81,11 @@ export const clientSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllClients.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.clients = action.payload;
     });
     builder.addCase(fetchAllClients.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.clients = initialState.clients
       state.error = action.payload;
     });
@@ -93,11 +93,11 @@ export const clientSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchClientByUuid.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.currentClient = action.payload;
     });
     builder.addCase(fetchClientByUuid.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.currentClient = initialState.currentClient
       state.error = action.payload;
     });

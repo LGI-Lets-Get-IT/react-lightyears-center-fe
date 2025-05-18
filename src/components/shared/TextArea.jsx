@@ -21,7 +21,9 @@ const TextArea = ({
       </div>
       <div className="col-lg-8">
         <div className="input-group">
-          <div className="input-group-text">{getIcon(icon)}</div>
+          {icon && (
+            <div className="input-group-text">{getIcon(icon)}</div>
+          )}
           <textarea
             className={`form-control ${meta.error ? 'is-invalid' : ''}`}
             id={labelId}

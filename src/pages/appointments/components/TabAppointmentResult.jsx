@@ -1,3 +1,4 @@
+import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 import { fetchAssessmentByAppointmentId } from "@/store/slice/assessmentSlice";
 import { format } from "date-fns";
 import { useEffect } from "react";
@@ -19,9 +20,9 @@ const TabAppointmentResult = () => {
         }))
     }, [])
     return (
-        <div className="content-area">
+        <div className="content-area-body">
+            {assessments && assessments.length > 0 ? (
 
-            <div className="content-area-body pb-0">
                 <div className="row note-has-grid" id="note-full-container">
                     {
                         assessments?.map(({ id, testName, assessmentDate, assessedBy, result }) => (
@@ -36,7 +37,9 @@ const TabAppointmentResult = () => {
                         ))
                     }
                 </div>
-            </div>
+            ) : (
+                <LeadsEmptyCard title={'No assessment result yet!'} description={'There are no assessment result in this appointment'} link={'/assessments/create'} />
+            )}
         </div>
     )
 }

@@ -66,22 +66,44 @@ export const treatmentPlanSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllPlans.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.plans = action.payload;
     });
     builder.addCase(fetchAllPlans.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchPlanById.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchPlanById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.plan = action.payload;
     });
     builder.addCase(fetchPlanById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(createPlan.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(createPlan.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.plan = action.payload;
+    });
+    builder.addCase(createPlan.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updatePlanById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updatePlanById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.plan = action.payload;
+    });
+    builder.addCase(updatePlanById.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

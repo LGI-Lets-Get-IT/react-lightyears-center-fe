@@ -14,10 +14,10 @@ const ProfileModal = () => {
 
     const handleLogout = () => {
         dispatch(userLogout())
-        .unwrap()
-        .then(() => {
-            navigate('/login')
-        })
+            .unwrap()
+            .then(() => {
+                navigate('/login')
+            })
     }
     return (
         <div className="dropdown nxl-h-item">
@@ -30,7 +30,7 @@ const ProfileModal = () => {
                         {/* <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" /> */}
                         <div>
                             <h6 className="text-dark mb-0">{currentUser?.fullName}
-                                {currentUser?.role && 
+                                {currentUser?.role &&
                                     <span className="badge bg-soft-primary text-primary ms-1">{currentUser.role}</span>
                                 }
                             </h6>
@@ -93,10 +93,10 @@ const ProfileModal = () => {
                     </div>
                 </div> */}
                 {/* <div className="dropdown-divider"></div> */}
-                {/* <a href="#" className="dropdown-item">
+                <a href="/profile" className="dropdown-item">
                     <i ><FiUser /></i>
-                    <span>Profile Details</span>
-                </a> */}
+                    <span>Profile</span>
+                </a>
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>

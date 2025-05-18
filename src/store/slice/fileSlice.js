@@ -32,9 +32,9 @@ export const fetchFileById = createAsyncThunk(
   }
 );
 
-export const createFile = createAsyncThunk(
-  "files/createFile",
-  async (data, { rejectWithValue, dispatch }) => {
+export const uploadFile = createAsyncThunk(
+  "files/uploadFile",
+  async (data, { rejectWithValue }) => {
     try {
       const response = await filesApi.uploadFile(data);
       return response.data.data;

@@ -64,7 +64,7 @@ const TestTypesHeader = () => {
           iconStrokeWidth={0}
           isAvatar={false}
         /> */}
-        <Link to="/settings/test-types/create" className="btn btn-primary">
+        <Link to="/test-types/create" className="btn btn-primary">
           <FiPlus size={16} className="me-2" />
           <span>Create New Test</span>
         </Link>

@@ -22,7 +22,10 @@ const Input = ({
       </div>
       <div className="col-lg-8">
         <div className="input-group">
-          <div className="input-group-text">{getIcon(icon)}</div>
+          {icon && (
+            <div className="input-group-text">{getIcon(icon)}</div>
+          )
+          }
           <input
             type={type}
             name={name}

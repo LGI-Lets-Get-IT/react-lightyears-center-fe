@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Pagination from '@/components/shared/Pagination'
 import HorizontalProgress from '@/components/shared/HorizontalProgress'
 import { projectsData } from '@/utils/data/projectsData'
@@ -9,11 +9,30 @@ import RecentFileCard from '@/components/storage/RecentFileCard'
 import { storageFolderData } from '@/utils/data/storageData'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllFiles } from '@/store/slice/fileSlice'
+import LeadsEmptyCard from '@/components/leadsViewCreate/LeadsEmptyCard'
 
 const TabAppointmentFiles = () => {
     const dispatch = useDispatch()
-    const [fileData, setFileData] = useState(storageFolderData(0, 4))
+    const fileInputRef = useRef(null)
     const { currentAppointment } = useSelector((state) => state.appointments)
+    const { files } = useSelector(state => state.files)
+    const [uploadedFileName, setUploadedFileName] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleUploadClick = () => {
+        fileInputRef.current?.click()
+    }
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setUploadedFileName(file.name);
+            setSelectedFile(file)
+        }
+    }
+
+    const handleUploadFile = () => {
+        console.log('SELECTEDFILE', selectedFile)
+    }
 
     useEffect(() => {
         if (currentAppointment) {
@@ -51,13 +70,37 @@ const TabAppointmentFiles = () => {
                     </div>
                 </div> */}
 
-            <div className="project-section">
-                {/* <SectionTitle
+            {files && files.length > 0 ? (
+                <div className="project-section">
+                    {/* <SectionTitle
                             sectionName={"Project Files"}
                             sectionDescription={"Recent project files (Last access 24 min ago)"}
                         /> */}
-                <ProjectFilteTable />
-            </div>
+                    <ProjectFilteTable files={files} />
+                </div>
+            ) : (
+                <>
+                    <LeadsEmptyCard title={'No files yet!'} description={'There are no files in this appointment'} onClick={handleUploadClick}>
+                        {uploadedFileName && (
+                            <div className="text-center mt-3 d-flex flex-column align-items-center justify-content-center">
+                                <div className="mb-2">
+                                    <span className="text-muted">Selected file: </span>
+                                    <strong>{uploadedFileName}</strong>
+                                </div>
+                                <button
+                                    className="btn btn-primary btn-sm"
+                                    onClick={handleUploadFile}
+                                >
+                                    Submit Upload
+                                </button>
+                            </div>
+                        )}
+                    </LeadsEmptyCard>
+                    <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+
+                </>
+            )}
+
         </div>
         // </div>
     )

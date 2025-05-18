@@ -20,14 +20,14 @@ const PlansView = () => {
   return (
     <>
       <PageHeader>
-        <PlanViewHeader />
+        {/* <PlanViewHeader /> */}
       </PageHeader>
       <PlanViewTabItems />
       <div className="main-content">
         <div className="tab-content">
-          <TabPlanOverview/>
+          <TabPlanOverview />
           <div className="tab-pane fade" id="progressTab">
-            <TabPlanProgress/>
+            <TabPlanProgress />
           </div>
         </div>
       </div>

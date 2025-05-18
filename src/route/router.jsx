@@ -6,6 +6,9 @@ import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
 import PlansEdit from "@/pages/treatment-plans/plans-edit";
+import UserProfile from "@/pages/user/user-profile";
+import TestTypesEdit from "@/pages/test-types/test-types-edit";
+import TreatmentTypesEdit from "@/pages/treatment-types/treatment-types-edit";
 const AssessmentsCreate = lazy(() => import("@/pages/assessments/assessments-create"));
 const AssessmentsEdit = lazy(() => import("@/pages/assessments/assessments-edit"));
 const AssessmentsList = lazy(() => import("@/pages/assessments/assessments-list"));
@@ -146,6 +149,12 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/profile',
+        element: (
+          <UserProfile />
+        ),
       },
       {
         path: "/appointments",
@@ -307,12 +316,20 @@ export const router = createBrowserRouter([
         element: <TestTypesCreate />,
       },
       {
+        path: 'test-types/:id/edit',
+        element: <TestTypesEdit />,
+      },
+      {
         path: "treatment-types",
         element: <TreatmentTypesList />,
       },
       {
         path: "treatment-types/create",
         element: <TreatmentTypesCreate />,
+      },
+      {
+        path: "treatment-types/:id/edit",
+        element: <TreatmentTypesEdit />,
       },
       // {
       //   path: "/settings",

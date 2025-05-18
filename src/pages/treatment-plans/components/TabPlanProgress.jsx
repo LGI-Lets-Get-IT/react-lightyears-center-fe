@@ -7,47 +7,53 @@ import Footer from '@/components/shared/Footer';
 import ProgressSidebar from './ProgressSidebar';
 import { BsCircleFill } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
+import LeadsEmptyCard from '@/components/leadsViewCreate/LeadsEmptyCard';
+import AddProgressModal from './AddProgressModal';
 
 const actions = [
     { label: "Edit Task", icon: "" },
     { label: "View Task", icon: "" },
     { label: "Delete Task", icon: "" },
 ]
-const TabPlanProgress = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
 
+const TabPlanProgress = () => {
+    const [openModal, setOpenModal] = useState(false)
     const { plan } = useSelector(state => state.treatmentPlans)
 
     return (
-        <div className="d-flex">
-            <ProgressSidebar />
-            <div className='content-area'>
-                <PerfectScrollbar>
-                <div className="content-area-body pb-0">
-                        <div className="row note-has-grid" id="note-full-container">
-                            {/* {plan?.sessions?.map(({ category, content, date, id, title }) => (
+        <>
+            <div className="content-area-body pb-0">
+                {plan && plan.sessions.length > 0 ? (
+                    <div className="row note-has-grid" id="note-full-container">
+                        {/* {plan?.sessions?.map(({ category, content, date, id, title }) => (
                                     <NoteCard
-                                        key={id}
-                                        id={id}
-                                        title={title}
-                                        date={date}
-                                        content={content}
-                                        category={category}
-                                        // handleFavourite={handleFavourite}
-                                        // handleDeleteNote={handleDeleteNote}
-                                        // filteredCategory={filteredCategory}
-                                        // favourites={favourites}
-                                        // onCategory={onCategory}
-                                        // selectCategory={selectCategory}
+                                    key={id}
+                                    id={id}
+                                    title={title}
+                                    date={date}
+                                    content={content}
+                                    category={category}
+                                    // handleFavourite={handleFavourite}
+                                    // handleDeleteNote={handleDeleteNote}
+                                    // filteredCategory={filteredCategory}
+                                    // favourites={favourites}
+                                    // onCategory={onCategory}
+                                    // selectCategory={selectCategory}
                                     />
-                                ))
-                            } */}
-                        </div>
+                                    ))
+                                    } */}
                     </div>
-                </PerfectScrollbar>
+                ) : (
+                    <LeadsEmptyCard title={'No progress yet!'} description={'There are no progress on this treatment plan'} onClick={() => setOpenModal(true)} />
+                )}
+                {openModal && <>
+                    <AddProgressModal setOpenModal={setOpenModal} />
+                    <div className="modal-backdrop fade show" />
+                </>
+                }
             </div>
-        </div>
-        
+        </>
+
     )
 }
 
