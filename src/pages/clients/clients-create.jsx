@@ -1,17 +1,17 @@
 // import React from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import ClientsCreateContent from "./components/ClientsCreateContent";
+import ClientCreateContent from "./components/ClientsCreateContent";
 import ClientsCreateHeader from "./components/ClientsCreateHeader";
 
 const ClientsCreate = () => {
   return (
     <>
       <PageHeader>
-        <ClientsCreateHeader />
+        {/* <ClientsCreateHeader /> */}
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <ClientsCreateContent />
+          <ClientCreateContent />
         </div>
       </div>
     </>

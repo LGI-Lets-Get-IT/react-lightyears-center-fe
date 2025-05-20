@@ -244,8 +244,8 @@ const projectRoalOptions = [
 ];
 
 const genderOptions = [
-  { value: "male", label: "Male" },
-  { value: "female", label: "Female" },
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
 ];
 
 const isActiveOptions = [
@@ -274,6 +274,10 @@ const relationshipOptions = [
   { value: "GrandMother", label: "Grand Mother" },
 ];
 
+const countriesOptions = [
+  { value: 'Indonesia', label: 'Indonesia' }
+]
+
 export {
   propsalRelatedOptions,
   propsalDiscountOptions,
@@ -301,4 +305,5 @@ export {
   relationshipOptions,
   isActiveOptions,
   roleIdOptions,
+  countriesOptions,
 };

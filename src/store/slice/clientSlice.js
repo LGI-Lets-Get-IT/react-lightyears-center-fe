@@ -48,10 +48,23 @@ export const createClient = createAsyncThunk(
 
 export const updateClientByUuid = createAsyncThunk(
   "clients/updateClientByUuid",
-  async (clientData, { rejectWithValue }) => {
+  async (bodyData, { rejectWithValue }) => {
     try {
-      const { clientUuid, ...data } = clientData;
-      const response = await clientsApi.updateClientByUuid(clientUuid, data);
+      const { uuid, data } = bodyData;
+      const response = await clientsApi.updateClientByUuid(uuid, data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateClientPassword = createAsyncThunk(
+  "clients/updateClientPasswordByUuid",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const { uuid, data } = bodyData;
+      const response = await clientsApi.updateClientPasswordByUuid(uuid, data);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -97,6 +110,42 @@ export const clientSlice = createSlice({
       state.currentClient = action.payload;
     });
     builder.addCase(fetchClientByUuid.rejected, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = initialState.currentClient
+      state.error = action.payload;
+    });
+    builder.addCase(createClient.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createClient.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = action.payload;
+    });
+    builder.addCase(createClient.rejected, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = initialState.currentClient
+      state.error = action.payload;
+    });
+    builder.addCase(updateClientByUuid.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateClientByUuid.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = action.payload;
+    });
+    builder.addCase(updateClientByUuid.rejected, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = initialState.currentClient
+      state.error = action.payload;
+    });
+    builder.addCase(updateClientPassword.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateClientPassword.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = action.payload;
+    });
+    builder.addCase(updateClientPassword.rejected, (state, action) => {
       state.isLoading = false;
       state.currentClient = initialState.currentClient
       state.error = action.payload;

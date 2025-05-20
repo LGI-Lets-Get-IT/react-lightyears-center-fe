@@ -61,7 +61,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                             enableReinitialize
                             validationSchema={createAssessmentSchema}
                             onSubmit={handleSubmit}>
-                            {({ values, setFieldValue, getFieldProps }) => (
+                            {({ values, setFieldValue }) => (
                                 <Form>
                                     <div className="row">
                                         <div className="col-lg-6 mb-4">

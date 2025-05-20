@@ -90,5 +90,4 @@ export const authSlice = createSlice({
     }
 })
 
-// export const { createAppointment } = authSlice.actions
 export default authSlice.reducer

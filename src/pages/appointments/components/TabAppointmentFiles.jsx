@@ -8,7 +8,7 @@ import ProjectFilteTable from '@/components/storage/ProjectFilteTable'
 import RecentFileCard from '@/components/storage/RecentFileCard'
 import { storageFolderData } from '@/utils/data/storageData'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllFiles } from '@/store/slice/fileSlice'
+import { fetchAllFiles, uploadFile } from '@/store/slice/fileSlice'
 import LeadsEmptyCard from '@/components/leadsViewCreate/LeadsEmptyCard'
 
 const TabAppointmentFiles = () => {
@@ -32,6 +32,13 @@ const TabAppointmentFiles = () => {
 
     const handleUploadFile = () => {
         console.log('SELECTEDFILE', selectedFile)
+        dispatch(uploadFile({
+            params: {
+                appointmentId: currentAppointment?.id,
+                uuid: currentAppointment?.client?.uuid,
+                clientName: currentAppointment?.client?.fullName.replaceAll(' ', '')
+            },
+        }))
     }
 
     useEffect(() => {

@@ -3,7 +3,7 @@ import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
-import { genderOptions, relationshipOptions } from "@/utils/options";
+import { countriesOptions, genderOptions, relationshipOptions } from "@/utils/options";
 import useLocationData from "@/hooks/useLocationData";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../../store/slice/schoolSlice";
@@ -17,18 +17,17 @@ const TabProfile = ({ userData }) => {
   const navigate = useNavigate();
   const { uuid } = useParams();
   const { schools } = useSelector((state) => state.schools);
-  const { countries } = useLocationData();
+  const { isLoading: updateLoading } = useSelector(state => state.clients)
   const relationships = relationshipOptions;
   const gender = genderOptions;
+  const countries = countriesOptions;
 
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
 
   const handleSubmit = (values, actions) => {
-    console.log('VALUES', uuid, values)
-
-    dispatch(updateClientByUuid({ clientUuid: uuid, ...values }))
+    dispatch(updateClientByUuid({ clientUuid: uuid, data: values }))
       .unwrap()
       .then(() => navigate(`/clients/${uuid}`))
       .catch((error) => console.error("handle error", error));
@@ -59,7 +58,7 @@ const TabProfile = ({ userData }) => {
                     {userData?.fullName}
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Last Edited: {userData?.updatedAt}
+                    Last Edited: {userData && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                   </span>
                 </h5>
               </div>
@@ -267,7 +266,13 @@ const TabProfile = ({ userData }) => {
                 </a>
 
                 <button type="submit" className="btn btn-primary">
-                  <FiCheck size={16} className="me-2" />
+                  {updateLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : <FiCheck size={16} className="me-2" />
+                  }
                   <span>Edit Client</span>
                 </button>
               </div>

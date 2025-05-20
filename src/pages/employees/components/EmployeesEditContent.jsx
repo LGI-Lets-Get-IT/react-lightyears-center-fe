@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchEmployeeById } from "@/store/slice/employeeSlice";
 import EmployeeEdit from "./employeeEdit/employeeEdit";
+import TabPassword from "./employeeEdit/TabPassword";
 
 const EmployeesEditContent = ({ employeeData }) => {
   const dispatch = useDispatch();
@@ -49,7 +50,8 @@ const EmployeesEditContent = ({ employeeData }) => {
         </div>
         <div className="tab-content">
           <EmployeeEdit empData={employeeData} />
-          {/* <TabPassword /> */}
+          <TabPassword
+          />
         </div>
       </div>
     </div>

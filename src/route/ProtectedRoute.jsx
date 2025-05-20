@@ -16,18 +16,19 @@ const swalOptions = {
     //   toast.addEventListener("mouseenter", Swal.stopTimer);
     //   toast.addEventListener("mouseleave", Swal.resumeTimer);
     // },
-  };
+};
 const ProtectedRoute = ({ requiredPermissions, children }) => {
     const { currentUser } = useSelector(state => state.auth)
     const { permissions } = currentUser || []
 
     useEffect(() => {
+        console.log('REQUIREDPERM', permissions, requiredPermissions)
         if (currentUser && requiredPermissions && !permissions?.includes(requiredPermissions)) {
             MySwal.mixin(swalOptions).fire({
                 icon: "error",
                 title: "Access Denied",
                 text: "You do not have permission to access that page.",
-                
+
             })
         }
     }, [currentUser, permissions, requiredPermissions]);

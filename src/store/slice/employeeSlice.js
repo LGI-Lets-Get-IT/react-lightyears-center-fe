@@ -93,44 +93,55 @@ export const employeeSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllEmployees.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.employees = action.payload;
     });
     builder.addCase(fetchAllEmployees.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchAllPsychologists.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchAllPsychologists.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.psychologists = action.payload;
     });
     builder.addCase(fetchAllPsychologists.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchAllTherapists.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchAllTherapists.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.therapists = action.payload;
     });
     builder.addCase(fetchAllTherapists.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchEmployeeById.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchEmployeeById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.employee = action.payload;
     });
     builder.addCase(fetchEmployeeById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updateEmployeeById.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(updateEmployeeById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.employee = action.payload;
+    });
+    builder.addCase(updateEmployeeById.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

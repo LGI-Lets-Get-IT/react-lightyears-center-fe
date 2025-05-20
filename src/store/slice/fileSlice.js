@@ -34,9 +34,9 @@ export const fetchFileById = createAsyncThunk(
 
 export const uploadFile = createAsyncThunk(
   "files/uploadFile",
-  async (data, { rejectWithValue }) => {
+  async (query, { rejectWithValue }) => {
     try {
-      const response = await filesApi.uploadFile(data);
+      const response = await filesApi.uploadFile(query);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);

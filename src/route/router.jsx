@@ -5,10 +5,11 @@ import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
-import PlansEdit from "@/pages/treatment-plans/plans-edit";
-import UserProfile from "@/pages/user/user-profile";
-import TestTypesEdit from "@/pages/test-types/test-types-edit";
-import TreatmentTypesEdit from "@/pages/treatment-types/treatment-types-edit";
+const PlansEdit = lazy(() => import("@/pages/treatment-plans/plans-edit"));
+const UserProfile = lazy(() => import("@/pages/user/user-profile"));
+const TestTypesEdit = lazy(() => import("@/pages/test-types/test-types-edit"));
+const TreatmentTypesEdit = lazy(() => import("@/pages/treatment-types/treatment-types-edit"));
+const EmployeesCreate = lazy(() => import("@/pages/employees/employees-create"));
 const AssessmentsCreate = lazy(() => import("@/pages/assessments/assessments-create"));
 const AssessmentsEdit = lazy(() => import("@/pages/assessments/assessments-edit"));
 const AssessmentsList = lazy(() => import("@/pages/assessments/assessments-list"));
@@ -294,6 +295,10 @@ export const router = createBrowserRouter([
       {
         path: "employees",
         element: <EmployeesList />,
+      },
+      {
+        path: 'employees/create',
+        element: <EmployeesCreate />,
       },
       {
         path: "employees/:id",

@@ -86,9 +86,8 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
                       />
                     ) : (
                       <FiCheck size={16} className="me-2" />
-                    )
-                    }
-                    <span > Edit Treatment</span>
+                    )}
+                    <span> Edit Treatment</span>
                   </button>
                 </div>
               </div>

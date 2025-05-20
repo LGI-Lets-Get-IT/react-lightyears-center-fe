@@ -24,7 +24,7 @@ const AssessmentsView = () => {
       <AssessmentViewTabItems />
       <div className="main-content">
         <div className="tab-content">
-          <TabAppointmentOverview appointmentData={currentAppointment} />
+          {/* <TabAssessmentOverview appointmentData={currentAppointment} /> */}
           {/* <div className="tab-pane fade" id="ReportsTab">
             <LeadsEmptyCard
               title="No reports yet!"

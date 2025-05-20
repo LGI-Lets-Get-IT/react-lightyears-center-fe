@@ -5,16 +5,25 @@ export const createSchema = Yup.object({
   password: Yup.string().required('Password is required'),
 });
 
-export const createClientSchema = Yup.object({
-  schoolName: Yup.number().required('School Name is required'),
-  fullName: Yup.string().min(3, 'Full Name must be at least 3 characters').required('Full Name must be filled'),
-  nationality: Yup.string().required('Child Nationality is required'),
+export const clientSchema = Yup.object({
+  fullName: Yup.string().min(3, 'Full Name must be at least 3 characters').required('Please enter the full name'),
   dateOfBirth: Yup.date().required('Date of Birth must be filled'),
   gender: Yup.string().required('Gender is required'),
-  problem: Yup.string().required('Problem must be filled'),
-  guardianName: Yup.string().min(3).required('Guardian Name must be filled'),
-  guardianPhone: Yup.string().required('Guardian Phone Number must be filled'),
-  guardianEmail: Yup.string().email('Guardian Email must be a valid email format').required('Guardian Email is required'),
+  nationality: Yup.string().required('Please enter the child nationality'),
+  problem: Yup.string().required('Please enter the problem'),
+  className: Yup.string().min(3, 'Class name must be at least 3 characters long').required('Please enter the class name'),
+  schoolId: Yup.number().required('School Name is required'),
+  guardianName: Yup.string().min(3).required('Please enter the guardian name'),
+  guardianPhone: Yup.string().required('Please enter the guardian phone number').matches(
+    /^\+[1-9]\d{7,14}$/,
+    "Phone number must start with country code and without any dashes or spaces"
+  ),
+  guardianEmail: Yup.string().email('Guardian Email must be a valid email format').required('Please enter the guardian email'),
   guardianRelationship: Yup.string().required('Guardian Relationship is required'),
   guardianNationality: Yup.string().required('Guardian Nationality is required'),
+});
+
+export const changePwdAdminSchema = Yup.object({
+  password: Yup.string().min(8, 'Password must be at least 8 characters long'),
+  passwordConfirm: Yup.string().oneOf([Yup.ref('password'), null], 'Password must match').required('Please enter the password confirmation')
 })

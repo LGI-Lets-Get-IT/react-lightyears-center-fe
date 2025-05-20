@@ -253,10 +253,8 @@ const SelectDropdown = ({
   );
 
   useEffect(() => {
-    console.log('SELECTEDOPTion', options, selectedOption)
     if (selectedOption) {
       const selectedOpt = options?.find(option => option.value === selectedOption);
-      console.log('SELECTEDOPT', selectedOpt)
       setLocalSelectedOption(selectedOpt);
     }
   }, [selectedOption]);

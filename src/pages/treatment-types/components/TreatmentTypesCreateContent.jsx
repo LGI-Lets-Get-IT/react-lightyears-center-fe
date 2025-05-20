@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Input from "@/components/shared/Input";
 import TextArea from "@/components/shared/TextArea";
 import { FiCheck, FiX } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
 import { createTreatmentType } from "@/store/slice/treatmentTypeSlice";
@@ -11,6 +11,8 @@ import { treatmentTypeSchema } from "@/schemas/treatmentTypeSchema";
 const TreatmentTypesCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { isLoading: createLoading } = useSelector(state => state.treatmentTypes);
 
   const handleSubmit = (values, actions) => {
     // console.log('KJSFKAJSKASFJKJ', values)
@@ -71,7 +73,14 @@ const TreatmentTypesCreateContent = () => {
                   <span>Cancel</span>
                 </a>
                 <button type="submit" className="btn btn-primary">
-                  <FiCheck size={16} className="me-2" />
+                  {createLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Create Treatment</span>
                 </button>
               </div>
@@ -79,7 +88,7 @@ const TreatmentTypesCreateContent = () => {
           </Form>
         </Formik>
       </div>
-    </div>
+    </div >
   );
 };
 

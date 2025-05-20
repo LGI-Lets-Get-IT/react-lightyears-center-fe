@@ -1,11 +1,11 @@
 // import React from "react";
 import TabClientsEdit from "./clientsEdit/TabClientsEdit";
-import TabPassword from "../../../components/customersCreate/TabPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchClientByUuid } from "@/store/slice/clientSlice";
 import { FiCheck, FiX } from "react-icons/fi";
+import TabPassword from "./clientsEdit/TabPassword";
 
 const CustomerCreateContent = () => {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ const CustomerCreateContent = () => {
         </div>
         <div className="tab-content">
           <TabClientsEdit userData={currentClient} />
-          <TabPassword />
+          <TabPassword uuid={uuid} />
         </div>
       </div>
     </div>

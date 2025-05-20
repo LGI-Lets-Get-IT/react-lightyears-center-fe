@@ -85,6 +85,17 @@ export const treatmentTypeSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(createTreatmentType.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createTreatmentType.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.type = action.payload;
+    });
+    builder.addCase(createTreatmentType.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
     builder.addCase(updateTreatmentTypeById.pending, (state) => {
       state.isLoading = true;
     });

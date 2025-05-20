@@ -1,7 +1,9 @@
+import { Field, Form, Formik } from 'formik'
 import React from 'react'
 import { FiEye, FiHash, FiKey, FiShield } from 'react-icons/fi'
 
 const TabPassword = () => {
+    const handleChangePassword = () => { }
     return (
         <div className="tab-pane fade" id="passwordTab" role="tabpanel">
             <div className="card-body pass-info">
@@ -12,44 +14,67 @@ const TabPassword = () => {
                     </h5>
                     {/* <a href="#" className="btn btn-sm btn-light-brand">Reset</a> */}
                 </div>
-                <div className="row mb-4 align-items-center">
-                    <div className="col-lg-4">
-                        <label htmlFor="Input" className="fw-semibold">Password: </label>
-                    </div>
-                    <div className="col-lg-8">
-                        <div className="input-group">
-                            <div className="input-group-text"><FiKey /></div>
-                            <input type="password" className="form-control" id="Input" placeholder="Password" />
-                        </div>
-                    </div>
-                </div>
-                <div className="row mb-4 align-items-center">
-                    <div className="col-lg-4">
-                        <label htmlFor="Input" className="fw-semibold">Password Confirm: </label>
-                    </div>
-                    <div className="col-lg-8 generate-pass">
-                        <div className="input-group field">
-                            <div className="input-group-text"><FiKey /></div>
-                            <input type="password" className="form-control password" id="newPassword" placeholder="Password Confirm" />
-                            {/* <div className="input-group-text c-pointer gen-pass"><FiHash /></div>
+                <Formik initialValues={{ password: null, passwordConfirm: null }}
+                    onSubmit={handleChangePassword}
+                >
+                    {({ values }) => (
+                        <Form>
+                            <div className="row mb-4 align-items-center">
+                                <div className="col-lg-4">
+                                    <label htmlFor="password" className="fw-semibold">Password: </label>
+                                </div>
+                                <Field name="password">
+                                    {({ field, meta }) => (
+                                        <div className="col-lg-8">
+                                            <div className="input-group">
+                                                <div className="input-group-text"><FiKey /></div>
+                                                <input
+                                                    type="password"
+                                                    className={`form-control ${meta.error} ? 'is-invalid' : ''`}
+                                                    id="password"
+                                                    placeholder="Password"
+                                                    {...field}
+                                                />
+                                                {meta.error && (
+                                                    <div className="text-danger mt-1">
+                                                        {meta.error}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Field>
+                            </div>
+                            <div className="row mb-4 align-items-center">
+                                <div className="col-lg-4">
+                                    <label htmlFor="Input" className="fw-semibold">Password Confirm: </label>
+                                </div>
+                                <div className="col-lg-8 generate-pass">
+                                    <div className="input-group field">
+                                        <div className="input-group-text"><FiKey /></div>
+                                        <input type="password" className="form-control password" id="newPassword" placeholder="Password Confirm" />
+                                        {/* <div className="input-group-text c-pointer gen-pass"><FiHash /></div>
                             <div className="input-group-text border-start bg-gray-2 c-pointer"><FiEye /></div> */}
-                        </div>
-                        {/* <div className="progress-bar mt-2">
+                                    </div>
+                                    {/* <div className="progress-bar mt-2">
                             <div></div>
                             <div></div>
                             <div></div>
                             <div></div>
                         </div> */}
-                    </div>
-                </div>
-                <div className="pass-hint">
-                    <p className="fw-bold">Password Requirements:</p>
-                    <ul className="fs-12 ps-1 ms-2 text-muted">
-                        <li className="mb-1">At least one lowercase character</li>
-                        <li className="mb-1">Minimum 8 characters long - the more, the better</li>
-                        <li>At least one number, symbol, or whitespace character</li>
-                    </ul>
-                </div>
+                                </div>
+                            </div>
+                            <div className="pass-hint">
+                                <p className="fw-bold">Password Requirements:</p>
+                                <ul className="fs-12 ps-1 ms-2 text-muted">
+                                    <li className="mb-1">At least one lowercase character</li>
+                                    <li className="mb-1">Minimum 8 characters long - the more, the better</li>
+                                    <li>At least one number, symbol, or whitespace character</li>
+                                </ul>
+                            </div>
+                        </Form>
+                    )}
+                </Formik>
             </div>
             <hr className="my-0" />
             {/* <div className="card-body pass-security">

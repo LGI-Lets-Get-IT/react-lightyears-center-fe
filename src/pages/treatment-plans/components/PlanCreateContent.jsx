@@ -78,6 +78,7 @@ const PlanCreateContent = () => {
                         placeholder={"Select Client"}
                         onSelectOption={(option) => {
                           setFieldValue('clientId', option)
+                          setFieldValue('presentProblem', 'test')
                         }}
                       />
                     </div>

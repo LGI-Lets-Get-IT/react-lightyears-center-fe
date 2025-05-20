@@ -21,27 +21,27 @@ const TabClientsAppointment = () => {
         <div className="col">
             <div className="card stretch stretch-full">
                 <div className="card-body custom-card-action">
-                    {currentClient?.appointments.length > 0 ? currentClient?.appointments?.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
-                            const badgeColor = status == 'Upcoming' ? 'warning' : status == 'Ongoing' ? 'primary' : "success"
-                            return (
-                                <Fragment key={index}>
-                                    <div className="d-flex align-items-center">
-                                        <div className="me-4">
-                                            <h6 className="fw-bold mb-0">{appointmentDate}</h6>
-                                            <span className="fs-12 mb-0">{appointmentTime}</span>
-                                        </div>
-                                        <div className={`d-flex align-items-center justify-content-between border-3 border-start border-${badgeColor} rounded w-100`}>
-                                            <div className="mx-3">
-                                                <a href={`/appointments/${id}`} className="fw-semibold mb-1 text-truncate-1-line text-capitalize">[{appointmentType}] {title}</a>
-                                                <div className="fs-12 fw-normal text-muted text-truncate-1-line text-capitalize">{appointmentType}</div>
-                                            </div>
-                                            <a href="#" className={`badge bg-soft-${badgeColor} text-${badgeColor}`}>{status}</a>
-                                        </div>
+                    {currentClient?.appointments?.length > 0 ? currentClient.appointments.map(({ id, title, appointmentType, appointmentDate, appointmentTime, status }, index) => {
+                        const badgeColor = status == 'Upcoming' ? 'warning' : status == 'Ongoing' ? 'primary' : "success"
+                        return (
+                            <Fragment key={index}>
+                                <div className="d-flex align-items-center">
+                                    <div className="me-4">
+                                        <h6 className="fw-bold mb-0">{appointmentDate}</h6>
+                                        <span className="fs-12 mb-0">{appointmentTime}</span>
                                     </div>
-                                    {todos.length - 1 === index ? "" : <hr className="border-dashed my-3" />}
-                                </Fragment>
-                            )
-                        }) : <p className='text-center'>No appointments found</p>
+                                    <div className={`d-flex align-items-center justify-content-between border-3 border-start border-${badgeColor} rounded w-100`}>
+                                        <div className="mx-3">
+                                            <a href={`/appointments/${id}`} className="fw-semibold mb-1 text-truncate-1-line text-capitalize">[{appointmentType}] {title}</a>
+                                            <div className="fs-12 fw-normal text-muted text-truncate-1-line text-capitalize">{appointmentType}</div>
+                                        </div>
+                                        <a href="#" className={`badge bg-soft-${badgeColor} text-${badgeColor}`}>{status}</a>
+                                    </div>
+                                </div>
+                                {todos.length - 1 === index ? "" : <hr className="border-dashed my-3" />}
+                            </Fragment>
+                        )
+                    }) : <p className='text-center'>No appointments found</p>
                     }
                 </div>
             </div>

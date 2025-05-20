@@ -1,16 +1,15 @@
-import { store } from '@/store/index'
+import React, { useEffect } from 'react'
 import { userLogout } from '@/store/slice/authSlice'
-import React, { Fragment } from 'react'
-import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
+import { FiLogOut, FiUser } from "react-icons/fi"
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { fetchUserProfile } from '@/store/slice/profileSlice'
 
-const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
-const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.auth)
+    const { user } = useSelector(state => state.profile)
 
     const handleLogout = () => {
         dispatch(userLogout())
@@ -19,6 +18,11 @@ const ProfileModal = () => {
                 navigate('/login')
             })
     }
+
+    useEffect(() => {
+        dispatch(fetchUserProfile());
+    }, [])
+
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
@@ -29,12 +33,13 @@ const ProfileModal = () => {
                     <div className="d-flex align-items-center">
                         {/* <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" /> */}
                         <div>
-                            <h6 className="text-dark mb-0">{currentUser?.fullName}
-                                {currentUser?.role &&
+                            {console.log('user', user)}
+                            <h6 className="text-dark mb-0">{currentUser && currentUser?.fullName}
+                                {currentUser && currentUser?.role &&
                                     <span className="badge bg-soft-primary text-primary ms-1">{currentUser.role}</span>
                                 }
                             </h6>
-                            <span className="fs-12 fw-medium text-muted">{currentUser?.email}</span>
+                            <span className="fs-12 fw-medium text-muted">{currentUser && currentUser?.email}</span>
                         </div>
                     </div>
                 </div>

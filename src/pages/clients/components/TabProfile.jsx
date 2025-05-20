@@ -3,14 +3,14 @@ import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
-import { genderOptions, relationshipOptions } from "@/utils/options";
+import { countriesOptions, genderOptions, relationshipOptions } from "@/utils/options";
 import useLocationData from "@/hooks/useLocationData";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../store/slice/schoolSlice";
 import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
 import { Field, Form, Formik } from "formik";
-import { createClientSchema } from "@/schemas/clientSchema";
+import { clientSchema } from "@/schemas/clientSchema";
 import TextArea from "@/components/shared/TextArea";
 
 const TabProfile = () => {
@@ -18,10 +18,9 @@ const TabProfile = () => {
   const navigate = useNavigate();
   const { isLoading: createLoading } = useSelector(state => state.clients)
   const { schools } = useSelector((state) => state.schools);
-  // const { startDate, setStartDate, renderFooter } = useDatePicker();
-  const { countries } = useLocationData();
+  const countries = countriesOptions;
   const relationships = relationshipOptions;
-  const gender = genderOptions;
+  const genders = genderOptions;
 
   useEffect(() => {
     dispatch(fetchAllSchools());
@@ -29,22 +28,10 @@ const TabProfile = () => {
 
   const handleSubmit = (values, actions) => {
     console.log('VALIESSS', values)
-    // event.preventDefault();
-    // const formattedDate = startDate ? format(startDate, "yyyy-MM-dd") : "";
-    // const body = {
-    //   ...userInput,
-    //   // dateOfBirth: formattedDate,
-    //   nationality: selectedOption["nationality"]?.label,
-    //   gender: selectedOption["gender"]?.label,
-    //   schoolId: selectedOption["school"]?.value,
-    //   guardianNationality: selectedOption["guardianNationality"]?.label,
-    //   guardianRelationship: selectedOption["relationship"]?.label,
-    // };
-
-    // dispatch(createClient(body))
-    //   .unwrap()
-    //   .then(() => navigate("/clients"))
-    //   .catch((error) => console.error("handle error", error));
+    dispatch(createClient(values))
+      .unwrap()
+      .then(() => navigate("/clients"))
+      .catch((error) => console.error("handle error", error));
   };
 
   return (
@@ -54,15 +41,16 @@ const TabProfile = () => {
         dateOfBirth: null,
         gender: null,
         nationality: null,
-        schoolId: null,
         problem: null,
+        className: null,
+        schoolId: null,
         guardianName: null,
         guardianEmail: null,
         guardianPhone: null,
         guardianNationality: null,
         guardianRelationship: null,
       }}
-        validationSchema={createClientSchema}
+        validationSchema={clientSchema}
         onSubmit={handleSubmit}>
         {({ values, setFieldValue, getFieldProps }) => (
           <Form>
@@ -76,7 +64,7 @@ const TabProfile = () => {
                 </h5>
               </div>
               <Field name="fullName">
-                {({ meta }) => (
+                {({ field, meta }) => (
                   <>
                     <Input
                       icon="feather-user"
@@ -87,7 +75,7 @@ const TabProfile = () => {
                       value={values.fullName}
                       className={`${meta.error ? 'is-invalid' : ''}`}
                       meta={meta}
-                      {...getFieldProps('fullName')}
+                      {...field}
                     />
                   </>
                 )}
@@ -101,7 +89,7 @@ const TabProfile = () => {
 
                 <div className="col-lg-8">
                   <Field name="dateOfBirth">
-                    {({ meta }) => (
+                    {({ meta, field }) => (
                       <>
                         <div className="input-group flex-nowrap">
                           <div className="input-group-text">
@@ -131,7 +119,7 @@ const TabProfile = () => {
                             />
                           </div>
                         </div>
-                        {meta.touched && meta.error && (
+                        {meta.error && (
                           <div className="mt-1 text-danger">{meta.error}</div>
                         )}
                       </>
@@ -146,7 +134,7 @@ const TabProfile = () => {
                 <div className="col-lg-8">
                   <SelectDropdown
                     name={"gender"}
-                    options={gender}
+                    options={genders}
                     selectedOption={values.gender}
                     placeholder={"Select Child Gender"}
                     onSelectOption={(option) => {
@@ -166,7 +154,7 @@ const TabProfile = () => {
                     selectedOption={values.nationality}
                     placeholder={"Select Child Nationality"}
                     onSelectOption={(option) => {
-                      setFieldValue('nationality', option)
+                      setFieldValue('nationality', option.label)
                     }}
                   />
                 </div>
@@ -191,27 +179,48 @@ const TabProfile = () => {
                   <hr className="my-0" />
                 </div>
               </div>
+              <Field name="className">
+                {({ field, meta }) => (
+                  <>
+                    <Input
+                      label={"Class Name"}
+                      labelId={"classNameInput"}
+                      placeholder={"Class Name"}
+                      name={"className"}
+                      value={values.className}
+                      meta={meta}
+                      {...field}
+                    />
+                  </>
+                )}
+              </Field>
+              <hr className="my-0" />
               <div className="row mb-4 align-items-center">
-                <div className="col-lg-4">
-                  <label className="fw-semibold">Problem: </label>
-                </div>
-                <div className="col-lg-8">
+                <div className="col-lg-12">
                   <Field name="problem">
                     {({ field, meta }) => (
-                      <>
-                        <textarea
-                          id="problem"
-                          rows={6}
-                          className={`form-control ${meta.error ? "is-invalid" : ""
-                            }`}
-                          placeholder="Please specify the problem here"
-                          defaultValue={""}
-                          {...field}
-                        />
-                        {meta.error && (
-                          <div className="mt-1 text-danger">{meta.error}</div>
-                        )}
-                      </>
+                      <TextArea
+                        name={'problem'}
+                        label={'Problem'}
+                        placeholder={'Please specify the problem here'}
+                        row="4"
+                        meta={meta}
+                        {...field}
+                      />
+                      // <>
+                      //   <textarea
+                      //     id="problem"
+                      //     rows={6}
+                      //     className={`form-control ${meta.error ? "is-invalid" : ""
+                      //       }`}
+                      //     placeholder="Please specify the problem here"
+                      //     defaultValue={""}
+                      //     {...field}
+                      //   />
+                      //   {meta.error && (
+                      //     <div className="mt-1 text-danger">{meta.error}</div>
+                      //   )}
+                      // </>
                     )}
                   </Field>
                 </div>
@@ -228,7 +237,7 @@ const TabProfile = () => {
                 </h5>
               </div>
               <Field name="guardianName">
-                {({ meta }) => (
+                {({ field, meta }) => (
                   <>
                     <Input
                       name={"guardianName"}
@@ -239,14 +248,14 @@ const TabProfile = () => {
                       value={values.guardianName}
                       className={`${meta.error ? 'is-invalid' : ''}`}
                       meta={meta}
-                      {...getFieldProps('guardianName')}
+                      {...field}
                     />
                   </>
                 )}
               </Field>
 
               <Field name="guardianEmail">
-                {({ meta }) => (
+                {({ field, meta }) => (
                   <>
                     <Input
                       icon="feather-mail"
@@ -258,14 +267,14 @@ const TabProfile = () => {
                       value={values.guardianEmail}
                       className={`${meta.error ? 'is-invalid' : ''}`}
                       meta={meta}
-                      {...getFieldProps('guardianEmail')}
+                      {...field}
                     />
                   </>
                 )}
               </Field>
 
               <Field name="guardianPhone">
-                {({ meta }) => (
+                {({ field, meta }) => (
                   <>
                     <Input
                       icon="feather-phone"
@@ -276,7 +285,7 @@ const TabProfile = () => {
                       value={values.guardianPhone}
                       className={`${meta.error ? 'is-invalid' : ''}`}
                       meta={meta}
-                      {...getFieldProps('guardianPhone')}
+                      {...field}
                     />
                   </>
                 )}
@@ -300,7 +309,7 @@ const TabProfile = () => {
 
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Relationship with child: </label>
+                  <label className="fw-semibold">Relationship to child: </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown

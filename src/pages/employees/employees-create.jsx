@@ -1,21 +1,20 @@
 // import React from "react";
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import ClientsCreateContent from "./clients/components/ClientsCreateContent";
-import ClientsCreateHeader from "./clients/components/ClientsCreateHeader";
+import EmployeeCreateContent from "./components/EmployeeCreateContent";
 
-const CustomersCreate = () => {
+const EmployeesCreate = () => {
   return (
     <>
       <PageHeader>
-        <ClientsCreateHeader />
+        {/* <ClientsCreateHeader /> */}
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          <ClientsCreateContent />
+          <EmployeeCreateContent />
         </div>
       </div>
     </>
   );
 };
 
-export default CustomersCreate;
+export default EmployeesCreate;

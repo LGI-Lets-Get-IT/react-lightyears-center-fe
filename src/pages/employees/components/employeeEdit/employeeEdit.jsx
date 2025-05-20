@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import Input from "@/components/shared/Input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateEmployeeById } from "@/store/slice/employeeSlice";
 import { FiCheck, FiX } from "react-icons/fi";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { isActiveOptions, roleIdOptions } from "@/utils/options";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { employeeSchema } from "@/schemas/employeeSchema";
+import { format } from "date-fns";
 
 const EmployeeEdit = ({ empData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { isLoading: updateLoading } = useSelector(state => state.employees);
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
@@ -36,10 +38,10 @@ const EmployeeEdit = ({ empData }) => {
         <div className="mb-4 d-flex align-items-center justify-content-between">
           <h5 className="fw-bold mb-0 me-4">
             <span className="d-block mb-2">
-              {empData?.fullName}&apos;s Information Edit:
+              Edit {empData?.fullName}
             </span>
             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-              Last Edited: {empData?.updatedAt}
+              Last Edited: {empData && format(empData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
             </span>
           </h5>
         </div>
@@ -56,34 +58,51 @@ const EmployeeEdit = ({ empData }) => {
         >
           {({ values, setFieldValue, getFieldProps }) => (
             <Form>
-              <Input
-                icon="feather-user"
-                label={"Full Name"}
-                labelId={"nameInput"}
-                placeholder={"Full Name"}
-                name={"fullName"}
-                value={values.fullName}
-                {...getFieldProps('fullName')}
-              />
-              <Input
-                icon="feather-phone"
-                label={"Phone Number"}
-                labelId={"phoneNumberInput"}
-                placeholder={"Employee's Phone Number"}
-                name={"phoneNumber"}
-                value={values.phoneNumber}
-                {...getFieldProps('phoneNumber')}
-              />
-              <Input
-                icon="feather-mail"
-                label={"Email"}
-                type="email"
-                labelId={"emailInput"}
-                placeholder={"Employee's Email"}
-                name={"email"}
-                value={values.email}
-                {...getFieldProps('email')}
-              />
+              <Field name="fullName">
+                {({ field, meta }) => (
+                  <Input
+                    icon="feather-user"
+                    label={"Full Name"}
+                    labelId={"nameInput"}
+                    placeholder={"Full Name"}
+                    name={"fullName"}
+                    // value={values.fullName}
+                    meta={meta}
+                    {...field}
+                  />
+                )}
+              </Field>
+
+              <Field name="phoneNumber">
+                {({ field, meta }) => (
+                  <Input
+                    icon="feather-phone"
+                    label={"Phone Number"}
+                    labelId={"phoneNumberInput"}
+                    placeholder={"Employee's Phone Number"}
+                    name={"phoneNumber"}
+                    // value={values.phoneNumber}
+                    meta={meta}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Field name="email">
+                {({ field, meta }) => (
+                  <Input
+                    icon="feather-mail"
+                    label={"Email"}
+                    type="email"
+                    labelId={"emailInput"}
+                    placeholder={"Employee's Email"}
+                    name={"email"}
+                    // value={values.email}
+                    meta={meta}
+                    {...field}
+                  // {...getFieldProps('email')}
+                  />
+                )}
+              </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label className="fw-semibold">Role: </label>
@@ -119,15 +138,19 @@ const EmployeeEdit = ({ empData }) => {
                 </a>
 
                 <button type="submit" className="btn btn-primary">
-                  <FiCheck size={16} className="me-2" />
+                  {updateLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : <FiCheck size={16} className="me-2" />
+                  }
                   <span>Edit Employee</span>
                 </button>
 
               </div>
             </Form>
           )}
-
-
         </Formik>
       </div>
     </div>

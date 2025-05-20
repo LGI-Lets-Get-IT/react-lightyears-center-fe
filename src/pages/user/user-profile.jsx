@@ -17,7 +17,8 @@ const parentInfoData = [
 ];
 
 const UserProfile = () => {
-    const { currentUser } = useSelector(state => state.auth);
+    // const { currentUser } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.profile);
 
     return (
         <div className="main-content">
@@ -25,7 +26,7 @@ const UserProfile = () => {
                 <div className="card-body">
                     <div className="profile-details mb-5">
                         <div className="mb-4 d-flex align-items-center justify-content-between">
-                            <h5 className="fw-bold mb-0">Child Information:</h5>
+                            <h5 className="fw-bold mb-0">{user?.fullName} - {user?.age ?? 0} years old</h5>
                         </div>
                         {childInfoData.map((item, index) => (
                             <div
@@ -35,12 +36,14 @@ const UserProfile = () => {
                             >
                                 <div className="col-sm-6 text-muted">{item.label}:</div>
                                 <div className="col-sm-6 fw-semibold">
-                                    {clientInformation?.[item.key]} {item?.suffix}
+                                    {user?.[item.key]} {item?.suffix}
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <h4>{currentUser?.fullName}</h4>
+                    <div className="mb-4 d-flex align-items-center justify-content-between">
+                        <h5 className="fw-bold mb-0">Sharing Options</h5>
+                    </div>
 
                     <div className="mb-5">
                         <label className="form-label">Company field is required? </label>

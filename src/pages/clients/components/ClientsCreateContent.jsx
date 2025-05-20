@@ -2,7 +2,7 @@
 import TabPassword from "../../../components/customersCreate/TabPassword";
 import TabProfile from "./TabProfile";
 
-const CustomerCreateContent = () => {
+const ClientCreateContent = () => {
   return (
     <div className="col-lg-12">
       <div className="card border-top-0">
@@ -45,4 +45,4 @@ const CustomerCreateContent = () => {
   );
 };
 
-export default CustomerCreateContent;
+export default ClientCreateContent;
