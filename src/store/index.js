@@ -12,6 +12,7 @@ import treatmentPlanReducer from "./slice/treatmentPlanSlice";
 import treatmentTypeReducer from "./slice/treatmentTypeSlice";
 import testTypeReducer from "./slice/testTypeSlice";
 import fileReducer from "./slice/fileSlice";
+import dashboardReducer from "./slice/dashboardSlice";
 
 const authPersistConfig = {
   key: 'root',
@@ -36,6 +37,7 @@ export const store = configureStore({
     treatmentTypes: treatmentTypeReducer,
     testTypes: testTypeReducer,
     profile: profileReducer,
+    dashboard: dashboardReducer,
     auth: persistReducer(authPersistConfig, authReducer),
   },
   // middleware

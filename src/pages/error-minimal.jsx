@@ -16,7 +16,7 @@ const ErrorMinimal = () => {
                             <h4 className="fw-bold mb-2">Page not found</h4>
                             <p className="fs-12 fw-medium text-muted">Sorry, the page you are looking for can&apos;t be found. Please check the URL or try to a different page on our site.</p>
                             <div className="mt-5">
-                                <button className="btn btn-light-brand w-100" onClick={() => navigate(-1)}>Back Home</button>
+                                <button className="btn btn-light-brand w-100" onClick={() => navigate('/')}>Back Home</button>
                                 {/* <Link to={() => navigate(-1)}className="btn btn-light-brand w-100">Back Home</Link> */}
                             </div>
                         </div>

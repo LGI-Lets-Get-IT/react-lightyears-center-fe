@@ -142,7 +142,7 @@ export const router = createBrowserRouter([
         </ProtectedRoute>
       </Suspense>
     ),
-    errorElement: <ErrorMinimal />,
+    // errorElement: <ErrorMinimal />,
     children: [
       // *
       // * The Light Years Routes START
@@ -582,14 +582,14 @@ export const router = createBrowserRouter([
       //   path: "/authentication/login/creative",
       //   element: <LoginCreative />,
       // },
-      {
-        path: "/authentication/register/cover",
-        element: <RegisterCover />,
-      },
-      {
-        path: "/authentication/register/minimal",
-        element: <RegisterMinimal />,
-      },
+      // {
+      //   path: "/authentication/register/cover",
+      //   element: <RegisterCover />,
+      // },
+      // {
+      //   path: "/authentication/register/minimal",
+      //   element: <RegisterMinimal />,
+      // },
       // {
       //   path: "/authentication/register/creative",
       //   element: <RegisterCreative />,
@@ -610,10 +610,10 @@ export const router = createBrowserRouter([
       //   path: "/authentication/404/cover",
       //   element: <ErrorCover />,
       // },
-      {
-        path: "/authentication/404/minimal",
-        element: <ErrorMinimal />,
-      },
+      // {
+      //   path: "/authentication/404/minimal",
+      //   element: <ErrorMinimal />,
+      // },
       // {
       //   path: "/authentication/404/creative",
       //   element: <ErrorCreative />,
@@ -622,10 +622,10 @@ export const router = createBrowserRouter([
       //   path: "/authentication/verify/cover",
       //   element: <OtpCover />,
       // },
-      {
-        path: "/authentication/verify/minimal",
-        element: <OtpMinimal />,
-      },
+      // {
+      //   path: "/authentication/verify/minimal",
+      //   element: <OtpMinimal />,
+      // },
       // {
       //   path: "/authentication/verify/creative",
       //   element: <OtpCreative />,
@@ -635,7 +635,7 @@ export const router = createBrowserRouter([
       //   element: <MaintenanceCover />,
       // },
       {
-        path: "/authentication/maintenance/minimal",
+        path: "/maintenance",
         element: <MaintenanceMinimal />,
       },
       // {
@@ -644,4 +644,8 @@ export const router = createBrowserRouter([
       // },
     ],
   },
+  {
+    path: '*',
+    element: <ErrorMinimal />,
+  }
 ]);

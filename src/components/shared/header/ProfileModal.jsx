@@ -33,13 +33,12 @@ const ProfileModal = () => {
                     <div className="d-flex align-items-center">
                         {/* <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" /> */}
                         <div>
-                            {console.log('user', user)}
-                            <h6 className="text-dark mb-0">{currentUser && currentUser?.fullName}
-                                {currentUser && currentUser?.role &&
-                                    <span className="badge bg-soft-primary text-primary ms-1">{currentUser.role}</span>
+                            <h6 className="text-dark mb-0">{user && user?.fullName}
+                                {user && user?.role &&
+                                    <span className="badge bg-soft-primary text-primary ms-1">{user.role.name}</span>
                                 }
                             </h6>
-                            <span className="fs-12 fw-medium text-muted">{currentUser && currentUser?.email}</span>
+                            <span className="fs-12 fw-medium text-muted">{user && user?.email}</span>
                         </div>
                     </div>
                 </div>

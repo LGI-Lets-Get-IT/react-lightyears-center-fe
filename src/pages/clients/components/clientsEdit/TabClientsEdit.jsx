@@ -27,7 +27,7 @@ const TabProfile = ({ userData }) => {
   }, []);
 
   const handleSubmit = (values, actions) => {
-    dispatch(updateClientByUuid({ clientUuid: uuid, data: values }))
+    dispatch(updateClientByUuid({ uuid, data: values }))
       .unwrap()
       .then(() => navigate(`/clients/${uuid}`))
       .catch((error) => console.error("handle error", error));
