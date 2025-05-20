@@ -25,7 +25,10 @@ const PlanCreateContent = () => {
 
   const onSubmit = async (values, actions) => {
     console.log("ASFASFS", values, actions);
-    // dispatch(createPlan(values));
+    dispatch(createPlan(values))
+      .unwrap()
+      .then(() => navigate('/treatment-plans'))
+      .catch(error => console.log('Error', error));
   };
 
   useEffect(() => {
