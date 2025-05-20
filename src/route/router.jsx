@@ -142,7 +142,7 @@ export const router = createBrowserRouter([
         </ProtectedRoute>
       </Suspense>
     ),
-    // errorElement: <ErrorMinimal />,
+    errorElement: <ErrorMinimal />,
     children: [
       // *
       // * The Light Years Routes START
