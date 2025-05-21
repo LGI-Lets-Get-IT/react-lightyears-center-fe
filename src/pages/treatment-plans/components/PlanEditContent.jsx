@@ -98,12 +98,7 @@ const PlanEditContent = ({ planData }) => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={currentUser.role === "Psychologist"}
-                        defaultSelect={
-                          currentUser.role === "Psychologist"
-                            ? currentUser.id
-                            : null
-                        }
+                        isDisabled={true}
                         selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {

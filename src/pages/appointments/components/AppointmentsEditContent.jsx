@@ -165,6 +165,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                             <SelectDropdown
                                                 name="appointmentType"
                                                 options={appointmentTypes}
+                                                isDisabled={true}
                                                 selectedOption={values.appointmentType}
                                                 placeholder={"Select Appointment Type"}
                                                 onSelectOption={(option) => {

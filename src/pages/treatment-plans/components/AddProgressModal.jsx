@@ -17,7 +17,6 @@ import MegaManuTabs from '@/components/shared/header/megaManu/MegaManuTabs'
 const AddProgressModal = ({ setOpenModal }) => {
     const dispatch = useDispatch();
     const { plan } = useSelector(state => state.treatmentPlans)
-    const [selectedProgram, setSelectedProgram] = useState(null)
 
     const handleAddProgress = async (values, actions) => {
         console.log('VALUES', values)
@@ -52,14 +51,14 @@ const AddProgressModal = ({ setOpenModal }) => {
                                     <label className="form-label">Appointment</label>
                                     <SelectDropdown
                                         name={'appointmentId'}
-                                        options={plan?.programs.map(program => ({
+                                        options={appointments.map(program => ({
                                             label: program?.treatmentName,
                                             value: program?.id,
                                         }))}
-                                        selectedOption={selectedProgram}
+                                        selectedOption={values.appointmentId}
                                         placeholder={"Select Appointment"}
                                         onSelectOption={(option) => {
-                                            setSelectedProgram('appointmentId', option.value);
+                                            setFieldValue('appointmentId', option.value);
                                         }}
                                     />
                                 </div>
