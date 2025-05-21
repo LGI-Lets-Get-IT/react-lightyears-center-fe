@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { fetchClientByUuid } from "@/store/slice/clientSlice";
-import { FiCheck, FiX } from "react-icons/fi";
 import TabPassword from "./clientsEdit/TabPassword";
 
 const CustomerCreateContent = () => {

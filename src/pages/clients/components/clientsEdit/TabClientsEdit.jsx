@@ -27,6 +27,7 @@ const TabProfile = ({ userData }) => {
   }, []);
 
   const handleSubmit = (values, actions) => {
+    console.log('VALUE', values)
     dispatch(updateClientByUuid({ uuid, data: values }))
       .unwrap()
       .then(() => navigate(`/clients/${uuid}`))
