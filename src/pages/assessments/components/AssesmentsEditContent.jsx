@@ -10,6 +10,7 @@ import { fetchAllPsychologists } from '@/store/slice/employeeSlice';
 import { fetchAllAppointments } from '@/store/slice/appointmentSlice';
 import { fetchAllTestTypes } from '@/store/slice/testTypeSlice';
 import { updateAssessmentById } from '@/store/slice/assessmentSlice';
+import { format } from 'date-fns';
 
 
 const AssessmentsEditContent = ({ assessmentData }) => {
@@ -45,9 +46,9 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                     <div className="card-body lead-status">
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                             <h5 className="fw-bold mb-0 me-4">
-                                <span className="d-block mb-2">{assessmentData?.fullName}</span>
+                                <span className="d-block mb-2">Edit Client Assessment</span>
                                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                                    Last Edited: {assessmentData?.updatedAt}
+                                    Last Edited: {assessmentData && format(assessmentData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                                 </span>
                             </h5>
                         </div>
@@ -58,8 +59,8 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                             testId: assessmentData?.testTypeId,
                             result: assessmentData?.result,
                         }}
-                            enableReinitialize
                             validationSchema={createAssessmentSchema}
+                            enableReinitialize
                             onSubmit={handleSubmit}>
                             {({ values, setFieldValue }) => (
                                 <Form>
@@ -68,6 +69,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                             <label className="form-label">Client Name</label>
                                             <SelectDropdown
                                                 name={'clientId'}
+                                                isDisabled={true}
                                                 options={clients.map(client => ({
                                                     value: client.id,
                                                     label: client.fullName

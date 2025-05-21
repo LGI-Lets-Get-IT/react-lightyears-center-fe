@@ -25,7 +25,7 @@ export const treatmentPlanSchema = Yup.object().shape({
   ),
   targets: Yup.array().of(
     Yup.object().shape({
-      behavior: Yup.string().required('Target Behavior must be filled'),
+      targetBehavior: Yup.string().required('Target Behavior must be filled'),
       currentAbility: Yup.string().required('Child Current Ability must be filled'),
       shortTermTarget: Yup.string().required('Short-term Target must be filled'),
       mediaTools: Yup.string().required('Media or Tools must be filled'),

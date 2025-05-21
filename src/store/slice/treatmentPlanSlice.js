@@ -46,9 +46,8 @@ export const createPlan = createAsyncThunk(
 
 export const updatePlanById = createAsyncThunk(
   "treatmentplan/updatePlanById",
-  async (bodyData, { rejectWithValue }) => {
+  async ({ planId, data }, { rejectWithValue }) => {
     try {
-      const { planId, data } = bodyData;
       const response = await treatmentPlansApi.updatePlanById(planId, data);
       return response.data.data;
     } catch (error) {

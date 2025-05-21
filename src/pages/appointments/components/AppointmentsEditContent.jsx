@@ -56,7 +56,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                             <h5 className="fw-bold mb-0 me-4">
                                 <span className="d-block mb-2">Edit Appointment</span>
                                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                                    Last Edited: {appointmentData && format(new Date(appointmentData?.createdAt), "dd MMM yyyy, HH:mm aa")}
+                                    Last Edited: {appointmentData && format(new Date(appointmentData?.updatedAt), "dd MMM yyyy, HH:mm aa")}
                                 </span>
                             </h5>
                         </div>

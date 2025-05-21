@@ -1,6 +1,6 @@
 import { generatePlanReport } from "@/store/slice/fileSlice";
 import React from "react";
-import { FiCheckCircle, FiEdit, FiPrinter } from "react-icons/fi";
+import { FiCheckCircle, FiEdit, FiPrinter, FiTrash } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
@@ -23,9 +23,6 @@ const PlanViewTabItems = () => {
       window.URL.revokeObjectURL(url);
     });
 
-    const markAsDone = () => {
-      console.log("Marked plan as done");
-    };
   };
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
@@ -89,6 +86,16 @@ const PlanViewTabItems = () => {
                 title="Edit Treatment Plan"
               >
                 <FiEdit size={16} />
+              </a>
+            </div>
+            <div className="d-md-none d-lg-flex">
+              <a
+                href={`/treatment-plans/${id}/edit`}
+                className="action-btn"
+                data-bs-toggle="tooltip"
+                title="Edit Treatment Plan"
+              >
+                <FiTrash size={16} />
               </a>
             </div>
           </div>
