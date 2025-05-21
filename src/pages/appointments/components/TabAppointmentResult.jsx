@@ -53,14 +53,14 @@ const NoteCard = ({ id, testName, assessedBy, assessmentDate, result }) => {
             <div className="card card-body mb-4 stretch stretch-full">
                 {/* <span className={`side-stick bg-success`}></span> */}
                 <a href={`/assessments/${id}`}>
-                    <h5 className="note-title text-truncate w-75 mb-1 d-flex align-items-center" data-noteheading={testName}>
+                    <h5 className="note-title w-75 mb-1 d-flex align-items-center" data-noteheading={testName}>
                         {testName} - {assessedBy}
                         <i className={`point ms-2 fs-7 text-success`}><BsCircleFill /></i>
                     </h5>
                 </a>
                 <p className="fs-11 text-muted note-date">{format(assessmentDate, 'dd MMM yyyy')}</p>
                 <div className="note-content flex-grow-1">
-                    <p className="text-muted note-inner-content text-truncate-3-line" data-notecontent={result}>
+                    <p className="text-muted note-inner-content" data-notecontent={result}>
                         {result}
                     </p>
                 </div>

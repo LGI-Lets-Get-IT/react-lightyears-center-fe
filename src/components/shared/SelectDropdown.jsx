@@ -222,6 +222,7 @@ const SelectDropdown = ({
   className,
   defaultSelect,
   selectedOption,
+  onSelectOption,
 }) => {
   const [field, meta, helpers] = useField(name);
   const { setValue } = helpers;
@@ -245,6 +246,9 @@ const SelectDropdown = ({
       setValue(option.value); // ⬅️ update Formik field value
       setLocalSelectedOption(option)
       setIsOpen(false);
+      if (onSelectOption) {
+        onSelectOption(option); // Notify parent of the selected option
+      }
     }
   };
 

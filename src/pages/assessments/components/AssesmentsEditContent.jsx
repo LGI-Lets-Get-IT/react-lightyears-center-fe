@@ -147,8 +147,14 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                         </a>
 
                                         <button type="submit" className="btn btn-primary">
-                                            {console.log('updateLoading', updateLoading)}
-                                            <FiCheck size={16} className="me-2" />
+                                            {updateLoading ? (
+                                                <div
+                                                    className="spinner-border spinner-border-sm text-white me-2"
+                                                    role="status"
+                                                />
+                                            ) : (
+                                                <FiCheck size={16} className="me-2" />
+                                            )}
                                             <span>Edit Assessment</span>
                                         </button>
                                     </div>

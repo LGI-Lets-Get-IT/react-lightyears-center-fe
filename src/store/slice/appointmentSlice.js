@@ -44,6 +44,20 @@ export const fetchAppointmentById = createAsyncThunk(
   }
 );
 
+export const updateAppointmentById = createAsyncThunk(
+  "appointments/updateAppointmentById",
+  async ({ appointmentId, data }, { rejectWithValue }) => {
+    try {
+      const response = await appointmentsApi.updateAppointmentById(
+        appointmentId,
+        data
+      );
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  })
+
 export const appointmentSlice = createSlice({
   name: "appointment",
   initialState,

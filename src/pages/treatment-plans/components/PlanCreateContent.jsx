@@ -113,7 +113,6 @@ const PlanCreateContent = () => {
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
-                        {console.log("VALUES", values)}
                         <Field name="consultDate">
                           {({ meta }) => (
                             <>
