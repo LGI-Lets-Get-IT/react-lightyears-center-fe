@@ -21,7 +21,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT}}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          # password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             docker container rm -f ${{ vars.CONTAINER_NAME_DEVELOPMENT }} || true
             docker image rm -f ${{ vars.IMAGE_NAME_DEVELOPMENT }}:latest || true
@@ -38,7 +39,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT}}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          # password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             docker container rm -f ${{ vars.CONTAINER_NAME_STAGING }} || true
             docker image rm -f ${{ vars.IMAGE_NAME_STAGING }}:latest || true
@@ -54,7 +56,8 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           port: ${{ secrets.SSH_PORT}}
           username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
+          # password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
           script: |
             docker container rm -f ${{ vars.CONTAINER_NAME_PRODUCTION }} || true
             docker image rm -f ${{ vars.IMAGE_NAME_PRODUCTION }}:latest || true
