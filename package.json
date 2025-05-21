@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build --minify",
+    "build:dev": "vite build --minify --mode development",
+    "build:staging": "vite build --minify --mode staging",
+    "build:prod": "vite build --minify --mode production",
     "lint": "eslint .",
     "preview": "vite preview"
   },
