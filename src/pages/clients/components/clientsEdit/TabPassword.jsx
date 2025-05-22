@@ -1,8 +1,8 @@
-import { changePwdAdminSchema } from '@/schemas/clientSchema'
-import { fetchClientByUuid, updateClientByUuid, updateClientPassword } from '@/store/slice/clientSlice'
+import { changePwdAdminSchema } from '@/schemas/passwordSchema'
+import { updateClientPassword } from '@/store/slice/clientSlice'
 import { Field, Form, Formik } from 'formik'
 import React from 'react'
-import { FiCheck, FiEye, FiHash, FiKey, FiShield, FiX } from 'react-icons/fi'
+import { FiCheck, FiKey, FiX } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 

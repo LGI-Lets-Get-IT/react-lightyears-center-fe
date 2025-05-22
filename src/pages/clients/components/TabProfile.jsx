@@ -138,7 +138,7 @@ const TabProfile = () => {
                     selectedOption={values.gender}
                     placeholder={"Select Child Gender"}
                     onSelectOption={(option) => {
-                      setFieldValue('gender', option)
+                      setFieldValue('gender', option.value)
                     }}
                   />
                 </div>
@@ -173,7 +173,7 @@ const TabProfile = () => {
                     selectedOption={values.schoolId}
                     placeholder={"Select School Name"}
                     onSelectOption={(option) => {
-                      setFieldValue('schoolId', option)
+                      setFieldValue('schoolId', option.value)
                     }}
                   />
                   <hr className="my-0" />
@@ -301,7 +301,7 @@ const TabProfile = () => {
                     selectedOption={values.guardianNationality}
                     placeholder={"Select Guardian Nationality"}
                     onSelectOption={(option) => {
-                      setFieldValue('guardianNationality', option)
+                      setFieldValue('guardianNationality', option.value)
                     }}
                   />
                 </div>
@@ -318,7 +318,7 @@ const TabProfile = () => {
                     selectedOption={values.guardianRelationship}
                     placeholder="Select Relationship"
                     onSelectOption={(option) =>
-                      setFieldValue('guardianRelationship', option)
+                      setFieldValue('guardianRelationship', option.value)
                     }
                   />
                 </div>

@@ -56,7 +56,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                             <h5 className="fw-bold mb-0 me-4">
                                 <span className="d-block mb-2">Edit Appointment</span>
                                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                                    Last Edited: {appointmentData && format(new Date(appointmentData?.updatedAt), "dd MMM yyyy, HH:mm aa")}
+                                    Last Edited: {appointmentData?.updatedAt && format(appointmentData.updatedAt, "dd MMM yyyy, HH:mm aa")}
                                 </span>
                             </h5>
                         </div>
@@ -114,7 +114,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                 selectedOption={values.clientId}
                                                 placeholder={"Select Client"}
                                                 onSelectOption={(option) => {
-                                                    setFieldValue('clientId', option)
+                                                    setFieldValue('clientId', option.value)
                                                     setFieldValue('presentProblem', 'test')
                                                 }}
                                             />
@@ -134,7 +134,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                         selectedOption={values.picId}
                                                         placeholder={"Select Therapist"}
                                                         onSelectOption={(option) => {
-                                                            setFieldValue('picId', option)
+                                                            setFieldValue('picId', option.value)
                                                         }}
                                                     />
                                                 </>
@@ -152,7 +152,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                         selectedOption={values.picId}
                                                         placeholder={"Select Psychologist"}
                                                         onSelectOption={(option) => {
-                                                            setFieldValue('picId', option)
+                                                            setFieldValue('picId', option.value)
                                                         }}
                                                     />
                                                 </>
@@ -170,13 +170,10 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                 placeholder={"Select Appointment Type"}
                                                 onSelectOption={(option) => {
                                                     if (option.value.toLowerCase() === 'assessment') {
-                                                        console.log('OPTION 2', option)
                                                         setFieldValue('picType', 'Therapist')
                                                     } else {
-                                                        console.log('OPTION 3', option)
                                                         setFieldValue('picType', 'Psychologist')
                                                     }
-                                                    console.log('VALUES', values)
                                                 }}
                                             />
                                         </div>

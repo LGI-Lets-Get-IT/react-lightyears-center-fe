@@ -9,7 +9,6 @@ import TabPassword from "./employeeEdit/TabPassword";
 const EmployeesEditContent = ({ employeeData }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { currentEmp } = useSelector((state) => state.clients);
 
   useEffect(() => {
     dispatch(fetchEmployeeById(id));
@@ -50,7 +49,7 @@ const EmployeesEditContent = ({ employeeData }) => {
         </div>
         <div className="tab-content">
           <EmployeeEdit empData={employeeData} />
-          <TabPassword
+          <TabPassword id={id}
           />
         </div>
       </div>

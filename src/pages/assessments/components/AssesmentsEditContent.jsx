@@ -48,7 +48,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                             <h5 className="fw-bold mb-0 me-4">
                                 <span className="d-block mb-2">Edit Client Assessment</span>
                                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                                    Last Edited: {assessmentData && format(assessmentData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                                    Last Edited: {assessmentData?.updatedAt && format(assessmentData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                                 </span>
                             </h5>
                         </div>
@@ -76,7 +76,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                 }))}
                                                 selectedOption={values.clientId}
                                                 placeholder={values.clientId}
-                                                onSelectOption={(option) => setFieldValue('clientId', option)}
+                                                onSelectOption={(option) => setFieldValue('clientId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -89,7 +89,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                 }))}
                                                 placeholder={'Select Psychologist'}
                                                 selectedOption={values.psychologistId}
-                                                onSelectOption={(option) => setFieldValue('psychologistId', option)}
+                                                onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -102,7 +102,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                 }))}
                                                 placeholder={'Select Appointment'}
                                                 selectedOption={values.appointmentId}
-                                                onSelectOption={(option) => setFieldValue('appointmentId', option)}
+                                                onSelectOption={(option) => setFieldValue('appointmentId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -115,7 +115,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                 }))}
                                                 placeholder={'Select Test Name'}
                                                 selectedOption={values.testId}
-                                                onSelectOption={(option) => setFieldValue('testId', option)}
+                                                onSelectOption={(option) => setFieldValue('testId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-12 mb-4">
