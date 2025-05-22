@@ -2,8 +2,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { userLogout, userRefreshToken } from "@/store/slice/authSlice";
-// import { store } from "../store";
-// const getStore = async () => await import('../store').store;
 const getStore = async () => {
   const module = await import('../store');
   return module.store
@@ -27,6 +25,9 @@ const swalOptions = {
 export const api = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
   withCredentials: true,
+  headers: {
+    'Content-Type': "application/json",
+  },
 });
 
 export const axiosPublic = axios.create({
@@ -39,12 +40,14 @@ export const axiosPublic = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   async (config) => {
-    // const token = store.getState().auth.accessToken;
-    // const token = getStore().getState().auth.accessToken;
-    const store = await getStore();
-    const token = store.getState().auth.accessToken;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    try {
+      const store = await getStore();
+      const token = store.getState().auth.accessToken;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    } catch (err) {
+      console.err('Token fetch error', err)
     }
     return config;
   },
@@ -54,65 +57,124 @@ api.interceptors.request.use(
 );
 
 let isRefreshing = false;
+let failedQueue = []
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 // Response interceptor
 api.interceptors.response.use(
   (response) => {
-    // console.log("REERASP", response);
-    if (response.status === 201 || response.status === 204) {
+    // if (response.status === 201 || response.status === 204) {
+    if ([201, 204].includes(response.status)) {
       MySwal.mixin(swalOptions).fire({
         icon: "success",
         title: response?.data?.message || "Success",
       });
     }
-    console.log('ASJKAJDAKJAD')
     return response;
   },
   async (error) => {
-    const store = await getStore();
     const originalRequest = error.config;
     const message = error?.response?.data?.message
-    MySwal.mixin(swalOptions).fire({
-      icon: "error",
-      title: message || "Internal Server Error",
-    });
-    console.log('TEST')
+
+    console.log('MASUK 1', message)
+
     if (error.response?.status === 401 &&
       message == "Token expired. Please refresh the page." &&
       !originalRequest._retry
     ) {
-      if (!isRefreshing) {
+      try {
+        const store = await getStore();
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({
+              resolve: (token) => {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+                resolve(api(originalRequest));
+              },
+              reject
+            });
+          })
+        }
+
+        originalRequest._retry = true;
         isRefreshing = true;
 
-        try {
-          originalRequest._retry = true;
-          store.dispatch(userRefreshToken()).unwrap();
-          const newAccessToken = store.getState().auth.accessToken;
-          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        await store.dispatch(userRefreshToken()).unwrap();
+        const newAccessToken = store.getState().auth.accessToken;
+        processQueue(null, newAccessToken);
 
-          isRefreshing = false;
-
-          return api(originalRequest)
-        } catch (error) {
-          isRefreshing = false;
-          store.dispatch(userLogout())
-          window.location.href = '/login';
-          return Promise.reject(error);
-        }
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+      } catch (error) {
+        const store = await getStore();
+        processQueue(error, null);
+        store.dispatch(userLogout());
+        window.location.href = "/login";
+        return Promise.reject(error);
+      } finally {
+        isRefreshing = false;
       }
-    } else if (error.response?.status === 401 && message == "Refresh token expired. Please relogin.") {
+    }
+
+    console.log('MASUK 2', message)
+
+    // Refresh token expired
+    if (error.response?.status === 401 && message === "Refresh token expired. Please relogin.") {
+      const store = await getStore();
       store.dispatch(userLogout());
       window.location.href = "/login";
       return Promise.reject(error);
-    } else if (error.response?.status === 404) {
-      window.history.replaceState(null, "", "/");
     }
+
+    MySwal.mixin(swalOptions).fire({
+      icon: "error",
+      title: message || "Internal Server Error",
+    });
+
     return Promise.reject(error);
+    //     if (!isRefreshing) {
+    //       isRefreshing = true;
+
+    //       try {
+    //         originalRequest._retry = true;
+    //         store.dispatch(userRefreshToken()).unwrap();
+    //         const newAccessToken = store.getState().auth.accessToken;
+    //         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+    //         isRefreshing = false;
+
+    //         return api(originalRequest)
+    //       } catch (error) {
+    //         isRefreshing = false;
+    //         store.dispatch(userLogout())
+    //         window.location.href = '/login';
+    //         return Promise.reject(error);
+    //       }
+    //     }
+    //   } else if (error.response?.status === 401 && message == "Refresh token expired. Please relogin.") {
+    //     store.dispatch(userLogout());
+    //     window.location.href = "/login";
+    //     return Promise.reject(error);
+    //   } else if (error.response?.status === 404) {
+    //     window.history.replaceState(null, "", "/");
+    //   }
+    //   return Promise.reject(error);
   }
-);
+)
 
 axiosPublic.interceptors.response.use(
   (response) => {
-    if (response.status === 201 || response.status === 204) {
+    // if (response.status === 201 || response.status === 204) {
+    if ([201, 204].includes(response.status)) {
       MySwal.mixin(swalOptions).fire({
         icon: "success",
         title: response?.data?.message || "Success",
@@ -121,9 +183,10 @@ axiosPublic.interceptors.response.use(
     return response;
   },
   async (error) => {
+    const message = error?.response?.data?.message
     MySwal.mixin(swalOptions).fire({
       icon: "error",
-      title: error?.response?.data?.message || "Internal Server Error",
+      title: message || "Internal Server Error",
     });
     if (error.response?.status === 401) {
       window.location.href = "/login";
