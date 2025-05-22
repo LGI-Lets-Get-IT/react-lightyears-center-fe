@@ -1,13 +1,8 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { FiEye, FiMoreVertical } from 'react-icons/fi'
-import CardHeader from '@/components/shared/CardHeader'
+import { FiEye } from 'react-icons/fi'
 import Pagination from '@/components/shared/Pagination'
-import { userList } from '@/utils/data/userList'
-import useCardTitleActions from '@/hooks/useCardTitleActions'
-import CardLoader from '@/components/shared/CardLoader'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchSchoolClientsById } from '@/store/slice/schoolSlice'
+import { useSelector } from 'react-redux'
 
 const TabSchoolClient = () => {
     // const dispatch = useDispatch()
@@ -34,47 +29,47 @@ const TabSchoolClient = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {school?.clients.map(({ uuid, fullName, guardianName, guardianEmail, guardianPhone }) => (
+                                {school?.clients && school.clients.map(({ uuid, fullName, guardianName, guardianEmail, guardianPhone }) => (
                                     // userList(0, 5).map(({ date, id, proposal, user_email, user_img, user_name, user_status, color }) => (
-                                        <tr key={uuid} className='chat-single-item'>
-                                            <td>
-                                                <a href={`/clients/${uuid}`} className='text-wrap'>{fullName}</a>
-                                                {/* <div className="d-flex align-items-center gap-3">
+                                    <tr key={uuid} className='chat-single-item'>
+                                        <td>
+                                            <a href={`/clients/${uuid}`} className='text-wrap'>{fullName}</a>
+                                            {/* <div className="d-flex align-items-center gap-3">
                                                     <a href={`/clients/${uuid}`}>
                                                         <span className="d-block">{fullName}</span>
                                                         <span className="fs-12 d-block fw-normal text-muted">{user_email}</span>
                                                     </a>
                                                 </div> */}
-                                            </td>
-                                            <td>
-                                                <a>{guardianName}</a>
-                                            </td>
-                                            <td>
-                                                <a href={`mailto:${guardianEmail}`}>{guardianEmail}</a>
-                                            </td>
-                                            <td>
-                                                <a href={`tel:${guardianPhone}`}>{guardianPhone}</a>
-                                            </td>
-                                            <td className="text-end">
-                                                <div className="hstack gap-2 justify-content-end">
-                                                    <Link
-                                                        to={`/clients/${uuid}`}
-                                                        className="avatar-text avatar-md"
-                                                    >
-                                                        <FiEye />
-                                                    </Link>
-                                                    {/* <Dropdown
+                                        </td>
+                                        <td>
+                                            <a>{guardianName}</a>
+                                        </td>
+                                        <td>
+                                            <a href={`mailto:${guardianEmail}`}>{guardianEmail}</a>
+                                        </td>
+                                        <td>
+                                            <a href={`tel:${guardianPhone}`}>{guardianPhone}</a>
+                                        </td>
+                                        <td className="text-end">
+                                            <div className="hstack gap-2 justify-content-end">
+                                                <Link
+                                                    to={`/clients/${uuid}`}
+                                                    className="avatar-text avatar-md"
+                                                >
+                                                    <FiEye />
+                                                </Link>
+                                                {/* <Dropdown
                                                         dropdownItems={getActions(row.original.uuid)}
                                                         triggerClass="avatar-md"
                                                         triggerPosition={"0,21"}
                                                         triggerIcon={<FiMoreHorizontal />}
                                                     /> */}
-                                                </div>
-                                                {/* <Link to="#"><FiMoreVertical size={16} /></Link> */}
-                                            </td>
-                                        </tr>
-                                    )
-                                    )
+                                            </div>
+                                            {/* <Link to="#"><FiMoreVertical size={16} /></Link> */}
+                                        </td>
+                                    </tr>
+                                )
+                                )
                                     // )
                                 }
                             </tbody>

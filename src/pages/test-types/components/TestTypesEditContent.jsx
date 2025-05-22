@@ -4,7 +4,7 @@ import TextArea from "@/components/shared/TextArea";
 import { FiCheck, FiX } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createTestType, updateTestTypeById } from "@/store/slice/testTypeSlice";
+import { updateTestTypeById } from "@/store/slice/testTypeSlice";
 import { Field, Form, Formik } from "formik";
 import { testTypeSchema } from "@/schemas/testTypeSchema";
 import { format } from "date-fns";
@@ -16,7 +16,7 @@ const TestTypesEditContent = ({ id, testData }) => {
   const handleSubmit = (values, actions) => {
     dispatch(updateTestTypeById({ testTypeId: id, data: values }))
       .unwrap()
-      .then(() => navigate("/test-types"))
+      .then(() => navigate(`/test-types/${id}`))
       .catch((error) => "handle error");
   };
   return (
@@ -29,7 +29,7 @@ const TestTypesEditContent = ({ id, testData }) => {
           enableReinitialize
           validationSchema={testTypeSchema}
           onSubmit={handleSubmit}>
-          {({ values, getFieldProps }) => (
+          {({ values }) => (
             <Form>
               <div className="card-body personal-info">
                 <div className="mb-4 d-flex align-items-center justify-content-between">

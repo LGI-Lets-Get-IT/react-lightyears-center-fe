@@ -1,7 +1,6 @@
 import React from 'react'
-import { FiEdit, FiMoreHorizontal, FiPause, FiPauseCircle, FiPlus, FiTrash, FiTrash2 } from 'react-icons/fi'
+import { FiMoreHorizontal, FiTrash2 } from 'react-icons/fi'
 import Dropdown from '@/components/shared/Dropdown'
-import { Link } from 'react-router-dom'
 import { LiaPencilAltSolid } from 'react-icons/lia'
 
 const options = [

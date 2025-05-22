@@ -1,10 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
-const AssessmentViewTabItems = ({ activeTab, setActiveTab }) => {
-  const { currentAppointment } = useSelector(
-    (state) => state.appointments
-  );
+const AssessmentViewTabItems = () => {
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
       <div className="d-md-none d-flex align-items-center justify-content-between">
@@ -21,10 +17,9 @@ const AssessmentViewTabItems = ({ activeTab, setActiveTab }) => {
           >
             <li className="nav-item" role="presentation">
               <button
-                className={`nav-link ${activeTab === 'overview' ? 'active' : ''}`}
-                onClick={() => setActiveTab('overview')}
-              // data-bs-toggle="tab"
-              // data-bs-target="#overviewTab"
+                className='nav-link active'
+                data-bs-toggle="tab"
+                data-bs-target="#overviewTab"
               >
                 Overview
               </button>

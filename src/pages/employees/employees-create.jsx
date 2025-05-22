@@ -6,7 +6,6 @@ const EmployeesCreate = () => {
   return (
     <>
       <PageHeader>
-        {/* <ClientsCreateHeader /> */}
       </PageHeader>
       <div className="main-content">
         <div className="row">

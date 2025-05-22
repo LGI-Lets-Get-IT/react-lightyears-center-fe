@@ -24,12 +24,11 @@ const AssessmentsEditContent = ({ assessmentData }) => {
     const { psychologists } = useSelector(state => state.employees)
 
     const handleSubmit = (values) => {
-        console.log('HANDLESUBMIT', values)
         dispatch(updateAssessmentById({
             assessmentId: id,
             data: values
         })).unwrap()
-            .then(() => navigate('/assessments'))
+            .then(() => navigate(`/assessments/${id}`))
             .catch((error) => console.error('Error', error))
     }
 
@@ -53,10 +52,10 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                             </h5>
                         </div>
                         <Formik initialValues={{
-                            clientId: assessmentData?.clientId,
-                            appointmentId: assessmentData?.appointmentId,
-                            psychologistId: assessmentData?.psychologistId,
-                            testId: assessmentData?.testTypeId,
+                            clientId: assessmentData?.client?.id,
+                            appointmentId: assessmentData?.appointment?.id,
+                            psychologistId: assessmentData?.psychologist?.id,
+                            testId: assessmentData?.testType?.id,
                             result: assessmentData?.result,
                         }}
                             validationSchema={createAssessmentSchema}

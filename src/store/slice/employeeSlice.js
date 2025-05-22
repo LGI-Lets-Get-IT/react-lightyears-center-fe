@@ -60,7 +60,7 @@ export const fetchEmployeeById = createAsyncThunk(
 
 export const createEmployee = createAsyncThunk(
   "employees/createEmployee",
-  async (employeeData, { rejectWithValue, dispatch }) => {
+  async (employeeData, { rejectWithValue }) => {
     try {
       const response = await employeesApi.createEmployee(employeeData);
       return response.data.data;
@@ -71,12 +71,10 @@ export const createEmployee = createAsyncThunk(
 );
 
 export const updateEmployeeById = createAsyncThunk(
-  "clients/updateEmployeeById",
-  async (clientData, { rejectWithValue, dispatch }) => {
+  "employees/updateEmployeeById",
+  async ({ id, data }, { rejectWithValue }) => {
     try {
-      const { id, ...data } = clientData;
       const response = await employeesApi.updateEmployeeById(id, data);
-      // dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);

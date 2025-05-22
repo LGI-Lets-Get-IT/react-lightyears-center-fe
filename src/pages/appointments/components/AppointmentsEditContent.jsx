@@ -29,7 +29,6 @@ const AppointmentsEditContent = ({ appointmentData }) => {
     const appointmentTypes = appointmentTypeOptions;
 
     const onSubmit = async (values, actions) => {
-        console.log("ASFASFS", values, actions);
         dispatch(updateAppointmentById({
             appointmentId: id,
             data: values

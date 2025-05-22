@@ -18,7 +18,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
   const handleSubmit = (values, actions) => {
     dispatch(updateTreatmentTypeById({ treatmentTypeId: id, data: values }))
       .unwrap()
-      .then(() => navigate("/treatment-types"))
+      .then(() => navigate(`/treatment-types/${id}`))
       .catch((error) => "handle error");
   };
   return (
@@ -31,7 +31,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
           enableReinitialize
           validationSchema={treatmentTypeSchema}
           onSubmit={handleSubmit}>
-          {({ values, getFieldProps }) => (
+          {({ values }) => (
             <Form>
               <div className="card-body personal-info">
                 <div className="mb-4 d-flex align-items-center justify-content-between">

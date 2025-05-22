@@ -18,12 +18,8 @@ const EmployeeEdit = ({ empData }) => {
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
-
   const handleSubmit = (values, actions) => {
-    console.log('ID', id)
-    console.log('HANDLESUBMIT', values, actions);
-
-    dispatch(updateEmployeeById({ id, ...values }))
+    dispatch(updateEmployeeById({ id, data: values }))
       .unwrap()
       .then(() => {
         actions.resetForm()
