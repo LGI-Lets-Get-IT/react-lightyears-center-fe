@@ -18,12 +18,8 @@ const EmployeeEdit = ({ empData }) => {
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
-
   const handleSubmit = (values, actions) => {
-    console.log('ID', id)
-    console.log('HANDLESUBMIT', values, actions);
-
-    dispatch(updateEmployeeById({ id, ...values }))
+    dispatch(updateEmployeeById({ id, data: values }))
       .unwrap()
       .then(() => {
         actions.resetForm()
@@ -41,7 +37,7 @@ const EmployeeEdit = ({ empData }) => {
               Edit {empData?.fullName}
             </span>
             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-              Last Edited: {empData && format(empData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+              Last Edited: {empData?.updatedAt && format(empData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
             </span>
           </h5>
         </div>
@@ -113,7 +109,7 @@ const EmployeeEdit = ({ empData }) => {
                     options={roleId}
                     selectedOption={values.roleId}
                     placeholder={values.roleId}
-                    onSelectOption={(option) => setFieldValue('roleId', option)}
+                    onSelectOption={(option) => setFieldValue('roleId', option.value)}
                   />
                 </div>
               </div>
@@ -127,7 +123,7 @@ const EmployeeEdit = ({ empData }) => {
                     options={isActive}
                     selectedOption={values.isActive}
                     placeholder={values.isActive}
-                    onSelectOption={(option) => setFieldValue('isActive', option)}
+                    onSelectOption={(option) => setFieldValue('isActive', option.value)}
                   />
                 </div>
               </div>

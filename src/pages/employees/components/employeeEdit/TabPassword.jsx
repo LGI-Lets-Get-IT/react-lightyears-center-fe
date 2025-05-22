@@ -1,22 +1,22 @@
-import { changePwdAdminSchema } from '@/schemas/clientSchema'
-import { updateClientPassword } from '@/store/slice/clientSlice'
+import { changePwdAdminSchema } from '@/schemas/passwordSchema'
+import { updateEmployeePassword } from '@/store/slice/employeeSlice'
 import { Field, Form, Formik } from 'formik'
 import React from 'react'
 import { FiCheck, FiKey, FiX } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
-const TabPassword = ({ uuid }) => {
+const TabPassword = ({ id }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate()
-    const { isLoading: updateLoading } = useSelector(state => state.clients)
+    const { isLoading: updateLoading } = useSelector(state => state.employees)
     const handleChangePassword = (values, actions) => {
-        dispatch(updateClientPassword({
-            uuid: uuid,
+        dispatch(updateEmployeePassword({
+            id: id,
             data: values,
         }))
             .unwrap()
-            .then(() => navigate(`/clients/${uuid}`))
+            .then(() => navigate(`/employees/${id}`))
             .catch((error) => console.error("handle error", error));
     }
     return (

@@ -8,19 +8,18 @@ import { updateSchoolById } from "@/store/slice/schoolSlice";
 import { Field, Form, Formik } from "formik";
 import { schoolSchema } from "@/schemas/schoolSchema";
 
-const SchoolsEditContent = ({ schoolData }) => {
+const SchoolsEditContent = ({ id, schoolData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading: updateLoading } = useSelector(state => state.schools)
 
   const handleSubmit = (values, actions) => {
-    console.log('HANDLESUBMIT', values)
     dispatch(updateSchoolById({
-      schoolId: schoolData?.id,
+      schoolId: id,
       data: values,
     }))
       .unwrap()
-      .then(() => navigate("/schools"))
+      .then(() => navigate(`/schools/${id}`))
       .catch((error) => "handle error");
   };
   return (

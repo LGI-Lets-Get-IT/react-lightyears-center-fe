@@ -12,7 +12,6 @@ const SchoolsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { school } = useSelector((state) => state.schools);
-  // console.log("Schools Data: ", school);
 
   useEffect(() => {
     dispatch(fetchSchoolById(id));
@@ -26,7 +25,7 @@ const SchoolsView = () => {
       {/* <SchoolsViewTab /> */}
       <div className="main-content">
         <div className="tab-content">
-          <SchoolsEditContent schoolData={school} />
+          <SchoolsEditContent id={id} schoolData={school} />
         </div>
       </div>
     </>

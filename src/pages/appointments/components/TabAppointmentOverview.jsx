@@ -275,7 +275,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Child Age</label>
-                  <p>{appointmentData?.client.age} years old</p>
+                  <p>{appointmentData?.client.age}</p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Date of Birth</label>

@@ -66,7 +66,7 @@ const AssessmentsCreateContent = () => {
                                                 }))}
                                                 selectedOption={values.clientId}
                                                 placeholder={'Select Client'}
-                                                onSelectOption={(option) => setFieldValue('clientId', option)}
+                                                onSelectOption={(option) => setFieldValue('clientId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -79,7 +79,7 @@ const AssessmentsCreateContent = () => {
                                                 }))}
                                                 placeholder={'Select Psychologist'}
                                                 selectedOption={values.psychologistId}
-                                                onSelectOption={(option) => setFieldValue('psychologistId', option)}
+                                                onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -92,7 +92,7 @@ const AssessmentsCreateContent = () => {
                                                 }))}
                                                 placeholder={'Select Appointment'}
                                                 selectedOption={values.appointmentId}
-                                                onSelectOption={(option) => setFieldValue('appointmentId', option)}
+                                                onSelectOption={(option) => setFieldValue('appointmentId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -105,7 +105,7 @@ const AssessmentsCreateContent = () => {
                                                 }))}
                                                 placeholder={'Select Test Name'}
                                                 selectedOption={values.testId}
-                                                onSelectOption={(option) => setFieldValue('testId', option)}
+                                                onSelectOption={(option) => setFieldValue('testId', option.value)}
                                             />
                                         </div>
                                         <div className="col-lg-12 mb-4">

@@ -49,7 +49,7 @@ const PlanEditContent = ({ planData }) => {
               <h5 className="fw-bold mb-0 me-4">
                 <span className="d-block mb-2">Edit Treatment Plan</span>
                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Last Edited: {planData && format(planData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                  Last Edited: {planData?.updatedAt && format(planData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                 </span>
               </h5>
             </div>

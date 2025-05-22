@@ -28,14 +28,4 @@ const CustomerContent = ({ employeeData }) => {
   );
 };
 
-CustomerContent.propTypes = {
-  employeeData: PropTypes.shape({
-    fullName: PropTypes.string,
-    gender: PropTypes.string,
-    address: PropTypes.string,
-    guardianEmail: PropTypes.string,
-    guardianPhone: PropTypes.string,
-  }).isRequired,
-};
-
 export default CustomerContent;

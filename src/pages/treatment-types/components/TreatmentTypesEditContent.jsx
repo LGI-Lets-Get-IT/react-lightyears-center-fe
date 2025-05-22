@@ -18,7 +18,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
   const handleSubmit = (values, actions) => {
     dispatch(updateTreatmentTypeById({ treatmentTypeId: id, data: values }))
       .unwrap()
-      .then(() => navigate("/treatment-types"))
+      .then(() => navigate(`/treatment-types/${id}`))
       .catch((error) => "handle error");
   };
   return (
@@ -31,14 +31,14 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
           enableReinitialize
           validationSchema={treatmentTypeSchema}
           onSubmit={handleSubmit}>
-          {({ values, getFieldProps }) => (
+          {({ values }) => (
             <Form>
               <div className="card-body personal-info">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                   <h5 className="fw-bold mb-0 me-4">
                     <span className="d-block mb-2">Edit {treatmentData?.name}</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      Last Edited: {treatmentData && format(treatmentData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                      Last Edited: {treatmentData?.updatedAt && format(treatmentData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                     </span>
                   </h5>
                 </div>

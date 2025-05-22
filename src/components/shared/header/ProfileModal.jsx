@@ -97,10 +97,12 @@ const ProfileModal = () => {
                     </div>
                 </div> */}
                 {/* <div className="dropdown-divider"></div> */}
-                <a href="/profile" className="dropdown-item">
-                    <i ><FiUser /></i>
-                    <span>Profile</span>
-                </a>
+                {user && !user?.role &&
+                    <a href="/profile" className="dropdown-item">
+                        <i ><FiUser /></i>
+                        <span>Profile</span>
+                    </a>
+                }
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>

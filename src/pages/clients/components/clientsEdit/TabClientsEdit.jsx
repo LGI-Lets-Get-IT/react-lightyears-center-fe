@@ -59,7 +59,7 @@ const TabProfile = ({ userData }) => {
                     {userData?.fullName}
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Last Edited: {userData && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                    Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                   </span>
                 </h5>
               </div>
@@ -124,7 +124,7 @@ const TabProfile = ({ userData }) => {
                     selectedOption={values.gender}
                     placeholder={values.gender}
                     onSelectOption={(option) => {
-                      setFieldValue('gender', option)
+                      setFieldValue('gender', option.value)
                     }}
                   />
                 </div>
@@ -140,7 +140,7 @@ const TabProfile = ({ userData }) => {
                     selectedOption={values.nationality}
                     placeholder={values.nationality}
                     onSelectOption={(option) => {
-                      setFieldValue('nationality', option)
+                      setFieldValue('nationality', option.value)
                     }}
                   />
                 </div>
@@ -159,7 +159,7 @@ const TabProfile = ({ userData }) => {
                     selectedOption={values.schoolId}
                     placeholder={userData?.schoolName}
                     onSelectOption={(option) => {
-                      setFieldValue('schoolId', option)
+                      setFieldValue('schoolId', option.value)
                     }}
                   />
                   <hr className="my-0" />
@@ -235,7 +235,7 @@ const TabProfile = ({ userData }) => {
                     selectedOption={values.guardianNationality}
                     placeholder={values.guardianNationality}
                     onSelectOption={(option) => {
-                      setFieldValue('guardianNationality', option)
+                      setFieldValue('guardianNationality', option.value)
                     }}
                   />
                 </div>
@@ -252,7 +252,7 @@ const TabProfile = ({ userData }) => {
                     selectedOption={values.guardianRelationship}
                     placeholder={values.guardianRelationship}
                     onSelectOption={(option) => {
-                      setFieldValue('guardianRelationship', option)
+                      setFieldValue('guardianRelationship', option.value)
                     }}
                   />
                 </div>
