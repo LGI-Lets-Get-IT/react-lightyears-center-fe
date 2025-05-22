@@ -23,7 +23,7 @@ const TabPlanProgress = () => {
     return (
         <>
             <div className="content-area-body pb-0">
-                {plan && plan.sessions.length > 0 ? (
+                {plan && plan.sessions?.length > 0 ? (
                     <div className="row note-has-grid" id="note-full-container">
                         {/* {plan?.sessions?.map(({ category, content, date, id, title }) => (
                                     <NoteCard

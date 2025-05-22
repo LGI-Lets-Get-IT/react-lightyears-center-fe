@@ -5,6 +5,7 @@ import RootLayout from "@/layout/root";
 import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
+import AppointmentsEdit from "@/pages/appointments/appointments-edit";
 const PlansEdit = lazy(() => import("@/pages/treatment-plans/plans-edit"));
 const UserProfile = lazy(() => import("@/pages/user/user-profile"));
 const TestTypesEdit = lazy(() => import("@/pages/test-types/test-types-edit"));
@@ -178,6 +179,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.CREATE}>
             <AppointmentsCreate />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/appointments/:id/edit',
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.APPOINTMENTS.UPDATE}>
+            <AppointmentsEdit />
           </ProtectedRoute>
         ),
       },

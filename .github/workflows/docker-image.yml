@@ -32,8 +32,9 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
+        file: Dockerfile.development
         push: true
-        tags: itslgit/lightyearscdc-frontend-dev:latest
+        tags: ${{ vars.IMAGE_NAME_DEVELOPMENT }}:latest
         build-args: |
           ENV_FILE_PATH=.env
       # run: |
@@ -60,8 +61,10 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
+        file: Dockerfile.staging
         push: true
-        tags: itslgit/lightyearscdc-frontend-staging:latest
+        # tags: itslgit/lightyearscdc-frontend-staging:latest
+        tags: ${{ vars.IMAGE_NAME_STAGING }}:latest
         build-args: |
           ENV_FILE_PATH=.env
   build-production-image:
@@ -82,7 +85,8 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
+        file: Dockerfile
         push: true
-        tags: itslgit/lightyearscdc-frontend:latest
+        tags: ${{ vars.IMAGE_NAME_PRODUCTION }}:latest
         build-args: |
           ENV_FILE_PATH=.env

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Pagination from '@/components/shared/Pagination'
 import HorizontalProgress from '@/components/shared/HorizontalProgress'
 import { projectsData } from '@/utils/data/projectsData'
-import { FiBell, FiGlobe, FiPrinter } from 'react-icons/fi'
+import { FiBell, FiGlobe, FiPrinter, FiUpload, FiX } from 'react-icons/fi'
 import { PiFilePdf } from 'react-icons/pi'
 import ProjectFilteTable from '@/components/storage/ProjectFilteTable'
 import RecentFileCard from '@/components/storage/RecentFileCard'
@@ -10,12 +10,13 @@ import { storageFolderData } from '@/utils/data/storageData'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllFiles, uploadFile } from '@/store/slice/fileSlice'
 import LeadsEmptyCard from '@/components/leadsViewCreate/LeadsEmptyCard'
+import { LiaPencilAltSolid } from 'react-icons/lia'
 
 const TabAppointmentFiles = () => {
     const dispatch = useDispatch()
     const fileInputRef = useRef(null)
     const { currentAppointment } = useSelector((state) => state.appointments)
-    const { files } = useSelector(state => state.files)
+    const { files, isLoading: fetchLoading } = useSelector(state => state.files)
     const [uploadedFileName, setUploadedFileName] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
 
@@ -31,14 +32,19 @@ const TabAppointmentFiles = () => {
     }
 
     const handleUploadFile = () => {
-        console.log('SELECTEDFILE', selectedFile)
         dispatch(uploadFile({
-            params: {
-                appointmentId: currentAppointment?.id,
-                uuid: currentAppointment?.client?.uuid,
-                clientName: currentAppointment?.client?.fullName.replaceAll(' ', '')
-            },
+            appointmentId: currentAppointment?.id,
+            uuid: currentAppointment?.client?.uuid,
+            clientName: currentAppointment?.client?.fullName.replaceAll(' ', ''),
+            file: selectedFile,
         }))
+    }
+
+    const handleDelete = () => {
+        if (selectedFile) {
+            setUploadedFileName(null)
+            setSelectedFile(null)
+        }
     }
 
     useEffect(() => {
@@ -79,10 +85,39 @@ const TabAppointmentFiles = () => {
 
             {files && files.length > 0 ? (
                 <div className="project-section">
-                    {/* <SectionTitle
-                            sectionName={"Project Files"}
-                            sectionDescription={"Recent project files (Last access 24 min ago)"}
-                        /> */}
+                    <div className='d-flex flex-row mb-4'>
+                        {uploadedFileName ? (
+                            <div className="d-flex gap-2">
+                                <button className="btn btn-primary btn-sm" onClick={handleUploadFile}>
+                                    <span>{uploadedFileName}</span>
+                                </button>
+                                <button className="btn btn-danger" onClick={handleDelete}>
+                                    <span><FiX size={16} className="me-2" /></span>
+                                    <strong>Delete</strong>
+                                </button>
+                            </div>
+                        ) : (
+                            <button className="btn btn-primary" onClick={handleUploadClick}>
+                                <FiUpload size={16} className='me-2' />
+                                <span>Upload File</span>
+                            </button>
+                        )}
+                        {/* {uploadedFileName && (
+                            <div className="text-center">
+                                <div className="mb-2">
+                                    <span className="text-muted">Selected file: </span>
+                                    <strong>{uploadedFileName}</strong>
+                                </div>
+                                <button
+                                    className="btn btn-primary btn-sm"
+                                    onClick={handleUploadFile}
+                                >
+                                    Submit Upload
+                                </button>
+                            </div>
+                        )} */}
+                        <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+                    </div>
                     <ProjectFilteTable files={files} />
                 </div>
             ) : (
@@ -104,11 +139,10 @@ const TabAppointmentFiles = () => {
                         )}
                     </LeadsEmptyCard>
                     <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
-
                 </>
-            )}
-
-        </div>
+            )
+            }
+        </div >
         // </div>
     )
 }

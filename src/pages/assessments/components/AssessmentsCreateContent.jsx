@@ -22,7 +22,6 @@ const AssessmentsCreateContent = () => {
     const { psychologists } = useSelector(state => state.employees)
 
     const handleSubmit = (values, actions) => {
-        console.log('VAVLUES', values)
         dispatch(createAssessment(values)).unwrap()
             .then(() => navigate('/assessments'))
             .catch(error => console.error('handle error', error))

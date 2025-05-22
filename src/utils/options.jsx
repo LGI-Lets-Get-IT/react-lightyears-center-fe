@@ -243,6 +243,12 @@ const projectRoalOptions = [
   { value: "customer", label: "Customer", color: "#17c666" },
 ];
 
+const appointmentTypeOptions = [
+  { value: "Assessment", label: "Assessment" },
+  { value: "Consultation", label: "Consultation" },
+  { value: "Treatment", label: "Treatment" },
+]
+
 const genderOptions = [
   { value: "Male", label: "Male" },
   { value: "Female", label: "Female" },
@@ -301,6 +307,7 @@ export {
   projectNotificationsOptions,
   projectRoalOptions,
   taskTypeOptions,
+  appointmentTypeOptions,
   genderOptions,
   relationshipOptions,
   isActiveOptions,

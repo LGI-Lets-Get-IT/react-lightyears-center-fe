@@ -34,9 +34,23 @@ export const fetchFileById = createAsyncThunk(
 
 export const uploadFile = createAsyncThunk(
   "files/uploadFile",
-  async (query, { rejectWithValue }) => {
+  async ({ appointmentId, uuid, clientName, file }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await filesApi.uploadFile(query);
+      const uploadFileData = new FormData();
+      uploadFileData.append('appointmentId', appointmentId)
+      uploadFileData.append('uuid', uuid)
+      uploadFileData.append('clientName', clientName)
+      uploadFileData.append('file', file)
+
+      const response = await filesApi.uploadFile(uploadFileData);
+
+      dispatch(fetchAllFiles({
+        params: {
+          appointmentId,
+          uuid,
+          clientName,
+        }
+      }))
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -70,7 +84,7 @@ export const fileSlice = createSlice({
       state.files = action.payload;
     });
     builder.addCase(fetchAllFiles.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchFileById.pending, (state) => {

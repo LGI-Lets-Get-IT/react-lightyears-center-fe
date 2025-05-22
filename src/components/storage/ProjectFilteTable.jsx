@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FiEye, FiScissors, FiShare2, FiX } from 'react-icons/fi'
+import { FiDownload, FiEye, FiScissors, FiShare2, FiX } from 'react-icons/fi'
 import ImageGroup from '@/components/shared/ImageGroup'
 import Dropdown from '@/components/shared/Dropdown'
 import Pagination from '@/components/shared/Pagination'
-import { storageProjectData } from '@/utils/data/storageData'
 import { confirmDelete } from '@/utils/confirmDelete'
 import { useSelector } from 'react-redux'
 import { format } from 'date-fns'
 
 const ProjectFilteTable = ({ files }) => {
-    const [data, setData] = useState(storageProjectData)
+    const [data, setData] = useState([])
 
     const handleDelete = (label, id) => {
         if (label === "Delete") {
@@ -37,12 +36,12 @@ const ProjectFilteTable = ({ files }) => {
                         </thead>
                         <tbody>
                             {files && files.length > 0 ? files.map(({ id, mimeType, name, webViewLink, size, createdTime }) => {
-                                const icon = mimeType == 'application/pdf' ? '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
+                                // const icon = mimeType == 'application/pdf' ? '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
                                 return (
                                     <TableRow
                                         key={id}
                                         fileSIze={size / 100000}
-                                        iconSrc={icon}
+                                        // iconSrc={icon}
                                         // members={members}
                                         link={webViewLink}
                                         title={name}
@@ -71,7 +70,7 @@ const TableRow = ({ link, fileSIze, iconSrc, title, uploadDate, members, handleD
         <tr>
             <td>
                 <div className="d-flex align-items-center gap-3">
-                    <img src={iconSrc} className="img-fluid rounded wd-30" alt="" />
+                    {iconSrc && <img src={iconSrc} className="img-fluid rounded wd-30" alt="" />}
                     <Link to={link}>{title}</Link>
                 </div>
             </td>
@@ -86,16 +85,8 @@ const TableRow = ({ link, fileSIze, iconSrc, title, uploadDate, members, handleD
                 </div>
             </td> */}
             <td>
-                <Dropdown dropdownItems={tableActons} dropdownParentStyle={"hstack text-end justify-content-end"} id={id} onClick={handleDelete} />
+                <a href="#" className="avatar-text avatar-md ms-auto"><FiDownload /></a>
             </td>
         </tr>
     )
 }
-
-const tableActons = [
-    { label: "Open", icon: <FiEye /> },
-    // { label: "Share", icon: <FiShare2 /> },
-    // { type: "divider" },
-    // { label: "Backup", icon: <FiScissors /> },
-    { label: "Delete", icon: <FiX />, },
-];

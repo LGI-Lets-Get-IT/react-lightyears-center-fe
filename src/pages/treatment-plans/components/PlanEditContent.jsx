@@ -10,21 +10,28 @@ import { fetchAllClients } from "@/store/slice/clientSlice";
 import { FiCheck, FiX } from "react-icons/fi";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
 import { format } from "date-fns";
+import { updatePlanById } from "@/store/slice/treatmentPlanSlice";
 
 const PlanEditContent = ({ planData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id } = useParams()
   const { clients } = useSelector((state) => state.clients);
   const { currentUser } = useSelector((state) => state.auth);
   const { psychologists, therapists } = useSelector((state) => state.employees);
   const { treatmentTypes } = useSelector((state) => state.treatmentTypes);
 
-  const onSubmit = async (values, actions) => {
-    console.log("ASFASFS", values);
-    // dispatch(createPlan(values));
+  const onSubmit = async (values) => {
+    dispatch(updatePlanById({
+      planId: id,
+      data: values
+    }))
+      .unwrap()
+      .then(() => navigate(`/treatment-plans/${id}`))
+      .catch((err) => console.log('Error', err));
   };
 
   useEffect(() => {
@@ -42,7 +49,7 @@ const PlanEditContent = ({ planData }) => {
               <h5 className="fw-bold mb-0 me-4">
                 <span className="d-block mb-2">Edit Treatment Plan</span>
                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Last Edited:
+                  Last Edited: {planData && format(planData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                 </span>
               </h5>
             </div>
@@ -63,12 +70,12 @@ const PlanEditContent = ({ planData }) => {
               {({ values, setFieldValue }) => (
                 <Form>
                   <div className="row">
-                    {console.log('VALUES', values)}
                     <div className="col-lg-4 mb-4">
                       <label className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
+                        isDisabled={true}
                         name="clientId"
                         options={clients.map((item) => ({
                           label: item.fullName,
@@ -77,7 +84,7 @@ const PlanEditContent = ({ planData }) => {
                         selectedOption={values.clientId}
                         placeholder={"Select Client"}
                         onSelectOption={(option) => {
-                          setFieldValue('clientId', option)
+                          setFieldValue('clientId', option.value)
                         }}
                       />
                     </div>
@@ -91,16 +98,11 @@ const PlanEditContent = ({ planData }) => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={currentUser.role === "Psychologist"}
-                        defaultSelect={
-                          currentUser.role === "Psychologist"
-                            ? currentUser.id
-                            : null
-                        }
+                        isDisabled={true}
                         selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
-                          setFieldValue('psychologistId', option)
+                          setFieldValue('psychologistId', option.value)
                         }}
                       />
                     </div>
@@ -254,7 +256,7 @@ const PlanEditContent = ({ planData }) => {
                                       selectedOption={values.programs[index].treatmentId}
                                       placeholder={"Select Treatment"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].treatmentId`, option)
+                                        setFieldValue(`programs[${index}].treatmentId`, option.value)
                                       }
                                     />
                                   </div>
@@ -274,7 +276,7 @@ const PlanEditContent = ({ planData }) => {
                                       selectedOption={values.programs[index].therapistId}
                                       placeholder={"Select Therapist"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].therapistId`, option)
+                                        setFieldValue(`programs[${index}].therapistId`, option.value)
                                       }
                                     />
                                   </div>
@@ -365,6 +367,17 @@ const PlanEditContent = ({ planData }) => {
                                     </Field>
                                   </div>
                                 </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Program
+                                  </button>
+                                </div>
                               </AccordionItem>
                             ))}
                         </div>
@@ -423,7 +436,7 @@ const PlanEditContent = ({ planData }) => {
                                     <span className="text-danger">*</span>
                                   </label>
                                   <div className="col-sm-9">
-                                    <Field name={`targets[${index}].behavior`}>
+                                    <Field name={`targets[${index}].targetBehavior`}>
                                       {({ field, meta }) => (
                                         <>
                                           <input

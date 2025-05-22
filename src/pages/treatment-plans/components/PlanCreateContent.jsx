@@ -25,7 +25,10 @@ const PlanCreateContent = () => {
 
   const onSubmit = async (values, actions) => {
     console.log("ASFASFS", values, actions);
-    // dispatch(createPlan(values));
+    dispatch(createPlan(values))
+      .unwrap()
+      .then(() => navigate('/treatment-plans'))
+      .catch(error => console.log('Error', error));
   };
 
   useEffect(() => {
@@ -77,8 +80,9 @@ const PlanCreateContent = () => {
                         selectedOption={values.clientId}
                         placeholder={"Select Client"}
                         onSelectOption={(option) => {
-                          setFieldValue('clientId', option)
-                          setFieldValue('presentProblem', 'test')
+                          setFieldValue('clientId', option.value)
+                          const selectedClient = clients.find(client => client.id === option.value);
+                          setFieldValue('presentProblem', selectedClient.problem)
                         }}
                       />
                     </div>
@@ -101,7 +105,7 @@ const PlanCreateContent = () => {
                         selectedOption={selectedOption}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
-                          setFieldValue('psychologistId', option)
+                          setFieldValue('psychologistId', option.value)
                         }}
                       />
                     </div>
@@ -110,7 +114,6 @@ const PlanCreateContent = () => {
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
-                        {console.log("VALUES", values)}
                         <Field name="consultDate">
                           {({ meta }) => (
                             <>
@@ -256,7 +259,7 @@ const PlanCreateContent = () => {
                                       selectedOption={values.programs[index].treatmentId}
                                       placeholder={"Select Treatment"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].treatmentId`, option)
+                                        setFieldValue(`programs[${index}].treatmentId`, option.value)
                                       }
                                     />
                                   </div>
@@ -276,7 +279,7 @@ const PlanCreateContent = () => {
                                       selectedOption={values.programs[index].therapistId}
                                       placeholder={"Select Therapist"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].therapistId`, option)
+                                        setFieldValue(`programs[${index}].therapistId`, option.value)
                                       }
                                     />
                                   </div>
@@ -425,7 +428,7 @@ const PlanCreateContent = () => {
                                     <span className="text-danger">*</span>
                                   </label>
                                   <div className="col-sm-9">
-                                    <Field name={`targets[${index}].behavior`}>
+                                    <Field name={`targets[${index}].targetBehavior`}>
                                       {({ field, meta }) => (
                                         <>
                                           <input
