@@ -68,6 +68,10 @@ const schoolInfoData = [
     title: "PIC Email",
     key: "picEmail",
   },
+  // {
+  //   title: "Active Status",
+  //   key: "isActive",
+  // },
 ];
 
 const TabSchoolsProfile = ({ schoolInformation }) => {
@@ -82,13 +86,16 @@ const TabSchoolsProfile = ({ schoolInformation }) => {
             </span>
           </h5>
         </div>
-        {schoolInfoData.map((data, index) => (
-          <Card
-            key={index}
-            title={data.title}
-            content={schoolInformation?.[data.key]}
-          />
-        ))}
+        {schoolInfoData.map((data, index) => {
+          const content = schoolInformation?.[data.key];
+          // const content =
+          //   data.key === "isActive"
+          //     ? schoolInformation?.isActive
+          //       ? "Active"
+          //       : "Inactive"
+          //     : schoolInformation?.[data.key];
+          return <Card key={index} title={data.title} content={content} />;
+        })}
       </div>
       <hr />
     </div>
@@ -100,8 +107,8 @@ export default TabSchoolsProfile;
 const Card = ({ title, content }) => {
   return (
     <div className="row mb-4">
-      <div className="col-lg-2 fw-medium">{title}</div>
-      <div className="col-lg-10 fw-bold">{content}</div>
+      <div className="col-lg-2 fw-medium">{title || "-"}</div>
+      <div className="col-lg-10 fw-bold">{content || "-"}</div>
     </div>
   );
 };

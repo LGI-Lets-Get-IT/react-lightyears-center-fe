@@ -1,12 +1,16 @@
 import { generatePlanReport } from "@/store/slice/fileSlice";
-import React from "react";
+import { deletePlanById } from "@/store/slice/treatmentPlanSlice";
+import React, { useState } from "react";
 import { FiCheckCircle, FiEdit, FiPrinter, FiTrash } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PlanViewTabItems = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
+  const [openModal, setOpenModal] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const { plan } = useSelector((state) => state.treatmentPlans);
   const { isLoading: downloadLoading } = useSelector((state) => state.files);
 
@@ -24,6 +28,30 @@ const PlanViewTabItems = () => {
     });
 
   };
+
+    // Actual delete function which will be called on confirmation
+    const handleDeleteConfirmed = () => {
+      if (!uuid) {
+        console.error("UUID is undefined");
+        return;
+      }
+      setIsDeleting(true);
+      const payload = {
+        planIds: [id],
+      };
+  
+      dispatch(deletePlanById(payload))
+        .unwrap()
+        .then(() => {
+          console.log("Treatment plan deleted successfully");
+          navigate(`/treatment-plans`);
+        })
+        .catch((error) => console.error("Handle error:", error))
+        .finally(() => {
+          setIsDeleting(false);
+          setOpenModal(false);
+        });
+    };
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
       <div className="d-md-none d-flex align-items-center justify-content-between">
@@ -90,10 +118,10 @@ const PlanViewTabItems = () => {
             </div>
             <div className="d-md-none d-lg-flex">
               <a
-                href={`/treatment-plans/${id}/edit`}
+              onClick={() => setOpenModal(true)}
                 className="action-btn"
                 data-bs-toggle="tooltip"
-                title="Edit Treatment Plan"
+                title="Delete Treatment Plan"
               >
                 <FiTrash size={16} />
               </a>

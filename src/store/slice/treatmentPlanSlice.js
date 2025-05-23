@@ -56,6 +56,19 @@ export const updatePlanById = createAsyncThunk(
   }
 );
 
+export const deletePlanById = createAsyncThunk(
+  "treatmentplan/deletePlanById",
+  async (body, { rejectWithValue }) => {
+    try {
+      const response = await treatmentPlansApi.deletePlanById(body);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 export const treatmentPlanSlice = createSlice({
   name: "treatmentplan",
   initialState,
@@ -102,6 +115,17 @@ export const treatmentPlanSlice = createSlice({
       state.plan = action.payload;
     });
     builder.addCase(updatePlanById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(deletePlanById.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deletePlanById.fulfilled, (state) => {
+      state.isLoading = false;
+      state.plan = null;
+    });
+    builder.addCase(deletePlanById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

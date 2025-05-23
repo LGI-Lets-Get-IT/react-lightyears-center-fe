@@ -5,5 +5,5 @@ export const treatmentPlansApi = {
   getAllPlans: () => api.get("/treatment-plans"),
   getPlanById: (id) => api.get(`/treatment-plans/${id}`),
   updatePlanById: (id, requestBody) => api.put(`/treatment-plans/${id}`, requestBody),
-  deletePlanById: (id) => api.delete(`/treatment-plans/${id}`),
+  deletePlanById: (requestBody) => api.delete(`/treatment-plans`, requestBody,),
 };

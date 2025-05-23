@@ -18,7 +18,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
   const handleSubmit = (values, actions) => {
     dispatch(updateTreatmentTypeById({ treatmentTypeId: id, data: values }))
       .unwrap()
-      .then(() => navigate(`/treatment-types/${id}`))
+      .then(() => navigate(`/treatment-types`))
       .catch((error) => "handle error");
   };
   return (

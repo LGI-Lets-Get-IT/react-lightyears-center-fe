@@ -27,7 +27,7 @@ const PlansView = () => {
         <div className="tab-content">
           <TabPlanOverview />
           <div className="tab-pane fade" id="progressTab">
-            <TabPlanProgress />
+            <TabPlanProgress id={id} />
           </div>
         </div>
       </div>

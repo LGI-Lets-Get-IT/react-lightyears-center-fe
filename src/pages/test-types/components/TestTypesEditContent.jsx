@@ -16,7 +16,7 @@ const TestTypesEditContent = ({ id, testData }) => {
   const handleSubmit = (values, actions) => {
     dispatch(updateTestTypeById({ testTypeId: id, data: values }))
       .unwrap()
-      .then(() => navigate(`/test-types/${id}`))
+      .then(() => navigate(`/test-types`))
       .catch((error) => "handle error");
   };
   return (
