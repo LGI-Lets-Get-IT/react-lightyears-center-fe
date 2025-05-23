@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from '@/components/shared/SelectDropdown'
 import { Field, Form, Formik } from 'formik';
-import { createAssessmentSchema } from '@/schemas/assessmentSchema';
 import { FiCheck, FiX } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +10,7 @@ import { fetchAllAppointments } from '@/store/slice/appointmentSlice';
 import { fetchAllTestTypes } from '@/store/slice/testTypeSlice';
 import { updateAssessmentById } from '@/store/slice/assessmentSlice';
 import { format } from 'date-fns';
-
+import { assessmentSchema } from '@/schemas/assessmentSchema';
 
 const AssessmentsEditContent = ({ assessmentData }) => {
     const dispatch = useDispatch();
@@ -58,7 +57,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                             testId: assessmentData?.testType?.id,
                             result: assessmentData?.result,
                         }}
-                            validationSchema={createAssessmentSchema}
+                            validationSchema={assessmentSchema}
                             enableReinitialize
                             onSubmit={handleSubmit}>
                             {({ values, setFieldValue }) => (
