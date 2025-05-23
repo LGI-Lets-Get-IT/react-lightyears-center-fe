@@ -11,7 +11,7 @@ const LoginMinimal = () => {
                             <img src="/images/TLY_LOGO_Small.png" alt="img" className="img-fluid" />
                         </div>
                         <div className="card-body p-sm-5">
-                            <LoginForm resetPath={"/authentication/reset/minimal"} />
+                            <LoginForm resetPath={"/forgot-password"} />
                             {/* <LoginForm registerPath={"/authentication/register/minimal"} resetPath={"/authentication/reset/minimal"} /> */}
                         </div>
                     </div>

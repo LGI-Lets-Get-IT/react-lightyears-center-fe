@@ -82,7 +82,7 @@ const LoginForm = ({ resetPath }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <Link to={resetPath} className="fs-11 text-primary">Forgot password?</Link>
+                                    <a href={resetPath} className="fs-11 text-primary">Forgot password?</a>
                                 </div>
                             </div>
                             <div className="mt-5">
