@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from '@/components/shared/SelectDropdown'
 import { Field, Form, Formik } from 'formik';
-import { createAssessmentSchema } from '@/schemas/assessmentSchema';
+import { assessmentSchema } from '@/schemas/assessmentSchema';
 import { FiCheck, FiX } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,9 +51,9 @@ const AssessmentsCreateContent = () => {
                             testId: null,
                             result: null,
                         }}
-                            validationSchema={createAssessmentSchema}
+                            validationSchema={assessmentSchema}
                             onSubmit={handleSubmit}>
-                            {({ values, setFieldValue, getFieldProps }) => (
+                            {({ values, setFieldValue }) => (
                                 <Form>
                                     <div className="row">
                                         <div className="col-lg-6 mb-4">
