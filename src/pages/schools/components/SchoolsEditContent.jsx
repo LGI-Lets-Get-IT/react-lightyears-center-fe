@@ -2,7 +2,7 @@ import React from "react";
 import Input from "@/components/shared/Input";
 import TextArea from "@/components/shared/TextArea";
 import { FiCheck, FiX } from "react-icons/fi";
-import { useDispatch, useSelector, } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateSchoolById } from "@/store/slice/schoolSlice";
 import { Field, Form, Formik } from "formik";
@@ -11,13 +11,15 @@ import { schoolSchema } from "@/schemas/schoolSchema";
 const SchoolsEditContent = ({ id, schoolData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading: updateLoading } = useSelector(state => state.schools)
+  const { isLoading: updateLoading } = useSelector((state) => state.schools);
 
   const handleSubmit = (values, actions) => {
-    dispatch(updateSchoolById({
-      schoolId: id,
-      data: values,
-    }))
+    dispatch(
+      updateSchoolById({
+        schoolId: id,
+        data: values,
+      })
+    )
       .unwrap()
       .then(() => navigate(`/schools/${id}`))
       .catch((error) => "handle error");
@@ -37,20 +39,23 @@ const SchoolsEditContent = ({ id, schoolData }) => {
           }}
           enableReinitialize
           validationSchema={schoolSchema}
-          onSubmit={handleSubmit}>
-          {({ values, getFieldProps }) => (
+          onSubmit={handleSubmit}
+        >
+          {({ values }) => (
             <Form>
               <div className="card-body personal-info">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                   <h5 className="fw-bold mb-0 me-4">
-                    <span className="d-block mb-2">Edit {schoolData?.name} Data</span>
+                    <span className="d-block mb-2">
+                      Edit {schoolData?.name} Data
+                    </span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                       {schoolData?.updatedAt}
                     </span>
                   </h5>
                 </div>
                 <Field name="schoolName">
-                  {({ meta }) => (
+                  {({ meta, field }) => (
                     <Input
                       name={"schoolName"}
                       icon="lu-school"
@@ -59,12 +64,12 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       placeholder={"School Name"}
                       value={values.schoolName}
                       meta={meta}
-                      {...getFieldProps('schoolName')}
+                      {...field}
                     />
                   )}
                 </Field>
                 <Field name="schoolAddress">
-                  {({ meta }) => (
+                  {({ field, meta }) => (
                     <TextArea
                       label={"School Address"}
                       icon="feather-map-pin"
@@ -73,13 +78,13 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       name={"schoolAddress"}
                       value={values.schoolAddress}
                       meta={meta}
-                      {...getFieldProps('schoolAddress')}
+                      {...field}
                     />
                   )}
                 </Field>
 
                 <Field name="schoolPhoneNumber">
-                  {({ meta }) => (
+                  {({ field, meta }) => (
                     <Input
                       icon="feather-phone"
                       label={"School Phone Number"}
@@ -88,13 +93,13 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       name={"schoolPhoneNumber"}
                       value={values.schoolPhoneNumber}
                       meta={meta}
-                      {...getFieldProps('schoolPhoneNumber')}
+                      {...field}
                     />
                   )}
                 </Field>
 
                 <Field name="schoolEmail">
-                  {({ meta }) => (
+                  {({ field, meta }) => (
                     <Input
                       icon="feather-mail"
                       label={"School Email"}
@@ -104,7 +109,7 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       type={"email"}
                       value={values.schoolEmail}
                       meta={meta}
-                      {...getFieldProps('schoolEmail')}
+                      {...field}
                     />
                   )}
                 </Field>
@@ -120,7 +125,7 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                   </h5>
                 </div>
                 <Field name="picName">
-                  {({ meta }) => (
+                  {({ field, meta }) => (
                     <Input
                       icon="feather-user"
                       label={"PIC Full Name"}
@@ -129,13 +134,13 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       name={"picName"}
                       value={values.picName}
                       meta={meta}
-                      {...getFieldProps('picName')}
+                      {...field}
                     />
                   )}
                 </Field>
 
                 <Field name="picPhoneNumber">
-                  {({ meta }) => (
+                  {({ field, meta }) => (
                     <Input
                       icon="feather-phone"
                       label={"PIC Phone Number"}
@@ -144,13 +149,13 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       name={"picPhoneNumber"}
                       value={values.picPhoneNumber}
                       meta={meta}
-                      {...getFieldProps('picPhoneNumber')}
+                      {...field}
                     />
                   )}
                 </Field>
 
                 <Field name="picEmail">
-                  {({ meta }) => (
+                  {({ field, meta }) => (
                     <Input
                       icon="feather-mail"
                       label={"PIC Email"}
@@ -160,13 +165,16 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       type={"email"}
                       value={values.picEmail}
                       meta={meta}
-                      {...getFieldProps('picEmail')}
+                      {...field}
                     />
                   )}
                 </Field>
 
                 <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-                  <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
+                  <a
+                    className="btn btn-light-brand"
+                    onClick={() => navigate(-1)}
+                  >
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
@@ -176,8 +184,9 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                         className="spinner-border spinner-border-sm text-white me-2"
                         role="status"
                       />
-                    ) : <FiCheck size={16} className="me-2" />
-                    }
+                    ) : (
+                      <FiCheck size={16} className="me-2" />
+                    )}
                     <span>Edit School</span>
                   </button>
                 </div>

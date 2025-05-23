@@ -19,30 +19,39 @@ const TabAssessmentOverview = ({ assessmentData }) => {
                 <div className="row">
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Client Name</label>
-                    <p>{assessmentData?.client?.fullName ?? '-'}</p>
+                    <p>{assessmentData?.client?.fullName ?? "-"}</p>
                   </div>
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Psychologist Name</label>
-                    <p>{assessmentData?.psychologist?.fullName ?? '-'}</p>
+                    <p>{assessmentData?.psychologist?.fullName ?? "-"}</p>
                   </div>
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Test Name</label>
-                    <p>{assessmentData?.testType?.name ?? '-'}</p>
+                    <p>{assessmentData?.testType?.name ?? "-"}</p>
                   </div>
                   <div className="col-md-6 mb-4">
-                    <label className="form-label">Appointment Name</label>
-                    <p>[{assessmentData?.appointment?.appointmentType ?? '-'}] {assessmentData?.appointment?.title ?? '-'}</p>
+                    <label className="form-label">Assessed On</label>
+                    <a
+                      className="d-flex fw-normal"
+                      href={`/appointments/${assessmentData?.appointment?.id}`}
+                    >
+                      [{assessmentData?.appointment?.appointmentType ?? "-"}]{" "}
+                      {assessmentData?.appointment?.title ?? "-"}
+                    </a>
                   </div>
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Assessment Date</label>
-                    <p>{assessmentData?.createdAt ? format(assessmentData.createdAt, 'dd MMM yyyy') : '-'}</p>
+                    <p>
+                      {assessmentData?.createdAt
+                        ? format(assessmentData.createdAt, "dd MMM yyyy")
+                        : "-"}
+                    </p>
                   </div>
                   <div className="col-md-12">
                     <label className="form-label">Test Result</label>
-                    <p>{assessmentData?.result ?? '-'}</p>
+                    <p>{assessmentData?.result ?? "-"}</p>
                   </div>
                 </div>
-                <hr />
               </div>
             </div>
           </div>

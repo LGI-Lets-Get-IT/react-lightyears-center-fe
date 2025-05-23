@@ -4,7 +4,7 @@ const empInfoData = [
   { label: "Full Name", key: "fullName" },
   { label: "Phone Number", key: "phoneNumber" },
   { label: "Email", key: "email" },
-  { label: 'Role', key: 'roleName' },
+  { label: "Role", key: "roleName" },
   { label: "Active Status", key: "isActive" },
 ];
 
@@ -23,16 +23,20 @@ const TabOverviewContent = ({ employeeInformation }) => {
           return (
             <div
               key={index}
-              className={`row g-0 ${index === empInfoData.length - 1 ? "mb-0" : "mb-4"
-                }`}
+              className={`row g-0 ${
+                index === empInfoData.length - 1 ? "mb-0" : "mb-4"
+              }`}
             >
-              {console.log('employeeInformation?.[item.key]', employeeInformation?.['roleId'])}
               <div className="col-sm-6 text-muted">{item.label}:</div>
               <div className="col-sm-6 fw-semibold">
-                {item.key === 'isActive' ? employeeInformation?.isActive ? 'Active' : 'Inactive' : employeeInformation?.[item.key]}
+                {item.key === "isActive"
+                  ? employeeInformation?.isActive
+                    ? "Active"
+                    : "Inactive"
+                  : employeeInformation?.[item.key]}
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>

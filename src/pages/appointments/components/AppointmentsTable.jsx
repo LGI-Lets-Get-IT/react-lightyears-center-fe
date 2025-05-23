@@ -4,21 +4,7 @@ import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
-import { clientStatusOptions } from "@/utils/options";
-import { useSelector } from "react-redux";
-import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
-
-const actions = [
-  { label: "Edit", icon: <FiEdit3 />, permission: PERMISSIONS.APPOINTMENTS.UPDATE },
-  // { label: "Print", icon: <FiPrinter /> },
-  //   { label: "Remind", icon: <FiClock /> },
-  // { type: "divider" },
-  // { label: "Archive", icon: <FiArchive /> },
-  // { label: "Report Spam", icon: <FiAlertOctagon />, },
-  //   { type: "divider" },
-  { label: "Delete", icon: <FiTrash2 />, permission: PERMISSIONS.APPOINTMENTS.DELETE },
-];
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);

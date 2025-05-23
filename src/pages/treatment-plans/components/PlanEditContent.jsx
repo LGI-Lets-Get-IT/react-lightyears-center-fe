@@ -18,20 +18,22 @@ import { updatePlanById } from "@/store/slice/treatmentPlanSlice";
 const PlanEditContent = ({ planData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id } = useParams()
+  const { id } = useParams();
   const { clients } = useSelector((state) => state.clients);
   const { currentUser } = useSelector((state) => state.auth);
   const { psychologists, therapists } = useSelector((state) => state.employees);
   const { treatmentTypes } = useSelector((state) => state.treatmentTypes);
 
   const onSubmit = async (values) => {
-    dispatch(updatePlanById({
-      planId: id,
-      data: values
-    }))
+    dispatch(
+      updatePlanById({
+        planId: id,
+        data: values,
+      })
+    )
       .unwrap()
       .then(() => navigate(`/treatment-plans/${id}`))
-      .catch((err) => console.log('Error', err));
+      .catch((err) => console.log("Error", err));
   };
 
   useEffect(() => {
@@ -49,14 +51,16 @@ const PlanEditContent = ({ planData }) => {
               <h5 className="fw-bold mb-0 me-4">
                 <span className="d-block mb-2">Edit Treatment Plan</span>
                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Last Edited: {planData?.updatedAt && format(planData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                  Last Edited:{" "}
+                  {planData?.updatedAt &&
+                    format(planData?.updatedAt, "dd MMM yyyy, HH:mm aa")}
                 </span>
               </h5>
             </div>
             <Formik
               initialValues={{
-                clientId: planData?.clientId,
-                psychologistId: planData?.psychologistId,
+                clientId: planData?.client?.id,
+                psychologistId: planData?.psychologist?.id,
                 consultDate: planData?.consultDate,
                 presentProblem: planData?.presentProblem,
                 parentPlan: planData?.parentPlan,
@@ -84,7 +88,7 @@ const PlanEditContent = ({ planData }) => {
                         selectedOption={values.clientId}
                         placeholder={"Select Client"}
                         onSelectOption={(option) => {
-                          setFieldValue('clientId', option.value)
+                          setFieldValue("clientId", option.value);
                         }}
                       />
                     </div>
@@ -102,7 +106,7 @@ const PlanEditContent = ({ planData }) => {
                         selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
-                          setFieldValue('psychologistId', option.value)
+                          setFieldValue("psychologistId", option.value);
                         }}
                       />
                     </div>
@@ -127,8 +131,9 @@ const PlanEditContent = ({ planData }) => {
                                     // format(date, "yyyy-MM-dd")
                                   );
                                 }}
-                                className={`form-control ${meta.error ? "is-invalid" : ""
-                                  }`}
+                                className={`form-control ${
+                                  meta.error ? "is-invalid" : ""
+                                }`}
                                 popperPlacement="bottom-start"
                                 calendarContainer={({ children }) => (
                                   <div className="bg-white react-datepicker">
@@ -137,7 +142,9 @@ const PlanEditContent = ({ planData }) => {
                                 )}
                               />
                               {meta.error && (
-                                <div className="mt-1 text-danger">{meta.error}</div>
+                                <div className="mt-1 text-danger">
+                                  {meta.error}
+                                </div>
                               )}
                             </>
                           )}
@@ -154,14 +161,17 @@ const PlanEditContent = ({ planData }) => {
                             <textarea
                               id="presentProblem"
                               rows={6}
-                              className={`form-control ${meta.error ? "is-invalid" : ""
-                                }`}
+                              className={`form-control ${
+                                meta.error ? "is-invalid" : ""
+                              }`}
                               placeholder="Please specify the problem here"
                               defaultValue={""}
                               {...field}
                             />
                             {meta.error && (
-                              <div className="mt-1 text-danger">{meta.error}</div>
+                              <div className="mt-1 text-danger">
+                                {meta.error}
+                              </div>
                             )}
                           </>
                         )}
@@ -178,14 +188,17 @@ const PlanEditContent = ({ planData }) => {
                             <textarea
                               id="parentPlan"
                               rows={6}
-                              className={`form-control ${meta.error ? "is-invalid" : ""
-                                }`}
+                              className={`form-control ${
+                                meta.error ? "is-invalid" : ""
+                              }`}
                               placeholder="Please specify the plan here"
                               defaultValue={""}
                               {...field}
                             />
                             {meta.error && (
-                              <div className="mt-1 text-danger">{meta.error}</div>
+                              <div className="mt-1 text-danger">
+                                {meta.error}
+                              </div>
                             )}
                           </>
                         )}
@@ -253,10 +266,15 @@ const PlanEditContent = ({ planData }) => {
                                         label: item.name,
                                         value: item.id,
                                       }))}
-                                      selectedOption={values.programs[index].treatmentId}
+                                      selectedOption={
+                                        values.programs[index].treatmentId
+                                      }
                                       placeholder={"Select Treatment"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].treatmentId`, option.value)
+                                        setFieldValue(
+                                          `programs[${index}].treatmentId`,
+                                          option.value
+                                        )
                                       }
                                     />
                                   </div>
@@ -273,10 +291,15 @@ const PlanEditContent = ({ planData }) => {
                                         label: item.fullName,
                                         value: item.id,
                                       }))}
-                                      selectedOption={values.programs[index].therapistId}
+                                      selectedOption={
+                                        values.programs[index].therapistId
+                                      }
                                       placeholder={"Select Therapist"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].therapistId`, option.value)
+                                        setFieldValue(
+                                          `programs[${index}].therapistId`,
+                                          option.value
+                                        )
                                       }
                                     />
                                   </div>
@@ -294,8 +317,9 @@ const PlanEditContent = ({ planData }) => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify aim of the treatment"
                                             {...field}
                                           />
@@ -322,8 +346,9 @@ const PlanEditContent = ({ planData }) => {
                                         <>
                                           <input
                                             type="number"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the session frequency"
                                             min={1}
                                             {...field}
@@ -351,8 +376,9 @@ const PlanEditContent = ({ planData }) => {
                                         <>
                                           <input
                                             type="number"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the session duration"
                                             min={1}
                                             {...field}
@@ -436,13 +462,16 @@ const PlanEditContent = ({ planData }) => {
                                     <span className="text-danger">*</span>
                                   </label>
                                   <div className="col-sm-9">
-                                    <Field name={`targets[${index}].targetBehavior`}>
+                                    <Field
+                                      name={`targets[${index}].targetBehavior`}
+                                    >
                                       {({ field, meta }) => (
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the child's target behavior"
                                             {...field}
                                           />
@@ -469,8 +498,9 @@ const PlanEditContent = ({ planData }) => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the child's current ability"
                                             {...field}
                                           />
@@ -497,8 +527,9 @@ const PlanEditContent = ({ planData }) => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the short-term target"
                                             {...field}
                                           />
@@ -525,8 +556,9 @@ const PlanEditContent = ({ planData }) => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the media or tools"
                                             {...field}
                                           />
@@ -564,7 +596,7 @@ const PlanEditContent = ({ planData }) => {
             </Formik>
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 };

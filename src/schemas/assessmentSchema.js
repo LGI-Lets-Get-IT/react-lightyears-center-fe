@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const createAssessmentSchema = Yup.object().shape({
+export const assessmentSchema = Yup.object().shape({
   clientId: Yup.number()
     .required("Client Name is required")
     .typeError("Client ID must be a number"),

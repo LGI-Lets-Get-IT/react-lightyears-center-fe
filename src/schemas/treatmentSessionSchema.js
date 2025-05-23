@@ -2,14 +2,13 @@ import * as Yup from "yup";
 
 export const treatmentSessionSchema = Yup.object().shape({
   planId: Yup.number()
-    .required("Plan ID is required")
-    .typeError("Plan ID must be a number"),
+    .required("Plan ID is required"),
+  appointmentId: Yup.number()
+    .required("Linked Appointment is required"),
   programId: Yup.number()
-    .required("Program ID is required")
-    .typeError("Program ID must be a number"),
+    .required("Treatment Name is required"),
   clientId: Yup.number()
-    .required('Client ID is required')
-    .typeError('Client ID must be a number'),
+    .required('Client Name is required'),
   sessions: Yup.array().of(
     Yup.object().shape({
       shortTermGoals: Yup.string().required("Short Term Goal is required"),

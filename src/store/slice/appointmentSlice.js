@@ -44,6 +44,18 @@ export const fetchAppointmentById = createAsyncThunk(
   }
 );
 
+export const fetchAppointmentForTreatmentProgress = createAsyncThunk(
+  "appointments/getAppointmentForTreatmentProgress",
+  async (query, { rejectWithValue }) => {
+    try {
+      const response = await appointmentsApi.getAppointmentForTreatmentProgress(query);
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateAppointmentById = createAsyncThunk(
   "appointments/updateAppointmentById",
   async ({ appointmentId, data }, { rejectWithValue }) => {
@@ -82,6 +94,17 @@ export const appointmentSlice = createSlice({
       state.currentAppointment = action.payload;
     });
     builder.addCase(fetchAppointmentById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchAppointmentForTreatmentProgress.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchAppointmentForTreatmentProgress.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.appointments = action.payload;
+    });
+    builder.addCase(fetchAppointmentForTreatmentProgress.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
