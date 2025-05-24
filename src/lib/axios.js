@@ -3,9 +3,9 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { userLogout, userRefreshToken } from "@/store/slice/authSlice";
 const getStore = async () => {
-  const module = await import('../store');
-  return module.store
-}
+  const module = await import("../store");
+  return module.store;
+};
 const MySwal = withReactContent(Swal);
 
 const swalOptions = {
@@ -14,19 +14,18 @@ const swalOptions = {
   showConfirmButton: false,
   timer: 4000,
   timerProgressBar: true,
-  backdrop: false,
+  // backdrop: false,
   // didOpen: (toast) => {
   //   toast.addEventListener("mouseenter", Swal.stopTimer);
   //   toast.addEventListener("mouseleave", Swal.resumeTimer);
   // },
 };
 
-
 export const api = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
   withCredentials: true,
   headers: {
-    'Content-Type': "application/json",
+    "Content-Type": "application/json",
   },
 });
 
@@ -35,7 +34,7 @@ export const axiosPublic = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-})
+});
 
 // Request interceptor
 api.interceptors.request.use(
@@ -47,7 +46,7 @@ api.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     } catch (err) {
-      console.err('Token fetch error', err)
+      console.err("Token fetch error", err);
     }
     return config;
   },
@@ -57,7 +56,7 @@ api.interceptors.request.use(
 );
 
 let isRefreshing = false;
-let failedQueue = []
+let failedQueue = [];
 const processQueue = (error, token = null) => {
   failedQueue.forEach((prom) => {
     if (error) {
@@ -73,7 +72,8 @@ const processQueue = (error, token = null) => {
 api.interceptors.response.use(
   (response) => {
     // if (response.status === 201 || response.status === 204) {
-    if ([201, 204].includes(response.status)) {
+    const contentModifyActions = ['put', 'delete']
+    if (contentModifyActions.includes(response.config.method)) {
       MySwal.mixin(swalOptions).fire({
         icon: "success",
         title: response?.data?.message || "Success",
@@ -83,11 +83,10 @@ api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const message = error?.response?.data?.message
+    const message = error?.response?.data?.message;
 
-    console.log('MASUK 1', message)
-
-    if (error.response?.status === 401 &&
+    if (
+      error.response?.status === 401 &&
       message == "Token expired. Please refresh the page." &&
       !originalRequest._retry
     ) {
@@ -100,9 +99,9 @@ api.interceptors.response.use(
                 originalRequest.headers.Authorization = `Bearer ${token}`;
                 resolve(api(originalRequest));
               },
-              reject
+              reject,
             });
-          })
+          });
         }
 
         originalRequest._retry = true;
@@ -125,10 +124,11 @@ api.interceptors.response.use(
       }
     }
 
-    console.log('MASUK 2', message)
-
     // Refresh token expired
-    if (error.response?.status === 401 && message === "Refresh token expired. Please relogin.") {
+    if (
+      error.response?.status === 401 &&
+      message === "Refresh token expired. Please relogin."
+    ) {
       const store = await getStore();
       store.dispatch(userLogout());
       window.location.href = "/login";
@@ -141,35 +141,8 @@ api.interceptors.response.use(
     });
 
     return Promise.reject(error);
-    //     if (!isRefreshing) {
-    //       isRefreshing = true;
-
-    //       try {
-    //         originalRequest._retry = true;
-    //         store.dispatch(userRefreshToken()).unwrap();
-    //         const newAccessToken = store.getState().auth.accessToken;
-    //         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
-    //         isRefreshing = false;
-
-    //         return api(originalRequest)
-    //       } catch (error) {
-    //         isRefreshing = false;
-    //         store.dispatch(userLogout())
-    //         window.location.href = '/login';
-    //         return Promise.reject(error);
-    //       }
-    //     }
-    //   } else if (error.response?.status === 401 && message == "Refresh token expired. Please relogin.") {
-    //     store.dispatch(userLogout());
-    //     window.location.href = "/login";
-    //     return Promise.reject(error);
-    //   } else if (error.response?.status === 404) {
-    //     window.history.replaceState(null, "", "/");
-    //   }
-    //   return Promise.reject(error);
   }
-)
+);
 
 axiosPublic.interceptors.response.use(
   (response) => {
@@ -183,7 +156,7 @@ axiosPublic.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const message = error?.response?.data?.message
+    const message = error?.response?.data?.message;
     MySwal.mixin(swalOptions).fire({
       icon: "error",
       title: message || "Internal Server Error",

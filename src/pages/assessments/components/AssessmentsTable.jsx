@@ -3,9 +3,12 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
+import useConfirmation from "@/hooks/useConfirmation";
+import { useDispatch } from "react-redux";
+import { deleteAssessmentByIds } from "@/store/slice/assessmentSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,12 +26,35 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const AssessmentsTable = ({ data }) => {
-  const { filterItemsByPermission } = useFilterByPermission()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (id) => [
+  const getActions = ({ id, clientName, testName }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/assessments/${id}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      onClick: () => handleConfirmDelete(id, clientName, testName),
+    },
   ];
+
+  const handleConfirmDelete = (id,clientName, testName) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete <strong>{clientName}</strong> assessment
+        for <strong>{testName}</strong>?
+      </>,
+      () => {
+        dispatch(deleteAssessmentByIds({ assessmentIds: [id] }))
+          .unwrap()
+          .then(() => navigate("/assessments"))
+          .catch((err) => console.error("Error: ", err));
+      },
+      () => {}
+    );
+  };
 
   const columns = [
     {
@@ -72,19 +98,15 @@ const AssessmentsTable = ({ data }) => {
       cell: (info) => {
         const { clientId } = info.row.original;
         const clientName = info.getValue();
-        return (
-          <Link to={`/clients/${clientId}`}>{clientName}</Link>
-        );
+        return <Link to={`/clients/${clientId}`}>{clientName}</Link>;
       },
     },
     {
-      accessorKey: 'testName',
+      accessorKey: "testName",
       header: () => "Test Name",
       cell: (info) => {
-        return (
-          <a>{info.getValue()}</a>
-        )
-      }
+        return <a>{info.getValue()}</a>;
+      },
     },
     {
       accessorKey: "assessedBy",
@@ -100,7 +122,9 @@ const AssessmentsTable = ({ data }) => {
       accessorKey: "actions",
       header: () => "Actions",
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.id))
+        const permittedActions = filterItemsByPermission(
+          getActions(row.original)
+        );
 
         return (
           <div className="hstack gap-2 justify-content-end">
@@ -119,7 +143,7 @@ const AssessmentsTable = ({ data }) => {
               />
             )}
           </div>
-        )
+        );
       },
       meta: {
         headerClassName: "text-end",
@@ -130,6 +154,7 @@ const AssessmentsTable = ({ data }) => {
   return (
     <div>
       <Table data={data} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

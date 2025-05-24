@@ -56,18 +56,18 @@ export const updatePlanById = createAsyncThunk(
   }
 );
 
-export const deletePlanById = createAsyncThunk(
-  "treatmentplan/deletePlanById",
-  async (body, { rejectWithValue }) => {
+export const deletePlanByIds = createAsyncThunk(
+  "treatmentplan/deletePlanByIds",
+  async (planIds, { rejectWithValue, dispatch }) => {
     try {
-      const response = await treatmentPlansApi.deletePlanById(body);
+      const response = await treatmentPlansApi.deletePlanByIds(planIds);
+      dispatch(fetchAllPlans())
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
-
 
 export const treatmentPlanSlice = createSlice({
   name: "treatmentplan",
@@ -76,6 +76,7 @@ export const treatmentPlanSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllPlans.pending, (state) => {
       state.isLoading = true;
+      state.plans = initialState.plans;
     });
     builder.addCase(fetchAllPlans.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -84,9 +85,11 @@ export const treatmentPlanSlice = createSlice({
     builder.addCase(fetchAllPlans.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.plans = initialState.plans;
     });
     builder.addCase(fetchPlanById.pending, (state) => {
       state.isLoading = true;
+      state.plan = initialState.plan;
     });
     builder.addCase(fetchPlanById.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -95,6 +98,7 @@ export const treatmentPlanSlice = createSlice({
     builder.addCase(fetchPlanById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.plan = initialState.plan;
     });
     builder.addCase(createPlan.pending, (state) => {
       state.isLoading = true;
@@ -109,6 +113,7 @@ export const treatmentPlanSlice = createSlice({
     });
     builder.addCase(updatePlanById.pending, (state) => {
       state.isLoading = true;
+      state.plan = initialState.plan;
     });
     builder.addCase(updatePlanById.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -117,17 +122,20 @@ export const treatmentPlanSlice = createSlice({
     builder.addCase(updatePlanById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.plan = initialState.plan;
     });
-    builder.addCase(deletePlanById.pending, (state) => {
+    builder.addCase(deletePlanByIds.pending, (state) => {
       state.isLoading = true;
+      state.plans = initialState.plans;
     });
-    builder.addCase(deletePlanById.fulfilled, (state) => {
+    builder.addCase(deletePlanByIds.fulfilled, (state) => {
       state.isLoading = false;
-      state.plan = null;
+      state.plans = initialState.plans;
     });
-    builder.addCase(deletePlanById.rejected, (state, action) => {
+    builder.addCase(deletePlanByIds.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.plans = initialState.plans
     });
   },
 });

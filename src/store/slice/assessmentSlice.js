@@ -25,7 +25,10 @@ export const updateAssessmentById = createAsyncThunk(
   async (bodyData, { rejectWithValue }) => {
     try {
       const { assessmentId, data } = bodyData;
-      const response = await assessmentsApi.updateAssessmentById(assessmentId, data);
+      const response = await assessmentsApi.updateAssessmentById(
+        assessmentId,
+        data
+      );
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -69,6 +72,21 @@ export const fetchAssessmentByAppointmentId = createAsyncThunk(
   }
 );
 
+export const deleteAssessmentByIds = createAsyncThunk(
+  "assessments/deleteAssessmentByIds",
+  async (assessmentIds, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await assessmentsApi.deleteAssessmentByIds(
+        assessmentIds
+      );
+      dispatch(fetchAllAssessments());
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const assessmentSlice = createSlice({
   name: "assessment",
   initialState,
@@ -76,6 +94,7 @@ export const assessmentSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllAssessments.pending, (state) => {
       state.isLoading = true;
+      state.assessments = initialState.assessments;
     });
     builder.addCase(fetchAllAssessments.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -84,9 +103,11 @@ export const assessmentSlice = createSlice({
     builder.addCase(fetchAllAssessments.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.assessments = initialState.assessments;
     });
     builder.addCase(fetchAssessmentById.pending, (state) => {
       state.isLoading = true;
+      state.currentAssessment = initialState.currentAssessment;
     });
     builder.addCase(fetchAssessmentById.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -95,18 +116,27 @@ export const assessmentSlice = createSlice({
     builder.addCase(fetchAssessmentById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.currentAssessment = initialState.currentAssessment;
     });
     builder.addCase(fetchAssessmentByAppointmentId.pending, (state) => {
       state.isLoading = true;
+      state.currentAssessment = initialState.currentAssessment;
     });
-    builder.addCase(fetchAssessmentByAppointmentId.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.assessments = action.payload;
-    });
-    builder.addCase(fetchAssessmentByAppointmentId.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    });
+    builder.addCase(
+      fetchAssessmentByAppointmentId.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.assessments = action.payload;
+      }
+    );
+    builder.addCase(
+      fetchAssessmentByAppointmentId.rejected,
+      (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.currentAssessment = initialState.currentAssessment;
+      }
+    );
     builder
       .addCase(createAssessment.pending, (state) => {
         state.isLoading = true;
@@ -118,13 +148,13 @@ export const assessmentSlice = createSlice({
       })
       .addCase(createAssessment.rejected, (state, action) => {
         state.isLoading = false;
-        state.assessments = initialState.assessments
         state.error = action.payload;
       });
     builder
       .addCase(updateAssessmentById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
+        state.currentAssessment = initialState.currentAssessment;
       })
       .addCase(updateAssessmentById.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -133,9 +163,24 @@ export const assessmentSlice = createSlice({
       .addCase(updateAssessmentById.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+        state.currentAssessment = initialState.currentAssessment;
+      });
+    builder
+      .addCase(deleteAssessmentByIds.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.assessments = initialState.assessments;
+      })
+      .addCase(deleteAssessmentByIds.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.assessments = action.payload;
+      })
+      .addCase(deleteAssessmentByIds.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.assessments = initialState.assessments;
       });
   },
 });
 
-// export const { createAssessment } = assessmentSlice.actions;
 export default assessmentSlice.reducer;

@@ -58,6 +58,19 @@ export const updateTreatmentTypeById = createAsyncThunk(
   }
 );
 
+export const deleteTreatmentTypeByIds = createAsyncThunk(
+  "testtype/deleteTreatmentTypeByIds",
+  async (treatmentIds, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await treatmentTypesApi.deleteTreatmentTypeByIds(treatmentIds);
+      dispatch(fetchAllTreatmentTypes())
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const treatmentTypeSlice = createSlice({
   name: "treatmenttype",
   initialState,
@@ -65,6 +78,7 @@ export const treatmentTypeSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllTreatmentTypes.pending, (state) => {
       state.isLoading = true;
+      state.treatmentTypes = initialState.treatmentTypes;
     });
     builder.addCase(fetchAllTreatmentTypes.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -73,9 +87,11 @@ export const treatmentTypeSlice = createSlice({
     builder.addCase(fetchAllTreatmentTypes.rejected, (state, action) => {
       state.isLoading = true;
       state.error = action.payload;
+      state.treatmentTypes = initialState.treatmentTypes;
     });
     builder.addCase(fetchTreatmentTypeById.pending, (state) => {
       state.isLoading = true;
+      state.type = initialState.type;
     });
     builder.addCase(fetchTreatmentTypeById.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -84,6 +100,7 @@ export const treatmentTypeSlice = createSlice({
     builder.addCase(fetchTreatmentTypeById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.type = initialState.type
     });
     builder.addCase(createTreatmentType.pending, (state) => {
       state.isLoading = true;
@@ -106,6 +123,19 @@ export const treatmentTypeSlice = createSlice({
     builder.addCase(updateTreatmentTypeById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+    });
+    builder.addCase(deleteTreatmentTypeByIds.pending, (state) => {
+      state.isLoading = true;
+      state.treatmentTypes = initialState.treatmentTypes;
+    });
+    builder.addCase(deleteTreatmentTypeByIds.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.treatmentTypes = action.payload;
+    });
+    builder.addCase(deleteTreatmentTypeByIds.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.treatmentTypes = initialState.treatmentTypes;
     });
   },
 });

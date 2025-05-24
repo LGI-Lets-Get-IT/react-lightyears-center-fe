@@ -1,27 +1,14 @@
 import React, { memo, useEffect, useState } from "react";
 import Table from "@/components/shared/table/Table";
-import {
-  FiEdit3,
-  FiEye,
-  FiMoreHorizontal,
-  FiTrash2,
-} from "react-icons/fi";
+import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
-
-const actions = [
-  { label: "Edit", icon: <FiEdit3 />, permission: PERMISSIONS.TREATMENT_PLANS.UPDATE },
-  // { label: "Print", icon: <FiPrinter /> },
-  //   { label: "Remind", icon: <FiClock /> },
-  // { type: "divider" },
-  // { label: "Archive", icon: <FiArchive /> },
-  // { label: "Report Spam", icon: <FiAlertOctagon />, },
-  //   { type: "divider" },
-  { label: "Delete", icon: <FiTrash2 />, permission: PERMISSIONS.TREATMENT_PLANS.DELETE },
-];
+import useConfirmation from "@/hooks/useConfirmation";
+import { useDispatch } from "react-redux";
+import { deletePlanByIds } from "@/store/slice/treatmentPlanSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -39,13 +26,42 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const PlansTable = ({ plans }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (id) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/treatment-plans/${id}/edit`, permission: PERMISSIONS.TREATMENT_PLANS.UPDATE },
-    { label: "Delete", icon: <FiTrash2 />, permission: PERMISSIONS.TREATMENT_PLANS.DELETE},
+  const getActions = ({ id, clientName }) => [
+    {
+      label: "Edit",
+      icon: <FiEdit3 />,
+      link: `/treatment-plans/${id}/edit`,
+      permission: PERMISSIONS.TREATMENT_PLANS.UPDATE,
+    },
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      permission: PERMISSIONS.TREATMENT_PLANS.DELETE,
+      onClick: () => handleConfirmDelete(id, clientName),
+    },
   ];
-  
+
+  const handleConfirmDelete = (id, clientName) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete <strong>{clientName}</strong> treatment
+        plans?
+      </>,
+      () => {
+        dispatch(deletePlanByIds({ planIds: [id] }))
+        .unwrap()
+        .then(() => navigate('/treatment-plans'))
+        .catch((err) => console.error('Error: ', err))
+      },
+      () => {}
+    );
+  };
+
   const columns = [
     {
       accessorKey: "id",
@@ -86,22 +102,24 @@ const PlansTable = ({ plans }) => {
       accessorKey: "clientName",
       header: () => "Client Name",
       cell: (info) => {
-        const { clientId } = info.row.original
+        const { clientId } = info.row.original;
         const clientName = info.getValue();
         return (
-          <Link to={`/clients/${clientId}`} className="text-wrap">{clientName}</Link>
-        )
-      }
+          <Link to={`/clients/${clientId}`} className="text-wrap">
+            {clientName}
+          </Link>
+        );
+      },
     },
     {
       accessorKey: "plannedBy",
       header: () => "Planned By",
-      cell: (info) => <a className="text-wrap">{info.getValue()}</a>
+      cell: (info) => <a className="text-wrap">{info.getValue()}</a>,
     },
     {
       accessorKey: "totalTreatments",
       header: () => "Total Treatments",
-      cell: (info) => <a className="text-wrap">{info.getValue()} Programs</a>
+      cell: (info) => <a className="text-wrap">{info.getValue()} Programs</a>,
     },
     {
       accessorKey: "totalTargetedBehaviors",
@@ -109,20 +127,22 @@ const PlansTable = ({ plans }) => {
       cell: (info) => <a className="text-wrap">{info.getValue()} Targets</a>,
     },
     {
-      accessorKey: 'consultDate',
-      header: () => 'Consultation Date',
+      accessorKey: "consultDate",
+      header: () => "Consultation Date",
       cell: (info) => {
         const date = new Date(info.getValue());
         return <a>{date.toLocaleDateString()}</a>;
-      }
+      },
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
       enableSorting: false,
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.id))
-        
+        const permittedActions = filterItemsByPermission(
+          getActions(row.original)
+        );
+
         return (
           <div className="hstack gap-2 justify-content-end">
             <Link
@@ -131,14 +151,14 @@ const PlansTable = ({ plans }) => {
             >
               <FiEye />
             </Link>
-            {permittedActions.length > 0 && 
+            {permittedActions.length > 0 && (
               <Dropdown
-              dropdownItems={permittedActions}
-              triggerClass="avatar-md"
-              triggerPosition={"0,21"}
-              triggerIcon={<FiMoreHorizontal />}
+                dropdownItems={permittedActions}
+                triggerClass="avatar-md"
+                triggerPosition={"0,21"}
+                triggerIcon={<FiMoreHorizontal />}
               />
-            }
+            )}
           </div>
         );
       },
@@ -151,6 +171,7 @@ const PlansTable = ({ plans }) => {
   return (
     <div>
       <Table data={plans} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

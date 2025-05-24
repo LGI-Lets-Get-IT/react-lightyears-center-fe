@@ -4,8 +4,8 @@ import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
-import { PERMISSIONS } from "@/shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
+import useConfirmation from "@/hooks/useConfirmation";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -24,11 +24,27 @@ TableCell.displayName = "TableCell";
 
 const SchoolsTable = ({ data }) => {
   const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (id) => [
+  const getActions = ({ id, name }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/schools/${id}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      onClick: () => handleConfirmDelete(name),
+    },
   ];
+
+  const handleConfirmDelete = (schoolName) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete <strong>{schoolName}</strong> school
+        data?
+      </>,
+      () => console.log("TEST"),
+      () => {}
+    );
+  };
 
   const columns = [
     {
@@ -117,7 +133,7 @@ const SchoolsTable = ({ data }) => {
       enableSorting: false,
       cell: ({ row }) => {
         const permittedActions = filterItemsByPermission(
-          getActions(row.original.id)
+          getActions(row.original)
         );
 
         return (
@@ -148,6 +164,7 @@ const SchoolsTable = ({ data }) => {
   return (
     <div>
       <Table data={data} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

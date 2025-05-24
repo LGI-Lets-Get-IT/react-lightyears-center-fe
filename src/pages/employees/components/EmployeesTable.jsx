@@ -4,10 +4,8 @@ import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link } from "react-router-dom";
-import { clientStatusOptions } from "@/utils/options";
-import { useSelector } from "react-redux";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
-import { PERMISSIONS } from "@/shared/permissionsConstant";
+import useConfirmation from "@/hooks/useConfirmation";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,12 +23,28 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const EmployeesTable = ({ employees }) => {
-  const { filterItemsByPermission, hasPermission } = useFilterByPermission();
+  const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (id) => [
+  const getActions = ({ id, fullName }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/employees/${id}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      onClick: () => handleConfirmDelete(fullName),
+    },
   ];
+
+  const handleConfirmDelete = (fullName) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete <strong>{fullName}</strong> employee
+        data?
+      </>,
+      () => console.log("TEST"),
+      () => {}
+    );
+  };
 
   const columns = [
     {
@@ -108,41 +122,56 @@ const EmployeesTable = ({ employees }) => {
       // }
     },
     {
-      accessorKey: 'roleName',
-      header: () => 'Role',
-      cell: (info) => <span className="badge bg-primary">{info.getValue()}</span>
+      accessorKey: "roleName",
+      header: () => "Role",
+      cell: (info) => (
+        <span className="badge bg-primary">{info.getValue()}</span>
+      ),
     },
     {
       accessorKey: "isActive",
       header: () => "Is Active",
       cell: (info) => {
-        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger'};
-        return <span className={`badge bg-soft-${status.color} text-${status.color}`}>{status.text}</span>
-      }
+        const status =
+          info.getValue() === true
+            ? { text: "Active", color: "success" }
+            : { text: "Inactive", color: "danger" };
+        return (
+          <span
+            className={`badge bg-soft-${status.color} text-${status.color}`}
+          >
+            {status.text}
+          </span>
+        );
+      },
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
       enableSorting: false,
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.id))
+        const permittedActions = filterItemsByPermission(
+          getActions(row.original)
+        );
 
-        return <div className="hstack gap-2 justify-content-end">
-          <Link
-            to={`/employees/${row.original.id}`}
-            className="avatar-text avatar-md"
-          >
-            <FiEye />
-          </Link>
-          {permittedActions.length > 0 && 
-            <Dropdown
-              dropdownItems={getActions(row.original.id)}
-              triggerClass="avatar-md"
-              triggerPosition={"0,21"}
-              triggerIcon={<FiMoreHorizontal />}
-            />
-          }
-        </div>
+        return (
+          <div className="hstack gap-2 justify-content-end">
+            <Link
+              to={`/employees/${row.original.id}`}
+              className="avatar-text avatar-md"
+            >
+              <FiEye />
+            </Link>
+            {permittedActions.length > 0 && (
+              <Dropdown
+                dropdownItems={permittedActions}
+                triggerClass="avatar-md"
+                triggerPosition={"0,21"}
+                triggerIcon={<FiMoreHorizontal />}
+              />
+            )}
+          </div>
+        );
       },
       meta: {
         headerClassName: "text-end",
@@ -153,6 +182,7 @@ const EmployeesTable = ({ employees }) => {
   return (
     <div>
       <Table data={employees} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

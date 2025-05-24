@@ -10,7 +10,7 @@ const initialState = {
 
 export const fetchAllClients = createAsyncThunk(
   "clients/getAllClients",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await clientsApi.getAllClients();
       return response.data.data;
@@ -72,12 +72,12 @@ export const updateClientPassword = createAsyncThunk(
   }
 );
 
-export const deleteClient = createAsyncThunk(
-  "clients/deleteClient",
-  async (clientData, { rejectWithValue }) => {
+export const deleteClientByUuids = createAsyncThunk(
+  "clients/deleteClientByUuids",
+  async (clientData, { rejectWithValue, dispatch }) => {
     try {
-      const response = await clientsApi.deleteClient(clientData);
-      // dispatch(fetchAllClients());
+      const response = await clientsApi.deleteClientByUuids(clientData);
+      dispatch(fetchAllClients());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -92,6 +92,7 @@ export const clientSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllClients.pending, (state) => {
       state.isLoading = true;
+      state.clients = initialState.clients;
     });
     builder.addCase(fetchAllClients.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -99,11 +100,12 @@ export const clientSlice = createSlice({
     });
     builder.addCase(fetchAllClients.rejected, (state, action) => {
       state.isLoading = false;
-      state.clients = initialState.clients
+      state.clients = initialState.clients;
       state.error = action.payload;
     });
     builder.addCase(fetchClientByUuid.pending, (state) => {
       state.isLoading = true;
+      state.currentClient = initialState.currentClient;
     });
     builder.addCase(fetchClientByUuid.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -111,7 +113,7 @@ export const clientSlice = createSlice({
     });
     builder.addCase(fetchClientByUuid.rejected, (state, action) => {
       state.isLoading = false;
-      state.currentClient = initialState.currentClient
+      state.currentClient = initialState.currentClient;
       state.error = action.payload;
     });
     builder.addCase(createClient.pending, (state) => {
@@ -123,7 +125,7 @@ export const clientSlice = createSlice({
     });
     builder.addCase(createClient.rejected, (state, action) => {
       state.isLoading = false;
-      state.currentClient = initialState.currentClient
+      state.currentClient = initialState.currentClient;
       state.error = action.payload;
     });
     builder.addCase(updateClientByUuid.pending, (state) => {
@@ -135,7 +137,7 @@ export const clientSlice = createSlice({
     });
     builder.addCase(updateClientByUuid.rejected, (state, action) => {
       state.isLoading = false;
-      state.currentClient = initialState.currentClient
+      // state.currentClient = initialState.currentClient;
       state.error = action.payload;
     });
     builder.addCase(updateClientPassword.pending, (state) => {
@@ -147,7 +149,20 @@ export const clientSlice = createSlice({
     });
     builder.addCase(updateClientPassword.rejected, (state, action) => {
       state.isLoading = false;
-      state.currentClient = initialState.currentClient
+      state.currentClient = initialState.currentClient;
+      state.error = action.payload;
+    });
+    builder.addCase(deleteClientByUuids.pending, (state) => {
+      state.isLoading = true;
+      state.clients = initialState.clients;
+    });
+    builder.addCase(deleteClientByUuids.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.clients = action.payload;
+    });
+    builder.addCase(deleteClientByUuids.rejected, (state, action) => {
+      state.isLoading = false;
+      state.clients = initialState.clients;
       state.error = action.payload;
     });
   },
