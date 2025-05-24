@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { deleteClient } from "@/store/slice/clientSlice";
+import { deleteClientByUuids } from "@/store/slice/clientSlice";
 import { FaMars, FaVenus } from "react-icons/fa6";
 import { FiEdit, FiMail, FiPhone, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +28,7 @@ const Profile = ({ id, fullName, phoneNumber, email }) => {
       clientIds: [uuid],
     };
 
-    dispatch(deleteClient(payload))
+    dispatch(deleteClientByUuids(payload))
       .unwrap()
       .then(() => {
         console.log("Client deleted successfully");
