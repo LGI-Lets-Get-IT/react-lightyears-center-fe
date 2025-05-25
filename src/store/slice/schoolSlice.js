@@ -11,7 +11,7 @@ const initialState = {
 
 export const fetchAllSchools = createAsyncThunk(
   "schools/getAllSchools",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await schoolsApi.getAllSchools();
       return response.data.data;
@@ -75,6 +75,19 @@ export const updateSchoolById = createAsyncThunk(
   }
 );
 
+export const deleteSchoolByIds = createAsyncThunk(
+  "schools/deleteSchoolByIds",
+  async (schoolIds, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await schoolsApi.deleteSchoolByIds(schoolIds);
+      dispatch(fetchAllSchools())
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 export const schoolSlice = createSlice({
   name: "school",
@@ -123,6 +136,19 @@ export const schoolSlice = createSlice({
       state.school = action.payload;
     });
     builder.addCase(updateSchoolById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(deleteSchoolByIds.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+
+    });
+    builder.addCase(deleteSchoolByIds.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.schools = action.payload;
+    });
+    builder.addCase(deleteSchoolByIds.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

@@ -3,9 +3,11 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
+import { useDispatch } from "react-redux";
+import { deleteSchoolByIds } from "@/store/slice/schoolSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,6 +25,8 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const SchoolsTable = ({ data }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
@@ -31,17 +35,22 @@ const SchoolsTable = ({ data }) => {
     {
       label: "Delete",
       icon: <FiTrash2 />,
-      onClick: () => handleConfirmDelete(name),
+      onClick: () => handleConfirmDelete(id, name),
     },
   ];
 
-  const handleConfirmDelete = (schoolName) => {
+  const handleConfirmDelete = (id, schoolName) => {
     showConfirmation(
       <>
         Are you sure you want to delete <strong>{schoolName}</strong> school
         data?
       </>,
-      () => console.log("TEST"),
+      () => {
+        dispatch(deleteSchoolByIds({ schoolIds: [id] }))
+        .unwrap()
+        .then(() => navigate('/schools'))
+        .catch((err) => console.error('Error: ', err))
+      },
       () => {}
     );
   };
@@ -85,19 +94,19 @@ const SchoolsTable = ({ data }) => {
     {
       accessorKey: "name",
       header: () => "School Name",
-      cell: (info) => <a className="text-wrap">{info.getValue()}</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue() || '-'}</a>,
     },
     {
       accessorKey: "pic.full_name",
       header: () => "PIC Name",
-      cell: (info) => <a className="text-wrap">{info.getValue()}</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue() || '-'}</a>,
     },
     {
       accessorKey: "pic.email",
       header: () => "PIC Email",
       cell: (info) => (
         <a href={`mailto:${info.getValue()}`} className="text-wrap">
-          {info.getValue()}
+          {info.getValue() || '-'}
         </a>
       ),
     },
@@ -106,7 +115,7 @@ const SchoolsTable = ({ data }) => {
       header: () => "PIC Phone Number",
       cell: (info) => (
         <a href={`tel:${info.getValue()}`} className="text-wrap">
-          {info.getValue()}
+          {info.getValue() || '-'}
         </a>
       ),
     },

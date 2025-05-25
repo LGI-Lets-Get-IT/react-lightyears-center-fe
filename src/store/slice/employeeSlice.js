@@ -95,6 +95,19 @@ export const updateEmployeePassword = createAsyncThunk(
   }
 );
 
+export const deleteEmployeeByIds = createAsyncThunk(
+  "employees/deleteEmployeeByIds",
+  async (employeeIds, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await employeesApi.deleteEmployeeByIds(employeeIds);
+      dispatch(fetchAllEmployees());
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const employeeSlice = createSlice({
   name: "employee",
   initialState,
@@ -163,6 +176,17 @@ export const employeeSlice = createSlice({
       state.employee = action.payload;
     });
     builder.addCase(updateEmployeePassword.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(deleteEmployeeByIds.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(deleteEmployeeByIds.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.employees = action.payload;
+    });
+    builder.addCase(deleteEmployeeByIds.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

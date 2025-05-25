@@ -3,9 +3,11 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
+import { useDispatch } from "react-redux";
+import { deleteEmployeeByIds } from "@/store/slice/employeeSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,6 +25,8 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const EmployeesTable = ({ employees }) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
@@ -31,17 +35,22 @@ const EmployeesTable = ({ employees }) => {
     {
       label: "Delete",
       icon: <FiTrash2 />,
-      onClick: () => handleConfirmDelete(fullName),
+      onClick: () => handleConfirmDelete(id, fullName),
     },
   ];
 
-  const handleConfirmDelete = (fullName) => {
+  const handleConfirmDelete = (id, fullName) => {
     showConfirmation(
       <>
         Are you sure you want to delete <strong>{fullName}</strong> employee
         data?
       </>,
-      () => console.log("TEST"),
+      () => {
+        dispatch(deleteEmployeeByIds({ employeeIds: [id] }))
+        .unwrap()
+        .then(() => navigate('/employees'))
+        .catch((err) => console.error('Error: ', err))
+      },
       () => {}
     );
   };

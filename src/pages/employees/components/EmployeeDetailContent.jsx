@@ -1,9 +1,8 @@
 // import React from "react";
 import TabOverviewEmp from "./TabOverviewEmp";
 import Profile from "./Profile";
-import PropTypes from "prop-types";
 
-const CustomerContent = ({ employeeData }) => {
+const EmployeeDetailContent = ({ employeeData }) => {
   return (
     <>
       <div className="col-xxl-4 col-xl-6">
@@ -28,4 +27,4 @@ const CustomerContent = ({ employeeData }) => {
   );
 };
 
-export default CustomerContent;
+export default EmployeeDetailContent;
