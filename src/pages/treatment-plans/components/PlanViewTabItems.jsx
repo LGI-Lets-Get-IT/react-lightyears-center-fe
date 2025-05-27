@@ -29,7 +29,6 @@ const PlanViewTabItems = () => {
       a.remove();
       window.URL.revokeObjectURL(url);
     });
-
   };
 
     const handleDeleteConfirmed = () => {
