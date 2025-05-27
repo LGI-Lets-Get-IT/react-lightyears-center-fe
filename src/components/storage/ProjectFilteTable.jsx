@@ -5,11 +5,31 @@ import ImageGroup from '@/components/shared/ImageGroup'
 import Dropdown from '@/components/shared/Dropdown'
 import Pagination from '@/components/shared/Pagination'
 import { confirmDelete } from '@/utils/confirmDelete'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { format } from 'date-fns'
+import { downloadFile } from '@/store/slice/fileSlice'
+import api from '@/lib/axios'
 
 const ProjectFilteTable = ({ files }) => {
+    // const dispatch = useDispatch();
     const [data, setData] = useState([])
+
+    // const handleDownload = (fileId) => {
+    //     dispatch(downloadFile({fileId}))
+    //     .unwrap()
+    //     .then(async (response) => {
+    //         const resp = await api.get(response.downloadUri);
+
+    //         const blob = await resp.blob();
+    //         const url = URL.createObjectURL(blob);
+    //         const a = document.createElement("a");
+    //         a.href = url;
+    //         a.download = "filename.pdf"; // set your desired file name
+    //         a.click();
+    //         URL.revokeObjectURL(url);
+    //     })
+    //     .catch((err) => console.error("Error: ", err))
+    // }
 
     const handleDelete = (label, id) => {
         if (label === "Delete") {
@@ -35,19 +55,17 @@ const ProjectFilteTable = ({ files }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {files && files.length > 0 ? files.map(({ id, mimeType, name, webViewLink, size, createdTime }) => {
-                                // const icon = mimeType == 'application/pdf' ? '/images/file-icons/pdf.png' : 'application/png' ? '/images/file-icons/png.png' : '';
+                            {files && files.length > 0 ? files.map(({ id, name, link, size, createdTime }) => {
                                 return (
                                     <TableRow
                                         key={id}
                                         fileSIze={size / 100000}
-                                        // iconSrc={icon}
-                                        // members={members}
-                                        link={webViewLink}
+                                        link={link}
                                         title={name}
                                         uploadDate={format(createdTime, 'dd-MM-yyyy hh:mm')}
                                         id={id}
                                         handleDelete={handleDelete}
+                                        // handleDownload={() => handleDownload(id)}
                                     />
                                 )
                             }) : <tr className='text-center'><td colSpan={4}>No files found</td></tr>
@@ -56,22 +74,22 @@ const ProjectFilteTable = ({ files }) => {
                     </table>
                 </div>
             </div>
-            <div className='card-footer'>
+            {/* <div className='card-footer'>
                 <Pagination />
-            </div>
+            </div> */}
         </div>
     )
 }
 
 export default ProjectFilteTable
 
-const TableRow = ({ link, fileSIze, iconSrc, title, uploadDate, members, handleDelete, id }) => {
+const TableRow = ({ link, fileSIze, iconSrc, title, uploadDate, id }) => {
     return (
         <tr>
             <td>
                 <div className="d-flex align-items-center gap-3">
                     {iconSrc && <img src={iconSrc} className="img-fluid rounded wd-30" alt="" />}
-                    <Link to={link}>{title}</Link>
+                    <a href={link} target="_blank">{title}</a>
                 </div>
             </td>
             <td>{fileSIze} MB</td>
@@ -85,7 +103,7 @@ const TableRow = ({ link, fileSIze, iconSrc, title, uploadDate, members, handleD
                 </div>
             </td> */}
             <td>
-                <a href="#" className="avatar-text avatar-md ms-auto"><FiDownload /></a>
+                <a href={link} target="_blank" className="avatar-text avatar-md ms-auto"><FiEye /></a>
             </td>
         </tr>
     )

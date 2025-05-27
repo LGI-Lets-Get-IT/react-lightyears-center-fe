@@ -513,11 +513,11 @@ const TabProfile = () => {
                   <>
                     <Input
                       label={
-                        "Forms caring, suppoertive relationships with family members, other adults, and peers?"
+                        "Forms caring, supportive relationships with family members, other adults, and peers?"
                       }
                       labelId={"relationshipAbilitiesInput"}
                       placeholder={
-                        "Forms caring, suppoertive relationships with family members, other adults, and peers?"
+                        "Forms caring, supportive relationships with family members, other adults, and peers?"
                       }
                       name={"relationshipAbilities"}
                       value={values.intakeForm.relationshipAbilities}

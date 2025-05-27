@@ -17,11 +17,11 @@ export const schoolSchema = Yup.object({
   //     "Phone number must start with country code and without any dashes or spaces"
   //   ),
   schoolPhoneNumber: Yup.string()
-    .optional()
-    .matches(
-      /^\+[1-9]\d{7,14}$/,
-      "Phone number must start with country code and without any dashes or spaces"
-    ),
+    .optional(),
+    // .matches(
+    //   /^\+[1-9]\d{7,14}$/,
+    //   "Phone number must start with country code and without any dashes or spaces"
+    // ),
   schoolEmail: Yup.string()
     .email("Please enter a valid email address")
     .optional(),
@@ -39,11 +39,11 @@ export const schoolSchema = Yup.object({
   //     "Phone number must start with country code and without any dashes or spaces"
   //   ),
   picPhoneNumber: Yup.string()
-    .optional()
-    .matches(
-      /^\+[1-9]\d{7,14}$/,
-      "Phone number must start with country code and without any dashes or spaces"
-    ),
+    .optional(),
+    // .matches(
+    //   /^\+[1-9]\d{7,14}$/,
+    //   "Phone number must start with country code and without any dashes or spaces"
+    // ),
   // picEmail: Yup.string()
   //   .email("Please enter a valid email address")
   //   .required("Please enter the PIC email address"),

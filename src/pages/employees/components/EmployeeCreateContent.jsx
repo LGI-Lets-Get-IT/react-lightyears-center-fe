@@ -1,4 +1,5 @@
 import React from "react";
+import EmployeeCreateProfile from "./employeeCreateProfile";
 
 const EmployeeCreateContent = () => {
   return (
@@ -35,8 +36,7 @@ const EmployeeCreateContent = () => {
           </ul>
         </div>
         <div className="tab-content">
-          <TabProfile />
-          <TabPassword />
+          <EmployeeCreateProfile />
         </div>
       </div>
     </div>

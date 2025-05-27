@@ -32,7 +32,7 @@ const TreatmentTypesCreateContent = () => {
             <div className="card-body personal-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
-                  <span className="d-block mb-2">Treatment Type Information:</span>
+                  <span className="d-block mb-2">Create Treatment Type</span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                     Information regarding the treatment type
                   </span>

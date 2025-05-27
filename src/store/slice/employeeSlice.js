@@ -157,6 +157,18 @@ export const employeeSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(createEmployee.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createEmployee.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = action.payload;
+    });
+    builder.addCase(createEmployee.rejected, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = initialState.currentClient;
+      state.error = action.payload;
+    });
     builder.addCase(updateEmployeeById.pending, (state) => {
       state.isLoading = true;
     });
