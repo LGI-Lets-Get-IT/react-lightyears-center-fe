@@ -59,7 +59,7 @@ const TabPlanProgress = ({ id }) => {
               >
                 <AccordionItem
                   id={id}
-                  header={`[${appointment.appointmentType}] ${appointment.title}`}
+                  header={`[${appointment?.appointmentType}] ${appointment?.title}`}
                   appointment={appointment}
                   program={program}
                   shortTermGoals={shortTermGoals}
@@ -267,10 +267,10 @@ const AccordionItem = ({ id, header, ...content }) => {
               📅 Linked Appointment:{" "}
               <a
                 className="fw-normal"
-                href={`/appointments/${content.appointment.id}`}
+                href={`/appointments/${content.appointment?.id}`}
               >
-                [{content.appointment.appointmentType}]{" "}
-                {content.appointment.title}
+                [{content.appointment?.appointmentType}]{" "}
+                {content.appointment?.title}
               </a>
             </p>
           </div>

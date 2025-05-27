@@ -11,6 +11,7 @@ import { updateClientByUuid } from "@/store/slice/clientSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
+import TextArea from "@/components/shared/TextArea";
 
 const TabProfile = ({ userData }) => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const TabProfile = ({ userData }) => {
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
+
 
   const handleSubmit = (values, actions) => {
     console.log('VALUE', values)
@@ -42,6 +44,8 @@ const TabProfile = ({ userData }) => {
         gender: userData?.gender,
         nationality: userData?.nationality,
         schoolId: userData?.schoolId,
+        className: userData?.className,
+        problem: userData?.problem,
         guardianName: userData?.guardianName,
         guardianEmail: userData?.guardianEmail,
         guardianPhone: userData?.guardianPhone,
@@ -163,6 +167,37 @@ const TabProfile = ({ userData }) => {
                     }}
                   />
                   <hr className="my-0" />
+                </div>
+              </div>
+              <Field name="className">
+                {({ field, meta }) => (
+                  <>
+                    <Input
+                      label={"Class Name"}
+                      labelId={"classNameInput"}
+                      placeholder={"Class Name"}
+                      name={"className"}
+                      value={values.className}
+                      meta={meta}
+                      {...field}
+                    />
+                  </>
+                )}
+              </Field>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-12">
+                  <Field name="problem">
+                    {({ field, meta }) => (
+                      <TextArea
+                        name={"problem"}
+                        label={"Problem"}
+                        placeholder={"Please specify the problem here"}
+                        row="4"
+                        meta={meta}
+                        {...field}
+                      />
+                    )}
+                  </Field>
                 </div>
               </div>
             </div>
