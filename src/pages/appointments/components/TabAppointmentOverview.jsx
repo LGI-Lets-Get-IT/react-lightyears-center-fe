@@ -360,7 +360,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               icon="feather-calendar"
               color="primary"
               title="Appointment Date"
-              hours={appointmentData?.appointmentDate}
+              hours={appointmentData?.appointmentDate && format(appointmentData.appointmentDate, 'dd MMM yyyy')}
             />
             <HourCard
               icon="feather-clock"

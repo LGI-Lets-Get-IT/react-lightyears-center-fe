@@ -8,6 +8,7 @@ import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch } from "react-redux";
 import { deleteEmployeeByIds } from "@/store/slice/employeeSlice";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,11 +32,12 @@ const EmployeesTable = ({ employees }) => {
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
   const getActions = ({ id, fullName }) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/employees/${id}/edit` },
+    { label: "Edit", icon: <FiEdit3 />, link: `/employees/${id}/edit`, permission: PERMISSIONS.EMPLOYEES.UPDATE },
     {
       label: "Delete",
       icon: <FiTrash2 />,
       onClick: () => handleConfirmDelete(id, fullName),
+      permission: PERMISSIONS.EMPLOYEES.DELETE,
     },
   ];
 

@@ -60,7 +60,7 @@ const TabProfile = ({ userData }) => {
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
-                    {userData?.fullName}
+                    Edit Client Information
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                     Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
@@ -206,10 +206,10 @@ const TabProfile = ({ userData }) => {
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
-                    {userData?.fullName}&apos;s Guardian Information Edit:
+                    Edit Guardian Information
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Edit Guardian Information.
+                    Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                   </span>
                 </h5>
               </div>

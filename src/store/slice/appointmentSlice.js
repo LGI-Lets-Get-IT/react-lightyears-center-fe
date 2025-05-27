@@ -58,10 +58,26 @@ export const fetchAppointmentForTreatmentProgress = createAsyncThunk(
   }
 );
 
+export const fetchAppointmentForAssessments = createAsyncThunk(
+  "appointments/getAppointmentForAssessments",
+  async (query, { rejectWithValue }) => {
+    try {
+      console.log('query', query)
+      const response = await appointmentsApi.getAppointmentForAssessments(
+        query
+      );
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateAppointmentById = createAsyncThunk(
   "appointments/updateAppointmentById",
   async ({ appointmentId, data }, { rejectWithValue }) => {
     try {
+      console.log('DATAA', data)
       const response = await appointmentsApi.updateAppointmentById(
         appointmentId,
         data
@@ -121,7 +137,7 @@ export const appointmentSlice = createSlice({
     });
     builder.addCase(fetchAppointmentForTreatmentProgress.pending, (state) => {
       state.isLoading = true;
-      state.currentAppointment = initialState.currentAppointment;
+      state.appointments = initialState.appointments;
     });
     builder.addCase(
       fetchAppointmentForTreatmentProgress.fulfilled,
@@ -135,7 +151,24 @@ export const appointmentSlice = createSlice({
       (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-        state.currentAppointment = initialState.currentAppointment;
+        state.appointments = initialState.appointments;
+      }
+    );
+    builder.addCase(fetchAppointmentForAssessments.pending, (state) => {
+      state.isLoading = true;
+      state.appointments = initialState.appointments;
+    });
+    builder.addCase(fetchAppointmentForAssessments.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.appointments = action.payload;
+      }
+    );
+    builder.addCase(fetchAppointmentForAssessments.rejected,
+      (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.appointments = initialState.appointments;
       }
     );
     builder

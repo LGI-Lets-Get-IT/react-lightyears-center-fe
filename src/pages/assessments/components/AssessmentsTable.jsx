@@ -32,11 +32,12 @@ const AssessmentsTable = ({ data }) => {
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
   const getActions = ({ id, clientName, testName }) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/assessments/${id}/edit` },
+    { label: "Edit", icon: <FiEdit3 />, link: `/assessments/${id}/edit`, permission: PERMISSIONS.ASSESSMENTS.UPDATE },
     {
       label: "Delete",
       icon: <FiTrash2 />,
       onClick: () => handleConfirmDelete(id, clientName, testName),
+      permission: PERMISSIONS.ASSESSMENTS.DELETE,
     },
   ];
 

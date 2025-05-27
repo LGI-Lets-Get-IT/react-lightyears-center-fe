@@ -29,9 +29,15 @@ const AppointmentsEditContent = ({ appointmentData }) => {
     const appointmentTypes = appointmentTypeOptions;
 
     const onSubmit = async (values, actions) => {
+        console.log('VALUES', values);
+        const formattedValues = {
+            ...values,
+            timeStart: `${values.appointmentDate}T${values.timeStart}:00`,
+            timeEnd: `${values.appointmentDate}T${values.timeEnd}:00`,
+        }
         dispatch(updateAppointmentById({
             appointmentId: id,
-            data: values
+            data: formattedValues
         }))
             .unwrap()
             .then(() => navigate(`/appointments/${id}`))
@@ -193,8 +199,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                                 onChange={(date) => {
                                                                     setFieldValue(
                                                                         "appointmentDate",
-                                                                        date
-                                                                        // format(date, "yyyy-MM-dd")
+                                                                        format(date, "yyyy-MM-dd")
                                                                     );
                                                                 }}
                                                                 className={`form-control ${meta.error ? "is-invalid" : ""

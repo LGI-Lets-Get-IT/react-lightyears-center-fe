@@ -99,9 +99,7 @@ const TabPassword = ({ id }) => {
                             <div className="pass-hint">
                                 <p className="fw-bold">Password Requirements:</p>
                                 <ul className="fs-12 ps-1 ms-2 text-muted">
-                                    <li className="mb-1">At least one lowercase character</li>
                                     <li className="mb-1">Minimum 8 characters long - the more, the better</li>
-                                    <li>At least one number, symbol, or whitespace character</li>
                                 </ul>
                             </div>
 

@@ -14,10 +14,10 @@ const DashboardStatistics = () => {
     const getDatas = () => [
         { icon: "md-outline-event-available", title: "Appointments", count: dashboardData?.totalAppointments, color: "primary", url: '/appointments', permissions: PERMISSIONS.APPOINTMENTS.VIEW },
         { icon: "pi-notepencil-light", title: "Assessments", count: dashboardData?.totalAssessments, color: "success", url: '/assessments', permissions: PERMISSIONS.ASSESSMENTS.VIEW },
-        { icon: "lu-school", title: "Schools", count: dashboardData?.totalSchools, color: "teal", url: '/schools', permissions: PERMISSIONS.SCHOOLS.VIEW },
         { icon: "tb-target-arrow", title: "Treatment Plans", count: dashboardData?.totalPlans, color: "primary", url: '/treatment-plans', permissions: PERMISSIONS.TREATMENT_PLANS.VIEW },
-        { icon: "lia-file-medical", title: "Employees", count: dashboardData?.totalEmployees, color: "danger", url: '/employees', permissions: PERMISSIONS.EMPLOYEES.VIEW },
-        { icon: "feather-users", title: "Clients", count: dashboardData?.totalClients, color: "primary", url: '/clients', permissions: PERMISSIONS.CLIENTS.VIEW },
+        { icon: "lu-school", title: "Schools", count: dashboardData?.totalSchools, color: "teal", url: '/schools', permissions: PERMISSIONS.SCHOOLS.CREATE },
+        { icon: "lia-file-medical", title: "Employees", count: dashboardData?.totalEmployees, color: "danger", url: '/employees', permissions: PERMISSIONS.EMPLOYEES.CREATE },
+        { icon: "feather-users", title: "Clients", count: dashboardData?.totalClients, color: "primary", url: '/clients', permissions: PERMISSIONS.CLIENTS.CREATE },
     ]
 
     useEffect(() => {

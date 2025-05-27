@@ -14,7 +14,6 @@ const PlanViewTabItems = () => {
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
   const { id } = useParams();
   const { hasPermission } = useFilterByPermission()
-  const [openModal, setOpenModal] = useState(false)
   const { plan } = useSelector((state) => state.treatmentPlans);
   const { isLoading: downloadLoading } = useSelector((state) => state.files);
 
@@ -24,7 +23,7 @@ const PlanViewTabItems = () => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${plan.clientName}_TREATMENT-PLAN-REPORT.pdf`; // Set your desired filename here
+      a.download = `${plan?.client?.fullName}_TREATMENT-PLAN-REPORT.pdf`; // Set your desired filename here
       document.body.appendChild(a);
       a.click();
       a.remove();

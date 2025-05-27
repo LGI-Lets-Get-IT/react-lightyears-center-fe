@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllClients } from '@/store/slice/clientSlice';
 import { fetchAllPsychologists } from '@/store/slice/employeeSlice';
-import { fetchAllAppointments } from '@/store/slice/appointmentSlice';
+import { fetchAppointmentForAssessments } from '@/store/slice/appointmentSlice';
 import { fetchAllTestTypes } from '@/store/slice/testTypeSlice';
 import { createAssessment } from '@/store/slice/assessmentSlice';
 
@@ -30,7 +30,6 @@ const AssessmentsCreateContent = () => {
     useEffect(() => {
         dispatch(fetchAllClients());
         dispatch(fetchAllPsychologists());
-        dispatch(fetchAllAppointments());
         dispatch(fetchAllTestTypes())
     }, [])
     return (
@@ -66,7 +65,14 @@ const AssessmentsCreateContent = () => {
                                                 }))}
                                                 selectedOption={values.clientId}
                                                 placeholder={'Select Client'}
-                                                onSelectOption={(option) => setFieldValue('clientId', option.value)}
+                                                onSelectOption={(option) => {
+                                                    setFieldValue('clientId', option.value)
+                                                    dispatch(fetchAppointmentForAssessments({
+                                                        params: {
+                                                            clientId: option.value
+                                                        }
+                                                    }));
+                                                }}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
@@ -83,7 +89,7 @@ const AssessmentsCreateContent = () => {
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
-                                            <label htmlFor="appointmentId" className="form-label">Appointment</label>
+                                            <label htmlFor="appointmentId" className="form-label">Assessed On</label>
                                             <SelectDropdown
                                                 name={'appointmentId'}
                                                 options={appointments.map(appointment => ({

@@ -8,6 +8,7 @@ import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch } from "react-redux";
 import { deleteClientByUuids } from "@/store/slice/clientSlice";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -32,11 +33,12 @@ const ClientsTable = ({ clients }) => {
 
   const getActions = ({ uuid, fullName }) => {
     return [
-      { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit` },
+      { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit`, permission: PERMISSIONS.CLIENTS.UPDATE },
       {
         label: "Delete",
         icon: <FiTrash2 />,
         onClick: () => handleConfirmDelete(uuid, fullName),
+        permission: PERMISSIONS.CLIENTS.DELETE,
       },
     ];
   };

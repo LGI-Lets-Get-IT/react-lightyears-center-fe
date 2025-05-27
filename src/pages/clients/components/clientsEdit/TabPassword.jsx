@@ -11,7 +11,6 @@ const TabPassword = ({ uuid }) => {
     const navigate = useNavigate()
     const { isLoading: updateLoading } = useSelector(state => state.clients)
     const handleChangePassword = (values, actions) => {
-        console.log('UUID in Password', uuid)
         dispatch(updateClientPassword({
             uuid: uuid,
             data: values,
@@ -25,8 +24,8 @@ const TabPassword = ({ uuid }) => {
             <div className="card-body pass-info">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                     <h5 className="fw-bold mb-0 me-4">
-                        <span className="d-block mb-2">Password Information</span>
-                        <span className="fs-12 fw-normal text-muted text-truncate-1-line">You can only change your password once within 24 hours! </span>
+                        <span className="d-block mb-2">Edit Password</span>
+                        <span className="fs-12 fw-normal text-muted text-truncate-1-line">Change client password </span>
                     </h5>
                     {/* <a href="#" className="btn btn-sm btn-light-brand">Reset</a> */}
                 </div>
@@ -100,9 +99,7 @@ const TabPassword = ({ uuid }) => {
                             <div className="pass-hint">
                                 <p className="fw-bold">Password Requirements:</p>
                                 <ul className="fs-12 ps-1 ms-2 text-muted">
-                                    <li className="mb-1">At least one lowercase character</li>
                                     <li className="mb-1">Minimum 8 characters long - the more, the better</li>
-                                    <li>At least one number, symbol, or whitespace character</li>
                                 </ul>
                             </div>
 

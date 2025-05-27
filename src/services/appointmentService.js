@@ -6,7 +6,9 @@ export const appointmentsApi = {
   getAppointmentById: (id) => api.get(`/appointments/${id}`),
   getAppointmentForTreatmentProgress: (queryParams) =>
     api.get(`/appointments/programs`, queryParams),
-  updateAppointmentById: (id) => api.get(`/appointments/${id}`),
+  getAppointmentForAssessments: (queryParams) =>
+    api.get(`/appointments/assessments`, queryParams),
+  updateAppointmentById: (id, requestBody) => api.put(`/appointments/${id}`, requestBody),
   deleteAppointmentByIds: (requestBody) =>
     api.delete(`/appointments`, { data: requestBody }),
 };

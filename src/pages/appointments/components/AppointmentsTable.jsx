@@ -36,13 +36,13 @@ const AppointmentsTable = ({ appointments }) => {
       label: "Edit",
       icon: <FiEdit3 />,
       link: `/appointments/${id}/edit`,
-      permissions: PERMISSIONS.APPOINTMENTS.DELETE,
+      permission: PERMISSIONS.APPOINTMENTS.DELETE,
     },
     {
       label: "Delete",
       icon: <FiTrash2 />,
       onClick: () => handleDeleteConfirm(id, title),
-      permissions: PERMISSIONS.APPOINTMENTS.DELETE,
+      permission: PERMISSIONS.APPOINTMENTS.DELETE,
     },
   ];
 
