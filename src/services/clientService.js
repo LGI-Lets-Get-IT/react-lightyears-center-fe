@@ -6,5 +6,5 @@ export const clientsApi = {
   getClientByUuid: (uuid) => api.get(`/clients/${uuid}`),
   updateClientByUuid: (uuid, requestBody) => api.put(`/clients/${uuid}`, requestBody),
   updateClientPasswordByUuid: (uuid, requestBody) => api.put(`/clients/${uuid}/change-password`, requestBody),
-  deleteClient: (requestBody) => api.delete(`/clients`, { data: requestBody }),
+  deleteClientByUuids: (requestBody) => api.delete(`/clients`, { data: requestBody }),
 };

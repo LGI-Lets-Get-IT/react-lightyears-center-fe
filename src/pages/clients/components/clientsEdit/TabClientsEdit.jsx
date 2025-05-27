@@ -11,6 +11,7 @@ import { updateClientByUuid } from "@/store/slice/clientSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { Field, Form, Formik } from "formik";
+import TextArea from "@/components/shared/TextArea";
 
 const TabProfile = ({ userData }) => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const TabProfile = ({ userData }) => {
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
+
 
   const handleSubmit = (values, actions) => {
     console.log('VALUE', values)
@@ -42,6 +44,8 @@ const TabProfile = ({ userData }) => {
         gender: userData?.gender,
         nationality: userData?.nationality,
         schoolId: userData?.schoolId,
+        className: userData?.className,
+        problem: userData?.problem,
         guardianName: userData?.guardianName,
         guardianEmail: userData?.guardianEmail,
         guardianPhone: userData?.guardianPhone,
@@ -56,7 +60,7 @@ const TabProfile = ({ userData }) => {
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
-                    {userData?.fullName}
+                    Edit Client Information
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                     Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
@@ -165,16 +169,47 @@ const TabProfile = ({ userData }) => {
                   <hr className="my-0" />
                 </div>
               </div>
+              <Field name="className">
+                {({ field, meta }) => (
+                  <>
+                    <Input
+                      label={"Class Name"}
+                      labelId={"classNameInput"}
+                      placeholder={"Class Name"}
+                      name={"className"}
+                      value={values.className}
+                      meta={meta}
+                      {...field}
+                    />
+                  </>
+                )}
+              </Field>
+              <div className="row mb-4 align-items-center">
+                <div className="col-lg-12">
+                  <Field name="problem">
+                    {({ field, meta }) => (
+                      <TextArea
+                        name={"problem"}
+                        label={"Problem"}
+                        placeholder={"Please specify the problem here"}
+                        row="4"
+                        meta={meta}
+                        {...field}
+                      />
+                    )}
+                  </Field>
+                </div>
+              </div>
             </div>
             <hr className="my-0" />
             <div className="card-body additional-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
-                    {userData?.fullName}&apos;s Guardian Information Edit:
+                    Edit Guardian Information
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Edit Guardian Information.
+                    Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                   </span>
                 </h5>
               </div>

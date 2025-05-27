@@ -390,7 +390,7 @@ export const router = createBrowserRouter([
       //   element: <RegisterMinimal />,
       // },
       {
-        path: "/authentication/reset/minimal",
+        path: "/forgot-password",
         element: <ResetMinimal />,
       },
       // {

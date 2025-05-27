@@ -92,12 +92,12 @@ const AppointmentCalendar = () => {
                     <FullCalendar
                       height={'auto'}
                       plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-                      initialView="timeGridDay"
+                      initialView="timeGridWeek"
                       eventDisplay="auto"
                       firstDay={1}
                       hiddenDays={[7]}
                       eventMaxStack={1}
-                      slotMinTime={"10:00:00"}
+                      slotMinTime={"08:00:00"}
                       eventClick={(info) => navigate(`/appointments/${info.event.id}`)}
                       eventTimeFormat={{
                         hour: 'numeric',

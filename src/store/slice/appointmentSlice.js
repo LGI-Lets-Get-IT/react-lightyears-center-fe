@@ -48,7 +48,24 @@ export const fetchAppointmentForTreatmentProgress = createAsyncThunk(
   "appointments/getAppointmentForTreatmentProgress",
   async (query, { rejectWithValue }) => {
     try {
-      const response = await appointmentsApi.getAppointmentForTreatmentProgress(query);
+      const response = await appointmentsApi.getAppointmentForTreatmentProgress(
+        query
+      );
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAppointmentForAssessments = createAsyncThunk(
+  "appointments/getAppointmentForAssessments",
+  async (query, { rejectWithValue }) => {
+    try {
+      console.log('query', query)
+      const response = await appointmentsApi.getAppointmentForAssessments(
+        query
+      );
       return response.data?.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -60,6 +77,7 @@ export const updateAppointmentById = createAsyncThunk(
   "appointments/updateAppointmentById",
   async ({ appointmentId, data }, { rejectWithValue }) => {
     try {
+      console.log('DATAA', data)
       const response = await appointmentsApi.updateAppointmentById(
         appointmentId,
         data
@@ -68,7 +86,23 @@ export const updateAppointmentById = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error.message);
     }
-  })
+  }
+);
+
+export const deleteAppointmentByIds = createAsyncThunk(
+  "appointments/deleteAppointmentByIds",
+  async (appointmentIds, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await appointmentsApi.deleteAppointmentByIds(
+        appointmentIds
+      );
+      dispatch(fetchAllAppointments());
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const appointmentSlice = createSlice({
   name: "appointment",
@@ -77,6 +111,7 @@ export const appointmentSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchAllAppointments.pending, (state) => {
       state.isLoading = true;
+      state.appointments = initialState.appointments;
     });
     builder.addCase(fetchAllAppointments.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -85,9 +120,11 @@ export const appointmentSlice = createSlice({
     builder.addCase(fetchAllAppointments.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.appointments = initialState.appointments;
     });
     builder.addCase(fetchAppointmentById.pending, (state) => {
       state.isLoading = true;
+      state.currentAppointment = initialState.currentAppointment;
     });
     builder.addCase(fetchAppointmentById.fulfilled, (state, action) => {
       state.isLoading = false;
@@ -96,18 +133,44 @@ export const appointmentSlice = createSlice({
     builder.addCase(fetchAppointmentById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
+      state.currentAppointment = initialState.currentAppointment;
     });
     builder.addCase(fetchAppointmentForTreatmentProgress.pending, (state) => {
       state.isLoading = true;
+      state.appointments = initialState.appointments;
     });
-    builder.addCase(fetchAppointmentForTreatmentProgress.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.appointments = action.payload;
+    builder.addCase(
+      fetchAppointmentForTreatmentProgress.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.appointments = action.payload;
+      }
+    );
+    builder.addCase(
+      fetchAppointmentForTreatmentProgress.rejected,
+      (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.appointments = initialState.appointments;
+      }
+    );
+    builder.addCase(fetchAppointmentForAssessments.pending, (state) => {
+      state.isLoading = true;
+      state.appointments = initialState.appointments;
     });
-    builder.addCase(fetchAppointmentForTreatmentProgress.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    });
+    builder.addCase(fetchAppointmentForAssessments.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.appointments = action.payload;
+      }
+    );
+    builder.addCase(fetchAppointmentForAssessments.rejected,
+      (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.appointments = initialState.appointments;
+      }
+    );
     builder
       .addCase(makeAppointment.pending, (state) => {
         state.isLoading = true;
@@ -119,11 +182,25 @@ export const appointmentSlice = createSlice({
       })
       .addCase(makeAppointment.rejected, (state, action) => {
         state.isLoading = false;
-        state.appointments = initialState.appointments
+        state.appointments = initialState.appointments;
         state.error = action.payload;
+      });
+    builder
+      .addCase(deleteAppointmentByIds.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.appointments = initialState.appointments;
+      })
+      .addCase(deleteAppointmentByIds.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appointments = action.payload;
+      })
+      .addCase(deleteAppointmentByIds.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.appointments = initialState.appointments;
       });
   },
 });
 
-export const { createAppointment } = appointmentSlice.actions;
 export default appointmentSlice.reducer;

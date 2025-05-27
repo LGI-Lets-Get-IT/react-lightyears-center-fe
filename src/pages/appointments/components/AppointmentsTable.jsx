@@ -3,8 +3,12 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
+import useConfirmation from "@/hooks/useConfirmation";
+import { useDispatch } from "react-redux";
+import { deleteAppointmentByIds } from "@/store/slice/appointmentSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -22,12 +26,40 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const AppointmentsTable = ({ appointments }) => {
-  const { filterItemsByPermission } = useFilterByPermission()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (id) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/appointments/${id}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
+  const getActions = ({ id, title }) => [
+    {
+      label: "Edit",
+      icon: <FiEdit3 />,
+      link: `/appointments/${id}/edit`,
+      permission: PERMISSIONS.APPOINTMENTS.DELETE,
+    },
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      onClick: () => handleDeleteConfirm(id, title),
+      permission: PERMISSIONS.APPOINTMENTS.DELETE,
+    },
   ];
+
+  const handleDeleteConfirm = (id, title) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete <strong>{title}</strong> appointment?
+      </>,
+      () => {
+        dispatch(deleteAppointmentByIds({ appointmentIds: [id] }))
+          .unwrap()
+          .then(() => navigate("/appointments"))
+          .catch((err) => console.error("Error: ", err));
+      },
+      () => {}
+    );
+  };
 
   const columns = [
     {
@@ -87,9 +119,9 @@ const AppointmentsTable = ({ appointments }) => {
       cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-      accessorKey: 'picType',
-      header: () => 'PIC Type',
-      cell: (info) => <a>{info.getValue()}</a>
+      accessorKey: "picType",
+      header: () => "PIC Type",
+      cell: (info) => <a>{info.getValue()}</a>,
     },
     {
       accessorKey: "title",
@@ -110,24 +142,39 @@ const AppointmentsTable = ({ appointments }) => {
       accessorKey: "appointmentType",
       header: () => "Type",
       cell: (info) => {
-        return <span className="text-capitalize badge bg-primary">{info.getValue()}</span>
-      }
+        return (
+          <span className="text-capitalize badge bg-primary">
+            {info.getValue()}
+          </span>
+        );
+      },
     },
     {
       accessorKey: "status",
       header: () => "Status",
       cell: (info) => {
-        const statusText = info.getValue()
-        const statusColor = statusText == 'Upcoming' ? 'warning' : statusText == 'Ongoing' ? 'primary' : "success"
-        return <span className={`badge bg-soft-${statusColor} text-${statusColor}`}>{statusText}</span>
-      }
+        const statusText = info.getValue();
+        const statusColor =
+          statusText == "Upcoming"
+            ? "warning"
+            : statusText == "Ongoing"
+            ? "primary"
+            : "success";
+        return (
+          <span className={`badge bg-soft-${statusColor} text-${statusColor}`}>
+            {statusText}
+          </span>
+        );
+      },
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
       enableSorting: false,
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.id))
+        const permittedActions = filterItemsByPermission(
+          getActions(row.original)
+        );
 
         return (
           <div className="hstack gap-2 justify-content-end">
@@ -146,7 +193,7 @@ const AppointmentsTable = ({ appointments }) => {
               />
             )}
           </div>
-        )
+        );
       },
       meta: {
         headerClassName: "text-end",
@@ -157,6 +204,7 @@ const AppointmentsTable = ({ appointments }) => {
   return (
     <div>
       <Table data={appointments} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

@@ -1,16 +1,32 @@
+import useConfirmation from "@/hooks/useConfirmation";
+import useFilterByPermission from "@/hooks/useFilterByPermission";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
+import { deleteSchoolByIds } from "@/store/slice/schoolSlice";
 import React from "react";
-import { FiMoreHorizontal, FiTrash2, FiX } from "react-icons/fi";
-import Dropdown from "@/components/shared/Dropdown";
+import {FiX } from "react-icons/fi";
 import { LiaPencilAltSolid } from "react-icons/lia";
-
-// const options = [
-//     // { label: 'Active/Inactive School', icon: <FiPauseCircle /> },
-//     // { type: 'divider' },
-//     // { label: 'Edit School', icon: <FiEdit /> },
-//     { label: 'Delete School', icon: <FiTrash2 /> },
-// ]
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const SchoolsViewHeader = ({ id }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { hasPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
+
+  const handleConfirmDelete = () => {
+    showConfirmation(
+      'Are you sure you want to delete this school data?',
+      () => {
+        dispatch(deleteSchoolByIds({ schoolIds: [id] }))
+        .unwrap()
+        .then(() => navigate('/schools'))
+        .catch((err) => console.error('Error: ', err))
+      },
+      () => {}
+    )
+  }
+  
   return (
     <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
       <div className="filter-dropdown"></div>
@@ -21,14 +37,19 @@ const SchoolsViewHeader = ({ id }) => {
         triggerClass="btn btn-icon btn-light-brand"
         triggerIcon={<FiMoreHorizontal size={16} />}
       /> */}
-      <a href={`/schools/${id}/edit`} className="btn btn-primary">
-        <LiaPencilAltSolid size={16} className="me-2" />
-        <span>Edit School</span>
-      </a>
-      <button className="btn btn-danger">
-        <FiX size={16} className="me-2" />
-        <span>Delete School</span>
-      </button>
+      {hasPermission(PERMISSIONS.SCHOOLS.UPDATE) &&
+        <a href={`/schools/${id}/edit`} className="btn btn-primary">
+          <LiaPencilAltSolid size={16} className="me-2" />
+          <span>Edit School</span>
+        </a>
+      }
+      {hasPermission(PERMISSIONS.SCHOOLS.DELETE) &&
+        <button className="btn btn-danger" onClick={handleConfirmDelete}>
+          <FiX size={16} className="me-2" />
+          <span>Delete School</span>
+        </button>
+      }
+      <ConfirmationDialog/>
     </div>
   );
 };

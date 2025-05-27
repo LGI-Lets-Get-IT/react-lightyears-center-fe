@@ -15,7 +15,9 @@ const CustomerContent = ({ userData }) => {
           address={userData?.address}
           guardianEmail={userData?.guardianEmail}
           guardianPhone={userData?.guardianPhone}
-          totalAppointments={userData?.appointments?.length}
+          appointments={userData?.appointments}
+          assessments={userData?.appointments.filter(appointment => appointment?.appointmentType?.toLowerCase() === 'assessment')}
+          therapies={userData?.appointments.filter(appointment => appointment?.appointmentType?.toLowerCase() === 'treatment')}
         />
       </div>
       <div className="col-xxl-8 col-xl-6">

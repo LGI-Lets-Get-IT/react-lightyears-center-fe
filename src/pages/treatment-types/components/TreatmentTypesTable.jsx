@@ -3,12 +3,12 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
-import { clientStatusOptions } from "@/utils/options";
-import { useSelector } from "react-redux";
-import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { format } from "date-fns";
+import useConfirmation from "@/hooks/useConfirmation";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { deleteTreatmentTypeByIds } from "@/store/slice/treatmentTypeSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -26,12 +26,34 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const TreatmentTypesTable = ({ data }) => {
-  const { filterItemsByPermission } = useFilterByPermission()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (id) => [
+  const getActions = ({ id, name }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/treatment-types/${id}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
+    {
+      label: "Delete",
+      icon: <FiTrash2 />,
+      onClick: () => handleConfirmDelete(id, name),
+    },
   ];
+
+  const handleConfirmDelete = (id, treatmentName) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete <strong>{treatmentName}</strong> data?
+      </>,
+      () => {
+        dispatch(deleteTreatmentTypeByIds({ treatmentIds: [id]}))
+        .unwrap()
+        .then(() => navigate('/treatment-types'))
+        .catch((err) => console.error('Error: ', err))
+      },
+      () => {}
+    );
+  };
 
   const columns = [
     {
@@ -72,31 +94,29 @@ const TreatmentTypesTable = ({ data }) => {
     {
       accessorKey: "name",
       header: () => "Treatment Name",
-      cell: (info) => <a>{info.getValue()}</a>
+      cell: (info) => <a>{info.getValue()}</a>,
     },
     {
-      accessorKey: 'description',
+      accessorKey: "description",
       header: () => "Description",
       cell: (info) => {
-        return (
-          <a className="text-wrap">{info.getValue()}</a>
-        )
-      }
+        return <a className="text-wrap">{info.getValue()}</a>;
+      },
     },
     {
-      accessorKey: 'updatedAt',
+      accessorKey: "updatedAt",
       header: () => "Last Edited",
       cell: (info) => {
-        return (
-          <a>{format(info.getValue(), 'dd MMM yyyy, HH:mm aa')}</a>
-        )
-      }
+        return <a>{format(info.getValue(), "dd MMM yyyy, HH:mm aa")}</a>;
+      },
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.id))
+        const permittedActions = filterItemsByPermission(
+          getActions(row.original)
+        );
 
         return (
           <div className="hstack gap-2 justify-content-end">
@@ -115,7 +135,7 @@ const TreatmentTypesTable = ({ data }) => {
               />
             )}
           </div>
-        )
+        );
       },
       meta: {
         headerClassName: "text-end",
@@ -126,6 +146,7 @@ const TreatmentTypesTable = ({ data }) => {
   return (
     <div>
       <Table data={data} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

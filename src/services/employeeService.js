@@ -8,5 +8,5 @@ export const employeesApi = {
   getEmployeeById: (id) => api.get(`/employees/${id}`),
   updateEmployeeById: (id, requestBody) => api.put(`/employees/${id}`, requestBody),
   updateEmployeePasswordById: (id, requestBody) => api.put(`/employees/${id}/change-password`, requestBody),
-  deleteEmployee: (requestBody) => api.delete(`/employees`, { data: requestBody }),
+  deleteEmployeeByIds: (requestBody) => api.delete(`/employees`, { data: requestBody }),
 };

@@ -3,7 +3,6 @@ import { fetchAssessmentByAppointmentId } from "@/store/slice/assessmentSlice";
 import { format } from "date-fns";
 import { useEffect } from "react";
 import { BsCircleFill } from "react-icons/bs";
-import { FiStar, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 
@@ -56,7 +55,7 @@ const NoteCard = ({ id, testName, assessedBy, assessmentDate, result }) => {
     <div className="col-xxl-4 col-xl-6 col-lg-4 col-sm-6 single-note-item all-category">
       <div className="card card-body mb-4 stretch stretch-full">
         {/* <span className={`side-stick bg-success`}></span> */}
-        <a href={`/assessments/${id}`}>
+        <Link to={`/assessments/${id}`}>
           <h5
             className="note-title w-75 mb-1 d-flex align-items-center"
             data-noteheading={testName}
@@ -66,7 +65,7 @@ const NoteCard = ({ id, testName, assessedBy, assessmentDate, result }) => {
               <BsCircleFill />
             </i>
           </h5>
-        </a>
+        </Link>
         <p className="fs-11 text-muted note-date">
           {format(assessmentDate, "dd MMM yyyy")}
         </p>

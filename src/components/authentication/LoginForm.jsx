@@ -75,14 +75,14 @@ const LoginForm = ({ resetPath }) => {
                                 </Field>
                             </div>
                             <div className="d-flex align-items-center justify-content-between">
-                                <div>
+                                {/* <div>
                                     <div className="custom-control custom-checkbox">
                                         <input type="checkbox" className="custom-control-input" id="rememberMe" />
                                         <label className="custom-control-label c-pointer" htmlFor="rememberMe">Remember Me</label>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div>
-                                    <Link to={resetPath} className="fs-11 text-primary">Forgot password?</Link>
+                                    <a href={resetPath} className="fs-11 text-primary">Forgot password?</a>
                                 </div>
                             </div>
                             <div className="mt-5">

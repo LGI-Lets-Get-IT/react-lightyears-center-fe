@@ -13,9 +13,10 @@ import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 import AddProgressModal from "./AddProgressModal";
 import { Link } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TabPlanProgress = ({ id }) => {
-  const { filterItemsByPermission } = useFilterByPermission();
+  const { hasPermission, filterItemsByPermission } = useFilterByPermission();
   const { plan } = useSelector((state) => state.treatmentPlans);
   const [openModal, setOpenModal] = useState(false);
 
@@ -34,49 +35,51 @@ const TabPlanProgress = ({ id }) => {
   return (
     <>
       <div className="content-area-body pb-0">
-        {plan && plan.sessions?.length > 0 ? (
-          <>
+        {hasPermission(PERMISSIONS.TREATMENT_SESSIONS.CREATE) &&
+          (plan && plan.sessions?.length > 0 ? (
+            <>
             <button
-              className="btn btn-primary mb-4"
-              onClick={() => setOpenModal(true)}
-            >
-              <FiPlus size={16} className="me-2" />
-              <span>Add Progress</span>
-            </button>
-          {plan.sessions.map(
-            ({
-              id,
-              shortTermGoals,
-              activities,
-              progress,
-              appointment,
-              program,
-            }) => (
-              <div
-                key={id} // ✅ key added here
-                className="accordion proposal-faq-accordion"
-                id={`accordionProgressGroup-${id}`}
-              >
-                <AccordionItem
-                  id={id}
-                  header={`[${appointment.appointmentType}] ${appointment.title}`}
-                  appointment={appointment}
-                  program={program}
-                  shortTermGoals={shortTermGoals}
-                  activities={activities}
-                  progress={progress}
-                />
-              </div>
-            )
-          )}
-          </>
-        ) : (
-          <LeadsEmptyCard
-            title="No progress yet!"
-            description="There are no progress on this treatment plan"
+            className="btn btn-primary mb-4"
             onClick={() => setOpenModal(true)}
-          />
-        )}
+            >
+            <FiPlus size={16} className="me-2" />
+            <span>Add Progress</span>
+            </button>
+            {plan.sessions.map(
+              ({
+                id,
+                shortTermGoals,
+                activities,
+                progress,
+                appointment,
+                program,
+              }) => (
+                <div
+                  key={id} // ✅ key added here
+                  className="accordion proposal-faq-accordion"
+                  id={`accordionProgressGroup-${id}`}
+                >
+                  <AccordionItem
+                    id={id}
+                    header={`[${appointment?.appointmentType}] ${appointment?.title}`}
+                    appointment={appointment}
+                    program={program}
+                    shortTermGoals={shortTermGoals}
+                    activities={activities}
+                    progress={progress}
+                  />
+                </div>
+              )
+            )}
+            </>
+          ) : (
+            <LeadsEmptyCard
+              title="No progress yet!"
+              description="There are no progress on this treatment plan"
+              onClick={() => setOpenModal(true)}
+            />
+          ))
+        }
 
         {openModal && (
           <>
@@ -267,10 +270,10 @@ const AccordionItem = ({ id, header, ...content }) => {
               📅 Linked Appointment:{" "}
               <a
                 className="fw-normal"
-                href={`/appointments/${content.appointment.id}`}
+                href={`/appointments/${content.appointment?.id}`}
               >
-                [{content.appointment.appointmentType}]{" "}
-                {content.appointment.title}
+                [{content.appointment?.appointmentType}]{" "}
+                {content.appointment?.title}
               </a>
             </p>
           </div>

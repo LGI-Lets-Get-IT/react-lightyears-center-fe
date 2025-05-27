@@ -3,11 +3,12 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link } from "react-router-dom";
-import { clientStatusOptions } from "@/utils/options";
-import { useSelector } from "react-redux";
-import { PERMISSIONS } from "../../../shared/permissionsConstant";
+import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
+import useConfirmation from "@/hooks/useConfirmation";
+import { useDispatch } from "react-redux";
+import { deleteClientByUuids } from "@/store/slice/clientSlice";
+import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,12 +26,37 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const ClientsTable = ({ clients }) => {
-  const { filterItemsByPermission, hasPermission } = useFilterByPermission();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { filterItemsByPermission } = useFilterByPermission();
+  const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const getActions = (uuid) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit` },
-    { label: "Delete", icon: <FiTrash2 /> },
-  ];
+  const getActions = ({ uuid, fullName }) => {
+    return [
+      { label: "Edit", icon: <FiEdit3 />, link: `/clients/${uuid}/edit`, permission: PERMISSIONS.CLIENTS.UPDATE },
+      {
+        label: "Delete",
+        icon: <FiTrash2 />,
+        onClick: () => handleConfirmDelete(uuid, fullName),
+        permission: PERMISSIONS.CLIENTS.DELETE,
+      },
+    ];
+  };
+
+  const handleConfirmDelete = (uuid, fullName) => {
+    showConfirmation(
+      <>
+        Are you sure you want to delete client <strong>{fullName}</strong> data?
+      </>,
+      () => {
+        dispatch(deleteClientByUuids({ clientIds: [uuid]}))
+        .unwrap()
+        .then(() => navigate('/clients'))
+        .catch((err) => console.error('Error: ', err))
+      },
+      () => {}
+    );
+  };
 
   const columns = [
     {
@@ -151,33 +177,46 @@ const ClientsTable = ({ clients }) => {
       accessorKey: "isActive",
       header: () => "Is Active",
       cell: (info) => {
-        const status = info.getValue() === true ? { text: 'Active', color: 'success' } : { text: 'Inactive', color: 'danger' };
-        return <span className={`badge bg-soft-${status.color} text-${status.color}`}>{status.text}</span>
-      }
+        const status =
+          info.getValue() === true
+            ? { text: "Active", color: "success" }
+            : { text: "Inactive", color: "danger" };
+        return (
+          <span
+            className={`badge bg-soft-${status.color} text-${status.color}`}
+          >
+            {status.text}
+          </span>
+        );
+      },
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
       enableSorting: false,
       cell: ({ row }) => {
-        const permittedActions = filterItemsByPermission(getActions(row.original.uuid))
+        const permittedActions = filterItemsByPermission(
+          getActions(row.original)
+        );
 
-        return <div className="hstack gap-2 justify-content-end">
-          <Link
-            to={`/clients/${row.original.uuid}`}
-            className="avatar-text avatar-md"
-          >
-            <FiEye />
-          </Link>
-          {permittedActions.length > 0 &&
-            <Dropdown
-              dropdownItems={getActions(row.original.uuid)}
-              triggerClass="avatar-md"
-              triggerPosition={"0,21"}
-              triggerIcon={<FiMoreHorizontal />}
-            />
-          }
-        </div>
+        return (
+          <div className="hstack gap-2 justify-content-end">
+            <Link
+              to={`/clients/${row.original.uuid}`}
+              className="avatar-text avatar-md"
+            >
+              <FiEye />
+            </Link>
+            {permittedActions.length > 0 && (
+              <Dropdown
+                dropdownItems={permittedActions}
+                triggerClass="avatar-md"
+                triggerPosition={"0,21"}
+                triggerIcon={<FiMoreHorizontal />}
+              />
+            )}
+          </div>
+        );
       },
       meta: {
         headerClassName: "text-end",
@@ -188,6 +227,7 @@ const ClientsTable = ({ clients }) => {
   return (
     <div>
       <Table data={clients} columns={columns} />
+      <ConfirmationDialog />
     </div>
   );
 };

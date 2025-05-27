@@ -3,11 +3,10 @@
 // import { projectsData } from "@/utils/data/projectsData";
 // import ImageGroup from "@/components/shared/ImageGroup";
 // import HorizontalProgress from "@/components/shared/HorizontalProgress";
-import { FaPencil } from "react-icons/fa6";
 
 const childInfoData = [
   { label: "Full Name", key: "fullName" },
-  { label: "Age", key: "age", suffix: "years old" },
+  { label: "Age", key: "age", suffix: " old" },
   { label: "Date of Birth", key: "dateOfBirth" },
   { label: "Nationality", key: "nationality" },
   { label: "School Name", key: "schoolName" }
