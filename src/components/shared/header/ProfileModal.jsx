@@ -1,9 +1,28 @@
-import React, { Fragment } from 'react'
-import { FiActivity, FiBell, FiChevronRight, FiDollarSign, FiLogOut, FiSettings, FiUser } from "react-icons/fi"
+import React, { useEffect } from 'react'
+import { userLogout } from '@/store/slice/authSlice'
+import { FiLogOut, FiUser } from "react-icons/fi"
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { fetchUserProfile } from '@/store/slice/profileSlice'
 
-const activePosition = ["Active", "Always", "Bussy", "Inactive", "Disabled", "Cutomization"]
-const subscriptionsList = ["Plan", "Billings", "Referrals", "Payments", "Statements", "Subscriptions"]
 const ProfileModal = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { currentUser } = useSelector((state) => state.auth)
+    const { user } = useSelector(state => state.profile)
+
+    const handleLogout = () => {
+        dispatch(userLogout())
+            .unwrap()
+            .then(() => {
+                navigate('/login')
+            })
+    }
+
+    useEffect(() => {
+        dispatch(fetchUserProfile());
+    }, [])
+
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
@@ -12,22 +31,26 @@ const ProfileModal = () => {
             <div className="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                 <div className="dropdown-header">
                     <div className="d-flex align-items-center">
-                        <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" />
+                        {/* <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar" /> */}
                         <div>
-                            <h6 className="text-dark mb-0">Alexandra Della <span className="badge bg-soft-success text-success ms-1">PRO</span></h6>
-                            <span className="fs-12 fw-medium text-muted">alex.della@outlook.com</span>
+                            <h6 className="text-dark mb-0">{user && user?.fullName}
+                                {user && user?.role &&
+                                    <span className="badge bg-soft-primary text-primary ms-1">{user.role.name}</span>
+                                }
+                            </h6>
+                            <span className="fs-12 fw-medium text-muted">{user && user?.email}</span>
                         </div>
                     </div>
                 </div>
                 <div className="dropdown">
-                    <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
+                    {/* <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className="wd-10 ht-10 border border-2 border-gray-1 bg-success rounded-circle me-2"></i>
                             <span>Active</span>
                         </span>
                         <i className="ms-auto me-0"><FiChevronRight /></i>
-                    </a>
-                    <div className="dropdown-menu user-active">
+                    </a> */}
+                    {/* <div className="dropdown-menu user-active">
                         {
                             activePosition.map((item, index) => {
                                 return (
@@ -43,10 +66,10 @@ const ProfileModal = () => {
                                 )
                             })
                         }
-                    </div>
+                    </div> */}
                 </div>
-                <div className="dropdown-divider"></div>
-                <div className="dropdown">
+                {/* <div className="dropdown-divider"></div> */}
+                {/* <div className="dropdown">
                     <a href="#" className="dropdown-item" data-bs-toggle="dropdown">
                         <span className="hstack">
                             <i className=" me-2"><FiDollarSign /></i>
@@ -72,33 +95,35 @@ const ProfileModal = () => {
                         }
 
                     </div>
-                </div>
-                <div className="dropdown-divider"></div>
-                <a href="#" className="dropdown-item">
-                    <i ><FiUser /></i>
-                    <span>Profile Details</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </div> */}
+                {/* <div className="dropdown-divider"></div> */}
+                {user && !user?.role &&
+                    <a href="/profile" className="dropdown-item">
+                        <i ><FiUser /></i>
+                        <span>Profile</span>
+                    </a>
+                }
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i ><FiDollarSign /></i>
                     <span>Billing Details</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i><FiBell /></i>
                     <span>Notifications</span>
-                </a>
-                <a href="#" className="dropdown-item">
+                </a> */}
+                {/* <a href="#" className="dropdown-item">
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
-                </a>
-                <div className="dropdown-divider"></div>
-                <a href="./auth-login-minimal.html" className="dropdown-item">
+                </a> */}
+                {/* <div className="dropdown-divider"></div> */}
+                <button type='button' onClick={handleLogout} className="dropdown-item">
                     <i> <FiLogOut /></i>
                     <span>Logout</span>
-                </a>
+                </button>
             </div>
         </div>
     )

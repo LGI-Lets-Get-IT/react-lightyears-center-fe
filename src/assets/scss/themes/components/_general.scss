@@ -91,6 +91,22 @@ img {
 	border: 1px solid $border-color-2;
 }
 
+.error {
+	color: #d13b4c;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	font-weight: 500;
+	border-radius: 5px;
+	position: relative;
+	padding: 10px 15px 10px 40px;
+	background-color: #ffeff2;
+	border: 1px dashed #ffced3;
+	transition: all 0.3s ease;
+	margin-bottom: 30px;
+}
+
 .avatar-xs {
 	width: 12px;
 	height: 12px;

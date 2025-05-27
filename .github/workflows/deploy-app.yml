@@ -1,0 +1,65 @@
+name: Deploy application
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - development
+
+jobs:
+  build-image:
+    uses: ./.github/workflows/docker-image.yml
+    secrets: inherit
+  deploy-to-development:
+    needs: build-image
+    if: github.ref == 'refs/heads/development'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT}}
+          username: ${{ secrets.SSH_USERNAME }}
+          # password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker container rm -f ${{ vars.CONTAINER_NAME_DEVELOPMENT }} || true
+            docker image rm -f ${{ vars.IMAGE_NAME_DEVELOPMENT }}:latest || true
+            docker run --name ${{ vars.CONTAINER_NAME_DEVELOPMENT }} -d -p 82:82 --restart unless-stopped ${{ vars.IMAGE_NAME_DEVELOPMENT }}:latest
+            docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME_DEVELOPMENT }}
+  deploy-to-staging:
+    needs: build-image
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT}}
+          username: ${{ secrets.SSH_USERNAME }}
+          # password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker container rm -f ${{ vars.CONTAINER_NAME_STAGING }} || true
+            docker image rm -f ${{ vars.IMAGE_NAME_STAGING }}:latest || true
+            docker run --name ${{ vars.CONTAINER_NAME_STAGING }} -d -p 81:81 --restart unless-stopped ${{ vars.IMAGE_NAME_STAGING }}:latest
+            docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME_STAGING }}
+  deploy-to-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          port: ${{ secrets.SSH_PORT}}
+          username: ${{ secrets.SSH_USERNAME }}
+          # password: ${{ secrets.SSH_PASSWORD }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker container rm -f ${{ vars.CONTAINER_NAME_PRODUCTION }} || true
+            docker image rm -f ${{ vars.IMAGE_NAME_PRODUCTION }}:latest || true
+            docker run --name ${{ vars.CONTAINER_NAME_PRODUCTION }} -d -p 80:80 --restart unless-stopped ${{ vars.IMAGE_NAME_PRODUCTION }}:latest
+            docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME_PRODUCTION }}

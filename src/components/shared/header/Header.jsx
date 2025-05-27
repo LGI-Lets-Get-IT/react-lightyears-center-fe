@@ -226,8 +226,8 @@ const Header = () => {
                 <!--! [Start] Header Right !--> */}
         <div className="header-right ms-auto">
           <div className="d-flex align-items-center">
-            <SearchModal />
-            <div className="nxl-h-item d-none d-sm-flex">
+            {/* <SearchModal /> */}
+            {/* <div className="nxl-h-item d-none d-sm-flex">
               <div className="full-screen-switcher">
                 <span className="nxl-head-link me-0">
                   <FiMaximize
@@ -242,8 +242,8 @@ const Header = () => {
                   />
                 </span>
               </div>
-            </div>
-            <div className="nxl-h-item dark-light-theme">
+            </div> */}
+            {/* <div className="nxl-h-item dark-light-theme">
               <div
                 className="nxl-head-link me-0 dark-button"
                 onClick={() => handleThemeMode("dark")}
@@ -257,9 +257,9 @@ const Header = () => {
               >
                 <FiSun size={20} />
               </div>
-            </div>
+            </div> */}
             {/* <TimesheetsModal /> */}
-            <NotificationsModal />
+            {/* <NotificationsModal /> */}
             <ProfileModal />
           </div>
         </div>

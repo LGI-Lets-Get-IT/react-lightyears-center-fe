@@ -1,8 +1,50 @@
-import React from "react";
-import { BsPatchCheckFill } from "react-icons/bs";
+import { deleteClient } from "@/store/slice/clientSlice";
 import { FaMars, FaVenus } from "react-icons/fa6";
-import { FiEdit, FiMail, FiMapPin, FiPhone, FiTrash2 } from "react-icons/fi";
-const Profile = ({ fullName, gender, address, guardianEmail, guardianPhone }) => {
+import { FiEdit, FiMail, FiPhone, FiTrash2 } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+const Profile = ({ fullName, gender, guardianEmail, guardianPhone }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { uuid } = useParams();
+
+  // const handleDelete = (event) => {
+  //   event.preventDefault();
+
+  //   const payload = {
+  //     clientIds: [uuid],
+  //   };
+
+  //   dispatch(deleteClient(payload))
+  //     .unwrap()
+  //     .then(() => navigate(`/clients`))
+  //     .catch((error) => console.error("handle error", error));
+  // };
+
+  const handleDelete = (event) => {
+    event.preventDefault();
+
+    // Ensure `uuid` is correctly formatted and exists
+    if (!uuid) {
+      console.error("UUID is undefined");
+      return;
+    }
+
+    const payload = {
+      clientIds: [uuid], // Ensure it's an array
+    };
+
+    console.log("DELETE PAYLOAD:", payload); // Debugging log
+
+    dispatch(deleteClient(payload))
+      .unwrap()
+      .then(() => {
+        console.log("Client deleted successfully");
+        navigate(`/clients`);
+      })
+      .catch((error) => console.error("Handle error:", error));
+  };
+
   return (
     <div className="card stretch stretch-full">
       <div className="card-body">
@@ -33,35 +75,22 @@ const Profile = ({ fullName, gender, address, guardianEmail, guardianPhone }) =>
           </div>
           <div className="fs-12 fw-normal text-muted text-center d-flex flex-wrap gap-3 mb-4">
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">28.65K</h6>
+              <h6 className="fs-15 fw-bolder">00</h6>
               <p className="fs-12 text-muted mb-0">Appointments</p>
             </div>
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">38.85K</h6>
+              <h6 className="fs-15 fw-bolder">00</h6>
               <p className="fs-12 text-muted mb-0">Assessments</p>
-            </div>
-            <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">
-              <h6 className="fs-15 fw-bolder">43.67K</h6>
-              <p className="fs-12 text-muted mb-0">Engagement</p>
             </div>
           </div>
         </div>
         <ul className="list-unstyled mb-4">
           <li className="hstack justify-content-between mb-4">
             <span className="text-muted fw-medium hstack gap-3">
-              <FiMapPin size={16} />
-              Address
-            </span>
-            <a href="#" className="float-end">
-              {address}
-            </a>
-          </li>
-          <li className="hstack justify-content-between mb-4">
-            <span className="text-muted fw-medium hstack gap-3">
               <FiPhone size={16} />
               Guardian Phone Number
             </span>
-            <a href="#" className="float-end">
+            <a href={`tel:${guardianPhone}`} className="float-end">
               {guardianPhone}
             </a>
           </li>
@@ -70,17 +99,17 @@ const Profile = ({ fullName, gender, address, guardianEmail, guardianPhone }) =>
               <FiMail size={16} />
               Guardian Email
             </span>
-            <a href="#" className="float-end">
+            <a href={`mailto:${guardianEmail}`} className="float-end">
               {guardianEmail}
             </a>
           </li>
         </ul>
         <div className="d-flex gap-2 text-center pt-4">
-          <a href="#" className="w-50 btn btn-light-brand">
+          <button onClick={handleDelete} className="w-50 btn btn-light-brand">
             <FiTrash2 size={16} className="me-2" />
             <span>Delete</span>
-          </a>
-          <a href="#" className="w-50 btn btn-primary">
+          </button>
+          <a href={`/clients/edit/${uuid}`} className="w-50 btn btn-primary">
             <FiEdit size={16} className="me-2" />
             <span>Edit Profile</span>
           </a>

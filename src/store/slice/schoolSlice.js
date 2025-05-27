@@ -3,16 +3,16 @@ import { schoolsApi } from "../../services/schoolService";
 
 const initialState = {
   schools: [],
-  currentSchool: null,
+  school: null,
+  schoolClients: [],
   isLoading: false,
   error: null,
 };
 
 export const fetchAllSchools = createAsyncThunk(
   "schools/getAllSchools",
-  async (_, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue }) => {
     try {
-        console.log('AFLSSKLSFALK', initialState.schools)
       const response = await schoolsApi.getAllSchools();
       return response.data.data;
     } catch (error) {
@@ -26,6 +26,8 @@ export const fetchSchoolById = createAsyncThunk(
   async (schoolId, { rejectWithValue }) => {
     try {
       const response = await schoolsApi.getSchoolById(schoolId);
+      // console.log("fetchSchoolById RESPONSE: ", response.data.data);
+
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -33,17 +35,59 @@ export const fetchSchoolById = createAsyncThunk(
   }
 );
 
-export const createSchool = createAsyncThunk(
-  "schools/createSchool",
-  async (schoolData, { rejectWithValue, dispatch }) => {
+export const fetchSchoolClientsById = createAsyncThunk(
+  "schools/getSchoolClientsById",
+  async (schoolId, { rejectWithValue }) => {
     try {
-      const response = await schoolsApi.createSchool(schoolData);
+      const response = await schoolsApi.getSchoolClientsById(schoolId);
+
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
   }
 );
+
+
+
+export const createSchool = createAsyncThunk(
+  "schools/createSchool",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await schoolsApi.createSchool(data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const updateSchoolById = createAsyncThunk(
+  "schools/updateSchoolById",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const { schoolId, data } = bodyData;
+      const response = await schoolsApi.updateSchoolById(schoolId, data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteSchoolByIds = createAsyncThunk(
+  "schools/deleteSchoolByIds",
+  async (schoolIds, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await schoolsApi.deleteSchoolByIds(schoolIds);
+      dispatch(fetchAllSchools())
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 
 export const schoolSlice = createSlice({
   name: "school",
@@ -54,22 +98,58 @@ export const schoolSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllSchools.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.schools = action.payload;
     });
     builder.addCase(fetchAllSchools.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchSchoolById.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchSchoolById.fulfilled, (state, action) => {
-      state.isLoading = true;
-      state.currentSchool = action.payload;
+      state.isLoading = false;
+      state.school = action.payload;
     });
     builder.addCase(fetchSchoolById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(fetchSchoolClientsById.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(fetchSchoolClientsById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.schoolClients = action.payload;
+    });
+    builder.addCase(fetchSchoolClientsById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updateSchoolById.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateSchoolById.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.school = action.payload;
+    });
+    builder.addCase(updateSchoolById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(deleteSchoolByIds.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+
+    });
+    builder.addCase(deleteSchoolByIds.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.schools = action.payload;
+    });
+    builder.addCase(deleteSchoolByIds.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

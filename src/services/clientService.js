@@ -1,9 +1,10 @@
 import api from "../lib/axios";
 
 export const clientsApi = {
-    createClient: (requestBody) => api.post('/clients', requestBody),
-    getAllClients: () => api.get('/clients'),
-    getClientById: (id) => api.get(`/clients/${id}`),
-    updateClientById: (id, requestBody) => api.put(`/clients/${id}`, requestBody),
-    deleteClientById: (id) => api.get(`/clients/${id}`),
-}
+  createClient: (requestBody) => api.post("/clients", requestBody),
+  getAllClients: () => api.get("/clients"),
+  getClientByUuid: (uuid) => api.get(`/clients/${uuid}`),
+  updateClientByUuid: (uuid, requestBody) => api.put(`/clients/${uuid}`, requestBody),
+  updateClientPasswordByUuid: (uuid, requestBody) => api.put(`/clients/${uuid}/change-password`, requestBody),
+  deleteClientByUuids: (requestBody) => api.delete(`/clients`, { data: requestBody }),
+};

@@ -10,11 +10,11 @@ const Pagination = () => {
             </li>
             <li><Link to="#" className="active">1</Link></li>
             <li><Link to="#">2</Link></li>
-            <li>
+            {/* <li>
                 <Link to="#"><BsDot size={16} /></Link>
-            </li>
-            <li><Link to="#">8</Link></li>
-            <li><Link to="#">9</Link></li>
+            </li> */}
+            {/* <li><Link to="#">8</Link></li> */}
+            {/* <li><Link to="#">9</Link></li> */}
             <li>
                 <Link to="#"><BsArrowRight size={16} /></Link>
             </li>

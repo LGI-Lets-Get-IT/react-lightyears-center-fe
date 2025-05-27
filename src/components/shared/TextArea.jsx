@@ -1,20 +1,46 @@
-import React from 'react'
-import getIcon from '@/utils/getIcon'
+import React from "react";
+import getIcon from "@/utils/getIcon";
 
-const TextArea = ({ label, icon, placeholder, labelId, row="3" }) => {
-    return (
-        <div className="row mb-4 align-items-center">
-            <div className="col-lg-4">
-                <label htmlFor={labelId} className="fw-semibold">{label}: </label>
-            </div>
-            <div className="col-lg-8">
-                <div className="input-group">
-                    <div className="input-group-text">{getIcon(icon)}</div>
-                    <textarea className="form-control" id={labelId} cols="30" rows={row} placeholder={placeholder}></textarea>
-                </div>
-            </div>
+const TextArea = ({
+  label,
+  icon,
+  placeholder,
+  labelId,
+  row = "3",
+  onChange,
+  name,
+  meta,
+  value,
+}) => {
+  return (
+    <div className="row mb-4 align-items-center">
+      <div className="col-lg-4">
+        <label htmlFor={labelId} className="fw-semibold">
+          {label}:{" "}
+        </label>
+      </div>
+      <div className="col-lg-8">
+        <div className="input-group">
+          {icon && (
+            <div className="input-group-text">{getIcon(icon)}</div>
+          )}
+          <textarea
+            className={`form-control ${meta.error ? 'is-invalid' : ''}`}
+            id={labelId}
+            cols="30"
+            rows={row}
+            placeholder={placeholder}
+            name={name}
+            value={value}
+            onChange={onChange}
+          ></textarea>
         </div>
-    )
-}
+        {meta && meta.error && (
+          <div className="mt-1 text-danger">{meta.error}</div>
+        )}
+      </div>
+    </div>
+  );
+};
 
-export default TextArea
+export default TextArea;

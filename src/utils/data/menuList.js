@@ -1,49 +1,112 @@
+import { PERMISSIONS } from "../../shared/permissionsConstant";
+
 export const menuList = [
   {
     id: 0,
-    name: "dashboards",
-    path: "#",
+    name: "Dashboard",
+    path: "/",
     icon: "feather-airplay",
-    dropdownMenu: [
-      {
-        id: 1,
-        name: "CRM",
-        path: "/",
-        subdropdownMenu: false,
-      },
-      {
-        id: 2,
-        name: "Analytics",
-        path: "/dashboards/analytics",
-        subdropdownMenu: false,
-      },
-    ],
   },
   {
     id: 1,
-    name: 'clients',
-    path: '/clients',
-    icon: 'feather-users',
+    name: "Appointments",
+    path: "/appointments",
+    icon: "feather-calendar",
+    permissions: [PERMISSIONS.APPOINTMENTS.VIEW]
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Appointment List",
+    //     path: "/appointments",
+    //     subdropdownMenu: false,
+    //   },
+    // ],
+  },
+  {
+    id: 2,
+    name: "Assessments",
+    path: "/assessments",
+    icon: "pi-notepencil-light",
+    permissions: [PERMISSIONS.ASSESSMENTS.VIEW]
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Assessment List",
+    //     path: "/assessments",
+    //     subdropdownMenu: false,
+    //   }
+    // ]
+  },
+  {
+    id: 3,
+    name: "Clients",
+    path: "/clients",
+    icon: "feather-users",
+    permissions: [PERMISSIONS.CLIENTS.VIEW]
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Client List",
+    //     path: "/clients",
+    //     subdropdownMenu: false,
+    //   },
+    // ],
+  },
+  {
+    id: 4,
+    name: "Treatment Plans",
+    path: '/treatment-plans',
+    icon: 'tb-target-arrow',
+    permissions: [PERMISSIONS.TREATMENT_PLANS.VIEW]
+    // dropdownMenu: [
+    //   {
+    //     id: 1,
+    //     name: "Plan List",
+    //     path: '/treatment-plans',
+    //     subdropdownMenu: false,
+    //   },
+    // ],
+  },
+  {
+    id: 5,
+    name: "Settings",
+    path: "#",
+    icon: "io-settings-outline",
+    permissions: [PERMISSIONS.SETTINGS.VIEW],
     dropdownMenu: [
-      // {
-      //   id: 1,
-      //   name: 'Client List',
-      //   path: '/clients',
-      //   subdropdownMenu: false,
-      // },
       {
         id: 1,
-        name: 'Create New Client',
-        path: '/clients/create',
+        name: 'Employees',
+        path: '/employees',
+        icon: '',
+        permissions: [PERMISSIONS.EMPLOYEES.VIEW],
+      },
+      {
+        id: 2,
+        name: "Schools",
+        path: "/schools",
+        icon: "lu-school",
+        permissions: [PERMISSIONS.SCHOOLS.VIEW],
         subdropdownMenu: false,
-      }
-    ],
-  },
-  // {
-  //   id: 2,
-  //   name: 'appointments',
-  //   path: '/appointments',
-  // },
+      },
+      {
+        id: 3,
+        name: "Test Types",
+        path: "/test-types",
+        icon: "pi-notepencil-light",
+        permissions: [PERMISSIONS.TEST_TYPES.CREATE],
+        subdropdownMenu: false,
+      },
+      {
+        id: 4,
+        name: "Treatment Types",
+        path: "/treatment-types",
+        icon: "lia-file-medical",
+        permissions: [PERMISSIONS.TREATMENT_TYPES.CREATE]
+      },
+    ]
+  }
+
   // {
   //   id: 1,
   //   name: "reports",

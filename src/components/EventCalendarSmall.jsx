@@ -42,7 +42,8 @@ const EventCalendarSmall = () => {
 
   // Render a symbol (dot) if the day has events
   const tileContent = ({ date, view }) => {
-    const dateKey = date.toDateString();
+    const dateKey = date.getTime();
+    console.log('DATEEE', dateKey)
     if (events[dateKey] && events[dateKey].length > 0) {
       return <span className="event-dot">●</span>;
     }
@@ -60,22 +61,22 @@ const EventCalendarSmall = () => {
   useEffect(() => {
     setEvents(
       {
-        "Fri Oct 18 2024": [
+        "1743379200000": [
           {
             "event_name": "React admin dashboard design",
-            "event_time": 1728196224368
+            "event_time": 1743613200000
           }
         ],
         "Tue Oct 08 2024": [
           {
             "event_name": "Meeting for campaign with sales team",
-            "event_time": 1728196222368
+            "event_time": 1743582384000
           }
         ],
         "Tue Oct 15 2024": [
           {
             "event_name": "NFT Mobile Apps Developemnt",
-            "event_time": 1728196309987
+            "event_time": 1743582384000
           }
         ]
       }

@@ -16,7 +16,6 @@ const Schedule = ({ title }) => {
         <div className="col-xxl-4">
             <div className={`card stretch stretch-full ${isExpanded ? "card-expand" : ""} ${refreshKey ? "card-loading" : ""}`}>
                 <CardHeader title={title} refresh={handleRefresh} remove={handleDelete} expanded={handleExpand} />
-
                 <div className="card-body">
                     {
                         upcomingScheduleList.map(({ date, id, schedule_name, team_members, color }) => {

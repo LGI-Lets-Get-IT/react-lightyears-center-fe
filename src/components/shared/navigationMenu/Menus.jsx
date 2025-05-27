@@ -3,8 +3,46 @@ import { FiChevronDown, FiChevronRight, FiChevronUp } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import { menuList } from "@/utils/data/menuList";
 import getIcon from "@/utils/getIcon";
+import { useSelector } from "react-redux";
 
 const Menus = () => {
+    const { currentUser } = useSelector((state) => state.auth);
+    const { permissions } = currentUser || [];
+    // const filteredMenuList = menuList.filter((menu) => {
+    //     if (menu?.permissions && menu?.permissions?.length > 0) {
+    //         return menu?.permissions.some((permission) => permissions?.includes(permission))
+    //     }
+    //     return true; // Include menu items without permissions or with empty permissions array
+    // });
+    const filteredMenuList = menuList
+    .map((menu) => {
+        // Clone to avoid mutating original menuList
+        const clonedMenu = { ...menu };
+
+        // Filter dropdownMenu if present
+        if (clonedMenu.dropdownMenu?.length) {
+            clonedMenu.dropdownMenu = clonedMenu.dropdownMenu.filter((item) => {
+                if (item?.permissions?.length) {
+                return item.permissions.some((p) => permissions?.includes(p));
+                }
+                return true;
+            });
+        }
+
+        return clonedMenu;
+    })
+    .filter((menu) => {
+        if (menu?.permissions?.length) {
+            return menu.permissions.some((p) => permissions?.includes(p));
+        }
+
+        // If dropdownMenu exists, check if it's empty after filtering
+        if (menu.dropdownMenu?.length) {
+        return menu.dropdownMenu.length > 0;
+        }
+
+        return true;
+    });
     const [openDropdown, setOpenDropdown] = useState(null);
     const [openSubDropdown, setOpenSubDropdown] = useState(null);
     const [activeParent, setActiveParent] = useState("");
@@ -43,22 +81,24 @@ const Menus = () => {
 
     return (
         <>
-            {menuList.map(({ dropdownMenu, id, name, path, icon }) => {
+            {filteredMenuList.map(({ dropdownMenu, id, name, path, icon }) => {
                 return (
                     <li
                         key={id}
                         onClick={(e) => handleMainMenu(e, name)}
-                        className={`nxl-item nxl-hasmenu ${activeParent === name ? "active nxl-trigger" : ""}`}
+                        className={`nxl-item nxl-hasmenu ${activeParent === name ? "active" : ""}`}
                     >
                         <Link to={path} className="nxl-link text-capitalize">
                             <span className="nxl-micon"> {getIcon(icon)} </span>
                             <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>
                                 {name}
                             </span>
-                            <span className="nxl-arrow fs-16">
-                                {openDropdown === name ? <FiChevronRight/> : <FiChevronUp/>}
-                                {/* <FiChevronRight /> */}
-                            </span>
+                            {dropdownMenu &&
+                                <span className="nxl-arrow fs-16">
+                                    {openDropdown === name ? <FiChevronDown/> : <FiChevronRight/>}
+                                    {/* <FiChevronRight /> */}
+                                </span>
+                            }
                         </Link>
                         <ul
                             className={`nxl-submenu ${openDropdown === name ? "nxl-menu-visible" : "nxl-menu-hidden"}`}
@@ -67,7 +107,7 @@ const Menus = () => {
                                 const x = name;
                                 return (
                                     <Fragment key={id}>
-                                        {subdropdownMenu.length ? (
+                                        {subdropdownMenu?.length ? (
                                             <li
                                                 className={`nxl-item nxl-hasmenu ${activeChild === name ? "active" : ""
                                                     }`}
@@ -81,7 +121,7 @@ const Menus = () => {
                                                         </i>
                                                     </span>
                                                 </Link>
-                                                {subdropdownMenu.map(({ id, name, path }) => {
+                                                {subdropdownMenu?.map(({ id, name, path }) => {
                                                     return (
                                                         <ul
                                                             key={id}

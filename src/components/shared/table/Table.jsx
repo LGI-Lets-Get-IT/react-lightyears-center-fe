@@ -23,6 +23,7 @@ const Table = ({ data, columns }) => {
   const table = useReactTable({
     data,
     columns,
+    enableSorting: true,
     state: {
       globalFilter,
       pagination,
@@ -33,6 +34,7 @@ const Table = ({ data, columns }) => {
     onGlobalFilterChange: setGlobalFilter,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    getRowId: row => row.uuid ?? row.id,
   });
 
   return (
@@ -64,7 +66,7 @@ const Table = ({ data, columns }) => {
                                   header.column.columnDef.meta?.headerClassName
                                 }
                               >
-                                {header.uuid === "uuis" ? (
+                                {header.id === "id" ? (
                                   <div className="d-flex gap-2">
                                     {flexRender(
                                       header.column.columnDef.header,
@@ -87,7 +89,7 @@ const Table = ({ data, columns }) => {
                       ))}
                     </thead>
                     <tbody>
-                      {table.getRowModel().rows.map((row) => (
+                      {table.getRowModel().rows.length > 0 ? table.getRowModel().rows.map((row) => (
                         <tr
                           key={row.id}
                           className="single-item chat-single-item"
@@ -108,7 +110,13 @@ const Table = ({ data, columns }) => {
                             );
                           })}
                         </tr>
-                      ))}
+                      )) :
+                      <tr>
+                        <td colSpan={columns.length} className="text-center py-4">
+                          No data available.
+                        </td>
+                      </tr>
+                      }
                     </tbody>
                   </table>
                 </div>

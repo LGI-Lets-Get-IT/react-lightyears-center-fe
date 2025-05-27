@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build:dev": "vite build --minify --mode development",
+    "build:staging": "vite build --minify --mode staging",
+    "build:prod": "vite build --minify --mode production",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -25,7 +27,9 @@
     "emoji-picker-react": "^4.12.0",
     "feather-icons": "^4.29.2",
     "feather-icons-react": "^0.7.0",
+    "formik": "^2.4.6",
     "perfect-scrollbar": "^1.5.5",
+    "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-calendar": "^5.0.0",
@@ -42,8 +46,10 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^6.26.1",
     "react-select": "^5.8.1",
+    "redux-persist": "^6.0.0",
     "sweetalert2": "^11.14.1",
-    "sweetalert2-react-content": "^5.0.7"
+    "sweetalert2-react-content": "^5.0.7",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
