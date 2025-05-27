@@ -81,9 +81,9 @@ const LoginForm = ({ resetPath }) => {
                                         <label className="custom-control-label c-pointer" htmlFor="rememberMe">Remember Me</label>
                                     </div>
                                 </div> */}
-                                <div>
+                                {/* <div>
                                     <a href={resetPath} className="fs-11 text-primary">Forgot password?</a>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="mt-5">
                                 <button type="submit" className="btn btn-lg btn-primary w-100">Login</button>

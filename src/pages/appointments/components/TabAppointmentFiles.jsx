@@ -38,6 +38,12 @@ const TabAppointmentFiles = () => {
             clientName: currentAppointment?.client?.fullName.replaceAll(' ', ''),
             file: selectedFile,
         }))
+        .unwrap()
+        .then(() => {
+            setUploadedFileName(null);
+            setSelectedFile(null)
+        })
+        .catch((err) => console.error('Error ', err))
     }
 
     const handleDelete = () => {
@@ -88,12 +94,16 @@ const TabAppointmentFiles = () => {
                     <div className='d-flex flex-row mb-4'>
                         {uploadedFileName ? (
                             <div className="d-flex gap-2">
-                                <button className="btn btn-primary btn-sm" onClick={handleUploadFile}>
+                                <button className="btn btn-primary btn-sm">
                                     <span>{uploadedFileName}</span>
                                 </button>
                                 <button className="btn btn-danger" onClick={handleDelete}>
                                     <span><FiX size={16} className="me-2" /></span>
                                     <strong>Delete</strong>
+                                </button>
+                                <button className="btn btn-success" onClick={handleUploadFile}>
+                                    <span><FiUpload size={16} className="me-2" /></span>
+                                    <strong>Upload</strong>
                                 </button>
                             </div>
                         ) : (

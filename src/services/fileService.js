@@ -2,6 +2,7 @@ import api from "../lib/axios";
 
 export const filesApi = {
   uploadFile: (requestBody) => api.post("/files", requestBody),
+  downloadFile: (requestBody) => api.post("/files/download", requestBody),
   getAllFiles: (query) => api.get("/files", query),
   generatePlanReport: (id) =>
     api.post(

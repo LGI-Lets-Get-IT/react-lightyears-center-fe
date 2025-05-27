@@ -35,51 +35,51 @@ const TabPlanProgress = ({ id }) => {
   return (
     <>
       <div className="content-area-body pb-0">
-        {hasPermission(PERMISSIONS.TREATMENT_SESSIONS.CREATE) &&
-          (plan && plan.sessions?.length > 0 ? (
-            <>
-            <button
-            className="btn btn-primary mb-4"
+        {plan && plan.sessions?.length > 0 ? (
+          <>
+            {hasPermission(PERMISSIONS.TREATMENT_SESSIONS.CREATE) &&
+              <button
+                className="btn btn-primary mb-4"
+                onClick={() => setOpenModal(true)}
+              >
+                <FiPlus size={16} className="me-2" />
+                <span>Add Progress</span>
+              </button>
+            }
+          {plan.sessions.map(
+            ({
+              id,
+              shortTermGoals,
+              activities,
+              progress,
+              appointment,
+              program,
+            }) => (
+              <div
+                key={id} // ✅ key added here
+                className="accordion proposal-faq-accordion"
+                id={`accordionProgressGroup-${id}`}
+              >
+                <AccordionItem
+                  id={id}
+                  header={`[${appointment?.appointmentType}] ${appointment?.title}`}
+                  appointment={appointment}
+                  program={program}
+                  shortTermGoals={shortTermGoals}
+                  activities={activities}
+                  progress={progress}
+                />
+              </div>
+            )
+          )}
+          </>
+        ) : (
+          <LeadsEmptyCard
+            title="No progress yet!"
+            description="There are no progress on this treatment plan"
             onClick={() => setOpenModal(true)}
-            >
-            <FiPlus size={16} className="me-2" />
-            <span>Add Progress</span>
-            </button>
-            {plan.sessions.map(
-              ({
-                id,
-                shortTermGoals,
-                activities,
-                progress,
-                appointment,
-                program,
-              }) => (
-                <div
-                  key={id} // ✅ key added here
-                  className="accordion proposal-faq-accordion"
-                  id={`accordionProgressGroup-${id}`}
-                >
-                  <AccordionItem
-                    id={id}
-                    header={`[${appointment?.appointmentType}] ${appointment?.title}`}
-                    appointment={appointment}
-                    program={program}
-                    shortTermGoals={shortTermGoals}
-                    activities={activities}
-                    progress={progress}
-                  />
-                </div>
-              )
-            )}
-            </>
-          ) : (
-            <LeadsEmptyCard
-              title="No progress yet!"
-              description="There are no progress on this treatment plan"
-              onClick={() => setOpenModal(true)}
-            />
-          ))
-        }
+          />
+        )}
 
         {openModal && (
           <>

@@ -42,7 +42,7 @@ const TestTypesCreateContent = () => {
             <div className="card-body personal-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
-                  <span className="d-block mb-2">Test Type Information:</span>
+                  <span className="d-block mb-2">Create Test Type</span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                     Information regarding the test type
                   </span>

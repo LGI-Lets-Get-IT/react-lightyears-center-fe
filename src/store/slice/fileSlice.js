@@ -58,6 +58,17 @@ export const uploadFile = createAsyncThunk(
   }
 );
 
+export const downloadFile = createAsyncThunk(
+  "files/downloadFile",
+  async (fileId, { rejectWithValue }) => {
+    try {
+      const response = await filesApi.downloadFile(fileId);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 export const generatePlanReport = createAsyncThunk(
   "files/generatePlanReport",
   async (id, { rejectWithValue }) => {
