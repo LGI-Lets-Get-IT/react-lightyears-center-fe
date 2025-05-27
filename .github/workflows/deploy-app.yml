@@ -47,6 +47,7 @@ jobs:
             docker run --name ${{ vars.CONTAINER_NAME_STAGING }} -d -p 81:81 --restart unless-stopped ${{ vars.IMAGE_NAME_STAGING }}:latest
             docker network connect thelightyears-kinderfield ${{ vars.CONTAINER_NAME_STAGING }}
   deploy-to-production:
+    needs: build-image
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
