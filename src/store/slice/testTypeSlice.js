@@ -98,6 +98,17 @@ export const testTypeSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(createTestType.pending, (state) => {
+        state.isLoading = true;
+    });
+    builder.addCase(createTestType.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.type = action.payload;
+    });
+    builder.addCase(createTestType.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
     builder.addCase(updateTestTypeById.pending, (state) => {
       state.isLoading = true;
     });

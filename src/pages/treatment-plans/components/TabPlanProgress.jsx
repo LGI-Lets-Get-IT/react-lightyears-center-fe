@@ -100,6 +100,7 @@ const TabPlanProgress = ({ id }) => {
                     progress={progress}
                     handleDownload={() => handleDownloadDailyReport(id)}
                     handleDelete={() => handleConfirmDelete(id)}
+                    hasPermission={hasPermission}
                   />
                 </div>
               )
@@ -132,6 +133,7 @@ const AccordionItem = ({
   header,
   handleDownload,
   handleDelete,
+  hasPermission,
   ...content
 }) => {
   return (
@@ -162,12 +164,14 @@ const AccordionItem = ({
             >
               Download Daily Progress Report
             </button>
-            <button
-              className="btn btn-danger btn-sm mb-3"
-              onClick={handleDelete}
-            >
-              Delete
-            </button>
+            {hasPermission(PERMISSIONS.TREATMENT_SESSIONS.DELETE) && (
+              <button
+                className="btn btn-danger btn-sm mb-3"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            )}
           </div>
           <div>
             <p className="fw-bold">

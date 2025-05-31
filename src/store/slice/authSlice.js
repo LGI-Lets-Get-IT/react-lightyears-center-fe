@@ -45,6 +45,18 @@ export const userRefreshToken = createAsyncThunk(
     }
 )
 
+export const userForgotPassword = createAsyncThunk(
+    'auth/forgotPassword',
+    async (email, { rejectWithValue }) => {
+        try {
+            const response = await authApi.forgotPassword(email)
+            return response.data.data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

@@ -38,7 +38,7 @@ const ClientCreateContent = () => {
         </div>
         <div className="tab-content">
           <TabProfile />
-          <TabPassword />
+          {/* <TabPassword /> */}
         </div>
       </div>
     </div>

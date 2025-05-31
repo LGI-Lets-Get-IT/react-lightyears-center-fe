@@ -17,11 +17,12 @@ import { fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
 const PlanCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isLoading: createLoading } = useSelector(state => state.treatmentPlans)
   const { clients } = useSelector((state) => state.clients);
   const { currentUser } = useSelector((state) => state.auth);
   const { psychologists, therapists } = useSelector((state) => state.employees);
   const { treatmentTypes } = useSelector((state) => state.treatmentTypes);
-  const [selectedOption, setSelectedOption] = useState(null);
+  // const [selectedOption, setSelectedOption] = useState(null);
 
   const onSubmit = async (values, actions) => {
     console.log("ASFASFS", values, actions);
@@ -102,7 +103,7 @@ const PlanCreateContent = () => {
                             ? currentUser.id
                             : null
                         }
-                        selectedOption={selectedOption}
+                        selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
                           setFieldValue('psychologistId', option.value)
@@ -543,8 +544,15 @@ const PlanCreateContent = () => {
                             <FiX size={16} className="me-2" />
                             <span>Cancel</span>
                           </button>
-                          <button type="submit" className="btn btn-primary">
-                            <FiCheck size={16} className="me-2" />
+                          <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                            {createLoading ? (
+                              <div
+                                className="spinner-border spinner-border-sm text-white me-2"
+                                role="status"
+                              />
+                            ) : (
+                              <FiCheck size={16} className="me-2" />
+                            )}
                             <span>Create Plan</span>
                           </button>
                         </div>

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Input from "@/components/shared/Input";
 import TextArea from "@/components/shared/TextArea";
-import { FiCalendar, FiCheck, FiLayers, FiUserPlus, FiX } from "react-icons/fi";
+import { FiCheck, FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createSchool, fetchAllSchools } from "@/store/slice/schoolSlice";
+import { createSchool } from "@/store/slice/schoolSlice";
 import { Field, Form, Formik } from "formik";
 import { schoolSchema } from "@/schemas/schoolSchema";
 
 const SchoolsCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: createLoading } = useSelector(state => state.schools);
 
   const handleSubmit = (values, actions) => {
     console.log('HANDLESUBMIT', values)
@@ -165,8 +166,15 @@ const SchoolsCreateContent = () => {
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                  {createLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : (
                     <FiCheck size={16} className="me-2" />
+                  )}
                     <span>Create School</span>
                   </button>
                 </div>
