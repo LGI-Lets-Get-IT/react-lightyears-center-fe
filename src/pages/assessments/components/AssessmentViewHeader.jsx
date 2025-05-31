@@ -1,16 +1,17 @@
+import React from "react";
 import useConfirmation from "@/hooks/useConfirmation";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 import { deleteAssessmentByIds } from "@/store/slice/assessmentSlice";
-import React from "react";
 import { FiX } from "react-icons/fi";
 import { LiaPencilAltSolid } from "react-icons/lia";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const AssessmentViewHeader = ({ id }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
+  const { isLoading: deleteLoading } = useSelector(state => state.assessments)
   const { hasPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
@@ -36,8 +37,15 @@ const AssessmentViewHeader = ({ id }) => {
         </Link>
       )}
       {hasPermission(PERMISSIONS.ASSESSMENTS.DELETE) && (
-        <button className="btn btn-danger" onClick={handleDeleteConfirm}>
-          <FiX size={16} className="me-2" />
+        <button className="btn btn-danger" onClick={handleDeleteConfirm} disabled={deleteLoading}>
+          {deleteLoading ? (
+            <div
+              className="spinner-border spinner-border-sm text-white me-2"
+              role="status"
+            />
+          ) : (
+            <FiX size={16} className="me-2" />
+          )}
           <span>Delete Assessment</span>
         </button>
       )}

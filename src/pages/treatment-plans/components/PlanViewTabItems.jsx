@@ -14,7 +14,7 @@ const PlanViewTabItems = () => {
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
   const { id } = useParams();
   const { hasPermission } = useFilterByPermission()
-  const { plan } = useSelector((state) => state.treatmentPlans);
+  const { plan, isLoading: deleteLoading } = useSelector((state) => state.treatmentPlans);
   const { isLoading: downloadLoading } = useSelector((state) => state.files);
 
   const generateTreatmentPlanReport = () => {
@@ -84,7 +84,7 @@ const PlanViewTabItems = () => {
               <a
                 href="#"
                 onClick={generateTreatmentPlanReport}
-                className="action-btn"
+                className={`action-btn ${downloadLoading ? 'pe-none' : ''}`}
                 data-bs-toggle="tooltip"
                 title="Print Plan Report"
               >
@@ -115,11 +115,18 @@ const PlanViewTabItems = () => {
                 <a
                   href="#"
                   onClick={handleDeleteConfirmed}
-                  className="action-btn"
+                  className={`action-btn ${deleteLoading ? 'pe-none' : ''}`}
                   data-bs-toggle="tooltip"
                   title="Delete Treatment Plan"
                 >
+                {deleteLoading ? (
+                  <div
+                    className="spinner-border spinner-border-sm text-primary"
+                    role="status"
+                  />
+                ) : (
                   <FiTrash size={16} />
+                )}
                 </a>
               </div>
             }
