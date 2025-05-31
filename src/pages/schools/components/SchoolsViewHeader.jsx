@@ -5,12 +5,13 @@ import { deleteSchoolByIds } from "@/store/slice/schoolSlice";
 import React from "react";
 import {FiX } from "react-icons/fi";
 import { LiaPencilAltSolid } from "react-icons/lia";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const SchoolsViewHeader = ({ id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: deleteLoading } = useSelector(state => state.schools);
   const { hasPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
@@ -44,8 +45,15 @@ const SchoolsViewHeader = ({ id }) => {
         </a>
       }
       {hasPermission(PERMISSIONS.SCHOOLS.DELETE) &&
-        <button className="btn btn-danger" onClick={handleConfirmDelete}>
-          <FiX size={16} className="me-2" />
+        <button className="btn btn-danger" onClick={handleConfirmDelete} disabled={deleteLoading}>
+          {deleteLoading ? (
+            <div
+              className="spinner-border spinner-border-sm text-white me-2"
+              role="status"
+            />
+          ) : (
+            <FiX size={16} className="me-2" />
+          )}
           <span>Delete School</span>
         </button>
       }

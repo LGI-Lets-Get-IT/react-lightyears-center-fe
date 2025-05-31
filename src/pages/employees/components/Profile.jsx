@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { FiEdit, FiMail, FiPhone, FiTrash2 } from "react-icons/fi";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
@@ -10,6 +10,7 @@ import useFilterByPermission from "@/hooks/useFilterByPermission";
 const Profile = ({ id, fullName, phoneNumber, email }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: deleteLoading } = useSelector(state => state.employees)
   const { hasPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
@@ -59,8 +60,16 @@ const Profile = ({ id, fullName, phoneNumber, email }) => {
             <button
               onClick={handleConfirmDelete}
               className="w-50 btn btn-light-brand"
+              disabled={deleteLoading}
             >
-              <FiTrash2 size={16} className="me-2" />
+              {deleteLoading ? (
+                <div
+                  className="spinner-border spinner-border-sm text-primary me-2"
+                  role="status"
+                />
+              ) : (
+                <FiTrash2 size={16} className="me-2" />
+              )}
               <span>Delete</span>
             </button>
           )}
