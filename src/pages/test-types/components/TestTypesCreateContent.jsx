@@ -23,6 +23,7 @@ import { testTypeSchema } from "@/schemas/testTypeSchema";
 const TestTypesCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: createLoading } = useSelector(state => state.testTypes)
 
   const handleSubmit = (values, actions) => {
     // console.log('KJSFKAJSKASFJKJ', values)
@@ -82,8 +83,15 @@ const TestTypesCreateContent = () => {
                   <FiX size={16} className="me-2" />
                   <span>Cancel</span>
                 </a>
-                <button type="submit" className="btn btn-primary">
-                  <FiCheck size={16} className="me-2" />
+                <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                  {createLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Create Test</span>
                 </button>
               </div>

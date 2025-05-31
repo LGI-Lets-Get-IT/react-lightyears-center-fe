@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Input from "@/components/shared/Input";
 import TextArea from "@/components/shared/TextArea";
 import { FiCheck, FiX } from "react-icons/fi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateTestTypeById } from "@/store/slice/testTypeSlice";
 import { Field, Form, Formik } from "formik";
@@ -12,6 +12,7 @@ import { format } from "date-fns";
 const TestTypesEditContent = ({ id, testData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: updateLoading } = useSelector(state => state.testTypes)
 
   const handleSubmit = (values, actions) => {
     dispatch(updateTestTypeById({ testTypeId: id, data: values }))
@@ -76,8 +77,15 @@ const TestTypesEditContent = ({ id, testData }) => {
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary">
-                    <FiCheck size={16} className="me-2" />
+                  <button type="submit" className="btn btn-primary" disabled={updateLoading}>
+                    {updateLoading ? (
+                      <div
+                        className="spinner-border spinner-border-sm text-white me-2"
+                        role="status"
+                      />
+                    ) : (
+                      <FiCheck size={16} className="me-2" />
+                    )}
                     <span>Edit Test</span>
                   </button>
                 </div>

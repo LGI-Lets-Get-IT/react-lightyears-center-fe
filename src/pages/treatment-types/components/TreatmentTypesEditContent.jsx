@@ -78,7 +78,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary" disabled={updateLoading}>
                     {updateLoading ? (
                       <div
                         className="spinner-border spinner-border-sm text-white me-2"
@@ -87,7 +87,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
                     ) : (
                       <FiCheck size={16} className="me-2" />
                     )}
-                    <span> Edit Treatment</span>
+                    <span>Edit Treatment</span>
                   </button>
                 </div>
               </div>

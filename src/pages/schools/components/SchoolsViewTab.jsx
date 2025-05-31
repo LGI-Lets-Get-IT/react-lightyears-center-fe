@@ -10,12 +10,12 @@ const SchoolsViewTab = () => {
             </div>
             <div className="d-flex align-items-center justify-content-between">
                 <div className="nav-tabs-wrapper page-content-left-sidebar-wrapper">
-                    <div className="d-flex d-md-none">
+                    {/* <div className="d-flex d-md-none">
                         <a href="#" className="page-content-left-close-toggle">
                             <i className="feather-arrow-left me-2"></i>
                             <span>Back</span>
                         </a>
-                    </div>
+                    </div> */}
                     <ul className="nav nav-tabs nav-tabs-custom-style" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
                             <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#profileTab">Profile</button>
@@ -23,15 +23,6 @@ const SchoolsViewTab = () => {
                         <li className="nav-item" role="presentation">
                             <button className="nav-link" data-bs-toggle="tab" data-bs-target="#clientTab">Clients</button>
                         </li>
-                        {/* <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#tasksTab">Tasks</button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#notesTab">Notes</button>
-                        </li>
-                        <li className="nav-item" role="presentation">
-                            <button className="nav-link" data-bs-toggle="tab" data-bs-target="#commentTab">Comments</button>
-                        </li> */}
                     </ul>
                 </div>
             </div>

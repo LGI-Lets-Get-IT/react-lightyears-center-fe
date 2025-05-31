@@ -133,14 +133,15 @@ const EmployeeEdit = ({ empData }) => {
                   <span>Cancel</span>
                 </a>
 
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" disabled={updateLoading}>
                   {updateLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
                       role="status"
                     />
-                  ) : <FiCheck size={16} className="me-2" />
-                  }
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Edit Employee</span>
                 </button>
 
