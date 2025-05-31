@@ -1,6 +1,6 @@
 import React from 'react'
 import { userLogin } from '../../store/slice/authSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginSchema } from '../../schemas/authSchema'
 import { Field, Form, Formik } from 'formik'
@@ -8,6 +8,7 @@ import { Field, Form, Formik } from 'formik'
 const LoginForm = ({ resetPath }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const { isLoading } = useSelector(state => state.auth);
 
     const handleUserLogin = async (values, actions) => {
         dispatch(userLogin(values))
@@ -81,12 +82,21 @@ const LoginForm = ({ resetPath }) => {
                                         <label className="custom-control-label c-pointer" htmlFor="rememberMe">Remember Me</label>
                                     </div>
                                 </div> */}
-                                {/* <div>
+                                <div>
                                     <a href={resetPath} className="fs-11 text-primary">Forgot password?</a>
-                                </div> */}
+                                </div>
                             </div>
                             <div className="mt-5">
-                                <button type="submit" className="btn btn-lg btn-primary w-100">Login</button>
+                                <button disabled={isLoading} type="submit" className="btn btn-lg btn-primary w-100">
+                                    {isLoading ? (
+                                        <div
+                                            className="spinner-border spinner-border-sm text-white me-2"
+                                            role="status"
+                                        />
+                                    ) : (
+                                        <span>Login</span>
+                                    )}
+                                </button>
                             </div>
                         </div>
                     </Form>

@@ -130,14 +130,15 @@ const EmployeeCreateProfile = () => {
                   <span>Cancel</span>
                 </a>
 
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" disabled={createLoading}>
                   {createLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
                       role="status"
                     />
-                  ) : <FiCheck size={16} className="me-2" />
-                  }
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Create Employee</span>
                 </button>
 

@@ -178,7 +178,7 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary" disabled={updateLoading}>
                     {updateLoading ? (
                       <div
                         className="spinner-border spinner-border-sm text-white me-2"

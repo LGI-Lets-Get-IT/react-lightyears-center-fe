@@ -49,8 +49,7 @@ const EmployeesEditContent = ({ employeeData }) => {
         </div>
         <div className="tab-content">
           <EmployeeEdit empData={employeeData} />
-          <TabPassword id={id}
-          />
+          <TabPassword id={id} />
         </div>
       </div>
     </div>

@@ -11,7 +11,6 @@ import { fetchAppointmentForAssessments } from '@/store/slice/appointmentSlice';
 import { fetchAllTestTypes } from '@/store/slice/testTypeSlice';
 import { createAssessment } from '@/store/slice/assessmentSlice';
 
-
 const AssessmentsCreateContent = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -143,15 +142,15 @@ const AssessmentsCreateContent = () => {
                                             <FiX size={16} className="me-2" />
                                             <span>Cancel</span>
                                         </a>
-
-                                        <button type="submit" className="btn btn-primary">
+                                        <button type="submit" className="btn btn-primary" disabled={createLoading}>
                                             {createLoading ? (
                                                 <div
                                                     className="spinner-border spinner-border-sm text-white me-2"
                                                     role="status"
                                                 />
-                                            ) : <FiCheck size={16} className="me-2" />
-                                            }
+                                            ) : (
+                                                <FiCheck size={16} className="me-2" />
+                                            )}
                                             <span>Create Assessment</span>
                                         </button>
 

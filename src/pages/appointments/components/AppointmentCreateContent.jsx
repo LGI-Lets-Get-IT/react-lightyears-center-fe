@@ -7,7 +7,6 @@ import { makeAppointment } from "@/store/slice/appointmentSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { step0Schema, step1Schema, step2Schema } from "../../../schemas/appointmentSchema";
-import { fetchAllEmployees } from "@/store/slice/employeeSlice";
 
 const steps = [
   { name: "Type", required: true },

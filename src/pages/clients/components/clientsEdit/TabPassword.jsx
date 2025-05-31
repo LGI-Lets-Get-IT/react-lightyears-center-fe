@@ -1,7 +1,7 @@
+import React from 'react'
 import { changePwdAdminSchema } from '@/schemas/passwordSchema'
 import { updateClientPassword } from '@/store/slice/clientSlice'
 import { Field, Form, Formik } from 'formik'
-import React from 'react'
 import { FiCheck, FiKey, FiX } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -112,14 +112,15 @@ const TabPassword = ({ uuid }) => {
                                     <span>Cancel</span>
                                 </a>
 
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary" disabled={updateLoading}>
                                     {updateLoading ? (
                                         <div
                                             className="spinner-border spinner-border-sm text-white me-2"
                                             role="status"
                                         />
-                                    ) : <FiCheck size={16} className="me-2" />
-                                    }
+                                    ) : (
+                                        <FiCheck size={16} className="me-2" />
+                                    )}
                                     <span>Edit Password</span>
                                 </button>
                             </div>

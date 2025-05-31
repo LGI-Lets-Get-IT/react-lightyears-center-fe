@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
 import { countriesOptions, genderOptions, relationshipOptions } from "@/utils/options";
-import useLocationData from "@/hooks/useLocationData";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../../store/slice/schoolSlice";
 import { updateClientByUuid } from "@/store/slice/clientSlice";
@@ -301,14 +300,15 @@ const TabProfile = ({ userData }) => {
                   <span>Cancel</span>
                 </a>
 
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" disabled={updateLoading}>
                   {updateLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
                       role="status"
                     />
-                  ) : <FiCheck size={16} className="me-2" />
-                  }
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Edit Client</span>
                 </button>
               </div>
