@@ -11,6 +11,7 @@ import useConfirmation from "@/hooks/useConfirmation";
 const Profile = ({ fullName, gender, guardianEmail, guardianPhone, appointments, assessments, therapies }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading: deleteLoading } = useSelector(state => state.clients);
   const { hasPermission } = useFilterByPermission()
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
   const { uuid } = useParams();
@@ -88,8 +89,16 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone, appointments,
           <button
             onClick={handleDeleteConfirmed}
             className="w-50 btn btn-light-brand"
+            disabled={deleteLoading}
           >
-            <FiTrash2 size={16} className="me-2" />
+            {deleteLoading ? (
+              <div
+                className="spinner-border spinner-border-sm text-primary me-2"
+                role="status"
+              />
+            ) : (
+              <FiTrash2 size={16} className="me-2" />
+            )}
             <span>Delete</span>
           </button>
           )}
