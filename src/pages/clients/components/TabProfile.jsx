@@ -877,30 +877,6 @@ const TabProfile = () => {
 
                                   <div className="form-group row mb-3 align-items-center">
                                     <label className="col-sm-3 col-form-label">
-                                      Relationship to Child{" "}
-                                      <span className="text-danger">*</span>
-                                    </label>
-                                    <div className="col-sm-9">
-                                      <SelectDropdown
-                                        name={`intakeForm.guardians[${index}].relationship`}
-                                        options={relationships}
-                                        selectedOption={
-                                          values.intakeForm.guardians[index]
-                                            .relationship
-                                        }
-                                        placeholder="Select Relationship"
-                                        onSelectOption={(option) =>
-                                          setFieldValue(
-                                            `intakeForm.guardians[${index}].relationship`,
-                                            option.value
-                                          )
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-
-                                  <div className="form-group row mb-3 align-items-center">
-                                    <label className="col-sm-3 col-form-label">
                                       Place of Birth{" "}
                                       <span className="text-danger">*</span>
                                     </label>
@@ -1072,6 +1048,30 @@ const TabProfile = () => {
                                           </>
                                         )}
                                       </Field>
+                                    </div>
+                                  </div>
+
+                                  <div className="form-group row mb-3 align-items-center">
+                                    <label className="col-sm-3 col-form-label">
+                                      Relationship to Child{" "}
+                                      <span className="text-danger">*</span>
+                                    </label>
+                                    <div className="col-sm-9">
+                                      <SelectDropdown
+                                        name={`intakeForm.guardians[${index}].relationship`}
+                                        options={relationships}
+                                        selectedOption={
+                                          values.intakeForm.guardians[index]
+                                            .relationship
+                                        }
+                                        placeholder="Select Relationship"
+                                        onSelectOption={(option) =>
+                                          setFieldValue(
+                                            `intakeForm.guardians[${index}].relationship`,
+                                            option.value
+                                          )
+                                        }
+                                      />
                                     </div>
                                   </div>
                                 </AccordionItem>
