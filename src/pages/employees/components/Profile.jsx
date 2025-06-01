@@ -48,7 +48,7 @@ const Profile = ({ id, fullName, phoneNumber, email }) => {
           <li className="hstack justify-content-between mb-0">
             <span className="text-muted fw-medium hstack gap-3">
               <FiMail size={16} />
-              Guardian Email
+              Email
             </span>
             <a href={`mailto:${email}`} className="float-end">
               {email}

@@ -38,7 +38,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
                   <h5 className="fw-bold mb-0 me-4">
                     <span className="d-block mb-2">Edit {treatmentData?.name}</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      Last Edited: {treatmentData?.updatedAt && format(treatmentData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                      Last Edited: {treatmentData?.updatedAt ? format(treatmentData.updatedAt, 'dd MMM yyyy, HH:mm aa') : '-'}
                     </span>
                   </h5>
                 </div>

@@ -55,12 +55,18 @@ export const userForgotPassword = createAsyncThunk(
             return rejectWithValue(error.message)
         }
     }
-)
+);
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        resetCurrentUser: (state) => {
+            state.currentUser = null;
+            state.accessToken = null;
+            state.isAuthenticated = false;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(userLogin.pending, (state) => {
             state.isLoading = true;
@@ -94,6 +100,7 @@ export const authSlice = createSlice({
         builder.addCase(userRefreshToken.fulfilled, (state, action) => {
             state.isLoading = false;
             state.accessToken = action.payload.accessToken;
+            state.currentUser = action.payload.user;
         });
         builder.addCase(userRefreshToken.rejected, (state, action) => {
             state.isLoading = false;
@@ -102,4 +109,5 @@ export const authSlice = createSlice({
     }
 })
 
+export const { resetCurrentUser } = authSlice.actions;
 export default authSlice.reducer

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { updateSchoolById } from "@/store/slice/schoolSlice";
 import { Field, Form, Formik } from "formik";
 import { schoolSchema } from "@/schemas/schoolSchema";
+import format from "date-fns/format";
 
 const SchoolsEditContent = ({ id, schoolData }) => {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       Edit {schoolData?.name} Data
                     </span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      {schoolData?.updatedAt}
+                      Last Edited: {schoolData?.updatedAt ? format(schoolData.updatedAt, 'dd MMM yyyy, HH:mm aa') : '-'}
                     </span>
                   </h5>
                 </div>

@@ -73,7 +73,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                     label: client.fullName
                                                 }))}
                                                 selectedOption={values.clientId}
-                                                placeholder={values.clientId}
+                                                placeholder={"Select Client"}
                                                 onSelectOption={(option) => setFieldValue('clientId', option.value)}
                                             />
                                         </div>
