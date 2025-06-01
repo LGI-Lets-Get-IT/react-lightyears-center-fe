@@ -40,14 +40,16 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone, appointments,
         <div className="mb-4 text-center">
           <div className="mb-4">
             <span className="fs-14 fw-bold d-block">{fullName}</span>
-            <span className="fs-12 fw-normal text-muted d-block">
-              {gender === "Male" ? (
-                <FaMars color="blue" />
-              ) : (
-                <FaVenus color="pink" />
-              )}
-              {gender}
-            </span>
+            <div className="d-flex justify-content-center gap-1 align-items-center">
+                {gender === "Male" ? (
+                  <FaMars color="blue" />
+                ) : (
+                  <FaVenus color="pink" />
+                )}
+                <span className="fs-12 fw-normal text-muted">
+                  {gender}
+                </span>
+              </div>
           </div>
           <div className="fs-12 fw-normal text-muted text-center d-flex flex-wrap gap-3 mb-4">
             <div className="flex-fill py-3 px-4 rounded-1 d-none d-sm-block border border-dashed border-gray-5">

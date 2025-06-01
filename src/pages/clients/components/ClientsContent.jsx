@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 const CustomerContent = ({ userData }) => {
   return (
     <>
-      <div className="col-xxl-4 col-xl-6">
+      <div className="col-lg-12">
         <Profile
           uuid={userData?.uuid}
           fullName={userData?.fullName}
@@ -20,7 +20,7 @@ const CustomerContent = ({ userData }) => {
           therapies={userData?.appointments?.filter(appointment => appointment?.appointmentType?.toLowerCase() === 'treatment')}
         />
       </div>
-      <div className="col-xxl-8 col-xl-6">
+      <div className="col-lg-12">
         <div className="card border-top-0">
           <div className="card-header p-0">
             <ul
