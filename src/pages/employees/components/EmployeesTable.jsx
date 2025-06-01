@@ -6,8 +6,8 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
-import { useDispatch } from "react-redux";
-import { deleteEmployeeByIds } from "@/store/slice/employeeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEmployeeByIds, fetchAllEmployees } from "@/store/slice/employeeSlice";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const EmployeesTable = ({ employees }) => {
+const EmployeesTable = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+
+  const { employees, isLoading: fetchLoading } = useSelector((state) => state.employees);
+
+  useEffect(() => {
+    dispatch(fetchAllEmployees());
+  }, []);
 
   const getActions = ({ id, fullName }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/employees/${id}/edit`, permission: PERMISSIONS.EMPLOYEES.UPDATE },
@@ -192,7 +198,7 @@ const EmployeesTable = ({ employees }) => {
 
   return (
     <div>
-      <Table data={employees} columns={columns} />
+      <Table data={employees} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

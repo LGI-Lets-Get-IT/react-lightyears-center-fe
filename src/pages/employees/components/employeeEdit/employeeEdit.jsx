@@ -52,7 +52,7 @@ const EmployeeEdit = ({ empData }) => {
           validationSchema={employeeSchema}
           onSubmit={handleSubmit}
         >
-          {({ values, setFieldValue, getFieldProps }) => (
+          {({ values, setFieldValue }) => (
             <Form>
               <Field name="fullName">
                 {({ field, meta }) => (

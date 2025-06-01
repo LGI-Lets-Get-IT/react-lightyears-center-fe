@@ -7,8 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 import useConfirmation from "@/hooks/useConfirmation";
-import { useDispatch } from "react-redux";
-import { deleteAppointmentByIds } from "@/store/slice/appointmentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAppointmentByIds, fetchAllAppointments } from "@/store/slice/appointmentSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const AppointmentsTable = ({ appointments }) => {
+const AppointmentsTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+
+  const { appointments, isLoading: fetchLoading } = useSelector((state) => state.appointments);
+
+  useEffect(() => {
+    dispatch(fetchAllAppointments());
+  }, []);
 
   const getActions = ({ id, title }) => [
     {
@@ -203,7 +209,7 @@ const AppointmentsTable = ({ appointments }) => {
 
   return (
     <div>
-      <Table data={appointments} columns={columns} />
+      <Table data={appointments} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

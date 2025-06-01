@@ -6,8 +6,8 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
-import { useDispatch } from "react-redux";
-import { deleteSchoolByIds } from "@/store/slice/schoolSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteSchoolByIds, fetchAllSchools } from "@/store/slice/schoolSlice";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const SchoolsTable = ({ data }) => {
+const SchoolsTable = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+
+  const { schools, isLoading: fetchLoading } = useSelector((state) => state.schools);
+
+  useEffect(() => {
+    dispatch(fetchAllSchools());
+  }, []);
 
   const getActions = ({ id, name }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/schools/${id}/edit`, permission: PERMISSIONS.SCHOOLS.UPDATE },
@@ -174,7 +180,7 @@ const SchoolsTable = ({ data }) => {
 
   return (
     <div>
-      <Table data={data} columns={columns} />
+      <Table data={schools} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

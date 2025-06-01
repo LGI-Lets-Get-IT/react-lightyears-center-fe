@@ -7,8 +7,8 @@ import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { format } from "date-fns";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteTestTypeByIds } from "@/store/slice/testTypeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTestTypeByIds, fetchAllTestTypes } from "@/store/slice/testTypeSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const TestTypesTable = ({ data }) => {
+const TestTypesTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+
+  const { testTypes, isLoading: fetchLoading } = useSelector((state) => state.testTypes);
+
+  useEffect(() => {
+    dispatch(fetchAllTestTypes());
+  }, []);
 
   const getActions = ({ id, name }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/test-types/${id}/edit` },
@@ -145,7 +151,7 @@ const TestTypesTable = ({ data }) => {
 
   return (
     <div>
-      <Table data={data} columns={columns} />
+      <Table data={testTypes} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

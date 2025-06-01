@@ -1,7 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import { userLogout, userRefreshToken } from "@/store/slice/authSlice";
+import { resetCurrentUser, userLogout, userRefreshToken } from "@/store/slice/authSlice";
 const getStore = async () => {
   const module = await import("../store");
   return module.store;
@@ -90,9 +90,12 @@ api.interceptors.response.use(
       message == "Token expired. Please refresh the page." &&
       !originalRequest._retry
     ) {
+      console.log('MASUK IF LINE 93')
       try {
+        console.log('TRY LINE 95')
         const store = await getStore();
         if (isRefreshing) {
+          console.log('IS REFRESHING LINE 98')
           return new Promise((resolve, reject) => {
             failedQueue.push({
               resolve: (token) => {
@@ -107,6 +110,7 @@ api.interceptors.response.use(
         originalRequest._retry = true;
         isRefreshing = true;
 
+        console.log('BEFORE DISPATCH REFTOKEN LINE 113')
         await store.dispatch(userRefreshToken()).unwrap();
         const newAccessToken = store.getState().auth.accessToken;
         processQueue(null, newAccessToken);
@@ -114,9 +118,13 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (error) {
+        console.log('CATCH 1 LINE 121')
         const store = await getStore();
         processQueue(error, null);
-        store.dispatch(userLogout());
+        console.log('BEFORE DISPATCH LOGOUT LINE 124')
+        // await store.dispatch(userLogout());
+        store.dispatch(resetCurrentUser())
+        console.log('AFTER DISPATCH LOGOUT LINE 126')
         window.location.href = "/login";
         return Promise.reject(error);
       } finally {
@@ -124,17 +132,21 @@ api.interceptors.response.use(
       }
     }
 
+    console.log('LINE 134')
     // Refresh token expired
-    if (
-      error.response?.status === 401 &&
-      message === "Refresh token expired. Please relogin."
-    ) {
-      const store = await getStore();
-      store.dispatch(userLogout());
-      window.location.href = "/login";
-      return Promise.reject(error);
-    }
+    // if (
+    //   error.response?.status === 401 &&
+    //   message === "Refresh token expired. Please relogin."
+    // ) {
+    //   const store = await getStore();
+    //   console.log('BEFORE! IF 401 AND PLEASE RELOGIN LINE 141')
+    //   await store.dispatch(userLogout());
+    //   console.log('AFTER! IF 401 AND PLEASE RELOGIN LINE 141')
+    //   window.location.href = "/login";
+    //   return Promise.reject(error);
+    // }
 
+    console.log('KELAURIN ERROR')
     MySwal.mixin(swalOptions).fire({
       icon: "error",
       title: message || "Internal Server Error",

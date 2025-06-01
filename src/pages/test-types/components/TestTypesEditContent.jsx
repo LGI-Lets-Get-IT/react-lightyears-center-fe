@@ -37,7 +37,7 @@ const TestTypesEditContent = ({ id, testData }) => {
                   <h5 className="fw-bold mb-0 me-4">
                     <span className="d-block mb-2">Edit {testData?.name}</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      Last Edited: {testData?.updatedAt && format(testData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                      Last Edited: {testData?.updatedAt ? format(testData.updatedAt, 'dd MMM yyyy, HH:mm aa') : '-'}
                     </span>
                   </h5>
                 </div>
