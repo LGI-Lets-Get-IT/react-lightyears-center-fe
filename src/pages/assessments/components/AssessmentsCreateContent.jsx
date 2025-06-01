@@ -90,6 +90,7 @@ const AssessmentsCreateContent = () => {
                                         <div className="col-lg-6 mb-4">
                                             <label htmlFor="appointmentId" className="form-label">Assessed On</label>
                                             <SelectDropdown
+                                                isDisabled={!values.clientId}
                                                 name={'appointmentId'}
                                                 options={appointments.map(appointment => ({
                                                     value: appointment.id,

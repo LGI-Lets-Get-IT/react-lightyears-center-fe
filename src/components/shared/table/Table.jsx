@@ -11,7 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-const Table = ({ data, columns }) => {
+const Table = ({ data, columns, loading = false }) => {
   // const [data] = useState([...fackData])
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -89,7 +89,14 @@ const Table = ({ data, columns }) => {
                       ))}
                     </thead>
                     <tbody>
-                      {table.getRowModel().rows.length > 0 ? table.getRowModel().rows.map((row) => (
+                        {loading ? (
+                        <tr>
+                          <td colSpan={columns.length} className="text-center py-4">
+                            <div className="spinner-border text-primary" role="status"/>
+                          </td>
+                        </tr>
+                        ) : 
+                      table.getRowModel().rows.length > 0 ? table.getRowModel().rows.map((row) => (
                         <tr
                           key={row.id}
                           className="single-item chat-single-item"

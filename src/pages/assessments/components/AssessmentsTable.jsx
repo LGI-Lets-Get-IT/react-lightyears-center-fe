@@ -7,8 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
-import { useDispatch } from "react-redux";
-import { deleteAssessmentByIds } from "@/store/slice/assessmentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssessmentByIds, fetchAllAssessments } from "@/store/slice/assessmentSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const AssessmentsTable = ({ data }) => {
+const AssessmentsTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+  
+  const { assessments, isLoading: fetchLoading } = useSelector((state) => state.assessments);
+
+  useEffect(() => {
+    dispatch(fetchAllAssessments());
+  }, []);
 
   const getActions = ({ id, clientName, testName }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/assessments/${id}/edit`, permission: PERMISSIONS.ASSESSMENTS.UPDATE },
@@ -154,7 +160,7 @@ const AssessmentsTable = ({ data }) => {
 
   return (
     <div>
-      <Table data={data} columns={columns} />
+      <Table data={assessments} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

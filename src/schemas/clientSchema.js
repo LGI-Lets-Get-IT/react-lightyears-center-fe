@@ -14,11 +14,11 @@ export const clientSchema = Yup.object({
   className: Yup.string().min(3, 'Class name must be at least 3 characters long').required('Please enter the class name'),
   schoolId: Yup.number().required('School Name is required'),
   guardianName: Yup.string().min(3).required('Please enter the guardian name'),
-  guardianPhone: Yup.string().required('Please enter the guardian phone number'),
-  // .matches(
-  //   /^\+[1-9]\d{7,14}$/,
-  //   "Phone number must start with country code and without any dashes or spaces"
-  // ),
+  guardianPhone: Yup.string().required('Please enter the guardian phone number')
+  .matches(
+    /^\+[1-9]\d{7,14}$/,
+    "Phone number must start with country code (with +) and without any dashes or spaces"
+  ),
   guardianEmail: Yup.string().email('Guardian Email must be a valid email format').required('Please enter the guardian email'),
   guardianRelationship: Yup.string().required('Guardian Relationship is required'),
   guardianNationality: Yup.string().required('Guardian Nationality is required'),

@@ -7,8 +7,8 @@ import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { format } from "date-fns";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { deleteTreatmentTypeByIds } from "@/store/slice/treatmentTypeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTreatmentTypeByIds, fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const TreatmentTypesTable = ({ data }) => {
+const TreatmentTypesTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+
+  const { treatmentTypes, isLoading: fetchLoading } = useSelector((state) => state.treatmentTypes);
+
+  useEffect(() => {
+    dispatch(fetchAllTreatmentTypes());
+  }, []);
 
   const getActions = ({ id, name }) => [
     { label: "Edit", icon: <FiEdit3 />, link: `/treatment-types/${id}/edit` },
@@ -145,7 +151,7 @@ const TreatmentTypesTable = ({ data }) => {
 
   return (
     <div>
-      <Table data={data} columns={columns} />
+      <Table data={treatmentTypes} columns={columns} loading={fetchLoading}/>
       <ConfirmationDialog />
     </div>
   );

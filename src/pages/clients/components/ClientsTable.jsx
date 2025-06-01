@@ -6,8 +6,8 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
-import { useDispatch } from "react-redux";
-import { deleteClientByUuids } from "@/store/slice/clientSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteClientByUuids, fetchAllClients } from "@/store/slice/clientSlice";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -25,11 +25,17 @@ const TableCell = memo(({ options, defaultSelect }) => {
 
 TableCell.displayName = "TableCell";
 
-const ClientsTable = ({ clients }) => {
+const ClientsTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+  
+  const { clients, isLoading: fetchLoading } = useSelector((state) => state.clients);
+
+  useEffect(() => {
+    dispatch(fetchAllClients());
+  }, []);
 
   const getActions = ({ uuid, fullName }) => {
     return [
@@ -226,7 +232,7 @@ const ClientsTable = ({ clients }) => {
 
   return (
     <div>
-      <Table data={clients} columns={columns} />
+      <Table data={clients} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

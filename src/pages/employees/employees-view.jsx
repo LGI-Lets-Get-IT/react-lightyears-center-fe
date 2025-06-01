@@ -12,7 +12,6 @@ const EmployeesView = () => {
   const { employee } = useSelector((state) => state.employees);
 
   useEffect(() => {
-    // console.log("PARAMS", uuid);
     dispatch(fetchEmployeeById(id));
   }, []);
 
