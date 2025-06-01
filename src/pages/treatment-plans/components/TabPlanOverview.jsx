@@ -1,5 +1,5 @@
 import React from "react";
-import { FiArrowRight, FiCheck, FiFileText, FiLink2 } from "react-icons/fi";
+import { FiArrowRight, FiCheck, FiFileText } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
 const TabPlanOverview = () => {
@@ -43,7 +43,7 @@ const TabPlanOverview = () => {
                       style={{
                         width: `${
                           (plan?.programsDone / plan?.totalPrograms) * 100
-                        }`,
+                        }%`,
                       }}
                     />
                   </div>

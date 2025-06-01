@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import SelectDropdown from '@/components/shared/SelectDropdown'
 import { Field, Form, Formik } from 'formik';
+import { assessmentSchema } from '@/schemas/assessmentSchema';
 import { FiCheck, FiX } from 'react-icons/fi';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllClients } from '@/store/slice/clientSlice';
 import { fetchAllPsychologists } from '@/store/slice/employeeSlice';
-import { fetchAllAppointments } from '@/store/slice/appointmentSlice';
+import { fetchAppointmentForAssessments } from '@/store/slice/appointmentSlice';
 import { fetchAllTestTypes } from '@/store/slice/testTypeSlice';
 import { updateAssessmentById } from '@/store/slice/assessmentSlice';
-import { format } from 'date-fns';
-import { assessmentSchema } from '@/schemas/assessmentSchema';
+import format from 'date-fns/format';
 
 const AssessmentsEditContent = ({ assessmentData }) => {
     const dispatch = useDispatch();
@@ -34,9 +34,18 @@ const AssessmentsEditContent = ({ assessmentData }) => {
     useEffect(() => {
         dispatch(fetchAllClients());
         dispatch(fetchAllPsychologists());
-        dispatch(fetchAllAppointments());
         dispatch(fetchAllTestTypes())
     }, [])
+
+    useEffect(() => {
+        if (assessmentData?.client?.id) {
+            dispatch(fetchAppointmentForAssessments({
+                params: {
+                    clientId: assessmentData.client.id
+                }
+            }));
+        }
+    }, [assessmentData?.client?.id]);
     return (
         <>
             <div className="col-lg-12">
@@ -46,7 +55,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                             <h5 className="fw-bold mb-0 me-4">
                                 <span className="d-block mb-2">Edit Client Assessment</span>
                                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                                    Last Edited: {assessmentData?.updatedAt && format(assessmentData?.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                                    Last Edited: {assessmentData?.updatedAt && format(assessmentData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
                                 </span>
                             </h5>
                         </div>
@@ -73,48 +82,61 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                     label: client.fullName
                                                 }))}
                                                 selectedOption={values.clientId}
-                                                placeholder={"Select Client"}
-                                                onSelectOption={(option) => setFieldValue('clientId', option.value)}
+                                                placeholder={'Select Client'}
+                                                onSelectOption={(option) => {
+                                                    setFieldValue('clientId', option.value)
+                                                    dispatch(fetchAppointmentForAssessments({
+                                                        params: {
+                                                            clientId: option.value
+                                                        }
+                                                    }));
+                                                }}
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
                                             <label className="form-label">Psychologist Name</label>
-                                            <SelectDropdown
-                                                name={'psychologistId'}
-                                                options={psychologists.map(psychologist => ({
-                                                    value: psychologist.id,
-                                                    label: psychologist.fullName,
-                                                }))}
-                                                placeholder={'Select Psychologist'}
-                                                selectedOption={values.psychologistId}
-                                                onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
-                                            />
+                                            {psychologists.length > 0 && (
+                                                <SelectDropdown
+                                                    name={'psychologistId'}
+                                                    options={psychologists.map(psychologist => ({
+                                                        value: psychologist.id,
+                                                        label: psychologist.fullName,
+                                                    }))}
+                                                    placeholder={'Select Psychologist'}
+                                                    selectedOption={values.psychologistId}
+                                                    onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
+                                                />
+                                            )}
                                         </div>
                                         <div className="col-lg-6 mb-4">
-                                            <label htmlFor="appointmentId" className="form-label">Appointment</label>
-                                            <SelectDropdown
+                                            <label htmlFor="appointmentId" className="form-label">Assessed On</label>
+                                            {appointments.length > 0 && (
+                                                <SelectDropdown
                                                 name={'appointmentId'}
                                                 options={appointments.map(appointment => ({
-                                                    value: appointment.id,
+                                                    value: 12,
                                                     label: `[${appointment.appointmentType}] ${appointment.title}`,
                                                 }))}
                                                 placeholder={'Select Appointment'}
                                                 selectedOption={values.appointmentId}
                                                 onSelectOption={(option) => setFieldValue('appointmentId', option.value)}
-                                            />
+                                                />
+                                            )}
                                         </div>
                                         <div className="col-lg-6 mb-4">
                                             <label className="form-label">Test Name</label>
-                                            <SelectDropdown
-                                                name={'testId'}
-                                                options={testTypes.map(test => ({
-                                                    value: test.id,
-                                                    label: test.name,
-                                                }))}
-                                                placeholder={'Select Test Name'}
-                                                selectedOption={values.testId}
-                                                onSelectOption={(option) => setFieldValue('testId', option.value)}
-                                            />
+                                            {testTypes.length > 0 && (
+                                                <SelectDropdown
+                                                    name={'testId'}
+                                                    options={testTypes.map(test => ({
+                                                        value: test.id,
+                                                        label: test.name,
+                                                    }))}
+                                                    placeholder={'Select Test Name'}
+                                                    selectedOption={values.testId}
+                                                    onSelectOption={(option) => setFieldValue('testId', option.value)}
+                                                />
+                                            )}
                                         </div>
                                         <div className="col-lg-12 mb-4">
                                             <label htmlFor="result" className="form-label">
