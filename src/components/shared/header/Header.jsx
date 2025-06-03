@@ -1,21 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  FiAlignLeft,
-  FiArrowLeft,
-  FiArrowRight,
-  FiChevronRight,
-  FiMaximize,
-  FiMinimize,
-  FiMoon,
-  FiPlus,
-  FiSun,
-} from "react-icons/fi";
-import NotificationsModal from "./NotificationsModal";
+import { FiAlignLeft, FiArrowRight } from "react-icons/fi";
 import ProfileModal from "./ProfileModal";
-import SearchModal from "./SearchModal";
-import TimesheetsModal from "./TimesheetsModal";
-import HeaderDropDownModal from "./HeaderDropDownModal";
-import MegaMenu from "./megaManu/MegaMenu";
 import { NavigationContext } from "../../../contentApi/navigationProvider";
 
 const Header = () => {
@@ -110,20 +95,20 @@ const Header = () => {
     document.documentElement.classList.add("fsh-infullscreen");
     document.querySelector("body").classList.add("full-screen-helper");
   };
-  const fullScreenMinimize = () => {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
+  // const fullScreenMinimize = () => {
+  //   if (document.exitFullscreen) {
+  //     document.exitFullscreen();
+  //   } else if (document.mozCancelFullScreen) {
+  //     document.mozCancelFullScreen();
+  //   } else if (document.webkitExitFullscreen) {
+  //     document.webkitExitFullscreen();
+  //   } else if (document.msExitFullscreen) {
+  //     document.msExitFullscreen();
+  //   }
 
-    document.documentElement.classList.remove("fsh-infullscreen");
-    document.querySelector("body").classList.remove("full-screen-helper");
-  };
+  //   document.documentElement.classList.remove("fsh-infullscreen");
+  //   document.querySelector("body").classList.remove("full-screen-helper");
+  // };
 
   return (
     <header className="nxl-header">

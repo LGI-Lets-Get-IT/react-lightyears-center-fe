@@ -132,6 +132,17 @@ export const fileSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(generateDailyProgressReport.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(generateDailyProgressReport.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.file = action.payload;
+    });
+    builder.addCase(generateDailyProgressReport.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
 
