@@ -74,7 +74,7 @@ const TreatmentTypesEditContent = ({ id, treatmentData }) => {
               <hr className="my-0" />
               <div className="card-body additional-info">
                 <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-                  <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
+                  <a className="btn btn-light-brand" onClick={() => navigate(-1)} type="button">
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>

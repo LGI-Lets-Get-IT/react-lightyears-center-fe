@@ -107,6 +107,7 @@ const TabPassword = ({ id }) => {
                                 <a
                                     className="btn btn-light-brand"
                                     onClick={() => navigate(-1)}
+                                    type="button"
                                 >
                                     <FiX size={16} className="me-2" />
                                     <span>Cancel</span>
