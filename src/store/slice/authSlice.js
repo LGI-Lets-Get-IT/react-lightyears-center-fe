@@ -69,6 +69,18 @@ export const userChangePassword = createAsyncThunk(
     }
 );
 
+export const userEditProfile = createAsyncThunk(
+    'auth/editProfile',
+    async (requestBody, { rejectWithValue }) => {
+        try {
+            const response = await authApi.editProfile(requestBody)
+            return response.data.data
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+);
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

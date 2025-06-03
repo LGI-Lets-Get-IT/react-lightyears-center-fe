@@ -46,12 +46,14 @@ const AppointmentsEditContent = ({ appointmentData }) => {
 
     useEffect(() => {
         dispatch(fetchAllClients());
-        if (appointmentData?.appointmentType === 'Assessment') {
-            dispatch(fetchAllTherapists());
-        } else {
-            dispatch(fetchAllPsychologists());
+        if(appointmentData) {
+            if (appointmentData?.appointmentType.toLowerCase() === 'treatment') {
+                dispatch(fetchAllTherapists());
+            } else {
+                dispatch(fetchAllPsychologists());
+            }
         }
-    }, []);
+    }, [appointmentData]);
     return (
         <>
             <div className="col-lg-12">
@@ -109,23 +111,25 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                             <label className="form-label">
                                                 Client Name <span className="text-danger">*</span>
                                             </label>
-                                            <SelectDropdown
-                                                isDisabled={true}
-                                                name="clientId"
-                                                options={clients.map((item) => ({
-                                                    label: item.fullName,
-                                                    value: item.id,
-                                                }))}
-                                                selectedOption={values.clientId}
-                                                placeholder={"Select Client"}
-                                                onSelectOption={(option) => {
-                                                    setFieldValue('clientId', option.value)
-                                                    setFieldValue('presentProblem', 'test')
-                                                }}
-                                            />
+                                            {clients.length > 0 &&
+                                                <SelectDropdown
+                                                    isDisabled={true}
+                                                    name="clientId"
+                                                    options={clients.map((item) => ({
+                                                        label: item.fullName,
+                                                        value: item.id,
+                                                    }))}
+                                                    selectedOption={values.clientId}
+                                                    placeholder={"Select Client"}
+                                                    onSelectOption={(option) => {
+                                                        setFieldValue('clientId', option.value)
+                                                        setFieldValue('presentProblem', 'test')
+                                                    }}
+                                                />
+                                            }
                                         </div>
                                         <div className="col-lg-6 mb-4">
-                                            {appointmentData?.appointmentType === 'Treatment' ? (
+                                            {appointmentData?.appointmentType.toLowerCase() === 'treatment' ? (
                                                 <>
                                                     <label className="form-label">
                                                         Therapist Name <span className="text-danger">*</span>
@@ -270,6 +274,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                         <button
                                             className="btn btn-light-brand"
                                             onClick={() => navigate(-1)}
+                                            type="button"
                                         >
                                             <FiX size={16} className="me-2" />
                                             <span>Cancel</span>
