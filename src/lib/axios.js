@@ -134,17 +134,17 @@ api.interceptors.response.use(
 
     console.log('LINE 134')
     // Refresh token expired
-    // if (
-    //   error.response?.status === 401 &&
-    //   message === "Refresh token expired. Please relogin."
-    // ) {
-    //   const store = await getStore();
-    //   console.log('BEFORE! IF 401 AND PLEASE RELOGIN LINE 141')
-    //   await store.dispatch(userLogout());
-    //   console.log('AFTER! IF 401 AND PLEASE RELOGIN LINE 141')
-    //   window.location.href = "/login";
-    //   return Promise.reject(error);
-    // }
+    if (
+      error.response?.status === 401 &&
+      message === "Refresh token expired. Please relogin."
+    ) {
+      const store = await getStore();
+      console.log('BEFORE! IF 401 AND PLEASE RELOGIN LINE 141')
+      await store.dispatch(userLogout());
+      console.log('AFTER! IF 401 AND PLEASE RELOGIN LINE 141')
+      window.location.href = "/login";
+      return Promise.reject(error);
+    }
 
     console.log('KELAURIN ERROR')
     MySwal.mixin(swalOptions).fire({

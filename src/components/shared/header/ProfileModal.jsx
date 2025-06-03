@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { userLogout } from '@/store/slice/authSlice'
 import { FiLogOut, FiUser } from "react-icons/fi"
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
 import { fetchUserProfile } from '@/store/slice/profileSlice'
+import { FaRegUserCircle } from 'react-icons/fa'
+import { MdLockOpen } from 'react-icons/md'
 
 const ProfileModal = () => {
     const navigate = useNavigate();
@@ -26,7 +28,8 @@ const ProfileModal = () => {
     return (
         <div className="dropdown nxl-h-item">
             <a href="#" data-bs-toggle="dropdown" role="button" data-bs-auto-close="outside">
-                <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar me-0" />
+                <FaRegUserCircle size={28}/>
+                {/* <img src="/images/avatar/1.png" alt="user-image" className="img-fluid user-avtar me-0" /> */}
             </a>
             <div className="dropdown-menu dropdown-menu-end nxl-h-dropdown nxl-user-dropdown">
                 <div className="dropdown-header">
@@ -103,6 +106,10 @@ const ProfileModal = () => {
                         <span>Profile</span>
                     </a>
                 }
+                <a href="/profile/change-password" className="dropdown-item">
+                    <i><MdLockOpen/></i>
+                    <span>Change Password</span>
+                </a>
                 {/* <a href="#" className="dropdown-item">
                     <i ><FiActivity /></i>
                     <span>Activity Feed</span>
@@ -119,7 +126,7 @@ const ProfileModal = () => {
                     <i><FiSettings /></i>
                     <span>Account Settings</span>
                 </a> */}
-                {/* <div className="dropdown-divider"></div> */}
+                <div className="dropdown-divider"></div>
                 <button type='button' onClick={handleLogout} className="dropdown-item">
                     <i> <FiLogOut /></i>
                     <span>Logout</span>
