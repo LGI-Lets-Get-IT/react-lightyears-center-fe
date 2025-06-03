@@ -16,6 +16,7 @@ const TabPlanProgress = ({ id }) => {
   const dispatch = useDispatch();
   const { hasPermission } = useFilterByPermission();
   const { plan } = useSelector((state) => state.treatmentPlans);
+  const { isLoading: downloadLoading } = useSelector(state => state.files);
   const [openModal, setOpenModal] = useState(false);
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
@@ -101,6 +102,7 @@ const TabPlanProgress = ({ id }) => {
                     handleDownload={() => handleDownloadDailyReport(id)}
                     handleDelete={() => handleConfirmDelete(id)}
                     hasPermission={hasPermission}
+                    downloadLoading={downloadLoading}
                   />
                 </div>
               )
@@ -134,6 +136,7 @@ const AccordionItem = ({
   handleDownload,
   handleDelete,
   hasPermission,
+  downloadLoading,
   ...content
 }) => {
   return (
@@ -161,8 +164,17 @@ const AccordionItem = ({
             <button
               className="btn btn-primary btn-sm mb-3"
               onClick={handleDownload}
+              disabled={downloadLoading}
+              style={{width: '15rem', height: '2rem'}}
             >
-              Download Daily Progress Report
+              {downloadLoading ? (
+                <div
+                  className="spinner-border spinner-border-sm text-white me-2"
+                  role="status"
+                />
+              ) : (
+                <span>Download Daily Progress Report</span>
+              )}
             </button>
             {hasPermission(PERMISSIONS.TREATMENT_SESSIONS.DELETE) && (
               <button

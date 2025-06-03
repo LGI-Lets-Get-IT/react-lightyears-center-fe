@@ -2,53 +2,55 @@ import SelectDropdown from "@/components/shared/SelectDropdown"; // Assuming you
 import { useSelector } from "react-redux";
 import { format } from "date-fns"; // For formatting dates
 
-// --- Data Structures for Display ---
-
-// Existing Child Info (some might move to intake, or be derived)
 const childInfoData = [
-  { label: "Full Name", key: "fullName" }, // This should probably stay in the main client table
-  { label: "Age", key: "age", suffix: " old" }, // Can be derived from DOB or stored
-  { label: "Date of Birth", key: "dateOfBirth", type: "date" }, // Main client
-  { label: "Nationality", key: "nationality" }, // Main client
-  { label: "School Name", key: "schoolName" }, // Main client (current school)
+  { label: "Full Name", key: "fullName" },
+  { label: "Age", key: "age", suffix: " old" },
+  { label: "Date of Birth", key: "dateOfBirth", type: "date" },
+  { label: "Nationality", key: "nationality" },
+  { label: "School Name", key: "schoolName" },
+  { label: "Guardian Name", key: "guardianName" },
 ];
 
 // Intake Form - General Information
 const intakeGeneralInfoData = [
-  { label: "Email Address", key: "emailAddress" },
-  { label: "Place of Birth", key: "pob" }, // From client_details
-  { label: "Sex", key: "sex" }, // From client_details
-  { label: "Home Address", key: "homeAddress" }, // From client_details
-  { label: "Religion", key: "religion" }, // From client_details
-  { label: "Previous or On-going Activities", key: "previousOngoingActivities" }, // From client_details
-  { label: "Kinderfield Center", key: "whichKinderfieldCenter" }, // From client_details
-  { label: "Current School Enrolled", key: "currentSchoolEnrolled" }, // From client_details
+  { label: "Place of Birth", key: "placeOfBirth" },
+  { label: "Religion", key: "religion" },
+  { label: "Home Address", key: "homeAddress" },
+  { label: "Previous Ongoing Activity", key: "previousOngoingActivity" },
+  { label: "What are your major reasons or concerns about your child", key: "majorReasonConcerns" },
+  { label: "Have you previously met a psychologist/psychiatrist before? If yes, please explain", key: "previousPsychologicalDetails" },
+  { label: "Ability to get along with others and control emotions?", key: "socialAbilities" },
+  { label: "Forms caring, supportive relationships with family members, other adults, and peers?", key: "relationshipAbilities" },
+  { label: "Chooses to eat healthy foods, and participate in physical activity everyday?", key: "healthAbilities" },
+  { label: "Can solve simple maths?", key: "mathAbilities" },
+  { label: "What is your expectation(s) for the current developmental programs?", key: "programsExpectations" },
+  { label: "Where did you hear about The Light Years Child Development Center?", key: "howHeardAboutUs" },
+  { label: "What is your child's birth order compared to their siblings?", key: "childBirthOrder" },
 ];
 
 // Intake Form - Child Abilities (Checkboxes)
 const intakeAbilitiesData = [
-  { label: "Gets along with others & controls emotions", key: "abilitiesSocial" },
-  { label: "Forms caring, supportive relationships", key: "abilitiesRelationships" },
-  { label: "Chooses healthy foods & participates in physical activity", key: "abilitiesHealth" },
-  { label: "Can solve simple maths", key: "abilitiesMath" },
+  { label: "Gets along with others & controls emotions", key: "socialAbilities" },
+  { label: "Forms caring, supportive relationships", key: "relationshipAbilities" },
+  { label: "Chooses healthy foods & participates in physical activity", key: "healthAbilities" },
+  { label: "Can solve simple maths", key: "mathAbilities" },
 ];
 
 // Intake Form - Concerns & Expectations
 const intakeConcernsExpectationsData = [
-  { label: "Major Reasons/Concerns about child", key: "majorReasonsConcerns" },
-  { label: "Previously met Psychologist/Psychiatrist?", key: "previouslyMetPsychologist", type: "boolean" },
-  { label: "Details (if met psychologist)", key: "previousPsychologistDetails" },
-  { label: "Expectations for current programs", key: "expectationsPrograms" },
-  { label: "How heard about The Light Years", key: "howHeardAboutUs" },
+  { label: "Major Reasons/Concerns about child", key: "majorReasonConcerns" },
+  { label: "Previous Met Psychologist/Psychiatrist Details (if any)", key: "previousPsychologicalDetails" },
+  { label: "Expectations for current programs", key: "programsExpectations" },
+  { label: "Where did you hear about The Light Years Child Development Center", key: "howHeardAboutUs" },
   { label: "Child's Birth Order", key: "childBirthOrder" },
 ];
 
 // Guardian Info (for display, will be mapped from an array)
 const guardianDisplayFields = [
   { label: "Name", key: "guardianName" },
-  { label: "Relationship to Child", key: "relationshipToChild" },
-  { label: "Date of Birth", key: "dob", type: "date" },
-  { label: "Sex", key: "sex" },
+  { label: "Relationship to Child", key: "relationship" },
+  { label: "Date of Birth", key: "dateOfBirth", type: "date" },
+  { label: "Sex", key: "gender" },
   { label: "Education", key: "education" },
   { label: "Job", key: "job" },
 ];
@@ -56,8 +58,8 @@ const guardianDisplayFields = [
 // Institution/Activity Info (for display, will be mapped from an array)
 const institutionActivityDisplayFields = [
   { label: "Institution Name", key: "institutionName" },
-  { label: "Age at Activity", key: "ageAtActivity" },
-  { label: "Activity Description", key: "activityDescription" },
+  { label: "Age at Activity", key: "age" },
+  { label: "Activity Description", key: "activity" },
   { label: "Duration", key: "duration" },
 ];
 
@@ -67,8 +69,8 @@ const UserProfile = () => {
   // Assuming `user` now has a `clientDetails` property (nested object)
   // and `guardians` and `institutionsActivities` arrays if you adopted the separate tables
   const clientDetails = user?.clientDetails;
-  const guardians = user?.guardians || [];
-  const institutionsActivities = user?.institutionsActivities || [];
+  const guardians = clientDetails?.guardiansData || [];
+  const institutionsActivities = clientDetails?.institutionsData || [];
 
   const renderInfoRow = (label, value, suffix = "") => (
     <div className="row g-0 mb-4">
@@ -98,7 +100,7 @@ const UserProfile = () => {
           <div className="profile-details mb-5">
             <div className="mb-4 d-flex align-items-center justify-content-between">
               <h5 className="fw-bold mb-0">
-                {user?.fullName} - {user?.age ?? 0} years old
+                Client Information 
               </h5>
             </div>
             {childInfoData.map((item, index) => {
@@ -168,7 +170,7 @@ const UserProfile = () => {
                       value = format(new Date(value), "dd MMM yyyy");
                     }
                     return (
-                      <div key={fIndex} className="row g-0 mb-2">
+                      <div key={fIndex} className="row g-0 mb-4">
                         <div className="col-sm-6 text-muted">{item.label}:</div>
                         <div className="col-sm-6 fw-semibold">
                           {value !== null && value !== undefined && value !== ""
@@ -193,7 +195,7 @@ const UserProfile = () => {
                 <div key={`instact-${iaIndex}`} className="mb-4 pb-4 border-bottom">
                   <h6 className="fw-bold mb-3">Record {iaIndex + 1}</h6>
                   {institutionActivityDisplayFields.map((item, fIndex) => (
-                    <div key={fIndex} className="row g-0 mb-2">
+                    <div key={fIndex} className="row g-0 mb-4">
                       <div className="col-sm-6 text-muted">{item.label}:</div>
                       <div className="col-sm-6 fw-semibold">
                         {instAct[item.key] !== null && instAct[item.key] !== undefined && instAct[item.key] !== ""
@@ -214,9 +216,26 @@ const UserProfile = () => {
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Intake Form: Child Abilities</h5>
               </div>
-              {intakeAbilitiesData.map((item, index) =>
-                renderBooleanRow(item.label, clientDetails[item.key])
-              )}
+              {intakeAbilitiesData.map((item, index) => {
+                const value = clientDetails[item.key];
+                return (
+                  <div
+                    key={index}
+                    className={`row g-0 ${
+                      index === intakeGeneralInfoData.length - 1
+                        ? "mb-0"
+                        : "mb-4"
+                    }`}
+                  >
+                    <div className="col-sm-6 text-muted">{item.label}:</div>
+                    <div className="col-sm-6 fw-semibold">
+                      {value !== null && value !== undefined && value !== ""
+                        ? value
+                        : "N/A"}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
