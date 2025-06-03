@@ -50,7 +50,7 @@ const guardianDisplayFields = [
   { label: "Name", key: "guardianName" },
   { label: "Relationship to Child", key: "relationship" },
   { label: "Date of Birth", key: "dateOfBirth", type: "date" },
-  { label: "Sex", key: "gender" },
+  { label: "Gender", key: "gender" },
   { label: "Education", key: "education" },
   { label: "Job", key: "job" },
 ];
@@ -100,7 +100,7 @@ const UserProfile = () => {
           <div className="profile-details mb-5">
             <div className="mb-4 d-flex align-items-center justify-content-between">
               <h5 className="fw-bold mb-0">
-                Client Information 
+                My Profile 
               </h5>
             </div>
             {childInfoData.map((item, index) => {
