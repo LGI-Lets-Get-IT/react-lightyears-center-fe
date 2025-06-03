@@ -1,6 +1,6 @@
-import SelectDropdown from "@/components/shared/SelectDropdown"; // Assuming you'll use this later for editable fields
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns"; // For formatting dates
+import { sharingOptions } from "@/utils/options";
 
 const childInfoData = [
   { label: "Full Name", key: "fullName" },
@@ -256,22 +256,16 @@ const UserProfile = () => {
           )}
 
           {/* Existing Sharing Options (keep as is) */}
-          <div className="mb-4 d-flex align-items-center justify-content-between">
-            <h5 className="fw-bold mb-0">Sharing Options</h5>
-          </div>
-
-          <div className="mb-5">
-            <label className="form-label">Company field is required? </label>
-            {/* <SelectDropdown
-                name="allowShareData"
-                options={[{ label: '1', value: 1 }]}
-                defaultSelect={"yes"}
-                selectedOption={1}
-                onSelectOption={(option) => console.log('test')}
-            /> */}
-            <small className="form-text text-muted">
-              Company field is required? [Ex: Yes/No]
-            </small>
+          <div className="profile-details mb-5">
+            <div className="mb-4 d-flex align-items-center justify-content-between">
+              <h5 className="fw-bold mb-0">Sharing Options</h5>
+            </div>
+            <div className="row g-0 mb-4">
+              <div className="col-sm-6 text-muted">Allow sharing data to school?:</div>
+              <div className="col-sm-6 fw-semibold">
+                <span>{user?.allowShareData ? "Yes" : 'No'}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

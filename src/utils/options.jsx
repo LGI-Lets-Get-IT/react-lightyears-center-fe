@@ -284,6 +284,11 @@ const countriesOptions = [
   { value: 'Indonesia', label: 'Indonesia' }
 ]
 
+const sharingOptions = [
+  { value: true, label: "Yes", icon: "feather-check", iconClassName: "text-success" },
+  { value: false, label: "No", icon: "feather-x", iconClassName: "text-danger" },
+]
+
 export {
   propsalRelatedOptions,
   propsalDiscountOptions,
@@ -313,4 +318,5 @@ export {
   isActiveOptions,
   roleIdOptions,
   countriesOptions,
+  sharingOptions,
 };

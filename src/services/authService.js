@@ -7,4 +7,5 @@ export const authApi = {
     refreshToken: () => api.get('/auth/refresh-token'),
     forgotPassword: () => axiosPublic.post('/auth/forgot'),
     changePassword: (requestBody) => api.put('/auth/change-password', requestBody),
+    editProfile: (requestBody) => api.put('/auth/profile', requestBody),
 }
