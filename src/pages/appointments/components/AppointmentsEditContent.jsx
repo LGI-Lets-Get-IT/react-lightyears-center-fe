@@ -27,11 +27,14 @@ const AppointmentsEditContent = ({ appointmentData }) => {
     const rooms = roomOptions;
 
     const onSubmit = async (values) => {
-        const formattedValues = {
-            ...values,
-            timeStart: `${format(values.appointmentDate, 'yyyy-MM-dd')} ${values.timeStart}`,
-            timeEnd: `${format(values.appointmentDate, 'yyyy-MM-dd')} ${values.timeEnd}`,
-        }
+        const startDateTimeLocal = new Date(`${values.appointmentDate}T${values.timeStart}`);
+    const endDateTimeLocal = new Date(`${values.appointmentDate}T${values.timeEnd}`);
+const formattedValues = {
+        ...values,
+        timeStart: startDateTimeLocal.toISOString(), // UTC ISO string
+        timeEnd: endDateTimeLocal.toISOString(),
+    };
+
         dispatch(updateAppointmentById({
             appointmentId: id,
             data: formattedValues
