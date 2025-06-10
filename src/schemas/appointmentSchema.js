@@ -55,8 +55,15 @@ export const appointmentSchema = Yup.object({
   clientId: Yup.number().required("Client Name is required"),
   appointmentType: Yup.string().required("Appointment type is required"),
   picId: Yup.number().typeError('PIC is required').required("PIC is required"),
-  // timeStart: Yup.date().required("Start time is required"),
-  // timeEnd: Yup.date().required('End time is required').min(Yup.ref('timeStart'), 'End time must be after start time'),
+  timeStart: Yup.string().required("Start time is required"),
+  // timeEnd: Yup.string().required('End time is required').min(Yup.ref('timeStart'), 'End time must be after start time'),
+  timeEnd: Yup.string()
+    .required('End time is required')
+    .test('is-after-start', 'End time must be after start time', function (value) {
+      const { timeStart } = this.parent;
+      if (!timeStart || !value) return true; // skip validation if either is not filled
+      return value > timeStart; // assumes format is 'HH:mm'
+    }),
   roomId: Yup.number().required('Room Name is required'),
   appointmentDate: Yup.string().required("Appointment date is required").test(
     'date-not-in-past',
