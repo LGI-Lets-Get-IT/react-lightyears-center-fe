@@ -42,7 +42,7 @@ const useLocationData = () => {
         setError(null);
         setLoading(true)
         try {
-            const response = await fetch('https://countriesnow.space/api/v0.1/countries/flag/images');
+            const response = await fetch('https://countriesnow.space/api/v0.1/countries/iso');
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -50,9 +50,10 @@ const useLocationData = () => {
 
             const data = await response.json();
             const transformedStates = data.data.map(country => ({
-                value: country.iso3.toLowerCase().replace(/\s+/g, '-'),
+                // value: country.iso3.toLowerCase().replace(/\s+/g, '-'),
+                // img: country.flag
+                value: country.name,
                 label: country.name,
-                img: country.flag
             }));
 
             setCountries(transformedStates);

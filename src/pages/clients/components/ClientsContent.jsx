@@ -3,6 +3,7 @@ import TabOverviewContent from "../../../components/customersView/TabOverviewCon
 import TabAppointmentContent from "../../../components/customersView/TabAppointmentContent";
 import Profile from "./Profile";
 import PropTypes from "prop-types";
+import TabClientFiles from "./TabClientFiles";
 
 const CustomerContent = ({ userData }) => {
   return (
@@ -50,11 +51,23 @@ const CustomerContent = ({ userData }) => {
                   Appointments
                 </a>
               </li>
+              <li className="nav-item flex-fill border-top" role="presentation">
+                <a
+                  href="#"
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#filesTab"
+                  role="tab"
+                >
+                  Files
+                </a>
+              </li>
             </ul>
           </div>
           <div className="tab-content">
             <TabOverviewContent clientInformation={userData} />
             <TabAppointmentContent />
+            <TabClientFiles/>
           </div>
         </div>
       </div>

@@ -276,8 +276,8 @@ const relationshipOptions = [
   { value: "Uncle", label: "Uncle" },
   { value: "Niece", label: "Niece" },
   { value: "Nephew", label: "Nephew" },
-  { value: "GrandFather", label: "Grand Father" },
-  { value: "GrandMother", label: "Grand Mother" },
+  { value: "Grand Father", label: "Grand Father" },
+  { value: "Grand Mother", label: "Grand Mother" },
 ];
 
 const countriesOptions = [
@@ -287,6 +287,11 @@ const countriesOptions = [
 const sharingOptions = [
   { value: true, label: "Yes", icon: "feather-check", iconClassName: "text-success" },
   { value: false, label: "No", icon: "feather-x", iconClassName: "text-danger" },
+]
+
+const roomOptions = [
+  { value: 1, label: 'Room 1' },
+  { value: 2, label: 'Room 2' },
 ]
 
 export {
@@ -319,4 +324,5 @@ export {
   roleIdOptions,
   countriesOptions,
   sharingOptions,
+  roomOptions,
 };

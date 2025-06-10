@@ -9,6 +9,7 @@ export const appointmentsApi = {
   getAppointmentForAssessments: (queryParams) =>
     api.get(`/appointments/assessments`, queryParams),
   updateAppointmentById: (id, requestBody) => api.put(`/appointments/${id}`, requestBody),
+  confirmPicAttendanceById: (id) => api.put(`/appointments/${id}/confirm`),
   deleteAppointmentByIds: (requestBody) =>
     api.delete(`/appointments`, { data: requestBody }),
 };

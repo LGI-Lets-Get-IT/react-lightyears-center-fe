@@ -1,5 +1,5 @@
 // import React from "react";
-import TabPassword from "../../../components/customersCreate/TabPassword";
+// import TabPassword from "./TabPassword";
 import TabProfile from "./TabProfile";
 
 const ClientCreateContent = () => {
@@ -7,7 +7,7 @@ const ClientCreateContent = () => {
     <div className="col-lg-12">
       <div className="card border-top-0">
         <div className="card-header p-0">
-          <ul
+          {/* <ul
             className="nav nav-tabs flex-wrap w-100 text-center customers-nav-tabs"
             id="myTab"
             role="tablist"
@@ -23,7 +23,7 @@ const ClientCreateContent = () => {
                 Profile
               </a>
             </li>
-            {/* <li className="nav-item flex-fill border-top" role="presentation">
+            <li className="nav-item flex-fill border-top" role="presentation">
               <a
                 href="$"
                 className="nav-link"
@@ -33,8 +33,8 @@ const ClientCreateContent = () => {
               >
                 Password
               </a>
-            </li> */}
-          </ul>
+            </li>
+          </ul> */}
         </div>
         <div className="tab-content">
           <TabProfile />

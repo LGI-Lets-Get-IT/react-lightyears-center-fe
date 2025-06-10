@@ -11,8 +11,10 @@ import {
   deleteSessionByIds,
   fetchAllSessionByPlanId,
 } from "@/store/slice/treatmentSessionSlice";
+import { useNavigate } from "react-router-dom";
 
 const TabPlanProgress = ({ id }) => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { hasPermission } = useFilterByPermission();
   const { plan } = useSelector((state) => state.treatmentPlans);
@@ -27,6 +29,8 @@ const TabPlanProgress = ({ id }) => {
           planId: plan?.id,
         },
       })
+      .unwrap()
+      .then(() => navigate(`/treatment-plans/${id}`))
     );
 
     showConfirmation(

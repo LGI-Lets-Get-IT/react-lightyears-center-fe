@@ -11,6 +11,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { Field, FieldArray, Form, Formik } from "formik";
 import TextArea from "@/components/shared/TextArea";
+import useLocationData from "@/hooks/useLocationData";
 
 const TabProfile = ({ userData }) => {
   const dispatch = useDispatch();
@@ -20,7 +21,8 @@ const TabProfile = ({ userData }) => {
   const { isLoading: updateLoading } = useSelector(state => state.clients)
   const relationships = relationshipOptions;
   const genders = genderOptions;
-  const countries = countriesOptions;
+  // const countries = countriesOptions;
+  const { countries } = useLocationData();
 
   useEffect(() => {
     dispatch(fetchAllSchools());

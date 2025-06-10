@@ -33,7 +33,6 @@ const TabAppointmentFiles = () => {
 
     const handleUploadFile = () => {
         dispatch(uploadFile({
-            appointmentId: currentAppointment?.id,
             uuid: currentAppointment?.client?.uuid,
             clientName: currentAppointment?.client?.fullName.replaceAll(' ', ''),
             file: selectedFile,
@@ -57,7 +56,6 @@ const TabAppointmentFiles = () => {
         if (currentAppointment) {
             dispatch(fetchAllFiles({
                 params: {
-                    appointmentId: currentAppointment?.id,
                     uuid: currentAppointment?.client?.uuid,
                     clientName: currentAppointment?.client?.fullName.replaceAll(' ', '')
                 }

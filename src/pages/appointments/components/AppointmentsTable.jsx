@@ -156,6 +156,19 @@ const AppointmentsTable = () => {
       },
     },
     {
+      accessorKey: 'isConfirmed',
+      header: () => 'Confirmed by PIC',
+      cell: (info) => {
+        const text = info.getValue() ? 'Confirmed' : 'Not Confirmed';
+        const color = info.getValue() ? 'success' : 'danger';
+        return (
+          <span className={`badge bg-soft-${color} text-${color}`}>
+            {text}
+          </span>
+        )
+      }
+    },
+    {
       accessorKey: "status",
       header: () => "Status",
       cell: (info) => {

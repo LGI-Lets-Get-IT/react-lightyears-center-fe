@@ -73,7 +73,9 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                 <Form>
                                     <div className="row">
                                         <div className="col-lg-6 mb-4">
-                                            <label className="form-label">Client Name</label>
+                                            <label className="form-label">
+                                                Client Name <span className="text-danger">*</span>
+                                            </label>
                                             <SelectDropdown
                                                 name={'clientId'}
                                                 isDisabled={true}
@@ -94,24 +96,25 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                             />
                                         </div>
                                         <div className="col-lg-6 mb-4">
-                                            <label className="form-label">Psychologist Name</label>
-                                            {psychologists.length > 0 && (
-                                                <SelectDropdown
-                                                    name={'psychologistId'}
-                                                    options={psychologists.map(psychologist => ({
-                                                        value: psychologist.id,
-                                                        label: psychologist.fullName,
-                                                    }))}
-                                                    placeholder={'Select Psychologist'}
-                                                    selectedOption={values.psychologistId}
-                                                    onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
-                                                />
-                                            )}
+                                            <label className="form-label">
+                                                Psychologist Name <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                name={'psychologistId'}
+                                                options={psychologists.map(psychologist => ({
+                                                    value: psychologist.id,
+                                                    label: psychologist.fullName,
+                                                }))}
+                                                placeholder={'Select Psychologist'}
+                                                selectedOption={values.psychologistId}
+                                                onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
+                                            />
                                         </div>
                                         <div className="col-lg-6 mb-4">
-                                            <label htmlFor="appointmentId" className="form-label">Assessed On</label>
-                                            {appointments.length > 0 && (
-                                                <SelectDropdown
+                                            <label htmlFor="appointmentId" className="form-label">
+                                                Assessed On <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
                                                 name={'appointmentId'}
                                                 options={appointments.map(appointment => ({
                                                     value: 12,
@@ -120,23 +123,22 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                                                 placeholder={'Select Appointment'}
                                                 selectedOption={values.appointmentId}
                                                 onSelectOption={(option) => setFieldValue('appointmentId', option.value)}
-                                                />
-                                            )}
+                                            />
                                         </div>
                                         <div className="col-lg-6 mb-4">
-                                            <label className="form-label">Test Name</label>
-                                            {testTypes.length > 0 && (
-                                                <SelectDropdown
-                                                    name={'testId'}
-                                                    options={testTypes.map(test => ({
-                                                        value: test.id,
-                                                        label: test.name,
-                                                    }))}
-                                                    placeholder={'Select Test Name'}
-                                                    selectedOption={values.testId}
-                                                    onSelectOption={(option) => setFieldValue('testId', option.value)}
-                                                />
-                                            )}
+                                            <label className="form-label">
+                                                Test Name  <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                name={'testId'}
+                                                options={testTypes.map(test => ({
+                                                    value: test.id,
+                                                    label: test.name,
+                                                }))}
+                                                placeholder={'Select Test Name'}
+                                                selectedOption={values.testId}
+                                                onSelectOption={(option) => setFieldValue('testId', option.value)}
+                                            />
                                         </div>
                                         <div className="col-lg-12 mb-4">
                                             <label htmlFor="result" className="form-label">

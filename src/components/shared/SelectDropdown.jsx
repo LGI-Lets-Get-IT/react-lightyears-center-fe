@@ -7,7 +7,7 @@
 import getIcon from "@/utils/getIcon";
 import { useField } from "formik";
 import { useEffect, useRef, useState } from "react";
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiPlusCircle } from "react-icons/fi";
 
 // const SelectDropdown = ({
 //   name,
@@ -223,6 +223,7 @@ const SelectDropdown = ({
   defaultSelect,
   selectedOption,
   onSelectOption,
+  onCreateOption,
 }) => {
   const [field, meta, helpers] = useField(name);
   const { setValue } = helpers;
@@ -256,12 +257,19 @@ const SelectDropdown = ({
     option.label?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  //  useEffect(() => {
+  //   if (selectedOption) {
+  //     const selectedOpt = options?.find(option => option.value === selectedOption);
+  //     setLocalSelectedOption(selectedOpt);
+  //   }
+  // }, [selectedOption]);
+
   useEffect(() => {
-    if (selectedOption) {
+    if (selectedOption && options?.length) {
       const selectedOpt = options?.find(option => option.value === selectedOption);
       setLocalSelectedOption(selectedOpt);
     }
-  }, [selectedOption]);
+  }, [selectedOption, options]);
 
   useEffect(() => {
     if (defaultSelect) {
@@ -363,6 +371,18 @@ const SelectDropdown = ({
                   {option.label}
                 </li>
               ))
+            ) : (onCreateOption && searchTerm !== '') ? (
+              <li
+                className="add-option"
+                onClick={() => {
+                  onCreateOption && onCreateOption(searchTerm);
+                }}
+              >
+                <span className="me-2"><FiPlusCircle/></span>
+                <span>
+                  Create <strong>{searchTerm}</strong>
+                </span>
+              </li>
             ) : (
               <li className="no-result">No results found</li>
             )}
