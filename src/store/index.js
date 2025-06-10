@@ -9,6 +9,7 @@ import schoolReducer from "./slice/schoolSlice";
 import authReducer from './slice/authSlice';
 import profileReducer from './slice/profileSlice';
 import treatmentPlanReducer from "./slice/treatmentPlanSlice";
+import treatmentSessionReducer from "./slice/treatmentSessionSlice";
 import treatmentTypeReducer from "./slice/treatmentTypeSlice";
 import testTypeReducer from "./slice/testTypeSlice";
 import fileReducer from "./slice/fileSlice";
@@ -28,6 +29,7 @@ export const store = configureStore({
     }),
   reducer: {
     treatmentPlans: treatmentPlanReducer,
+    treatmentSessions: treatmentSessionReducer,
     appointments: appointmentReducer,
     assessments: assessmentReducer,
     clients: clientReducer,

@@ -16,6 +16,7 @@ const AddProgressModal = ({ setOpenModal }) => {
   const dispatch = useDispatch();
   const { plan } = useSelector((state) => state.treatmentPlans);
   const { appointments } = useSelector((state) => state.appointments);
+  const { isLoading: createLoading } = useSelector(state => state.treatmentSessions);
 
   const handleAddProgress = (values) => {
     console.log("VALUES", values);
@@ -124,7 +125,6 @@ const AddProgressModal = ({ setOpenModal }) => {
                               </tr>
                             </thead>
                             <tbody>
-                              {console.log("VALUES", values)}
                               {values.sessions &&
                                 values.sessions.map((session, index) => (
                                   <tr key={index}>
@@ -229,7 +229,7 @@ const AddProgressModal = ({ setOpenModal }) => {
                   >
                     Discard
                   </button>
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary" disabled={createLoading}>
                     Add Progress
                   </button>
                 </div>
