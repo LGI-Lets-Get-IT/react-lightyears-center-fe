@@ -52,9 +52,10 @@ export const fetchSchoolClientsById = createAsyncThunk(
 
 export const createSchool = createAsyncThunk(
   "schools/createSchool",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue, dispatch }) => {
     try {
       const response = await schoolsApi.createSchool(data);
+      dispatch(fetchAllSchools())
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);

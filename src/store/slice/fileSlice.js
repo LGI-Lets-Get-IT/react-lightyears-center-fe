@@ -143,6 +143,17 @@ export const fileSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(uploadFile.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(uploadFile.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.file = action.payload;
+    });
+    builder.addCase(uploadFile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
 

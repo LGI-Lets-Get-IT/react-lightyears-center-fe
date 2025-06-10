@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +8,10 @@ import {
 } from "@/store/slice/employeeSlice";
 import { fetchAllClients } from "@/store/slice/clientSlice";
 import { FiCheck, FiX } from "react-icons/fi";
-import { Field, FieldArray, Form, Formik } from "formik";
-import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
-import { createPlan } from "@/store/slice/treatmentPlanSlice";
+import { Field, Form, Formik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
 import { format } from "date-fns";
-import { appointmentTypeOptions } from "@/utils/options";
+import { appointmentTypeOptions, roomOptions } from "@/utils/options";
 import { appointmentSchema } from "@/schemas/appointmentSchema";
 import { updateAppointmentById } from "@/store/slice/appointmentSlice";
 
@@ -27,9 +24,9 @@ const AppointmentsEditContent = ({ appointmentData }) => {
     const { psychologists, therapists } = useSelector((state) => state.employees);
 
     const appointmentTypes = appointmentTypeOptions;
+    const rooms = roomOptions;
 
-    const onSubmit = async (values, actions) => {
-        console.log('VALUES', values);
+    const onSubmit = async (values) => {
         const formattedValues = {
             ...values,
             timeStart: `${values.appointmentDate}T${values.timeStart}:00`,
@@ -72,7 +69,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                 title: appointmentData?.title,
                                 clientId: appointmentData?.clientId,
                                 picId: appointmentData?.picId,
-                                picType: appointmentData?.picType,
+                                roomId: appointmentData?.roomId,
                                 appointmentType: appointmentData?.appointmentType,
                                 appointmentDate: appointmentData?.appointmentDate,
                                 timeStart: appointmentData?.appointmentTime.split(' - ')[0],
@@ -85,8 +82,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                             {({ values, setFieldValue, errors }) => (
                                 <Form>
                                     <div className="row">
-                                        {console.log('errors', errors)}
-                                        <div className="col-lg-12 mb-4">
+                                        <div className="col-lg-6 mb-4">
                                             <label className="form-label">
                                                 Appointment Title <span className="text-danger">*</span>
                                             </label>
@@ -95,77 +91,18 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                     <>
                                                         <input
                                                             type="text"
-                                                            className={`form-control`}
+                                                            className={`form-control ${meta.error ? 'is-invalid' : ''}`}
                                                             name="title"
                                                             placeholder="Enter Appointment Title"
                                                             value={values.title}
-                                                            {...field} />
+                                                            {...field}
+                                                        />
                                                         {meta.error && (
                                                             <div className="mt-1 text-danger">{meta.error}</div>
                                                         )}
                                                     </>
                                                 )}
                                             </Field>
-                                        </div>
-                                        <div className="col-lg-6 mb-4">
-                                            <label className="form-label">
-                                                Client Name <span className="text-danger">*</span>
-                                            </label>
-                                            {clients.length > 0 &&
-                                                <SelectDropdown
-                                                    isDisabled={true}
-                                                    name="clientId"
-                                                    options={clients.map((item) => ({
-                                                        label: item.fullName,
-                                                        value: item.id,
-                                                    }))}
-                                                    selectedOption={values.clientId}
-                                                    placeholder={"Select Client"}
-                                                    onSelectOption={(option) => {
-                                                        setFieldValue('clientId', option.value)
-                                                        setFieldValue('presentProblem', 'test')
-                                                    }}
-                                                />
-                                            }
-                                        </div>
-                                        <div className="col-lg-6 mb-4">
-                                            {appointmentData?.appointmentType.toLowerCase() === 'treatment' ? (
-                                                <>
-                                                    <label className="form-label">
-                                                        Therapist Name <span className="text-danger">*</span>
-                                                    </label>
-                                                    <SelectDropdown
-                                                        name="picId"
-                                                        options={therapists.map((item) => ({
-                                                            label: item.fullName,
-                                                            value: item.id,
-                                                        }))}
-                                                        selectedOption={values.picId}
-                                                        placeholder={"Select Therapist"}
-                                                        onSelectOption={(option) => {
-                                                            setFieldValue('picId', option.value)
-                                                        }}
-                                                    />
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <label className="form-label">
-                                                        Psychologist Name <span className="text-danger">*</span>
-                                                    </label>
-                                                    <SelectDropdown
-                                                        name="picId"
-                                                        options={psychologists.map((item) => ({
-                                                            label: item.fullName,
-                                                            value: item.id,
-                                                        }))}
-                                                        selectedOption={values.picId}
-                                                        placeholder={"Select Psychologist"}
-                                                        onSelectOption={(option) => {
-                                                            setFieldValue('picId', option.value)
-                                                        }}
-                                                    />
-                                                </>
-                                            )}
                                         </div>
                                         <div className="col-lg-6 mb-4">
                                             <label className="form-label">
@@ -177,14 +114,68 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                                 isDisabled={true}
                                                 selectedOption={values.appointmentType}
                                                 placeholder={"Select Appointment Type"}
+                                                // onSelectOption={(option) => {
+                                                //     setFieldValue('appointmentType', option.value)
+                                                //     if (option.value.toLowerCase() === 'treatment') {
+                                                //         dispatch(fetchAllTherapists())
+                                                //     } else {
+                                                //         dispatch(fetchAllPsychologists())
+                                                //     }
+                                                // }}
+                                            />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                PIC Name <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                isDisabled={!values.appointmentType}
+                                                name="picId"
+                                                options={values.appointmentType?.toLowerCase() === 'treatment' ? therapists.map((item) => ({
+                                                    label: `[Therapist] ${item.fullName}`,
+                                                    value: item.id,
+                                                })) : psychologists.map((item) => ({
+                                                    label: `[Psychologist] ${item.fullName}`,
+                                                    value: item.id
+                                                }))}
+                                                selectedOption={values.picId}
+                                                placeholder={"Select PIC"}
                                                 onSelectOption={(option) => {
-                                                    if (option.value.toLowerCase() === 'assessment') {
-                                                        setFieldValue('picType', 'Therapist')
-                                                    } else {
-                                                        setFieldValue('picType', 'Psychologist')
-                                                    }
+                                                    setFieldValue('picId', option.value)
                                                 }}
                                             />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                Client Name <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                isDisabled={true}
+                                                name="clientId"
+                                                options={clients.map((item) => ({
+                                                    label: item.fullName,
+                                                    value: item.id,
+                                                }))}
+                                                selectedOption={values.clientId}
+                                                placeholder={"Select Client"}
+                                                onSelectOption={(option) => {
+                                                    setFieldValue('clientId', option.value)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                        <label className="form-label">
+                                            Room Name <span className="text-danger">*</span>
+                                        </label>
+                                        <SelectDropdown
+                                            name="roomId"
+                                            options={rooms}
+                                            selectedOption={values.roomId}
+                                            placeholder={"Select Room"}
+                                            onSelectOption={(option) => {
+                                                setFieldValue('roomId', option.value)
+                                            }}
+                                        />
                                         </div>
                                         <div className="col-lg-6 mb-4">
                                             <label className="form-label">

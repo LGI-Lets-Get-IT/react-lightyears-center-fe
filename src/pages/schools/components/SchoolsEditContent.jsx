@@ -30,13 +30,13 @@ const SchoolsEditContent = ({ id, schoolData }) => {
       <div className="card border-top-0">
         <Formik
           initialValues={{
-            schoolName: schoolData?.name,
-            schoolAddress: schoolData?.address,
-            schoolPhoneNumber: schoolData?.phoneNumber,
-            schoolEmail: schoolData?.email,
-            picName: schoolData?.picFullName,
-            picPhoneNumber: schoolData?.picPhoneNumber,
-            picEmail: schoolData?.picEmail,
+            schoolName: schoolData?.name ?? undefined,
+            schoolAddress: schoolData?.address ?? undefined,
+            schoolPhoneNumber: schoolData?.phoneNumber ?? undefined,
+            schoolEmail: schoolData?.email ?? undefined,
+            picName: schoolData?.picFullName ?? undefined,
+            picPhoneNumber: schoolData?.picPhoneNumber ?? undefined,
+            picEmail: schoolData?.picEmail ?? undefined,
           }}
           enableReinitialize
           validationSchema={schoolSchema}
