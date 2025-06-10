@@ -29,8 +29,8 @@ const AppointmentsEditContent = ({ appointmentData }) => {
     const onSubmit = async (values) => {
         const formattedValues = {
             ...values,
-            timeStart: `${values.appointmentDate}T${values.timeStart}:00`,
-            timeEnd: `${values.appointmentDate}T${values.timeEnd}:00`,
+            timeStart: `${format(values.appointmentDate, 'yyyy-MM-dd')} ${values.timeStart}`,
+            timeEnd: `${format(values.appointmentDate, 'yyyy-MM-dd')} ${values.timeEnd}`,
         }
         dispatch(updateAppointmentById({
             appointmentId: id,
@@ -270,7 +270,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                                             <FiX size={16} className="me-2" />
                                             <span>Cancel</span>
                                         </button>
-                                        <button type="submit" className="btn btn-primary">
+                                        <button type="submit" className="btn btn-primary" disabled={updateLoading}>
                                             {updateLoading ? (
                                                 <div
                                                     className="spinner-border spinner-border-sm text-white me-2"

@@ -88,11 +88,11 @@ export const treatmentSessionSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchAllSessions.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.sessions = action.payload;
     });
     builder.addCase(fetchAllSessions.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(fetchAllSessionByPlanId.pending, (state) => {
@@ -100,11 +100,11 @@ export const treatmentSessionSlice = createSlice({
       state.sessions = initialState.sessions;
     });
     builder.addCase(fetchAllSessionByPlanId.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.sessions = action.payload;
     });
     builder.addCase(fetchAllSessionByPlanId.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
       state.sessions = initialState.sessions;
     });
@@ -112,11 +112,22 @@ export const treatmentSessionSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchSessionById.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.session = action.payload;
     });
     builder.addCase(fetchSessionById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(createSession.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(createSession.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.session = action.payload;
+    });
+    builder.addCase(createSession.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },
