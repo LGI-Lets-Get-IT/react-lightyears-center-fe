@@ -26,19 +26,18 @@ const AppointmentCreateContent = () => {
     const rooms = roomOptions;
 
     const onSubmit = async (values, actions) => {
-const startDateTimeLocal = new Date(`${values.appointmentDate}T${values.timeStart}`);
-    const endDateTimeLocal = new Date(`${values.appointmentDate}T${values.timeEnd}`);
+        const startDateTimeLocal = new Date(`${format(values.appointmentDate, 'yyyy-MM-dd')}T${values.timeStart}`);
+        const endDateTimeLocal = new Date(`${format(values.appointmentDate, 'yyyy-MM-dd')}T${values.timeEnd}`);
+        const formattedValues = {
+            ...values,
+            timeStart: startDateTimeLocal.toISOString(), // UTC ISO string
+            timeEnd: endDateTimeLocal.toISOString(),
+        };
 
-    const formattedValues = {
-        ...values,
-        timeStart: startDateTimeLocal.toISOString(), // UTC ISO string
-        timeEnd: endDateTimeLocal.toISOString(),
-    };
-
-      dispatch(makeAppointment(formattedValues))
-        .unwrap()
-        .then(() => navigate(`/appointments/`))
-        .catch(error => console.log('Error', error));
+        dispatch(makeAppointment(formattedValues))
+            .unwrap()
+            .then(() => navigate(`/appointments/`))
+            .catch(error => console.log('Error', error));
     };
 
     useEffect(() => {
