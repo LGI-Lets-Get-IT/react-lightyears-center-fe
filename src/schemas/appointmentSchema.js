@@ -55,9 +55,9 @@ export const appointmentSchema = Yup.object({
   clientId: Yup.number().required("Client Name is required"),
   appointmentType: Yup.string().required("Appointment type is required"),
   picId: Yup.number().typeError('PIC is required').required("PIC is required"),
-  //timeStart: Yup.string().required("Start time is required"),
+  timeStart: Yup.string().required("Start time is required"),
   // timeEnd: Yup.string().required('End time is required').min(Yup.ref('timeStart'), 'End time must be after start time'),
-  //timeEnd: Yup.string()
+  timeEnd: Yup.string()
     .required('End time is required')
     .test('is-after-start', 'End time must be after start time', function (value) {
       const { timeStart } = this.parent;
