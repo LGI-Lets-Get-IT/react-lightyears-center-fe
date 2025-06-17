@@ -4,7 +4,7 @@ import { PERMISSIONS } from "@/shared/permissionsConstant";
 import { generatePlanReport } from "@/store/slice/fileSlice";
 import { deletePlanByIds } from "@/store/slice/treatmentPlanSlice";
 import React, { useState } from "react";
-import { FiEdit, FiPrinter, FiTrash } from "react-icons/fi";
+import { FiEdit, FiPrinter, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,8 +13,10 @@ const PlanViewTabItems = () => {
   const dispatch = useDispatch();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
   const { id } = useParams();
-  const { hasPermission } = useFilterByPermission()
-  const { plan, isLoading: deleteLoading } = useSelector((state) => state.treatmentPlans);
+  const { hasPermission } = useFilterByPermission();
+  const { plan, isLoading: deleteLoading } = useSelector(
+    (state) => state.treatmentPlans
+  );
   const { isLoading: downloadLoading } = useSelector((state) => state.files);
 
   const generateTreatmentPlanReport = () => {
@@ -31,19 +33,18 @@ const PlanViewTabItems = () => {
     });
   };
 
-    const handleDeleteConfirmed = () => {
-      showConfirmation(
-        'Are you sure to delete this treatment plan?',
-        () => {
-          dispatch(deletePlanByIds({ planIds: [id]}))
-            .unwrap()
-            .then(() => navigate(`/treatment-plans`))
-            .catch((error) => console.error("Handle error:", error))
-        },
-        () => {}
-      )
-
-    };
+  const handleDeleteConfirmed = () => {
+    showConfirmation(
+      "Are you sure to delete this treatment plan?",
+      () => {
+        dispatch(deletePlanByIds({ planIds: [id] }))
+          .unwrap()
+          .then(() => navigate(`/treatment-plans`))
+          .catch((error) => console.error("Handle error:", error));
+      },
+      () => {}
+    );
+  };
   return (
     <div className="bg-white py-3 border-bottom rounded-0 p-md-0 mb-0">
       <div className="d-md-none d-flex align-items-center justify-content-between">
@@ -84,7 +85,7 @@ const PlanViewTabItems = () => {
               <a
                 href="#"
                 onClick={generateTreatmentPlanReport}
-                className={`action-btn ${downloadLoading ? 'pe-none' : ''}`}
+                className={`action-btn ${downloadLoading ? "pe-none" : ""}`}
                 data-bs-toggle="tooltip"
                 title="Print Plan Report"
               >
@@ -98,7 +99,7 @@ const PlanViewTabItems = () => {
                 )}
               </a>
             </div>
-            {hasPermission(PERMISSIONS.TREATMENT_PLANS.UPDATE) &&
+            {hasPermission(PERMISSIONS.TREATMENT_PLANS.UPDATE) && (
               <div className="d-md-none d-lg-flex">
                 <a
                   href={`/treatment-plans/${id}/edit`}
@@ -109,31 +110,31 @@ const PlanViewTabItems = () => {
                   <FiEdit size={16} />
                 </a>
               </div>
-            }
-            {hasPermission(PERMISSIONS.TREATMENT_PLANS.DELETE) &&
+            )}
+            {hasPermission(PERMISSIONS.TREATMENT_PLANS.DELETE) && (
               <div className="d-md-none d-lg-flex">
                 <a
                   href="#"
                   onClick={handleDeleteConfirmed}
-                  className={`action-btn ${deleteLoading ? 'pe-none' : ''}`}
+                  className={`action-btn ${deleteLoading ? "pe-none" : ""}`}
                   data-bs-toggle="tooltip"
                   title="Delete Treatment Plan"
                 >
-                {deleteLoading ? (
-                  <div
-                    className="spinner-border spinner-border-sm text-primary"
-                    role="status"
-                  />
-                ) : (
-                  <FiTrash size={16} />
-                )}
+                  {deleteLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-primary"
+                      role="status"
+                    />
+                  ) : (
+                    <FiTrash2 size={16} />
+                  )}
                 </a>
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
-      <ConfirmationDialog/>
+      <ConfirmationDialog />
     </div>
   );
 };

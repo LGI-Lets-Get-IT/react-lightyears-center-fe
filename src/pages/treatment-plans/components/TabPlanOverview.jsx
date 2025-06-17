@@ -89,6 +89,13 @@ const TabPlanOverview = () => {
                   <label className="form-label">Present Problem</label>
                   <p>{plan?.presentProblem}</p>
                 </div>
+                <hr />
+                <div className="col-md-12">
+                  <label className="form-label">
+                    Parent Collaboration Plan
+                  </label>
+                  <p>{plan?.parentPlan}</p>
+                </div>
               </div>
               <hr />
               <div className="col-md-12">
