@@ -5,13 +5,14 @@
 // import HorizontalProgress from "@/components/shared/HorizontalProgress";
 
 import format from "date-fns/format";
+import { FaEye } from "react-icons/fa";
 
 const childInfoData = [
   { label: "Full Name", key: "fullName" },
   { label: "Age", key: "age", suffix: " old" },
   { label: "Date of Birth", key: "dateOfBirth" },
   { label: "Nationality", key: "nationality" },
-  { label: "School Name", key: "schoolName" }
+  { label: "School Name", key: "schoolName" },
 ];
 
 const parentInfoData = [
@@ -26,15 +27,43 @@ const intakeFormData = [
   { label: "Religion", key: "religion" },
   { label: "Home Address", key: "homeAddress" },
   { label: "Previous Ongoing Activity", key: "previousOngoingActivity" },
-  { label: "What are your major reasons or concerns about your child", key: "majorReasonConcerns" },
-  { label: "Have you previously met a psychologist/psychiatrist before? If yes, please explain", key: "previousPsychologicalDetails" },
-  { label: "Ability to get along with others and control emotions?", key: "socialAbilities" },
-  { label: "Forms caring, supportive relationships with family members, other adults, and peers?", key: "relationshipAbilities" },
-  { label: "Chooses to eat healthy foods, and participate in physical activity everyday?", key: "healthAbilities" },
+  {
+    label: "What are your major reasons or concerns about your child",
+    key: "majorReasonConcerns",
+  },
+  {
+    label:
+      "Have you previously met a psychologist/psychiatrist before? If yes, please explain",
+    key: "previousPsychologicalDetails",
+  },
+  {
+    label: "Ability to get along with others and control emotions?",
+    key: "socialAbilities",
+  },
+  {
+    label:
+      "Forms caring, supportive relationships with family members, other adults, and peers?",
+    key: "relationshipAbilities",
+  },
+  {
+    label:
+      "Chooses to eat healthy foods, and participate in physical activity everyday?",
+    key: "healthAbilities",
+  },
   { label: "Can solve simple maths?", key: "mathAbilities" },
-  { label: "What is your expectation(s) for the current developmental programs?", key: "programsExpectations" },
-  { label: "Where did you hear about The Light Years Child Development Center?", key: "howHeardAboutUs" },
-  { label: "What is your child's birth order compared to their siblings?", key: "childBirthOrder" },
+  {
+    label:
+      "What is your expectation(s) for the current developmental programs?",
+    key: "programsExpectations",
+  },
+  {
+    label: "Where did you hear about The Light Years Child Development Center?",
+    key: "howHeardAboutUs",
+  },
+  {
+    label: "What is your child's birth order compared to their siblings?",
+    key: "childBirthOrder",
+  },
 ];
 const TabOverviewContent = ({ clientInformation }) => {
   return (
@@ -45,7 +74,7 @@ const TabOverviewContent = ({ clientInformation }) => {
     >
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
-          <h5 className="fw-bold mb-0">Child Information:</h5>
+          <h5 className="fw-bold mb-0">Child Information</h5>
           {/* <a href="#" className="btn btn-sm btn-light-brand gap-1">
             <FaPencil /> Edit Information
           </a> */}
@@ -53,8 +82,9 @@ const TabOverviewContent = ({ clientInformation }) => {
         {childInfoData.map((item, index) => (
           <div
             key={index}
-            className={`row g-0 ${index === childInfoData.length - 1 ? "mb-0" : "mb-4"
-              }`}
+            className={`row g-0 ${
+              index === childInfoData.length - 1 ? "mb-0" : "mb-4"
+            }`}
           >
             <div className="col-sm-6 text-muted">{item.label}:</div>
             <div className="col-sm-6 fw-semibold">
@@ -65,7 +95,7 @@ const TabOverviewContent = ({ clientInformation }) => {
       </div>
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
-          <h5 className="fw-bold mb-0">Guardian Information:</h5>
+          <h5 className="fw-bold mb-0">Guardian Information</h5>
           {/* <a href="#" className="btn btn-sm btn-light-brand gap-1">
             <FaPencil /> Edit Information
           </a> */}
@@ -73,8 +103,9 @@ const TabOverviewContent = ({ clientInformation }) => {
         {parentInfoData.map((item, index) => (
           <div
             key={index}
-            className={`row g-0 ${index === parentInfoData.length - 1 ? "mb-0" : "mb-4"
-              }`}
+            className={`row g-0 ${
+              index === parentInfoData.length - 1 ? "mb-0" : "mb-4"
+            }`}
           >
             <div className="col-sm-6 text-muted">{item.label}:</div>
             <div className="col-sm-6 fw-semibold">
@@ -85,12 +116,20 @@ const TabOverviewContent = ({ clientInformation }) => {
       </div>
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
-          <h5 className="fw-bold mb-0">Client Intake Form Information:</h5>
-          {/* <a href="#" className="btn btn-sm btn-light-brand gap-1">
-            <FaPencil /> Edit Information
-          </a> */}
+          <h5 className="fw-bold mb-0">Client Intake Form Information</h5>
         </div>
-        {intakeFormData.map((item, index) => (
+
+        <div className="row g-0 mb-4">
+          <div className="col-sm-6 text-muted">Link to Sheets</div>
+          <div className="col-sm-2">
+            <a href="https://sheets.google.com" className="btn btn-primary">
+              <FaEye size={12} className="me-2" />
+              <span>View Sheets</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      {/* {intakeFormData.map((item, index) => (
           <div
             key={index}
             className={`row g-0 ${index === intakeFormData.length - 1 ? "mb-0" : "mb-4"
@@ -242,7 +281,7 @@ const TabOverviewContent = ({ clientInformation }) => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

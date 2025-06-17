@@ -52,23 +52,23 @@ const TabProfile = ({ userData }) => {
         guardianPhone: userData?.guardianPhone,
         guardianNationality: userData?.guardianNationality,
         guardianRelationship: userData?.guardianRelationship,
-        intakeForm: {
-            placeOfBirth: userData?.clientDetails?.placeOfBirth,
-            religion: userData?.clientDetails?.religion,
-            homeAddress: userData?.clientDetails?.homeAddress,
-            previousOngoingActivity: userData?.clientDetails?.previousOngoingActivity,
-            majorReasonConcerns: userData?.clientDetails?.majorReasonConcerns,
-            previousPsychologicalDetails: userData?.clientDetails?.previousPsychologicalDetails,
-            socialAbilities: userData?.clientDetails?.socialAbilities,
-            relationshipAbilities: userData?.clientDetails?.relationshipAbilities,
-            healthAbilities: userData?.clientDetails?.healthAbilities,
-            mathAbilities: userData?.clientDetails?.mathAbilities,
-            programsExpectations: userData?.clientDetails?.programsExpectations,
-            howHeardAboutUs: userData?.clientDetails?.howHeardAboutUs,
-            childBirthOrder: userData?.clientDetails?.childBirthOrder,
-            institutions: userData?.clientDetails?.institutionsData,
-            guardians: userData?.clientDetails?.guardiansData,
-          },
+        // intakeForm: {
+        //     placeOfBirth: userData?.clientDetails?.placeOfBirth,
+        //     religion: userData?.clientDetails?.religion,
+        //     homeAddress: userData?.clientDetails?.homeAddress,
+        //     previousOngoingActivity: userData?.clientDetails?.previousOngoingActivity,
+        //     majorReasonConcerns: userData?.clientDetails?.majorReasonConcerns,
+        //     previousPsychologicalDetails: userData?.clientDetails?.previousPsychologicalDetails,
+        //     socialAbilities: userData?.clientDetails?.socialAbilities,
+        //     relationshipAbilities: userData?.clientDetails?.relationshipAbilities,
+        //     healthAbilities: userData?.clientDetails?.healthAbilities,
+        //     mathAbilities: userData?.clientDetails?.mathAbilities,
+        //     programsExpectations: userData?.clientDetails?.programsExpectations,
+        //     howHeardAboutUs: userData?.clientDetails?.howHeardAboutUs,
+        //     childBirthOrder: userData?.clientDetails?.childBirthOrder,
+        //     institutions: userData?.clientDetails?.institutionsData,
+        //     guardians: userData?.clientDetails?.guardiansData,
+        //   },
       }}
         enableReinitialize
         onSubmit={handleSubmit}>
@@ -312,7 +312,7 @@ const TabProfile = ({ userData }) => {
               </div>
             </div>
             <hr className="my-0" />
-            <div className="card-body additional-info">
+            {/* <div className="card-body additional-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
@@ -897,7 +897,6 @@ const TabProfile = ({ userData }) => {
                                                   }) => (
                                                     <div className="bg-white react-datepicker">
                                                       {children}
-                                                      {/* {renderFooter("start")} */}
                                                     </div>
                                                   )}
                                                 />
@@ -1047,7 +1046,7 @@ const TabProfile = ({ userData }) => {
                   <span>Edit Client</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </Form>
         )}
       </Formik>

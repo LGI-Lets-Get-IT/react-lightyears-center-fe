@@ -9,7 +9,10 @@ import {
   relationshipOptions,
 } from "@/utils/options";
 import { useDispatch, useSelector } from "react-redux";
-import { createSchool, fetchAllSchools } from "../../../store/slice/schoolSlice";
+import {
+  createSchool,
+  fetchAllSchools,
+} from "../../../store/slice/schoolSlice";
 import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
 import { Field, FieldArray, Form, Formik } from "formik";
@@ -36,8 +39,7 @@ const TabProfile = () => {
     dispatch(createClient(values))
       .unwrap()
       .then(() => {
-        actions.resetForm(),
-        navigate('/clients')
+        actions.resetForm(), navigate("/clients");
       })
       .catch((error) => console.error("handle error", error));
   };
@@ -127,11 +129,13 @@ const TabProfile = () => {
               <div className="pass-hint">
                 <p className="fw-bold">Password Requirements:</p>
                 <ul className="fs-12 ps-1 ms-2 text-muted">
-                    <li className="mb-1">Minimum 8 characters long - the more, the better</li>
+                  <li className="mb-1">
+                    Minimum 8 characters long - the more, the better
+                  </li>
                 </ul>
               </div>
             </div>
-            <hr className='my-0'/>
+            <hr className="my-0" />
             <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
@@ -239,7 +243,7 @@ const TabProfile = () => {
                   />
                 </div>
               </div>
-              {console.log('VALUESS', values)}
+              {console.log("VALUESS", values)}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label className="fw-semibold">School Name: </label>
@@ -412,14 +416,19 @@ const TabProfile = () => {
                   <FiX size={16} className="me-2" />
                   <span>Cancel</span>
                 </a>
-                <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={createLoading}
+                >
                   {createLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
                       role="status"
                     />
-                  ) : <FiCheck size={16} className="me-2" />
-                  }
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Create Client</span>
                 </button>
               </div>

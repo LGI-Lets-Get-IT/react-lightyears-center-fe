@@ -1,14 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
 import { format } from "date-fns"; // For formatting dates
-import { sharingOptions } from "@/utils/options";
+import { Link } from "react-router-dom";
+import { LiaPencilAltSolid } from "react-icons/lia";
 
 const childInfoData = [
   { label: "Full Name", key: "fullName" },
+  { label: "Gender", key: "gender" },
   { label: "Age", key: "age", suffix: " old" },
   { label: "Date of Birth", key: "dateOfBirth", type: "date" },
   { label: "Nationality", key: "nationality" },
   { label: "School Name", key: "schoolName" },
+  { label: "Class Name", key: "className" },
+  // { label: "Guardian Name", key: "guardianName" },
+  // { label: "Guardian Nationality", key: "guardianNationality" },
+  // { label: "Guardian Email", key: "guardianEmail" },
+  // { label: "Guardian Phone", key: "guardianPhone" },
+];
+
+const guardianInfoData = [
   { label: "Guardian Name", key: "guardianName" },
+  { label: "Guardian Nationality", key: "guardianNationality" },
+  { label: "Guardian Email", key: "guardianEmail" },
+  { label: "Guardian Phone", key: "guardianPhone" },
 ];
 
 // Intake Form - General Information
@@ -17,31 +30,74 @@ const intakeGeneralInfoData = [
   { label: "Religion", key: "religion" },
   { label: "Home Address", key: "homeAddress" },
   { label: "Previous Ongoing Activity", key: "previousOngoingActivity" },
-  { label: "What are your major reasons or concerns about your child", key: "majorReasonConcerns" },
-  { label: "Have you previously met a psychologist/psychiatrist before? If yes, please explain", key: "previousPsychologicalDetails" },
-  { label: "Ability to get along with others and control emotions?", key: "socialAbilities" },
-  { label: "Forms caring, supportive relationships with family members, other adults, and peers?", key: "relationshipAbilities" },
-  { label: "Chooses to eat healthy foods, and participate in physical activity everyday?", key: "healthAbilities" },
+  {
+    label: "What are your major reasons or concerns about your child",
+    key: "majorReasonConcerns",
+  },
+  {
+    label:
+      "Have you previously met a psychologist/psychiatrist before? If yes, please explain",
+    key: "previousPsychologicalDetails",
+  },
+  {
+    label: "Ability to get along with others and control emotions?",
+    key: "socialAbilities",
+  },
+  {
+    label:
+      "Forms caring, supportive relationships with family members, other adults, and peers?",
+    key: "relationshipAbilities",
+  },
+  {
+    label:
+      "Chooses to eat healthy foods, and participate in physical activity everyday?",
+    key: "healthAbilities",
+  },
   { label: "Can solve simple maths?", key: "mathAbilities" },
-  { label: "What is your expectation(s) for the current developmental programs?", key: "programsExpectations" },
-  { label: "Where did you hear about The Light Years Child Development Center?", key: "howHeardAboutUs" },
-  { label: "What is your child's birth order compared to their siblings?", key: "childBirthOrder" },
+  {
+    label:
+      "What is your expectation(s) for the current developmental programs?",
+    key: "programsExpectations",
+  },
+  {
+    label: "Where did you hear about The Light Years Child Development Center?",
+    key: "howHeardAboutUs",
+  },
+  {
+    label: "What is your child's birth order compared to their siblings?",
+    key: "childBirthOrder",
+  },
 ];
 
 // Intake Form - Child Abilities (Checkboxes)
 const intakeAbilitiesData = [
-  { label: "Gets along with others & controls emotions", key: "socialAbilities" },
-  { label: "Forms caring, supportive relationships", key: "relationshipAbilities" },
-  { label: "Chooses healthy foods & participates in physical activity", key: "healthAbilities" },
+  {
+    label: "Gets along with others & controls emotions",
+    key: "socialAbilities",
+  },
+  {
+    label: "Forms caring, supportive relationships",
+    key: "relationshipAbilities",
+  },
+  {
+    label: "Chooses healthy foods & participates in physical activity",
+    key: "healthAbilities",
+  },
   { label: "Can solve simple maths", key: "mathAbilities" },
 ];
 
 // Intake Form - Concerns & Expectations
 const intakeConcernsExpectationsData = [
   { label: "Major Reasons/Concerns about child", key: "majorReasonConcerns" },
-  { label: "Previous Met Psychologist/Psychiatrist Details (if any)", key: "previousPsychologicalDetails" },
+  {
+    label: "Previous Met Psychologist/Psychiatrist Details (if any)",
+    key: "previousPsychologicalDetails",
+  },
   { label: "Expectations for current programs", key: "programsExpectations" },
-  { label: "Where did you hear about The Light Years Child Development Center", key: "howHeardAboutUs" },
+  {
+    label: "Where did you hear about The Light Years Child Development Center",
+    key: "howHeardAboutUs",
+  },
   { label: "Child's Birth Order", key: "childBirthOrder" },
 ];
 
@@ -95,13 +151,17 @@ const UserProfile = () => {
   return (
     <div className="main-content">
       <div className="card">
-        <div className="card-body">
+        <div className="flex card-body">
           {/* Main Client Info Section */}
           <div className="profile-details mb-5">
             <div className="mb-4 d-flex align-items-center justify-content-between">
-              <h5 className="fw-bold mb-0">
-                My Profile 
-              </h5>
+              <h5 className="fw-bold mb-0">My Profile</h5>
+              <div>
+                <Link to="/profile/edit" className="btn btn-primary">
+                  <LiaPencilAltSolid size={16} className="me-2" />
+                  <span>Edit Profile</span>
+                </Link>
+              </div>
             </div>
             {childInfoData.map((item, index) => {
               let value = user?.[item.key];
@@ -126,8 +186,36 @@ const UserProfile = () => {
             })}
           </div>
 
+          {/* Guardian Information */}
+          <div className="profile-details mb-5">
+            <div className="mb-4 d-flex align-items-center justify-content-between">
+              <h5 className="fw-bold mb-0">Guardian Information</h5>
+            </div>
+            {guardianInfoData.map((item, index) => {
+              let value = user?.[item.key];
+              if (item.type === "date" && value) {
+                value = format(new Date(value), "dd MMM yyyy"); // Format date
+              }
+              return (
+                <div
+                  key={index}
+                  className={`row g-0 ${
+                    index === guardianInfoData.length - 1 ? "mb-0" : "mb-4"
+                  }`}
+                >
+                  <div className="col-sm-6 text-muted">{item.label}:</div>
+                  <div className="col-sm-6 fw-semibold">
+                    {value !== null && value !== undefined && value !== ""
+                      ? `${value}${item?.suffix || ""}`
+                      : "N/A"}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
           {/* Intake Form: General Information */}
-          {clientDetails && (
+          {/* {clientDetails && (
             <div className="profile-details mb-5">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Intake Form: General Information</h5>
@@ -153,10 +241,10 @@ const UserProfile = () => {
                 );
               })}
             </div>
-          )}
+          )} */}
 
           {/* Intake Form: Guardians */}
-          {guardians.length > 0 && (
+          {/* {guardians.length > 0 && (
             <div className="profile-details mb-5">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Intake Form: Guardians</h5>
@@ -183,10 +271,10 @@ const UserProfile = () => {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
 
           {/* Intake Form: Institutions & Activities */}
-          {institutionsActivities.length > 0 && (
+          {/* {institutionsActivities.length > 0 && (
             <div className="profile-details mb-5">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Intake Form: Institutions & Activities</h5>
@@ -207,11 +295,10 @@ const UserProfile = () => {
                 </div>
               ))}
             </div>
-          )}
-
+          )} */}
 
           {/* Intake Form: Child Abilities */}
-          {clientDetails && (
+          {/* {clientDetails && (
             <div className="profile-details mb-5">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Intake Form: Child Abilities</h5>
@@ -237,10 +324,10 @@ const UserProfile = () => {
                 );
               })}
             </div>
-          )}
+          )} */}
 
           {/* Intake Form: Concerns & Expectations */}
-          {clientDetails && (
+          {/* {clientDetails && (
             <div className="profile-details mb-5">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0">Intake Form: Concerns & Expectations</h5>
@@ -253,7 +340,7 @@ const UserProfile = () => {
                 return renderInfoRow(item.label, value);
               })}
             </div>
-          )}
+          )} */}
 
           {/* Existing Sharing Options (keep as is) */}
           <div className="profile-details mb-5">
@@ -261,9 +348,11 @@ const UserProfile = () => {
               <h5 className="fw-bold mb-0">Sharing Options</h5>
             </div>
             <div className="row g-0 mb-4">
-              <div className="col-sm-6 text-muted">Allow sharing data to school?:</div>
+              <div className="col-sm-6 text-muted">
+                Allow sharing data to school?:
+              </div>
               <div className="col-sm-6 fw-semibold">
-                <span>{user?.allowShareData ? "Yes" : 'No'}</span>
+                <span>{user?.allowShareData ? "Yes" : "No"}</span>
               </div>
             </div>
           </div>
