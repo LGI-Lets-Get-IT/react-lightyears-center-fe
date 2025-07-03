@@ -19,6 +19,18 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
+export const updateUserProfile = createAsyncThunk(
+  "profile/updateUserProfile",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const response = await profilesApi.updateUserProfile(bodyData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const profileSlice = createSlice({
   name: "profile",
   initialState,
@@ -28,11 +40,22 @@ export const profileSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.user = action.payload;
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(updateUserProfile.pending, (state) => {
       state.isLoading = true;
+    });
+    builder.addCase(updateUserProfile.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.user = action.payload;
+    });
+    builder.addCase(updateUserProfile.rejected, (state, action) => {
+      state.isLoading = false;
       state.error = action.payload;
     });
   },

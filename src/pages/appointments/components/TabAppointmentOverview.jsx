@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FiCalendar } from "react-icons/fi";
 import getIcon from "@/utils/getIcon";
 import { format } from "date-fns";
+import { roomOptions } from "@/utils/options";
 
 const TabAppointmentOverview = ({ appointmentData }) => {
   // const chartOptions = projectViewAreaChartOptions();
   const [now, setNow] = useState(new Date());
+
+  const getRoomLabel = (id) => roomOptions.find(option => option.value === id)?.label || '-';
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -83,7 +86,6 @@ const TabAppointmentOverview = ({ appointmentData }) => {
 
   return (
     <div className="tab-pane fade active show" id="overviewTab">
-      {/* {console.log("APPOINTMENTDATA", appointmentData)} */}
       <div className="row">
         <div className="col-lg-12">
           <div className="card stretch stretch-full">
@@ -92,13 +94,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 <h4 className="mb-4 fw-bold d-flex">
                   <span className="text-truncate-1-line text-capitalize">
                     {appointmentData ? <>[{appointmentData?.appointmentType}] {appointmentData?.title}</> : <>-</>}
-                    {/* <span className="text-muted">
-                      {appointmentData?.appointmentType}
-                    </span> */}
                   </span>
-                  {/* <span className="badge bg-soft-primary text-primary mx-3">
-                    {appointmentData?.status}
-                  </span> */}
                   <span className={`
                     badge bg-soft-${appointmentData?.status == 'Upcoming' ? 'primary' : appointmentData?.status == 'Ongoing ' ? 'warning' : appointmentData?.status == 'Done' ? 'success' : 'danger'}
                     text-${appointmentData?.status == 'Upcoming' ? 'primary' : appointmentData?.status == 'Ongoing' ? 'warning' : appointmentData?.status == 'Done' ? 'success' : 'danger'} mx-3
@@ -109,6 +105,10 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 <p>
                   PIC Name:
                   <strong> {appointmentData?.picName}</strong> ({appointmentData?.picType})
+                </p>
+                <p>
+                  Room Name:
+                  <strong> {getRoomLabel(appointmentData?.roomId)}</strong>
                 </p>
 
                 <div className="d-flex align-items-center">

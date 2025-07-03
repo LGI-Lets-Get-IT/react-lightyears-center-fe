@@ -89,6 +89,19 @@ export const updateAppointmentById = createAsyncThunk(
   }
 );
 
+export const confirmPicAttendanceById = createAsyncThunk(
+  "appointments/confirmPicAttendanceById",
+  async (appointmentId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await appointmentsApi.confirmPicAttendanceById(appointmentId);
+      dispatch(fetchAppointmentById(appointmentId))
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const deleteAppointmentByIds = createAsyncThunk(
   "appointments/deleteAppointmentByIds",
   async (appointmentIds, { rejectWithValue, dispatch }) => {
@@ -186,20 +199,34 @@ export const appointmentSlice = createSlice({
         state.error = action.payload;
       });
     builder
-      .addCase(deleteAppointmentByIds.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-        state.appointments = initialState.appointments;
-      })
-      .addCase(deleteAppointmentByIds.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.appointments = action.payload;
-      })
-      .addCase(deleteAppointmentByIds.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.payload;
-        state.appointments = initialState.appointments;
-      });
+    .addCase(deleteAppointmentByIds.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+      state.appointments = initialState.appointments;
+    })
+    .addCase(deleteAppointmentByIds.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.appointments = action.payload;
+    })
+    .addCase(deleteAppointmentByIds.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+      state.appointments = initialState.appointments;
+    });
+
+    builder
+    .addCase(confirmPicAttendanceById.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(confirmPicAttendanceById.fulfilled, (state, action) => {
+      state.isLoading = false;
+    })
+    .addCase(confirmPicAttendanceById.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    
   },
 });
 

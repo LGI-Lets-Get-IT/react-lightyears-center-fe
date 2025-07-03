@@ -9,6 +9,7 @@ import AppointmentsEdit from "@/pages/appointments/appointments-edit";
 const ChangePassword = lazy(() => import("@/pages/user/change-password"));
 const PlansEdit = lazy(() => import("@/pages/treatment-plans/plans-edit"));
 const UserProfile = lazy(() => import("@/pages/user/user-profile"));
+const UserProfileEdit = lazy(() => import("@/pages/user/user-profile-edit"));
 const TestTypesEdit = lazy(() => import("@/pages/test-types/test-types-edit"));
 const TreatmentTypesEdit = lazy(() =>
   import("@/pages/treatment-types/treatment-types-edit")
@@ -110,6 +111,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute requiredPermissions={PERMISSIONS.PROFILE.VIEW}>
             <UserProfile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/profile/edit",
+        element: (
+          <ProtectedRoute requiredPermissions={PERMISSIONS.PROFILE.UPDATE}>
+            <UserProfileEdit />
           </ProtectedRoute>
         ),
       },

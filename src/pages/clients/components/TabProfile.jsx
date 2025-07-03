@@ -9,19 +9,24 @@ import {
   relationshipOptions,
 } from "@/utils/options";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllSchools } from "../../../store/slice/schoolSlice";
+import {
+  createSchool,
+  fetchAllSchools,
+} from "../../../store/slice/schoolSlice";
 import { createClient } from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { clientSchema } from "@/schemas/clientSchema";
 import TextArea from "@/components/shared/TextArea";
+import useLocationData from "@/hooks/useLocationData";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading: createLoading } = useSelector((state) => state.clients);
   const { schools } = useSelector((state) => state.schools);
-  const countries = countriesOptions;
+  // const countries = countriesOptions;
+  const { countries } = useLocationData();
   const relationships = relationshipOptions;
   const genders = genderOptions;
 
@@ -34,8 +39,7 @@ const TabProfile = () => {
     dispatch(createClient(values))
       .unwrap()
       .then(() => {
-        actions.resetForm(),
-        navigate('/clients')
+        actions.resetForm(), navigate("/clients");
       })
       .catch((error) => console.error("handle error", error));
   };
@@ -44,6 +48,8 @@ const TabProfile = () => {
     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
       <Formik
         initialValues={{
+          password: null,
+          passwordConfirm: null,
           fullName: null,
           dateOfBirth: null,
           gender: null,
@@ -56,30 +62,81 @@ const TabProfile = () => {
           guardianPhone: null,
           guardianNationality: null,
           guardianRelationship: null,
-          intakeForm: {
-            placeOfBirth: null,
-            religion: null,
-            homeAddress: null,
-            previousOngoingActivity: null,
-            majorReasonConcerns: null,
-            previousPsychologicalDetails: null,
-            socialAbilities: null,
-            relationshipAbilities: null,
-            healthAbilities: null,
-            mathAbilities: null,
-            programsExpectations: null,
-            howHeardAboutUs: null,
-            childBirthOrder: null,
-            institutions: [],
-            guardians: [],
-          },
+          // intakeForm: {
+          //   placeOfBirth: null,
+          //   religion: null,
+          //   homeAddress: null,
+          //   previousOngoingActivity: null,
+          //   majorReasonConcerns: null,
+          //   previousPsychologicalDetails: null,
+          //   socialAbilities: null,
+          //   relationshipAbilities: null,
+          //   healthAbilities: null,
+          //   mathAbilities: null,
+          //   programsExpectations: null,
+          //   howHeardAboutUs: null,
+          //   childBirthOrder: null,
+          //   institutions: [],
+          //   guardians: [],
+          // },
         }}
         validationSchema={clientSchema}
         onSubmit={handleSubmit}
       >
         {({ values, setFieldValue }) => (
           <Form>
-            <div className="card-body personal-info">
+            <div className="card-body">
+              <div className="mb-4 d-flex align-items-center justify-content-between">
+                <h5 className="fw-bold mb-0 me-4">
+                  <span className="d-block mb-2">Set Password</span>
+                  <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                    Set client password
+                  </span>
+                </h5>
+              </div>
+              <Field name="password">
+                {({ field, meta }) => (
+                  <Input
+                    icon="feather-key"
+                    type="password"
+                    label={"Password"}
+                    labelId={"passwordInput"}
+                    placeholder={"Password"}
+                    name={"password"}
+                    value={values.password}
+                    className={`${meta.error ? "is-invalid" : ""}`}
+                    meta={meta}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <Field name="passwordConfirm">
+                {({ field, meta }) => (
+                  <Input
+                    icon="feather-key"
+                    type="password"
+                    label={"Password Confirm"}
+                    labelId={"passwordConfirmInput"}
+                    placeholder={"Confirm Password"}
+                    name={"passwordConfirm"}
+                    value={values.passwordConfirm}
+                    className={`${meta.error ? "is-invalid" : ""}`}
+                    meta={meta}
+                    {...field}
+                  />
+                )}
+              </Field>
+              <div className="pass-hint">
+                <p className="fw-bold">Password Requirements:</p>
+                <ul className="fs-12 ps-1 ms-2 text-muted">
+                  <li className="mb-1">
+                    Minimum 8 characters long - the more, the better
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <hr className="my-0" />
+            <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">Child Information:</span>
@@ -181,11 +238,12 @@ const TabProfile = () => {
                     selectedOption={values.nationality}
                     placeholder={"Select Child Nationality"}
                     onSelectOption={(option) => {
-                      setFieldValue("nationality", option.label);
+                      setFieldValue("nationality", option.value);
                     }}
                   />
                 </div>
               </div>
+              {console.log("VALUESS", values)}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label className="fw-semibold">School Name: </label>
@@ -201,6 +259,9 @@ const TabProfile = () => {
                     placeholder={"Select School Name"}
                     onSelectOption={(option) => {
                       setFieldValue("schoolId", option.value);
+                    }}
+                    onCreateOption={(value) => {
+                      dispatch(createSchool({ schoolName: value }));
                     }}
                   />
                   <hr className="my-0" />
@@ -253,7 +314,7 @@ const TabProfile = () => {
               </div>
             </div>
             <hr className="my-0" />
-            <div className="card-body additional-info">
+            <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">Guardian Information:</span>
@@ -350,25 +411,30 @@ const TabProfile = () => {
                 </div>
               </div>
 
-              {/* <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+              <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
                 <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
                   <FiX size={16} className="me-2" />
                   <span>Cancel</span>
                 </a>
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={createLoading}
+                >
                   {createLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
                       role="status"
                     />
-                  ) : <FiCheck size={16} className="me-2" />
-                  }
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
                   <span>Create Client</span>
                 </button>
-              </div> */}
+              </div>
             </div>
             <hr className="my-0" />
-            <div className="card-body additional-info">
+            {/* <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
                   <span className="d-block mb-2">
@@ -951,7 +1017,6 @@ const TabProfile = () => {
                                                   }) => (
                                                     <div className="bg-white react-datepicker">
                                                       {children}
-                                                      {/* {renderFooter("start")} */}
                                                     </div>
                                                   )}
                                                 />
@@ -1101,7 +1166,7 @@ const TabProfile = () => {
                   <span>Create Client</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </Form>
         )}
       </Formik>

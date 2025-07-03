@@ -9,6 +9,7 @@ import { PERMISSIONS } from "@/shared/permissionsConstant";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAppointmentByIds, fetchAllAppointments } from "@/store/slice/appointmentSlice";
+import format from "date-fns/format";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -137,7 +138,7 @@ const AppointmentsTable = () => {
     {
       accessorKey: "appointmentDate",
       header: () => "Appointment Date",
-      cell: (info) => <a>{info.getValue()}</a>,
+      cell: (info) => <a>{info?.getValue() && format(info.getValue(), 'dd MMM yyyy')}</a>,
     },
     {
       accessorKey: "appointmentTime",
@@ -154,6 +155,19 @@ const AppointmentsTable = () => {
           </span>
         );
       },
+    },
+    {
+      accessorKey: 'isConfirmed',
+      header: () => 'Confirmed by PIC',
+      cell: (info) => {
+        const text = info.getValue() ? 'Confirmed' : 'Not Confirmed';
+        const color = info.getValue() ? 'success' : 'danger';
+        return (
+          <span className={`badge bg-soft-${color} text-${color}`}>
+            {text}
+          </span>
+        )
+      }
     },
     {
       accessorKey: "status",

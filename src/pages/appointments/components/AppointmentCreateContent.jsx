@@ -1,177 +1,294 @@
-import { useEffect, useState } from "react";
-import TabProjectType from "./appointmentCreateTabs/TabProjectType";
-import TabProjectPIC from "./appointmentCreateTabs/TabProjectPIC";
-import TabCompleted from "./appointmentCreateTabs/TabCompleted";
-import TabDateTime from "./appointmentCreateTabs/TabDateTime";
-import { makeAppointment } from "@/store/slice/appointmentSlice";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import SelectDropdown from "@/components/shared/SelectDropdown";
+import DatePicker from "react-datepicker";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    fetchAllPsychologists,
+    fetchAllTherapists,
+} from "@/store/slice/employeeSlice";
+import { fetchAllClients } from "@/store/slice/clientSlice";
+import { FiCheck, FiX } from "react-icons/fi";
+import { Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { step0Schema, step1Schema, step2Schema } from "../../../schemas/appointmentSchema";
-
-const steps = [
-  { name: "Type", required: true },
-  { name: "PIC", required: true },
-  { name: "Date & Time", required: true },
-  { name: "Complete", required: false },
-];
+import { format } from "date-fns";
+import { appointmentTypeOptions, roomOptions } from "@/utils/options";
+import { appointmentSchema } from "@/schemas/appointmentSchema";
+import { makeAppointment } from "@/store/slice/appointmentSlice";
 
 const AppointmentCreateContent = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [errors, setErrors] = useState(false);
-  const [formData, setFormData] = useState({
-    clientId: '',
-    title: null,
-    appointmentType: "",
-    picId: '',
-    picType: null,
-    appointmentDate: null,
-    timeStart: null,
-    timeEnd: null,
-  });
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { clients } = useSelector((state) => state.clients);
+    const { isLoading: createLoading } = useSelector((state) => state.appointments);
+    const { psychologists, therapists } = useSelector((state) => state.employees);
 
+    const appointmentTypes = appointmentTypeOptions;
+    const rooms = roomOptions;
 
-  const handleInputChange = () => {
-    try {
-      if (currentStep === 0) {
-        step0Schema.validate(formData, { abortEarly: false });
-      } else if (currentStep === 1) {
-        step1Schema.validate(formData, { abortEarly: false });
-      } else if (currentStep === 2) {
-        step2Schema.validate(formData, { abortEarly: false });
-      }
-    } catch (error) {
-      const newError = {}
-      error.inner.forEach((err) => {
-        newError[err.path] = err.message
-      })
-      setErrors(newError)
-    }
-  }
+    const onSubmit = async (values, actions) => {
+        const startDateTimeLocal = new Date(`${format(values.appointmentDate, 'yyyy-MM-dd')}T${values.timeStart}`);
+        const endDateTimeLocal = new Date(`${format(values.appointmentDate, 'yyyy-MM-dd')}T${values.timeEnd}`);
+        const formattedValues = {
+            ...values,
+            timeStart: startDateTimeLocal.toISOString(), // UTC ISO string
+            timeEnd: endDateTimeLocal.toISOString(),
+        };
 
-  const handleNext = async (e) => {
-    e.preventDefault();
+        dispatch(makeAppointment(formattedValues))
+            .unwrap()
+            .then(() => navigate(`/appointments/`))
+            .catch(error => console.log('Error', error));
+    };
 
-    console.log('FORMDATA', formData)
-
-    try {
-      if (currentStep === 0) {
-        await step0Schema.validate(formData, { abortEarly: false })
-        setErrors(false)
-      } else if (currentStep === 1) {
-        await step1Schema.validate(formData, { abortEarly: false })
-        setErrors(false)
-      } else if (currentStep === 2) {
-        await step2Schema.validate(formData, { abortEarly: false })
-        setErrors(false)
-
-        dispatch(makeAppointment(formData))
-          .unwrap()
-          .then(() => {
-            setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-            navigate('/appointments')
-          })
-          .catch((rejectedValueOrSerializedError) => {
-            console.log('rejectedValueOrSerializedError', rejectedValueOrSerializedError)
-          });
-      }
-      setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
-    } catch (error) {
-      const newError = {}
-      error.inner.forEach((err) => {
-        newError[err.path] = err.message
-      })
-
-      setErrors(newError)
-    }
-  };
-
-  const handlePrev = (e) => {
-    e.preventDefault();
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleTabClick = (e, index) => {
-    e.preventDefault();
-    if (index < currentStep) {
-      setCurrentStep(index); // allow backward
-    }
-  };
-
-  return (
-    <div className="col-lg-12">
-      <div className="card border-top-0">
-        <div className="card-body p-0 wizard" id="project-create-steps">
-          <div className="steps clearfix">
-            <ul role="tablist">
-              {steps.map((step, index) => (
-                <li
-                  key={index}
-                  className={`${currentStep === index ? "current" : ""} ${currentStep === index && errors ? "error" : ""
-                    }`}
-                  onClick={(e) => handleTabClick(e, index)}
-                >
-                  <a href="#" className="d-block fw-bold">
-                    {step.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="content clearfix">
-            {currentStep === 0 && (
-              <TabProjectType
-                setFormData={setFormData}
-                formData={formData}
-                onInputChange={handleInputChange}
-                error={errors}
-                setError={setErrors}
-              />
-            )}
-            {currentStep === 1 && (
-              <TabProjectPIC
-                setFormData={setFormData}
-                formData={formData}
-                onInputChange={handleInputChange}
-                error={errors}
-                setError={setErrors}
-              />
-            )}
-            {currentStep === 2 && (
-              <TabDateTime
-                setFormData={setFormData}
-                formData={formData}
-                error={errors}
-                setError={setErrors}
-              />
-            )}
-            {currentStep === 3 && <TabCompleted />}
-          </div>
-
-          {/* Buttons */}
-          <div className="actions clearfix">
-            <ul>
-              <li
-                className={`${currentStep === 0 ? "disabled" : ""}`}
-                onClick={(e) => handlePrev(e)}
-              >
-                <a href="#">Previous</a>
-              </li>
-              <li
-                className={`${currentStep === steps.length - 1 ? "disabled" : ""
-                  }`}
-                onClick={(e) => handleNext(e)}
-              >
-                <a href="#">{currentStep === 2 ? "Submit" : "Next"}</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    useEffect(() => {
+        dispatch(fetchAllClients());
+        // if(appointmentData) {
+        //     if (appointmentData?.appointmentType.toLowerCase() === 'treatment') {
+        //         dispatch(fetchAllTherapists());
+        //     } else {
+        //         dispatch(fetchAllPsychologists());
+        //     }
+        // }
+    }, []);
+    return (
+        <>
+            <div className="col-lg-12">
+                <div className="card stretch stretch-full">
+                    <div className="card-body">
+                        <div className="mb-5 d-flex align-items-center justify-content-between">
+                            <h5 className="fw-bold mb-0 me-4">
+                                <span className="d-block mb-2">Create Appointment</span>
+                                {/* <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                                    Last Edited: {appointmentData?.updatedAt && format(appointmentData.updatedAt, "dd MMM yyyy, HH:mm aa")}
+                                </span> */}
+                            </h5>
+                        </div>
+                        <Formik
+                            initialValues={{
+                                title: null,
+                                clientId: null,
+                                picId: null,
+                                roomId: null,
+                                appointmentType: null,
+                                appointmentDate: null,
+                                timeStart: null,
+                                timeEnd: null,
+                            }}
+                            validationSchema={appointmentSchema}
+                            onSubmit={onSubmit}
+                        >
+                            {({ values, setFieldValue, errors }) => (
+                                <Form>
+                                    <div className="row">
+                                        {console.log('errors', errors)}
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                Appointment Title <span className="text-danger">*</span>
+                                            </label>
+                                            <Field name="title">
+                                                {({ field, meta }) => (
+                                                    <>
+                                                        <input
+                                                            type="text"
+                                                            className={`form-control`}
+                                                            name="title"
+                                                            placeholder="Enter Appointment Title"
+                                                            value={values.title}
+                                                            {...field}
+                                                        />
+                                                        {meta.error && (
+                                                            <div className="mt-1 text-danger">{meta.error}</div>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                Appointment Type <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                name="appointmentType"
+                                                options={appointmentTypes}
+                                                selectedOption={values.appointmentType}
+                                                placeholder={"Select Appointment Type"}
+                                                onSelectOption={(option) => {
+                                                    if (option.value.toLowerCase() === 'treatment') {
+                                                        dispatch(fetchAllTherapists())
+                                                    } else {
+                                                        dispatch(fetchAllPsychologists())
+                                                    }
+                                                    setFieldValue('appointmentType', option.value)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                PIC Name <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                isDisabled={!values.appointmentType}
+                                                name="picId"
+                                                options={values.appointmentType?.toLowerCase() === 'treatment' ? therapists.map((item) => ({
+                                                    label: `[Therapist] ${item.fullName}`,
+                                                    value: item.id,
+                                                })) : psychologists.map((item) => ({
+                                                    label: `[Psychologist] ${item.fullName}`,
+                                                    value: item.id
+                                                }))}
+                                                selectedOption={values.picId}
+                                                placeholder={"Select PIC"}
+                                                onSelectOption={(option) => {
+                                                    setFieldValue('picId', option.value)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                Client Name <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                name="clientId"
+                                                options={clients.map((item) => ({
+                                                    label: item.fullName,
+                                                    value: item.id,
+                                                }))}
+                                                selectedOption={values.clientId}
+                                                placeholder={"Select Client"}
+                                                onSelectOption={(option) => {
+                                                    setFieldValue('clientId', option.value)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                Room Name <span className="text-danger">*</span>
+                                            </label>
+                                            <SelectDropdown
+                                                name="roomId"
+                                                options={rooms}
+                                                selectedOption={values.roomId}
+                                                placeholder={"Select Room"}
+                                                onSelectOption={(option) => {
+                                                    setFieldValue('roomId', option.value)
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="col-lg-6 mb-4">
+                                            <label className="form-label">
+                                                Appointment Date <span className="text-danger">*</span>
+                                            </label>
+                                            <div className="input-group date flex-column">
+                                                <Field name="appointmentDate">
+                                                    {({ meta }) => (
+                                                        <>
+                                                            <DatePicker
+                                                                name="appointmentDate"
+                                                                placeholderText="YYYY-MM-DD"
+                                                                dateFormat={"yyyy-MM-dd"}
+                                                                showPopperArrow={false}
+                                                                selected={values.appointmentDate}
+                                                                onChange={(date) => {
+                                                                    setFieldValue(
+                                                                        "appointmentDate",
+                                                                        // date,
+                                                                        format(date, "yyyy-MM-dd HH:mm:ss xx")
+                                                                    );
+                                                                }}
+                                                                className={`form-control ${meta.error ? "is-invalid" : ""
+                                                                    }`}
+                                                                popperPlacement="bottom-start"
+                                                                calendarContainer={({ children }) => (
+                                                                    <div className="bg-white react-datepicker">
+                                                                        {children}
+                                                                    </div>
+                                                                )}
+                                                            />
+                                                            {meta.error && (
+                                                                <div className="mt-1 text-danger">{meta.error}</div>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </Field>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 mb-4">
+                                            <label htmlFor="timeStart" className="form-label">
+                                                Start Time <span className="text-danger">*</span>
+                                            </label>
+                                            <Field name="timeStart">
+                                                {({ field, meta }) => (
+                                                    <>
+                                                        <input
+                                                            type="time"
+                                                            id="timeStart"
+                                                            name="timeStart"
+                                                            value={values.timeStart}
+                                                            className={`form-control ${meta.error ? "is-invalid" : ""}`}
+                                                            required
+                                                            {...field}
+                                                        />
+                                                        {meta.error && (
+                                                            <div className="mt-1 text-danger">{meta.error}</div>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </Field>
+                                        </div>
+                                        <div className="col-md-6 mb-4">
+                                            <label htmlFor="timeEnd" className="form-label">
+                                                End Time <span className="text-danger">*</span>
+                                            </label>
+                                            <Field name="timeEnd">
+                                                {({ field, meta }) => (
+                                                    <>
+                                                        <input
+                                                            type="time"
+                                                            id="timeEnd"
+                                                            name="timeEnd"
+                                                            value={values.endTime}
+                                                            className={`form-control ${meta.error ? "is-invalid" : ""}`}
+                                                            required
+                                                            {...field}
+                                                        />
+                                                        {meta.error && (
+                                                            <div className="mt-1 text-danger">{meta.error}</div>
+                                                        )}
+                                                    </>
+                                                )}
+                                            </Field>
+                                        </div>
+                                    </div>
+                                    <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+                                        <button
+                                            className="btn btn-light-brand"
+                                            onClick={() => navigate(-1)}
+                                            type="button"
+                                        >
+                                            <FiX size={16} className="me-2" />
+                                            <span>Cancel</span>
+                                        </button>
+                                        <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                                            {createLoading ? (
+                                                <div
+                                                    className="spinner-border spinner-border-sm text-white me-2"
+                                                    role="status"
+                                                />
+                                            ) : (
+                                                <FiCheck size={16} className="me-2" />
+                                            )}
+                                            <span>Create Appointment</span>
+                                        </button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </div>
+                </div>
+            </div >
+            {/* <AddProposal previtems={previtems} /> */}
+        </>
+    );
 };
 
 export default AppointmentCreateContent;

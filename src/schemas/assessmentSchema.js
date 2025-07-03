@@ -10,6 +10,6 @@ export const assessmentSchema = Yup.object().shape({
   appointmentId: Yup.number().required("Appointment Name is required"),
   testId: Yup.number().required('Test Name is required'),
   result: Yup.string()
-    .required("Present problem must be filled")
-    .min(3, "Present problem is too short"),
+    .required("Please enter the test result")
+    .min(3, "Test result must be at least 3 characters"),
 });

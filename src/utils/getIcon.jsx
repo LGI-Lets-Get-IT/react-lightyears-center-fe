@@ -71,6 +71,7 @@ import {
   FiGrid,
   FiHelpCircle,
   FiInstagram,
+  FiKey,
   FiLayers,
   FiLayout,
   FiLifeBuoy,
@@ -295,6 +296,8 @@ const getIcon = (name) => {
       return <FiSliders />;
     case "feather-framer":
       return <FiFramer />;
+    case "feather-key":
+      return <FiKey/>;
 
     case "fa-chrome":
       return <FaChrome />;

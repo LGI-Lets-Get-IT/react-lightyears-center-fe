@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { userLogin } from '../../store/slice/authSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginSchema } from '../../schemas/authSchema'
 import { Field, Form, Formik } from 'formik'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const LoginForm = ({ resetPath }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { isLoading } = useSelector(state => state.auth);
+    const [hidePassword, setHidePassword] = useState(true);
 
     const handleUserLogin = async (values, actions) => {
         dispatch(userLogin(values))
@@ -55,17 +57,24 @@ const LoginForm = ({ resetPath }) => {
                             <div className="mb-3">
                                 <Field name="password">
                                     {({ field, meta }) => (
-                                        <div className="mb-4">
+                                        <div className="mb-4 position-relative">
                                             <input
                                                 name="password"
                                                 id="password"
-                                                type="password"
+                                                type={`${hidePassword ? 'password' : 'text'}`}
                                                 className={`form-control ${meta.error ? 'is-invalid' : ''}`}
                                                 placeholder="Password"
                                                 value={values.password}
                                                 required
                                                 {...field}
                                             />
+                                                <span
+                                                    onClick={() => setHidePassword(!hidePassword)}
+                                                    className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted pe-auto"
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    {hidePassword ? <FaEyeSlash /> : <FaEye />}
+                                                </span>
                                             {meta.error && (
                                                 <div className="text-danger mt-1">
                                                     {meta.error}
