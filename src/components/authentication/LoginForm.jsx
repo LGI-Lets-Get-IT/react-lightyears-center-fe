@@ -73,7 +73,7 @@ const LoginForm = ({ resetPath }) => {
                                                     className="position-absolute top-50 end-0 translate-middle-y me-3 text-muted pe-auto"
                                                     style={{ cursor: 'pointer' }}
                                                 >
-                                                    {hidePassword ? <FaEyeSlash /> : <FaEye />}
+                                                    {hidePassword ? <FaEye /> : <FaEyeSlash />}
                                                 </span>
                                             {meta.error && (
                                                 <div className="text-danger mt-1">
