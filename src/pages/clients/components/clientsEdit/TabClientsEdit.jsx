@@ -3,7 +3,11 @@ import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
-import { countriesOptions, genderOptions, relationshipOptions } from "@/utils/options";
+import {
+  countriesOptions,
+  genderOptions,
+  relationshipOptions,
+} from "@/utils/options";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllSchools } from "../../../../store/slice/schoolSlice";
 import { updateClientByUuid } from "@/store/slice/clientSlice";
@@ -12,13 +16,14 @@ import { format } from "date-fns";
 import { Field, FieldArray, Form, Formik } from "formik";
 import TextArea from "@/components/shared/TextArea";
 import useLocationData from "@/hooks/useLocationData";
+import { clientSchema } from "@/schemas/clientSchema";
 
 const TabProfile = ({ userData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { uuid } = useParams();
   const { schools } = useSelector((state) => state.schools);
-  const { isLoading: updateLoading } = useSelector(state => state.clients)
+  const { isLoading: updateLoading } = useSelector((state) => state.clients);
   const relationships = relationshipOptions;
   const genders = genderOptions;
   // const countries = countriesOptions;
@@ -28,9 +33,7 @@ const TabProfile = ({ userData }) => {
     dispatch(fetchAllSchools());
   }, []);
 
-
   const handleSubmit = (values, actions) => {
-    console.log('VALUE', values)
     dispatch(updateClientByUuid({ uuid, data: values }))
       .unwrap()
       .then(() => navigate(`/clients/${uuid}`))
@@ -39,49 +42,52 @@ const TabProfile = ({ userData }) => {
 
   return (
     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
-      <Formik initialValues={{
-        fullName: userData?.fullName,
-        dateOfBirth: userData?.dateOfBirth,
-        gender: userData?.gender,
-        nationality: userData?.nationality,
-        schoolId: userData?.schoolId,
-        className: userData?.className,
-        problem: userData?.problem,
-        guardianName: userData?.guardianName,
-        guardianEmail: userData?.guardianEmail,
-        guardianPhone: userData?.guardianPhone,
-        guardianNationality: userData?.guardianNationality,
-        guardianRelationship: userData?.guardianRelationship,
-        // intakeForm: {
-        //     placeOfBirth: userData?.clientDetails?.placeOfBirth,
-        //     religion: userData?.clientDetails?.religion,
-        //     homeAddress: userData?.clientDetails?.homeAddress,
-        //     previousOngoingActivity: userData?.clientDetails?.previousOngoingActivity,
-        //     majorReasonConcerns: userData?.clientDetails?.majorReasonConcerns,
-        //     previousPsychologicalDetails: userData?.clientDetails?.previousPsychologicalDetails,
-        //     socialAbilities: userData?.clientDetails?.socialAbilities,
-        //     relationshipAbilities: userData?.clientDetails?.relationshipAbilities,
-        //     healthAbilities: userData?.clientDetails?.healthAbilities,
-        //     mathAbilities: userData?.clientDetails?.mathAbilities,
-        //     programsExpectations: userData?.clientDetails?.programsExpectations,
-        //     howHeardAboutUs: userData?.clientDetails?.howHeardAboutUs,
-        //     childBirthOrder: userData?.clientDetails?.childBirthOrder,
-        //     institutions: userData?.clientDetails?.institutionsData,
-        //     guardians: userData?.clientDetails?.guardiansData,
-        //   },
-      }}
+      <Formik
+        initialValues={{
+          fullName: userData?.fullName,
+          dateOfBirth: userData?.dateOfBirth,
+          gender: userData?.gender,
+          nationality: userData?.nationality,
+          schoolId: userData?.schoolId,
+          className: userData?.className,
+          problem: userData?.problem,
+          guardianName: userData?.guardianName,
+          guardianEmail: userData?.guardianEmail,
+          guardianPhone: userData?.guardianPhone,
+          guardianNationality: userData?.guardianNationality,
+          guardianRelationship: userData?.guardianRelationship,
+          // intakeForm: {
+          //     placeOfBirth: userData?.clientDetails?.placeOfBirth,
+          //     religion: userData?.clientDetails?.religion,
+          //     homeAddress: userData?.clientDetails?.homeAddress,
+          //     previousOngoingActivity: userData?.clientDetails?.previousOngoingActivity,
+          //     majorReasonConcerns: userData?.clientDetails?.majorReasonConcerns,
+          //     previousPsychologicalDetails: userData?.clientDetails?.previousPsychologicalDetails,
+          //     socialAbilities: userData?.clientDetails?.socialAbilities,
+          //     relationshipAbilities: userData?.clientDetails?.relationshipAbilities,
+          //     healthAbilities: userData?.clientDetails?.healthAbilities,
+          //     mathAbilities: userData?.clientDetails?.mathAbilities,
+          //     programsExpectations: userData?.clientDetails?.programsExpectations,
+          //     howHeardAboutUs: userData?.clientDetails?.howHeardAboutUs,
+          //     childBirthOrder: userData?.clientDetails?.childBirthOrder,
+          //     institutions: userData?.clientDetails?.institutionsData,
+          //     guardians: userData?.clientDetails?.guardiansData,
+          //   },
+        }}
         enableReinitialize
-        onSubmit={handleSubmit}>
+        onSubmit={handleSubmit}
+        validationSchema={clientSchema}
+      >
         {({ values, setFieldValue, getFieldProps }) => (
           <Form>
             <div className="card-body personal-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
-                  <span className="d-block mb-2">
-                    Edit Client Information
-                  </span>
+                  <span className="d-block mb-2">Edit Client Information</span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                    Last Edited:{" "}
+                    {userData?.updatedAt &&
+                      format(userData.updatedAt, "dd MMM yyyy, HH:mm aa")}
                   </span>
                 </h5>
               </div>
@@ -96,7 +102,7 @@ const TabProfile = ({ userData }) => {
                     value={values.fullName}
                     meta={meta}
                     {...field}
-                    {...getFieldProps('fullName')}
+                    {...getFieldProps("fullName")}
                   />
                 )}
               </Field>
@@ -122,7 +128,7 @@ const TabProfile = ({ userData }) => {
                         selected={values.dateOfBirth}
                         showPopperArrow={false}
                         dateFormat="yyyy-MM-dd"
-                        onChange={(date) => setFieldValue('dateOfBirth', date)}
+                        onChange={(date) => setFieldValue("dateOfBirth", date)}
                         className="form-control rounded-0"
                         popperPlacement="bottom-start"
                         calendarContainer={({ children }) => (
@@ -141,12 +147,12 @@ const TabProfile = ({ userData }) => {
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'gender'}
+                    name={"gender"}
                     options={genders}
                     selectedOption={values.gender}
                     placeholder={values.gender}
                     onSelectOption={(option) => {
-                      setFieldValue('gender', option.value)
+                      setFieldValue("gender", option.value);
                     }}
                   />
                 </div>
@@ -157,12 +163,12 @@ const TabProfile = ({ userData }) => {
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'nationality'}
+                    name={"nationality"}
                     options={countries}
                     selectedOption={values.nationality}
                     placeholder={values.nationality}
                     onSelectOption={(option) => {
-                      setFieldValue('nationality', option.value)
+                      setFieldValue("nationality", option.value);
                     }}
                   />
                 </div>
@@ -173,7 +179,7 @@ const TabProfile = ({ userData }) => {
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'schoolId'}
+                    name={"schoolId"}
                     options={schools.map((school) => ({
                       label: school.name,
                       value: school.id,
@@ -181,7 +187,7 @@ const TabProfile = ({ userData }) => {
                     selectedOption={values.schoolId}
                     placeholder={userData?.schoolName}
                     onSelectOption={(option) => {
-                      setFieldValue('schoolId', option.value)
+                      setFieldValue("schoolId", option.value);
                     }}
                   />
                   <hr className="my-0" />
@@ -227,7 +233,9 @@ const TabProfile = ({ userData }) => {
                     Edit Guardian Information
                   </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Last Edited: {userData?.updatedAt && format(userData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+                    Last Edited:{" "}
+                    {userData?.updatedAt &&
+                      format(userData.updatedAt, "dd MMM yyyy, HH:mm aa")}
                   </span>
                 </h5>
               </div>
@@ -283,12 +291,12 @@ const TabProfile = ({ userData }) => {
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'guardianNationality'}
+                    name={"guardianNationality"}
                     options={countries}
                     selectedOption={values.guardianNationality}
                     placeholder={values.guardianNationality}
                     onSelectOption={(option) => {
-                      setFieldValue('guardianNationality', option.value)
+                      setFieldValue("guardianNationality", option.value);
                     }}
                   />
                 </div>
@@ -296,22 +304,49 @@ const TabProfile = ({ userData }) => {
 
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Relationship with child: </label>
+                  <label className="fw-semibold">
+                    Relationship with child:{" "}
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'guardianRelationship'}
+                    name={"guardianRelationship"}
                     options={relationships}
                     selectedOption={values.guardianRelationship}
                     placeholder={values.guardianRelationship}
                     onSelectOption={(option) => {
-                      setFieldValue('guardianRelationship', option.value)
+                      setFieldValue("guardianRelationship", option.value);
                     }}
                   />
                 </div>
               </div>
             </div>
-            <hr className="my-0" />
+            <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+              <a
+                className="btn btn-light-brand"
+                onClick={() => navigate(-1)}
+                type="button"
+              >
+                <FiX size={16} className="me-2" />
+                <span>Cancel</span>
+              </a>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={updateLoading}
+              >
+                {updateLoading ? (
+                  <div
+                    className="spinner-border spinner-border-sm text-white me-2"
+                    role="status"
+                  />
+                ) : (
+                  <FiCheck size={16} className="me-2" />
+                )}
+                <span>Edit Client</span>
+              </button>
+            </div>
+            {/* <hr className="my-0" /> */}
             {/* <div className="card-body additional-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
@@ -1050,7 +1085,6 @@ const TabProfile = ({ userData }) => {
           </Form>
         )}
       </Formik>
-
     </div>
   );
 };
