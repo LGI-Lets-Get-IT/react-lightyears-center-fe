@@ -8,7 +8,10 @@ import { PERMISSIONS } from "@/shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePlanByIds, fetchAllPlans } from "@/store/slice/treatmentPlanSlice";
+import {
+  deletePlanByIds,
+  fetchAllPlans,
+} from "@/store/slice/treatmentPlanSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -27,11 +30,13 @@ TableCell.displayName = "TableCell";
 
 const PlansTable = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const { plans, isLoading: fetchLoading } = useSelector((state) => state.treatmentPlans);
+  const { plans, isLoading: fetchLoading } = useSelector(
+    (state) => state.treatmentPlans
+  );
 
   useEffect(() => {
     dispatch(fetchAllPlans());
@@ -60,9 +65,9 @@ const PlansTable = () => {
       </>,
       () => {
         dispatch(deletePlanByIds({ planIds: [id] }))
-        .unwrap()
-        .then(() => navigate('/treatment-plans'))
-        .catch((err) => console.error('Error: ', err))
+          .unwrap()
+          .then(() => navigate("/treatment-plans"))
+          .catch((err) => console.error("Error: ", err));
       },
       () => {}
     );
@@ -108,10 +113,10 @@ const PlansTable = () => {
       accessorKey: "clientName",
       header: () => "Client Name",
       cell: (info) => {
-        const { clientId } = info.row.original;
+        const { clientUuid } = info.row.original;
         const clientName = info.getValue();
         return (
-          <Link to={`/clients/${clientId}`} className="text-wrap">
+          <Link to={`/clients/${clientUuid}`} className="text-wrap">
             {clientName}
           </Link>
         );

@@ -16,9 +16,11 @@ const CustomerContent = ({ userData }) => {
           address={userData?.address}
           guardianEmail={userData?.guardianEmail}
           guardianPhone={userData?.guardianPhone}
-          appointments={userData?.appointments}
-          assessments={userData?.appointments?.filter(appointment => appointment?.appointmentType?.toLowerCase() === 'assessment')}
-          therapies={userData?.appointments?.filter(appointment => appointment?.appointmentType?.toLowerCase() === 'treatment')}
+          psychologistInCharge={userData?.psychologistInCharge}
+          therapistInCharge={userData?.therapistInCharge}
+          totalAppointments={userData?.appointments?.length ?? 0}
+          totalAssessments={userData?.totalAssessments ?? 0}
+          totalTreatmentPlans={userData?.totalTreatmentPlans ?? 0}
         />
       </div>
       <div className="col-lg-12">
@@ -67,7 +69,7 @@ const CustomerContent = ({ userData }) => {
           <div className="tab-content">
             <TabOverviewContent clientInformation={userData} />
             <TabAppointmentContent />
-            <TabClientFiles/>
+            <TabClientFiles />
           </div>
         </div>
       </div>
