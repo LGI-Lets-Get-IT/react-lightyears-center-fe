@@ -4,14 +4,11 @@ import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { Link, useNavigate } from "react-router-dom";
-import { PERMISSIONS } from "@/shared/permissionsConstant";
+import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deletePlanByIds,
-  fetchAllPlans,
-} from "@/store/slice/treatmentPlanSlice";
+import { deleteAssessmentByIds, fetchAllAssessments } from "@/store/slice/assessmentSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -33,40 +30,33 @@ const PICScheduleTable = () => {
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
-
-  const { plans, isLoading: fetchLoading } = useSelector(
-    (state) => state.treatmentPlans
-  );
+  
+  const { assessments, isLoading: fetchLoading } = useSelector((state) => state.assessments);
 
   useEffect(() => {
-    dispatch(fetchAllPlans());
+    dispatch(fetchAllAssessments());
   }, []);
 
-  const getActions = ({ id, clientName }) => [
-    {
-      label: "Edit",
-      icon: <FiEdit3 />,
-      link: `/treatment-plans/${id}/edit`,
-      permission: PERMISSIONS.TREATMENT_PLANS.UPDATE,
-    },
+  const getActions = ({ id, clientName, testName }) => [
+    { label: "Edit", icon: <FiEdit3 />, link: `/assessments/${id}/edit`, permission: PERMISSIONS.ASSESSMENTS.UPDATE },
     {
       label: "Delete",
       icon: <FiTrash2 />,
-      permission: PERMISSIONS.TREATMENT_PLANS.DELETE,
-      onClick: () => handleConfirmDelete(id, clientName),
+      onClick: () => handleConfirmDelete(id, clientName, testName),
+      permission: PERMISSIONS.ASSESSMENTS.DELETE,
     },
   ];
 
-  const handleConfirmDelete = (id, clientName) => {
+  const handleConfirmDelete = (id,clientName, testName) => {
     showConfirmation(
       <>
-        Are you sure you want to delete <strong>{clientName}</strong> treatment
-        plans?
+        Are you sure you want to delete <strong>{clientName}</strong> assessment
+        for <strong>{testName}</strong>?
       </>,
       () => {
-        dispatch(deletePlanByIds({ planIds: [id] }))
+        dispatch(deleteAssessmentByIds({ assessmentIds: [id] }))
           .unwrap()
-          .then(() => navigate("/treatment-plans"))
+          .then(() => navigate("/assessments"))
           .catch((err) => console.error("Error: ", err));
       },
       () => {}
@@ -113,31 +103,28 @@ const PICScheduleTable = () => {
       accessorKey: "employeeName",
       header: () => "Employee Name",
       cell: (info) => {
-        const { id } = info.row.original;
+        const { clientId } = info.row.original;
         const employeeName = info.getValue();
-        return (
-          <Link to={`/employees/${id}`} className="text-wrap">
-            {employeeName}
-          </Link>
-        );
+        return <Link to={`/pic-schedules/${clientId}`}>{employeeName}</Link>;
       },
     },
     {
       accessorKey: "totalSchedules",
       header: () => "Total Schedules",
-      cell: (info) => <a className="text-wrap">{info.getValue()} Programs</a>,
+      cell: (info) => {
+        return <a>{info.getValue()}</a>;
+      },
     },
     {
       accessorKey: "actions",
       header: () => "Actions",
-      enableSorting: false,
       cell: ({ row }) => {
         const permittedActions = filterItemsByPermission(
           getActions(row.original)
         );
 
         return (
-          <div className="hstack gap-2">
+          <div className="hstack gap-2 justify-content-end">
             <Link
               to={`/pic-schedules/${row.original.id}`}
               className="avatar-text avatar-md"
@@ -163,7 +150,7 @@ const PICScheduleTable = () => {
 
   return (
     <div>
-      <Table data={plans} columns={columns} loading={fetchLoading} />
+      <Table data={assessments} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

@@ -6,7 +6,10 @@ import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
 import AppointmentsEdit from "@/pages/appointments/appointments-edit";
-import PICScheduleList from "@/pages/pic-schedules/pic-schedule-list";
+const PICSchedulesList = lazy(() => import("@/pages/pic-schedules/pic-schedules-list"));
+const PICSchedulesView = lazy(() => import("@/pages/pic-schedules/pic-schedules-view"));
+const PICSchedulesEdit = lazy(() => import("@/pages/pic-schedules/pic-schedules-edit"));
+const PICSchedulesCreate = lazy(() => import("@/pages/pic-schedules/pic-schedules-create"));
 const ChangePassword = lazy(() => import("@/pages/user/change-password"));
 const PlansEdit = lazy(() => import("@/pages/treatment-plans/plans-edit"));
 const UserProfile = lazy(() => import("@/pages/user/user-profile"));
@@ -306,7 +309,31 @@ export const router = createBrowserRouter([
         path: 'pic-schedules',
         element: (
           <ProtectedRoute>
-          <PICScheduleList/>
+          <PICSchedulesList/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'pic-schedules/:id',
+        element: (
+          <ProtectedRoute>
+          <PICSchedulesView/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'pic-schedules/:id/edit',
+        element: (
+          <ProtectedRoute>
+          <PICSchedulesEdit/>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'pic-schedules/create',
+        element: (
+          <ProtectedRoute>
+          <PICSchedulesCreate/>
           </ProtectedRoute>
         ),
       },

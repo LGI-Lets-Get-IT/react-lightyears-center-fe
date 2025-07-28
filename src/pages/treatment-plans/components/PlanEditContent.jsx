@@ -19,7 +19,9 @@ const PlanEditContent = ({ planData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const{ isLoading: updateLoading } = useSelector(state => state.treatmentPlans);
+  const { isLoading: updateLoading } = useSelector(
+    (state) => state.treatmentPlans
+  );
   const { clients } = useSelector((state) => state.clients);
   const { currentUser } = useSelector((state) => state.auth);
   const { psychologists, therapists } = useSelector((state) => state.employees);
@@ -103,7 +105,7 @@ const PlanEditContent = ({ planData }) => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={true}
+                        // isDisabled={true}
                         selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
@@ -585,7 +587,11 @@ const PlanEditContent = ({ planData }) => {
                             <FiX size={16} className="me-2" />
                             <span>Cancel</span>
                           </button>
-                          <button type="submit" className="btn btn-primary" disabled={updateLoading}>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={updateLoading}
+                          >
                             {updateLoading ? (
                               <div
                                 className="spinner-border spinner-border-sm text-white me-2"
