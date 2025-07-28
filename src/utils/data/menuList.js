@@ -82,6 +82,13 @@ export const menuList = [
         permissions: [PERMISSIONS.EMPLOYEES.VIEW],
       },
       {
+        id: 5,
+        name: "PIC Schedules",
+        path: 'pic-schedules',
+        icon: '',
+        permissions: [PERMISSIONS.EMPLOYEES.VIEW],
+      },
+      {
         id: 2,
         name: "Schools",
         path: "/schools",

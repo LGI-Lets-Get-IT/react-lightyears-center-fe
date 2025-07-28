@@ -224,9 +224,9 @@ const ClientsTable = () => {
           </div>
         );
       },
-      meta: {
-        headerClassName: "text-end",
-      },
+      // meta: {
+      //   headerClassName: "text-end",
+      // },
     },
   ];
 

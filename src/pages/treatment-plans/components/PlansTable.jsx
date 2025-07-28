@@ -173,9 +173,9 @@ const PlansTable = () => {
           </div>
         );
       },
-      meta: {
-        headerClassName: "text-end",
-      },
+      // meta: {
+      //   headerClassName: "text-end",
+      // },
     },
   ];
 
