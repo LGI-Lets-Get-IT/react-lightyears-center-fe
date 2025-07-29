@@ -8,7 +8,10 @@ import { PERMISSIONS } from "../../../shared/permissionsConstant";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssessmentByIds, fetchAllAssessments } from "@/store/slice/assessmentSlice";
+import {
+  deletePicScheduleByIds,
+  fetchAllPicSchedules,
+} from "@/store/slice/picScheduleSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -30,15 +33,22 @@ const PICScheduleTable = () => {
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
-  
-  const { assessments, isLoading: fetchLoading } = useSelector((state) => state.assessments);
+
+  const { schedules, isLoading: fetchLoading } = useSelector(
+    (state) => state.picSchedules
+  );
 
   useEffect(() => {
-    dispatch(fetchAllAssessments());
+    dispatch(fetchAllPicSchedules());
   }, []);
 
   const getActions = ({ id, clientName, testName }) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/assessments/${id}/edit`, permission: PERMISSIONS.ASSESSMENTS.UPDATE },
+    {
+      label: "Edit",
+      icon: <FiEdit3 />,
+      link: `/pic-schedules/${id}/edit`,
+      permission: PERMISSIONS.ASSESSMENTS.UPDATE,
+    },
     {
       label: "Delete",
       icon: <FiTrash2 />,
@@ -47,16 +57,16 @@ const PICScheduleTable = () => {
     },
   ];
 
-  const handleConfirmDelete = (id,clientName, testName) => {
+  const handleConfirmDelete = (id, clientName, testName) => {
     showConfirmation(
       <>
-        Are you sure you want to delete <strong>{clientName}</strong> assessment
+        Are you sure you want to delete <strong>{clientName}</strong> schedule
         for <strong>{testName}</strong>?
       </>,
       () => {
-        dispatch(deleteAssessmentByIds({ assessmentIds: [id] }))
+        dispatch(deletePicScheduleByIds({ scheduleIds: [id] }))
           .unwrap()
-          .then(() => navigate("/assessments"))
+          .then(() => navigate("/pic-schedules"))
           .catch((err) => console.error("Error: ", err));
       },
       () => {}
@@ -150,7 +160,7 @@ const PICScheduleTable = () => {
 
   return (
     <div>
-      <Table data={assessments} columns={columns} loading={fetchLoading} />
+      <Table data={schedules} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );

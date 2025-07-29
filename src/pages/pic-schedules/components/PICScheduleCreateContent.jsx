@@ -1,170 +1,246 @@
-import React, { useEffect, useState } from 'react'
-import SelectDropdown from '@/components/shared/SelectDropdown'
-import { Field, Form, Formik } from 'formik';
-import { assessmentSchema } from '@/schemas/assessmentSchema';
-import { FiCheck, FiX } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllClients } from '@/store/slice/clientSlice';
-import { fetchAllPsychologists } from '@/store/slice/employeeSlice';
-import { fetchAppointmentForAssessments } from '@/store/slice/appointmentSlice';
-import { fetchAllTestTypes } from '@/store/slice/testTypeSlice';
-import { createAssessment } from '@/store/slice/assessmentSlice';
+import React, { useEffect, useState } from "react";
+import SelectDropdown from "@/components/shared/SelectDropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllEmployees } from "@/store/slice/employeeSlice";
+import { FiCheck, FiX } from "react-icons/fi";
+import { Field, FieldArray, Form, Formik } from "formik";
+import { useNavigate } from "react-router-dom";
+import WeekdayPicker from "@/components/picker/WeekdayPicker";
+import TimePicker from "@/components/picker/Timepicker";
 
 const PICScheduleCreateContent = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const { isLoading: createLoading } = useSelector(state => state.assessments)
-    const { clients } = useSelector(state => state.clients)
-    const { testTypes } = useSelector(state => state.testTypes)
-    const { appointments } = useSelector(state => state.appointments)
-    const { psychologists } = useSelector(state => state.employees)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isLoading: createLoading } = useSelector(
+    (state) => state.treatmentPlans
+  );
+  const { employees } = useSelector((state) => state.employees);
 
-    const handleSubmit = (values, actions) => {
-        dispatch(createAssessment(values)).unwrap()
-            .then(() => navigate('/assessments'))
-            .catch(error => console.error('handle error', error))
-    }
+  const onSubmit = async (values, actions) => {
+    console.log("ASFASFS", values, actions);
+    // dispatch(createPicSchedule(values))
+    //   .unwrap()
+    //   .then(() => navigate("/pic-schedules"))
+    //   .catch((error) => console.log("Error", error));
+  };
 
-    useEffect(() => {
-        dispatch(fetchAllClients());
-        dispatch(fetchAllPsychologists());
-        dispatch(fetchAllTestTypes())
-    }, [])
-    return (
-        <>
-            <div className="col-lg-12">
-                <div className="card stretch stretch-full">
-                    <div className="card-body lead-status">
-                        <div className="mb-5 d-flex align-items-center justify-content-between">
-                            <h5 className="fw-bold mb-0 me-4">
-                                <span className="d-block mb-2">Create Client Assessment</span>
-                                <span className="fs-12 fw-normal text-muted text-truncate-1-line">Typically refers to adding a new potential customer or sales prospect</span>
-                            </h5>
-                        </div>
-                        <Formik initialValues={{
-                            clientId: null,
-                            appointmentId: null,
-                            psychologistId: null,
-                            testId: null,
-                            result: null,
+  useEffect(() => {
+    dispatch(fetchAllEmployees());
+  }, []);
+  return (
+    <>
+      <div className="col-lg-12">
+        <div className="card stretch stretch-full">
+          <div className="card-body">
+            <div className="mb-5 d-flex align-items-center justify-content-between">
+              <h5 className="fw-bold mb-0 me-4">
+                <span className="d-block mb-2">Create PIC Schedule</span>
+                <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                  Typically refers to adding a new potential customer or sales
+                  prospect
+                </span>
+              </h5>
+            </div>
+            <Formik
+              initialValues={{
+                employeeId: null,
+                schedules: [],
+              }}
+              //   validationSchema={treatmentPlanSchema}
+              onSubmit={onSubmit}
+            >
+              {({ values, setFieldValue }) => (
+                <Form>
+                  <div className="row">
+                    <div className="col-lg-12 mb-4">
+                      <label className="form-label">
+                        PIC Name <span className="text-danger">*</span>
+                      </label>
+                      <SelectDropdown
+                        name="employeeId"
+                        options={employees.map((item) => ({
+                          label: item.fullName,
+                          value: item.id,
+                        }))}
+                        selectedOption={values.employeeId}
+                        placeholder={"Select PIC"}
+                        onSelectOption={(option) => {
+                          setFieldValue("employeeId", option.value);
                         }}
-                            validationSchema={assessmentSchema}
-                            onSubmit={handleSubmit}>
-                            {({ values, setFieldValue }) => (
-                                <Form>
-                                    <div className="row">
-                                        <div className="col-lg-6 mb-4">
-                                            <label className="form-label">Client Name</label>
-                                            <SelectDropdown
-                                                name={'clientId'}
-                                                options={clients.map(client => ({
-                                                    value: client.id,
-                                                    label: client.fullName
-                                                }))}
-                                                selectedOption={values.clientId}
-                                                placeholder={'Select Client'}
-                                                onSelectOption={(option) => {
-                                                    setFieldValue('clientId', option.value)
-                                                    dispatch(fetchAppointmentForAssessments({
-                                                        params: {
-                                                            clientId: option.value
-                                                        }
-                                                    }));
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="col-lg-6 mb-4">
-                                            <label className="form-label">Psychologist Name</label>
-                                            <SelectDropdown
-                                                name={'psychologistId'}
-                                                options={psychologists.map(psychologist => ({
-                                                    value: psychologist.id,
-                                                    label: psychologist.fullName,
-                                                }))}
-                                                placeholder={'Select Psychologist'}
-                                                selectedOption={values.psychologistId}
-                                                onSelectOption={(option) => setFieldValue('psychologistId', option.value)}
-                                            />
-                                        </div>
-                                        <div className="col-lg-6 mb-4">
-                                            <label htmlFor="appointmentId" className="form-label">Assessed On</label>
-                                            <SelectDropdown
-                                                isDisabled={!values.clientId}
-                                                name={'appointmentId'}
-                                                options={appointments.map(appointment => ({
-                                                    value: appointment.id,
-                                                    label: `[${appointment.appointmentType}] ${appointment.title}`,
-                                                }))}
-                                                placeholder={'Select Appointment'}
-                                                selectedOption={values.appointmentId}
-                                                onSelectOption={(option) => setFieldValue('appointmentId', option.value)}
-                                            />
-                                        </div>
-                                        <div className="col-lg-6 mb-4">
-                                            <label className="form-label">Test Name</label>
-                                            <SelectDropdown
-                                                name={'testId'}
-                                                options={testTypes.map(test => ({
-                                                    value: test.id,
-                                                    label: test.name,
-                                                }))}
-                                                placeholder={'Select Test Name'}
-                                                selectedOption={values.testId}
-                                                onSelectOption={(option) => setFieldValue('testId', option.value)}
-                                            />
-                                        </div>
-                                        <div className="col-lg-12 mb-4">
-                                            <label htmlFor="result" className="form-label">
-                                                Test Result <span className="text-danger">*</span>
-                                            </label>
-                                            <Field name="result">
-                                                {({ field, meta }) => (
-                                                    <>
-                                                        <textarea
-                                                            id="result"
-                                                            rows={6}
-                                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                                                }`}
-                                                            placeholder="Please specify the result here"
-                                                            defaultValue={""}
-                                                            {...field}
-                                                        />
-                                                        {meta.error && (
-                                                            <div className="mt-1 text-danger">{meta.error}</div>
-                                                        )}
-                                                    </>
-                                                )}
-                                            </Field>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-                                        <a className="btn btn-light-brand" onClick={() => navigate(-1)}>
-                                            <FiX size={16} className="me-2" />
-                                            <span>Cancel</span>
-                                        </a>
-                                        <button type="submit" className="btn btn-primary" disabled={createLoading}>
-                                            {createLoading ? (
-                                                <div
-                                                    className="spinner-border spinner-border-sm text-white me-2"
-                                                    role="status"
-                                                />
-                                            ) : (
-                                                <FiCheck size={16} className="me-2" />
-                                            )}
-                                            <span>Create Assessment</span>
-                                        </button>
-
-                                    </div>
-                                </Form>
-                            )}
-                        </Formik>
-
+                      />
                     </div>
-                </div>
-            </div >
-        </>
-    )
-}
+                  </div>
+                  <FieldArray
+                    name="schedules"
+                    render={(arrayHelpers) => (
+                      <div className="col-lg-12">
+                        <div className="mb-5 d-flex align-items-center justify-content-between">
+                          <h5 className="fw-bold mb-0 me-4">
+                            <span className="d-block mb-2">
+                              Available Schedules
+                            </span>
+                            <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                              The available schedules for the PIC
+                            </span>
+                          </h5>
+                          <div className="d-flex justify-content-end gap-2 mt-3">
+                            <button
+                              type="button"
+                              className="btn btn-sm bg-soft-danger text-danger"
+                              onClick={() => {
+                                if (values.schedules.length === 1) return;
+                                arrayHelpers.pop();
+                              }}
+                            >
+                              Delete
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-primary"
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  availableDay: null,
+                                  availableTime: null,
+                                })
+                              }
+                            >
+                              Add Items
+                            </button>
+                          </div>
+                        </div>
 
-export default PICScheduleCreateContent
+                        <div className="accordion proposal-faq-accordion">
+                          {values.schedules &&
+                            values.schedules.map((program, index) => (
+                              <AccordionItem
+                                key={index}
+                                id={`schedules-${index}`}
+                                header={`Schedule ${index + 1}`}
+                              >
+                                <div className="form-group row mb-3 align-items-center">
+                                  <label className="col-sm-3 col-form-label">
+                                    Available Days{" "}
+                                    <span className="text-danger">*</span>
+                                  </label>
+                                  <div className="col-sm-9">
+                                    <WeekdayPicker
+                                      onChange={(option) =>
+                                        setFieldValue(
+                                          `schedules.${index}.availableDay`,
+                                          option
+                                        )
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row mb-3 align-items-center">
+                                  <label className="col-sm-3 col-form-label">
+                                    Available Time{" "}
+                                    <span className="text-danger">*</span>
+                                  </label>
+                                  <div className="col-sm-9">
+                                    <Field name="timeStart">
+                                      {({ field, meta }) => (
+                                        <>
+                                          <TimePicker />
+                                          {/* <input
+                                            type="time"
+                                            id="timeStart"
+                                            name="timeStart"
+                                            value={values.timeStart}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
+                                            required
+                                            {...field}
+                                          />
+                                          {meta.error && (
+                                            <div className="mt-1 text-danger">
+                                              {meta.error}
+                                            </div>
+                                          )} */}
+                                        </>
+                                      )}
+                                    </Field>
+                                  </div>
+                                  {/* <div className="col-sm-9">
+                                    <WeekdayPicker
+                                      onChange={(option) =>
+                                        setFieldValue(
+                                          `schedules.${index}.availableDay`,
+                                          option
+                                        )
+                                      }
+                                    />
+                                  </div> */}
+                                </div>
+                              </AccordionItem>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+                  />
+                  <div className="card-body additional-info">
+                    <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+                      <a
+                        className="btn btn-light-brand"
+                        onClick={() => navigate(-1)}
+                      >
+                        <FiX size={16} className="me-2" />
+                        <span>Cancel</span>
+                      </a>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={createLoading}
+                      >
+                        {createLoading ? (
+                          <div
+                            className="spinner-border spinner-border-sm text-white me-2"
+                            role="status"
+                          />
+                        ) : (
+                          <FiCheck size={16} className="me-2" />
+                        )}
+                        <span>Create Schedule</span>
+                      </button>
+                    </div>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default PICScheduleCreateContent;
+
+const AccordionItem = ({ id, header, children }) => {
+  return (
+    <div className="accordion-item">
+      <h2 className="accordion-header" id={`flush-heading${id}`}>
+        <button
+          className="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target={`#flush-collapse${id}`}
+          aria-expanded="false"
+          aria-controls={`flush-collapse${id}`}
+        >
+          {header}
+        </button>
+      </h2>
+      <div
+        id={`flush-collapse${id}`}
+        className="accordion-collapse collapse"
+        aria-labelledby={`flush-heading${id}`}
+        data-bs-parent="#accordionFaqGroup"
+      >
+        <div className="accordion-body p-3 rounded">{children}</div>
+      </div>
+    </div>
+  );
+};
