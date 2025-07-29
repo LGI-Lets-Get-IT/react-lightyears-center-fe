@@ -34,12 +34,9 @@ const Profile = ({ fullName, gender, guardianEmail, guardianPhone }) => {
       clientIds: [uuid], // Ensure it's an array
     };
 
-    console.log("DELETE PAYLOAD:", payload); // Debugging log
-
     dispatch(deleteClient(payload))
       .unwrap()
       .then(() => {
-        console.log("Client deleted successfully");
         navigate(`/clients`);
       })
       .catch((error) => console.error("Handle error:", error));

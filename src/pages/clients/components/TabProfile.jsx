@@ -106,6 +106,7 @@ const TabProfile = () => {
                     value={values.password}
                     className={`${meta.error ? "is-invalid" : ""}`}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -122,6 +123,7 @@ const TabProfile = () => {
                     value={values.passwordConfirm}
                     className={`${meta.error ? "is-invalid" : ""}`}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -157,6 +159,7 @@ const TabProfile = () => {
                       value={values.fullName}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -165,7 +168,7 @@ const TabProfile = () => {
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label htmlFor="dateofBirth" className="fw-semibold">
-                    Date of Birth:{" "}
+                    Date of Birth <span className="text-danger">*</span>
                   </label>
                 </div>
 
@@ -213,7 +216,9 @@ const TabProfile = () => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Gender: </label>
+                  <label className="fw-semibold">
+                    Gender <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -229,7 +234,9 @@ const TabProfile = () => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Nationality: </label>
+                  <label className="fw-semibold">
+                    Nationality <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -243,10 +250,11 @@ const TabProfile = () => {
                   />
                 </div>
               </div>
-              {console.log("VALUESS", values)}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">School Name: </label>
+                  <label className="fw-semibold">
+                    School Name <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -277,6 +285,7 @@ const TabProfile = () => {
                       name={"className"}
                       value={values.className}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -292,6 +301,7 @@ const TabProfile = () => {
                         placeholder={"Please specify the problem here"}
                         row="4"
                         meta={meta}
+                        isMandatory
                         {...field}
                       />
                       // <>
@@ -335,6 +345,7 @@ const TabProfile = () => {
                       value={values.guardianName}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -354,6 +365,7 @@ const TabProfile = () => {
                       value={values.guardianEmail}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -372,6 +384,7 @@ const TabProfile = () => {
                       value={values.guardianPhone}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -379,7 +392,9 @@ const TabProfile = () => {
               </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Nationality: </label>
+                  <label className="fw-semibold">
+                    Nationality <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -396,7 +411,9 @@ const TabProfile = () => {
 
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Relationship to child: </label>
+                  <label className="fw-semibold">
+                    Relationship to child <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown

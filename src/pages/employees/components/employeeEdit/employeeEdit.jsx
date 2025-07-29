@@ -14,7 +14,7 @@ const EmployeeEdit = ({ empData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const { isLoading: updateLoading } = useSelector(state => state.employees);
+  const { isLoading: updateLoading } = useSelector((state) => state.employees);
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
@@ -22,8 +22,8 @@ const EmployeeEdit = ({ empData }) => {
     dispatch(updateEmployeeById({ id, data: values }))
       .unwrap()
       .then(() => {
-        actions.resetForm()
-        navigate(`/employees/${id}`)
+        actions.resetForm();
+        navigate(`/employees/${id}`);
       })
       .catch((error) => console.error("handle error", error));
   };
@@ -33,21 +33,22 @@ const EmployeeEdit = ({ empData }) => {
       <div className="card-body personal-info">
         <div className="mb-4 d-flex align-items-center justify-content-between">
           <h5 className="fw-bold mb-0 me-4">
-            <span className="d-block mb-2">
-              Edit {empData?.fullName}
-            </span>
+            <span className="d-block mb-2">Edit {empData?.fullName}</span>
             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-              Last Edited: {empData?.updatedAt && format(empData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
+              Last Edited:{" "}
+              {empData?.updatedAt &&
+                format(empData.updatedAt, "dd MMM yyyy, HH:mm aa")}
             </span>
           </h5>
         </div>
-        <Formik initialValues={{
-          fullName: empData?.fullName,
-          phoneNumber: empData?.phoneNumber,
-          email: empData?.email,
-          roleId: empData?.roleId,
-          isActive: empData?.isActive,
-        }}
+        <Formik
+          initialValues={{
+            fullName: empData?.fullName,
+            phoneNumber: empData?.phoneNumber,
+            email: empData?.email,
+            roleId: empData?.roleId,
+            isActive: empData?.isActive,
+          }}
           enableReinitialize
           validationSchema={employeeSchema}
           onSubmit={handleSubmit}
@@ -64,6 +65,7 @@ const EmployeeEdit = ({ empData }) => {
                     name={"fullName"}
                     // value={values.fullName}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -79,6 +81,7 @@ const EmployeeEdit = ({ empData }) => {
                     name={"phoneNumber"}
                     // value={values.phoneNumber}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -94,46 +97,63 @@ const EmployeeEdit = ({ empData }) => {
                     name={"email"}
                     // value={values.email}
                     meta={meta}
+                    isMandatory
                     {...field}
-                  // {...getFieldProps('email')}
+                    // {...getFieldProps('email')}
                   />
                 )}
               </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Role: </label>
+                  <label className="fw-semibold">
+                    Role <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'roleId'}
+                    name={"roleId"}
                     options={roleId}
                     selectedOption={values.roleId}
                     placeholder={values.roleId}
-                    onSelectOption={(option) => setFieldValue('roleId', option.value)}
+                    onSelectOption={(option) =>
+                      setFieldValue("roleId", option.value)
+                    }
                   />
                 </div>
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Employee Status : </label>
+                  <label className="fw-semibold">
+                    Employee Status <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'isActive'}
+                    name={"isActive"}
                     options={isActive}
                     selectedOption={values.isActive}
                     placeholder={values.isActive}
-                    onSelectOption={(option) => setFieldValue('isActive', option.value)}
+                    onSelectOption={(option) =>
+                      setFieldValue("isActive", option.value)
+                    }
                   />
                 </div>
               </div>
               <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-                <a className="btn btn-light-brand" onClick={() => navigate(-1)} type="button">
+                <a
+                  className="btn btn-light-brand"
+                  onClick={() => navigate(-1)}
+                  type="button"
+                >
                   <FiX size={16} className="me-2" />
                   <span>Cancel</span>
                 </a>
 
-                <button type="submit" className="btn btn-primary" disabled={updateLoading}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={updateLoading}
+                >
                   {updateLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
@@ -144,7 +164,6 @@ const EmployeeEdit = ({ empData }) => {
                   )}
                   <span>Edit Employee</span>
                 </button>
-
               </div>
             </Form>
           )}
