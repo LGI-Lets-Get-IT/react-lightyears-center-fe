@@ -6,24 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import PICSchedulesListContent from "./components/PICScheduleEditContent";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { fetchAssessmentById } from "@/store/slice/assessmentSlice";
+import { fetchPicScheduleByEmployeeId } from "@/store/slice/picScheduleSlice";
 
 const PICSchedulesEdit = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const { currentAssessment } = useSelector(state => state.assessments)
+  const { schedule } = useSelector((state) => state.picSchedules);
 
   useEffect(() => {
-    dispatch(fetchAssessmentById(id))
-  }, [])
+    dispatch(fetchPicScheduleByEmployeeId(id));
+  }, []);
   return (
     <>
-      <PageHeader>
-        {/* <AppointmentCreateHeader /> */}
-      </PageHeader>
+      <PageHeader>{/* <AppointmentCreateHeader /> */}</PageHeader>
       <div className="main-content">
         <div className="row">
-          <PICSchedulesListContent assessmentData={currentAssessment} />
+          <PICSchedulesListContent scheduleData={schedule} />
         </div>
       </div>
     </>

@@ -46,7 +46,7 @@ const PICScheduleTable = () => {
     {
       label: "Edit",
       icon: <FiEdit3 />,
-      link: `/pic-schedules/${id}/edit`,
+      link: `/employee-schedules/${id}/edit`,
       permission: PERMISSIONS.ASSESSMENTS.UPDATE,
     },
     {
@@ -66,7 +66,7 @@ const PICScheduleTable = () => {
       () => {
         dispatch(deletePicScheduleByIds({ scheduleIds: [id] }))
           .unwrap()
-          .then(() => navigate("/pic-schedules"))
+          .then(() => navigate("/employee-schedules"))
           .catch((err) => console.error("Error: ", err));
       },
       () => {}
@@ -110,19 +110,24 @@ const PICScheduleTable = () => {
     },
 
     {
-      accessorKey: "employeeName",
+      accessorKey: "fullName",
       header: () => "Employee Name",
       cell: (info) => {
         const { clientId } = info.row.original;
+        const roleName = info.row.original.role.name;
         const employeeName = info.getValue();
-        return <Link to={`/pic-schedules/${clientId}`}>{employeeName}</Link>;
+        return (
+          <Link to={`/employee-schedules/${clientId}`}>
+            [{roleName}] {employeeName}
+          </Link>
+        );
       },
     },
     {
-      accessorKey: "totalSchedules",
+      accessorKey: "schedules.length",
       header: () => "Total Schedules",
       cell: (info) => {
-        return <a>{info.getValue()}</a>;
+        return <a>{info.getValue()} schedule(s)</a>;
       },
     },
     {
@@ -136,7 +141,7 @@ const PICScheduleTable = () => {
         return (
           <div className="hstack gap-2 justify-content-end">
             <Link
-              to={`/pic-schedules/${row.original.id}`}
+              to={`/employee-schedules/${row.original.id}`}
               className="avatar-text avatar-md"
             >
               <FiEye />
@@ -152,9 +157,9 @@ const PICScheduleTable = () => {
           </div>
         );
       },
-      // meta: {
-      //   headerClassName: "text-end",
-      // },
+      meta: {
+        headerClassName: "text-center",
+      },
     },
   ];
 

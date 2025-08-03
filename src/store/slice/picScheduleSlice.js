@@ -20,11 +20,13 @@ export const fetchAllPicSchedules = createAsyncThunk(
   }
 );
 
-export const fetchPicScheduleById = createAsyncThunk(
+export const fetchPicScheduleByEmployeeId = createAsyncThunk(
   "picschedule/getPicScheduleById",
-  async (scheduleId, { rejectWithValue }) => {
+  async (employeeId, { rejectWithValue }) => {
     try {
-      const response = await picSchedulesApi.getPicScheduleById(scheduleId);
+      const response = await picSchedulesApi.getPicScheduleByEmployeeId(
+        employeeId
+      );
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -44,13 +46,13 @@ export const createPicSchedule = createAsyncThunk(
   }
 );
 
-export const updatePicScheduleById = createAsyncThunk(
-  "picschedule/updatePicScheduleById",
+export const updatePicScheduleByEmployeeId = createAsyncThunk(
+  "picschedule/updatePicScheduleByEmployeeId",
   async (bodyData, { rejectWithValue }) => {
     try {
-      const { scheduleId, data } = bodyData;
-      const response = await picSchedulesApi.updatePicScheduleById(
-        scheduleId,
+      const { employeeId, data } = bodyData;
+      const response = await picSchedulesApi.updatePicScheduleByEmployeeId(
+        employeeId,
         data
       );
       return response.data.data;
@@ -91,14 +93,14 @@ export const picScheduleSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
-    builder.addCase(fetchPicScheduleById.pending, (state) => {
+    builder.addCase(fetchPicScheduleByEmployeeId.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(fetchPicScheduleById.fulfilled, (state, action) => {
+    builder.addCase(fetchPicScheduleByEmployeeId.fulfilled, (state, action) => {
       state.isLoading = false;
       state.schedule = action.payload;
     });
-    builder.addCase(fetchPicScheduleById.rejected, (state, action) => {
+    builder.addCase(fetchPicScheduleByEmployeeId.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });
@@ -113,14 +115,17 @@ export const picScheduleSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
-    builder.addCase(updatePicScheduleById.pending, (state) => {
+    builder.addCase(updatePicScheduleByEmployeeId.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(updatePicScheduleById.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.schedule = action.payload;
-    });
-    builder.addCase(updatePicScheduleById.rejected, (state, action) => {
+    builder.addCase(
+      updatePicScheduleByEmployeeId.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.schedule = action.payload;
+      }
+    );
+    builder.addCase(updatePicScheduleByEmployeeId.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

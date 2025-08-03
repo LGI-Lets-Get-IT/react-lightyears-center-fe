@@ -6,10 +6,18 @@ import ErrorMinimal from "@/pages/error-minimal";
 import ProtectedRoute from "./ProtectedRoute";
 import { PERMISSIONS } from "../shared/permissionsConstant";
 import AppointmentsEdit from "@/pages/appointments/appointments-edit";
-const PICSchedulesList = lazy(() => import("@/pages/pic-schedules/pic-schedules-list"));
-const PICSchedulesView = lazy(() => import("@/pages/pic-schedules/pic-schedules-view"));
-const PICSchedulesEdit = lazy(() => import("@/pages/pic-schedules/pic-schedules-edit"));
-const PICSchedulesCreate = lazy(() => import("@/pages/pic-schedules/pic-schedules-create"));
+const PICSchedulesList = lazy(() =>
+  import("@/pages/pic-schedules/pic-schedules-list")
+);
+const PICSchedulesView = lazy(() =>
+  import("@/pages/pic-schedules/pic-schedules-view")
+);
+const PICSchedulesEdit = lazy(() =>
+  import("@/pages/pic-schedules/pic-schedules-edit")
+);
+const PICSchedulesCreate = lazy(() =>
+  import("@/pages/pic-schedules/pic-schedules-create")
+);
 const ChangePassword = lazy(() => import("@/pages/user/change-password"));
 const PlansEdit = lazy(() => import("@/pages/treatment-plans/plans-edit"));
 const UserProfile = lazy(() => import("@/pages/user/user-profile"));
@@ -127,10 +135,8 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: '/profile/change-password',
-        element: (
-          <ChangePassword/>
-        )
+        path: "/profile/change-password",
+        element: <ChangePassword />,
       },
       {
         path: "/appointments",
@@ -306,34 +312,34 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: 'pic-schedules',
+        path: "employee-schedules",
         element: (
           <ProtectedRoute>
-          <PICSchedulesList/>
+            <PICSchedulesList />
           </ProtectedRoute>
         ),
       },
       {
-        path: 'pic-schedules/:id',
+        path: "employee-schedules/:id",
         element: (
           <ProtectedRoute>
-          <PICSchedulesView/>
+            <PICSchedulesView />
           </ProtectedRoute>
         ),
       },
       {
-        path: 'pic-schedules/:id/edit',
+        path: "employee-schedules/:id/edit",
         element: (
           <ProtectedRoute>
-          <PICSchedulesEdit/>
+            <PICSchedulesEdit />
           </ProtectedRoute>
         ),
       },
       {
-        path: 'pic-schedules/create',
+        path: "employee-schedules/create",
         element: (
           <ProtectedRoute>
-          <PICSchedulesCreate/>
+            <PICSchedulesCreate />
           </ProtectedRoute>
         ),
       },

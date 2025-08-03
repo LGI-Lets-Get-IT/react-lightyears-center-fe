@@ -15,7 +15,7 @@ const AppointmentsView = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { currentAppointment } = useSelector((state) => state.appointments);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     dispatch(fetchAppointmentById(id));
@@ -24,19 +24,24 @@ const AppointmentsView = () => {
   return (
     <>
       <PageHeader>
-        <AppointmentViewHeader id={id} currentAppointment={currentAppointment}/>
+        <AppointmentViewHeader
+          id={id}
+          currentAppointment={currentAppointment}
+        />
       </PageHeader>
-      <AppointmentViewTabItems activeTab={activeTab} setActiveTab={setActiveTab} />
+      <AppointmentViewTabItems
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
       <div className="main-content">
         <div className="tab-content">
-          {activeTab === 'overview' && (
+          {activeTab === "overview" && (
             <div className="tab-pane fade show active" id="overviewTab">
               <TabAppointmentOverview appointmentData={currentAppointment} />
             </div>
           )}
-          <div className="tab-pane fade show active" id="ReportsTab">
-          </div>
-          {activeTab === 'files' && (
+          <div className="tab-pane fade show active" id="ReportsTab"></div>
+          {activeTab === "files" && (
             <div className="tab-pane fade show active" id="filesTab">
               <TabAppointmentFiles />
               {/* <LeadsEmptyCard
@@ -45,7 +50,7 @@ const AppointmentsView = () => {
               /> */}
             </div>
           )}
-          {activeTab === 'result' && (
+          {activeTab === "result" && (
             <div className="tab-pane fade show active">
               <TabAppointmentResult />
               {/* <LeadsEmptyCard

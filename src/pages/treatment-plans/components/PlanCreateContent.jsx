@@ -341,8 +341,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Frequency{" "}
-                                    <span className="text-danger">*</span>
+                                    Session Frequency
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -371,8 +371,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Duration (minutes){" "}
-                                    <span className="text-danger">*</span>
+                                    Session Duration (minutes)
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -453,8 +453,8 @@ const PlanCreateContent = () => {
                               >
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Target Behavior{" "}
-                                    <span className="text-danger">*</span>
+                                    Target Behavior
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -482,8 +482,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Child&apos;s Current Ability{" "}
-                                    <span className="text-danger">*</span>
+                                    Child&apos;s Current Ability
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -511,8 +511,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Short-term Target:{" "}
-                                    <span className="text-danger">*</span>
+                                    Short-term Target:
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -540,8 +540,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Media/Tools{" "}
-                                    <span className="text-danger">*</span>
+                                    Media/Tools
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field

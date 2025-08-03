@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllEmployees } from "@/store/slice/employeeSlice";
+import {
+  fetchAllEmployees,
+  fetchAllPsychologists,
+  fetchAllTherapists,
+} from "@/store/slice/employeeSlice";
 import { FiCheck, FiX } from "react-icons/fi";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import WeekdayPicker from "@/components/picker/WeekdayPicker";
 import TimePicker from "@/components/picker/Timepicker";
+import { createPicSchedule } from "@/store/slice/picScheduleSlice";
 
 const PICScheduleCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isLoading: createLoading } = useSelector(
-    (state) => state.treatmentPlans
+    (state) => state.picSchedules
   );
-  const { employees } = useSelector((state) => state.employees);
+  const { psychologists, therapists } = useSelector((state) => state.employees);
 
   const onSubmit = async (values, actions) => {
     console.log("ASFASFS", values, actions);
-    // dispatch(createPicSchedule(values))
-    //   .unwrap()
-    //   .then(() => navigate("/pic-schedules"))
-    //   .catch((error) => console.log("Error", error));
+    dispatch(createPicSchedule(values))
+      .unwrap()
+      .then(() => navigate("/employee-schedules"))
+      .catch((error) => console.log("Error", error));
   };
 
   useEffect(() => {
-    dispatch(fetchAllEmployees());
+    dispatch(fetchAllPsychologists());
+    dispatch(fetchAllTherapists());
   }, []);
   return (
     <>
@@ -58,10 +64,12 @@ const PICScheduleCreateContent = () => {
                       </label>
                       <SelectDropdown
                         name="employeeId"
-                        options={employees.map((item) => ({
-                          label: item.fullName,
-                          value: item.id,
-                        }))}
+                        options={[...psychologists, ...therapists].map(
+                          (employee) => ({
+                            label: `[${employee.roleName}] ${employee.fullName}`,
+                            value: employee.id,
+                          })
+                        )}
                         selectedOption={values.employeeId}
                         placeholder={"Select PIC"}
                         onSelectOption={(option) => {
@@ -99,8 +107,9 @@ const PICScheduleCreateContent = () => {
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
-                                  availableDay: null,
-                                  availableTime: null,
+                                  availableDays: [],
+                                  availableStartTime: null,
+                                  availableEndTime: null,
                                 })
                               }
                             >
@@ -111,7 +120,7 @@ const PICScheduleCreateContent = () => {
 
                         <div className="accordion proposal-faq-accordion">
                           {values.schedules &&
-                            values.schedules.map((program, index) => (
+                            values.schedules.map((schedule, index) => (
                               <AccordionItem
                                 key={index}
                                 id={`schedules-${index}`}
@@ -119,10 +128,58 @@ const PICScheduleCreateContent = () => {
                               >
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Available Days{" "}
-                                    <span className="text-danger">*</span>
+                                    Available Day(s)
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
+                                    <WeekdayPicker
+                                      onChange={(options) => {
+                                        setFieldValue(
+                                          `schedules[${index}].availableDays`,
+                                          options.map((option) => option.value)
+                                        );
+                                      }}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="form-group row mb-3 align-items-center">
+                                  <label className="col-sm-3 col-form-label">
+                                    Available Start Time
+                                    <span className="text-danger"> *</span>
+                                  </label>
+                                  <div className="col-sm-9">
+                                    <Field name="availableStartTime">
+                                      {() => (
+                                        <>
+                                          <TimePicker
+                                            onChange={(option) => {
+                                              setFieldValue(
+                                                `schedules[${index}].availableStartTime`,
+                                                option.value
+                                              );
+                                            }}
+                                          />
+                                          {/* <input
+                                            type="time"
+                                            id="timeStart"
+                                            name="timeStart"
+                                            value={values.timeStart}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
+                                            required
+                                            {...field}
+                                          />
+                                          {meta.error && (
+                                            <div className="mt-1 text-danger">
+                                              {meta.error}
+                                            </div>
+                                          )} */}
+                                        </>
+                                      )}
+                                    </Field>
+                                  </div>
+                                  {/* <div className="col-sm-9">
                                     <WeekdayPicker
                                       onChange={(option) =>
                                         setFieldValue(
@@ -131,18 +188,25 @@ const PICScheduleCreateContent = () => {
                                         )
                                       }
                                     />
-                                  </div>
+                                  </div> */}
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Available Time{" "}
-                                    <span className="text-danger">*</span>
+                                    Available End Time
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field name="timeStart">
-                                      {({ field, meta }) => (
+                                      {() => (
                                         <>
-                                          <TimePicker />
+                                          <TimePicker
+                                            onChange={(option) => {
+                                              setFieldValue(
+                                                `schedules[${index}].availableEndTime`,
+                                                option.value
+                                              );
+                                            }}
+                                          />
                                           {/* <input
                                             type="time"
                                             id="timeStart"

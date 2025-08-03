@@ -1,16 +1,14 @@
 import PageHeader from "@/components/shared/pageHeader/PageHeader";
-import AssessmentsTable from "./components/PICScheduleTable";
-import AssessmentsHeader from "./components/PICScheduleHeader";
+import PICScheduleTable from "./components/PICScheduleTable";
+// import PICScheduleHeader from "./components/PICScheduleHeader";
 
 const PICSchedulesList = () => {
   return (
     <>
-      <PageHeader>
-        <AssessmentsHeader />
-      </PageHeader>
+      <PageHeader>{/* <PICScheduleHeader /> */}</PageHeader>
       <div className="main-content">
         <div className="row">
-          <AssessmentsTable />
+          <PICScheduleTable />
         </div>
       </div>
     </>

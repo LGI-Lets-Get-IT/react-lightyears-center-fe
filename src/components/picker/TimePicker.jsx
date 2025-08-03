@@ -1,6 +1,7 @@
 import Select from "react-select";
 
 const timeOptions = [
+  { value: "06:00", label: "06:00" },
   { value: "07:00", label: "07:00" },
   { value: "08:00", label: "08:00" },
   { value: "09:00", label: "09:00" },
@@ -20,8 +21,13 @@ const timeOptions = [
   { value: "23:00", label: "23:00" },
 ];
 
-const TimePicker = ({ selected, onChange }) => (
-  <Select isMulti options={timeOptions} value={selected} onChange={onChange} />
+const TimePicker = ({ selected, onChange, isMultiSelect }) => (
+  <Select
+    isMulti={isMultiSelect}
+    options={timeOptions}
+    value={selected}
+    onChange={onChange}
+  />
 );
 
 export default TimePicker;

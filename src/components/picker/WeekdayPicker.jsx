@@ -10,9 +10,10 @@ const weekdayOptions = [
   { value: "Sunday", label: "Sunday" },
 ];
 
-const WeekdayPicker = ({ selected, onChange }) => (
+const WeekdayPicker = ({ selected, onChange, disabled = false }) => (
   <Select
     isMulti
+    isDisabled={disabled}
     options={weekdayOptions}
     value={selected}
     onChange={onChange}

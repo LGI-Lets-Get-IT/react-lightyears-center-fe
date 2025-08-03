@@ -33,7 +33,7 @@ const PICScheduleHeader = () => {
           isAvatar={false}
         /> */}
         {hasPermission(PERMISSIONS.ASSESSMENTS.CREATE) && (
-          <Link to="/pic-schedules/create" className="btn btn-primary">
+          <Link to="/employee-schedules/create" className="btn btn-primary">
             <FiPlus size={16} className="me-2" />
             <span>Create New Schedule</span>
           </Link>
