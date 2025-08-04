@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import {
 } from "@/store/slice/employeeSlice";
 import { fetchAllClients } from "@/store/slice/clientSlice";
 import { FiCheck, FiX } from "react-icons/fi";
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, useFormikContext } from "formik";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
@@ -18,6 +18,7 @@ import { makeAppointment } from "@/store/slice/appointmentSlice";
 const AppointmentCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const formRef = useRef();
   const { clients } = useSelector((state) => state.clients);
   const { isLoading: createLoading } = useSelector(
     (state) => state.appointments
@@ -75,6 +76,7 @@ const AppointmentCreateContent = () => {
               }}
               validationSchema={appointmentSchema}
               onSubmit={onSubmit}
+              innerRef={formRef}
             >
               {({ values, setFieldValue }) => (
                 <Form>
@@ -156,6 +158,30 @@ const AppointmentCreateContent = () => {
                                 showPopperArrow={false}
                                 selected={values.appointmentDate}
                                 onChange={(date) => {
+                                  if (
+                                    values.appointmentType.toLowerCase() ===
+                                    "treatment"
+                                  ) {
+                                    dispatch(
+                                      fetchAllTherapists({
+                                        params: {
+                                          appointmentDate: date,
+                                          timeStart: values.timeStart,
+                                          timeEnd: values.timeEnd,
+                                        },
+                                      })
+                                    );
+                                  } else {
+                                    dispatch(
+                                      fetchAllPsychologists({
+                                        params: {
+                                          appointmentDate: date,
+                                          timeStart: values.timeStart,
+                                          timeEnd: values.timeEnd,
+                                        },
+                                      })
+                                    );
+                                  }
                                   setFieldValue(
                                     "appointmentDate",
                                     // date,
@@ -199,6 +225,33 @@ const AppointmentCreateContent = () => {
                               }`}
                               required
                               {...field}
+                              onChange={(e) => {
+                                setFieldValue("timeStart", e.target.value);
+                                if (
+                                  values.appointmentType.toLowerCase() ===
+                                  "treatment"
+                                ) {
+                                  dispatch(
+                                    fetchAllTherapists({
+                                      params: {
+                                        appointmentDate: values.appointmentDate,
+                                        timeStart: e.target.value,
+                                        timeEnd: values.timeEnd,
+                                      },
+                                    })
+                                  );
+                                } else {
+                                  dispatch(
+                                    fetchAllPsychologists({
+                                      params: {
+                                        appointmentDate: values.appointmentDate,
+                                        timeStart: e.target.value,
+                                        timeEnd: values.timeEnd,
+                                      },
+                                    })
+                                  );
+                                }
+                              }}
                             />
                             {meta.error && (
                               <div className="mt-1 text-danger">
@@ -226,6 +279,33 @@ const AppointmentCreateContent = () => {
                               }`}
                               required
                               {...field}
+                              onChange={(e) => {
+                                setFieldValue("timeEnd", e.target.value);
+                                if (
+                                  values.appointmentType.toLowerCase() ===
+                                  "treatment"
+                                ) {
+                                  dispatch(
+                                    fetchAllTherapists({
+                                      params: {
+                                        appointmentDate: values.appointmentDate,
+                                        timeStart: values.timeStart,
+                                        timeEnd: e.target.value,
+                                      },
+                                    })
+                                  );
+                                } else {
+                                  dispatch(
+                                    fetchAllPsychologists({
+                                      params: {
+                                        appointmentDate: values.appointmentDate,
+                                        timeStart: values.timeStart,
+                                        timeEnd: e.target.value,
+                                      },
+                                    })
+                                  );
+                                }
+                              }}
                             />
                             {meta.error && (
                               <div className="mt-1 text-danger">

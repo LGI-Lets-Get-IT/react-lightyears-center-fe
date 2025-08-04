@@ -122,13 +122,13 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
         return api(originalRequest);
       } catch (error) {
-        // console.log("CATCH 1 LINE 121");
+        console.log("CATCH 1 LINE 125");
         const store = await getStore();
         processQueue(error, null);
-        // console.log("BEFORE DISPATCH LOGOUT LINE 124");
-        // await store.dispatch(userLogout());
+        console.log("BEFORE DISPATCH LOGOUT LINE 128");
+        await store.dispatch(userLogout());
         store.dispatch(resetCurrentUser());
-        // console.log("AFTER DISPATCH LOGOUT LINE 126");
+        console.log("AFTER DISPATCH LOGOUT LINE 131");
         window.location.href = "/login";
         return Promise.reject(error);
       } finally {
