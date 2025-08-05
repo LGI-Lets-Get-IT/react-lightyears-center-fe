@@ -50,6 +50,36 @@ const AppointmentCreateContent = () => {
   useEffect(() => {
     dispatch(fetchAllClients());
   }, []);
+
+  const formatDropdown = (dropdownItem) => {
+    const formValue = formRef.current?.values;
+    const selectedDay = formValue?.appointmentDate
+      ? format(formValue.appointmentDate, "EEEE")
+      : null;
+    const selectedStartTime = formValue?.timeStart;
+
+    // Find a schedule that matches the selected day
+    const dayBasedSchedule = dropdownItem.schedules?.find((schedule) =>
+      schedule.availableDays.includes(selectedDay)
+    );
+
+    // Check if selected time is within range
+    const isTimeInRange =
+      dayBasedSchedule &&
+      selectedStartTime &&
+      dayBasedSchedule.availableStartTime <= selectedStartTime &&
+      selectedStartTime < dayBasedSchedule.availableEndTime;
+
+    return {
+      label: `[${dropdownItem.roleName}] ${dropdownItem.fullName}`,
+      value: dropdownItem.id,
+      additionalInfo: dayBasedSchedule
+        ? `${dayBasedSchedule.availableStartTime} - ${dayBasedSchedule.availableEndTime}`
+        : "No schedule for this day",
+      isDisabled: !isTimeInRange, // disable if time not in range
+    };
+  };
+
   return (
     <>
       <div className="col-lg-12">
@@ -145,6 +175,20 @@ const AppointmentCreateContent = () => {
                     </div>
                     <div className="col-lg-6 mb-4">
                       <label className="form-label">
+                        Room Name <span className="text-danger">*</span>
+                      </label>
+                      <SelectDropdown
+                        name="roomId"
+                        options={rooms}
+                        selectedOption={values.roomId}
+                        placeholder={"Select Room"}
+                        onSelectOption={(option) => {
+                          setFieldValue("roomId", option.value);
+                        }}
+                      />
+                    </div>
+                    <div className="col-lg-6 mb-4">
+                      <label className="form-label">
                         Appointment Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -152,6 +196,8 @@ const AppointmentCreateContent = () => {
                           {({ meta }) => (
                             <>
                               <DatePicker
+                                disabled={!values.appointmentType}
+                                autoComplete="off"
                                 name="appointmentDate"
                                 placeholderText="YYYY-MM-DD"
                                 dateFormat={"yyyy-MM-dd"}
@@ -208,6 +254,31 @@ const AppointmentCreateContent = () => {
                         </Field>
                       </div>
                     </div>
+                    <div className="col-lg-6 mb-4">
+                      <label className="form-label">
+                        PIC Name <span className="text-danger">*</span>
+                      </label>
+                      <SelectDropdown
+                        isDisabled={
+                          !values.appointmentType ||
+                          !values.appointmentDate ||
+                          !values.timeStart ||
+                          !values.timeEnd
+                        }
+                        name="picId"
+                        options={
+                          values.appointmentType?.toLowerCase() === "treatment"
+                            ? therapists.map((item) => formatDropdown(item))
+                            : psychologists.map((item) => formatDropdown(item))
+                        }
+                        selectedOption={values.picId}
+                        placeholder={"Select PIC"}
+                        onSelectOption={(option) => {
+                          setFieldValue("picId", option.value);
+                        }}
+                      />
+                      {console.log("psychologists", psychologists)}
+                    </div>
                     <div className="col-md-6 mb-4">
                       <label htmlFor="timeStart" className="form-label">
                         Start Time <span className="text-danger">*</span>
@@ -216,6 +287,7 @@ const AppointmentCreateContent = () => {
                         {({ field, meta }) => (
                           <>
                             <input
+                              disabled={!values.appointmentType}
                               type="time"
                               id="timeStart"
                               name="timeStart"
@@ -270,6 +342,7 @@ const AppointmentCreateContent = () => {
                         {({ field, meta }) => (
                           <>
                             <input
+                              disabled={!values.appointmentType}
                               type="time"
                               id="timeEnd"
                               name="timeEnd"
@@ -315,50 +388,6 @@ const AppointmentCreateContent = () => {
                           </>
                         )}
                       </Field>
-                    </div>
-                    <div className="col-lg-6 mb-4">
-                      <label className="form-label">
-                        PIC Name <span className="text-danger">*</span>
-                      </label>
-                      <SelectDropdown
-                        isDisabled={
-                          !values.appointmentType ||
-                          !values.appointmentDate ||
-                          !values.timeStart ||
-                          !values.timeEnd
-                        }
-                        name="picId"
-                        options={
-                          values.appointmentType?.toLowerCase() === "treatment"
-                            ? therapists.map((item) => ({
-                                label: `[Therapist] ${item.fullName}`,
-                                value: item.id,
-                              }))
-                            : psychologists.map((item) => ({
-                                label: `[Psychologist] ${item.fullName}`,
-                                value: item.id,
-                              }))
-                        }
-                        selectedOption={values.picId}
-                        placeholder={"Select PIC"}
-                        onSelectOption={(option) => {
-                          setFieldValue("picId", option.value);
-                        }}
-                      />
-                    </div>
-                    <div className="col-lg-6 mb-4">
-                      <label className="form-label">
-                        Room Name <span className="text-danger">*</span>
-                      </label>
-                      <SelectDropdown
-                        name="roomId"
-                        options={rooms}
-                        selectedOption={values.roomId}
-                        placeholder={"Select Room"}
-                        onSelectOption={(option) => {
-                          setFieldValue("roomId", option.value);
-                        }}
-                      />
                     </div>
                   </div>
                   <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">

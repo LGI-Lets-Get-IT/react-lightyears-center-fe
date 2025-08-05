@@ -296,7 +296,7 @@ const SelectDropdown = ({
         } ${isDisabled ? "pe-none" : ""}`}
       ref={dropdownRef}
     >
-      <div className={`select-box ${meta.error ? 'border-danger' : ''}`} onClick={toggleDropdown}>
+      <div className={`select-box ${isDisabled ? 'bg-gray-200' : ''} ${meta.error ? 'border-danger' : ''}`} onClick={toggleDropdown}>
         {isDisabled ? (
           <span className="selected-label text-capitalize" style={{ color: "#bcbcbc" }}>
             {(!localSelectedOption && placeholder) ||
@@ -349,7 +349,7 @@ const SelectDropdown = ({
                 <li
                   key={option.value}
                   onClick={() => handleOptionClick(option)}
-                  className={`${option.value === field.value ? "active" : ""}`}
+                  className={`d-flex justify-content-between align-items-center gap-2 ${option.isDisabled ? 'pe-none bg-gray-200' : ''} ${option.value === field.value ? "active" : ""}`}
                 >
                   {option.color && (
                     <span
@@ -369,6 +369,7 @@ const SelectDropdown = ({
                     />
                   )}
                   {option.label}
+                  <span className="badge bg-soft-primary text-primary">{option.additionalInfo}</span>
                 </li>
               ))
             ) : (onCreateOption && searchTerm !== '') ? (
