@@ -10,7 +10,7 @@ import { FiCheck, FiX } from "react-icons/fi";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import WeekdayPicker from "@/components/picker/WeekdayPicker";
-import TimePicker from "@/components/picker/Timepicker";
+import TimePicker from "@/components/picker/TimePicker";
 import format from "date-fns/format";
 import { updatePicScheduleByEmployeeId } from "@/store/slice/picScheduleSlice";
 
