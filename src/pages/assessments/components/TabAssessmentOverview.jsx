@@ -1,6 +1,5 @@
 import React from "react";
 import { format } from "date-fns";
-import { FiArrowRight, FiFileText } from "react-icons/fi";
 
 const TabAssessmentOverview = ({ assessmentData }) => {
   return (
@@ -62,65 +61,3 @@ const TabAssessmentOverview = ({ assessmentData }) => {
 };
 
 export default TabAssessmentOverview;
-
-const AccordionItem = ({ id, header, ...content }) => {
-  return (
-    <div className="accordion-item">
-      {console.log("content", content)}
-      <h2 className="accordion-header" id={`flush-heading${id}`}>
-        <button
-          className="accordion-button collapsed"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target={`#flush-collapse${id}`}
-          aria-expanded="false"
-          aria-controls={`flush-collapse${id}`}
-        >
-          {header}
-        </button>
-      </h2>
-      <div
-        id={`flush-collapse${id}`}
-        className="accordion-collapse collapse"
-        aria-labelledby={`flush-heading${id}`}
-        data-bs-parent="#accordionFaqGroup"
-      >
-        <div className="accordion-body bg-light p-3 rounded">
-          <p>
-            💪 <strong>Current Ability:</strong>{" "}
-            <span className="text-primary">{content.currentAbility}</span>
-          </p>
-          <p>
-            🎯 <strong>Target:</strong> Grow to{" "}
-            <span className="text-success">{content.shortTermTarget}</span>{" "}
-            soon, aiming for{" "}
-            <span className="text-warning">{content.longTermTarget}</span> in
-            the long run.
-          </p>
-          <p>
-            🛠️ <strong>Tools:</strong> {content.mediaTools}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Card = ({ icon: Icon, title, link }) => {
-  return (
-    <div className="card border border-gray-2 rounded-2 my-2 overflow-hidden">
-      <div className="d-flex align-items-center justify-content-between">
-        <div className="d-flex align-items-center">
-          <div className="wd-50 ht-50 bg-gray-100 me-3 d-flex align-items-center justify-content-center">
-            {/* <Icon /> */}
-            <FiFileText />
-          </div>
-          <a href={link}>{title}</a>
-        </div>
-        <a href={link} className="avatar-text avatar-sm me-3">
-          <FiArrowRight />
-        </a>
-      </div>
-    </div>
-  );
-};

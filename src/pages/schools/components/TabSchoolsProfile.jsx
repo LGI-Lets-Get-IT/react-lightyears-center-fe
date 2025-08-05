@@ -76,28 +76,25 @@ const schoolInfoData = [
 
 const TabSchoolsProfile = ({ schoolInformation }) => {
   return (
-    <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
-      <div className="card card-body lead-info">
-        <div className="mb-4 d-flex align-items-center justify-content-between">
-          <h5 className="fw-bold mb-0">
-            <span className="d-block mb-2">School Information :</span>
-            <span className="fs-12 fw-normal text-muted d-block">
-              Following information for your lead
-            </span>
-          </h5>
-        </div>
-        {schoolInfoData.map((data, index) => {
-          const content = schoolInformation?.[data.key];
-          // const content =
-          //   data.key === "isActive"
-          //     ? schoolInformation?.isActive
-          //       ? "Active"
-          //       : "Inactive"
-          //     : schoolInformation?.[data.key];
-          return <Card key={index} title={data.title} content={content} />;
-        })}
+    <div className="card card-body lead-info">
+      <div className="mb-4 d-flex align-items-center justify-content-between">
+        <h5 className="fw-bold mb-0">
+          <span className="d-block mb-2">School Information :</span>
+          <span className="fs-12 fw-normal text-muted d-block">
+            Following information for your lead
+          </span>
+        </h5>
       </div>
-      <hr />
+      {schoolInfoData.map((data, index) => {
+        const content = schoolInformation?.[data.key];
+        // const content =
+        //   data.key === "isActive"
+        //     ? schoolInformation?.isActive
+        //       ? "Active"
+        //       : "Inactive"
+        //     : schoolInformation?.[data.key];
+        return <Card key={index} title={data.title} content={content} />;
+      })}
     </div>
   );
 };

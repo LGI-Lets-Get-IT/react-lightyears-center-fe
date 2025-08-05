@@ -22,7 +22,7 @@ const AssessmentsView = () => {
       <PageHeader>
         <AssessmentViewHeader id={id} />
       </PageHeader>
-      <AssessmentViewTabItems />
+      {/* <AssessmentViewTabItems /> */}
       <div className="main-content">
         <div className="tab-content">
           <TabAssessmentOverview assessmentData={currentAssessment} />

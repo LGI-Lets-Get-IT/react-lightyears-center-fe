@@ -12,7 +12,7 @@ import { format } from "date-fns";
 const TestTypesEditContent = ({ id, testData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading: updateLoading } = useSelector(state => state.testTypes)
+  const { isLoading: updateLoading } = useSelector((state) => state.testTypes);
 
   const handleSubmit = (values, actions) => {
     dispatch(updateTestTypeById({ testTypeId: id, data: values }))
@@ -23,13 +23,15 @@ const TestTypesEditContent = ({ id, testData }) => {
   return (
     <div className="col-lg-12">
       <div className="card border-top-0">
-        <Formik initialValues={{
-          testName: testData?.name,
-          testDescription: testData?.description
-        }}
+        <Formik
+          initialValues={{
+            testName: testData?.name,
+            testDescription: testData?.description,
+          }}
           enableReinitialize
           validationSchema={testTypeSchema}
-          onSubmit={handleSubmit}>
+          onSubmit={handleSubmit}
+        >
           {({ values }) => (
             <Form>
               <div className="card-body personal-info">
@@ -37,7 +39,10 @@ const TestTypesEditContent = ({ id, testData }) => {
                   <h5 className="fw-bold mb-0 me-4">
                     <span className="d-block mb-2">Edit {testData?.name}</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      Last Edited: {testData?.updatedAt ? format(testData.updatedAt, 'dd MMM yyyy, HH:mm aa') : '-'}
+                      Last Edited:{" "}
+                      {testData?.updatedAt
+                        ? format(testData.updatedAt, "dd MMM yyyy, HH:mm aa")
+                        : "-"}
                     </span>
                   </h5>
                 </div>
@@ -50,6 +55,7 @@ const TestTypesEditContent = ({ id, testData }) => {
                       name={"testName"}
                       values={values.testName}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   )}
@@ -68,16 +74,23 @@ const TestTypesEditContent = ({ id, testData }) => {
                     />
                   )}
                 </Field>
-
               </div>
               <hr className="my-0" />
               <div className="card-body additional-info">
                 <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-                  <a className="btn btn-light-brand" onClick={() => navigate(-1)} type="button">
+                  <a
+                    className="btn btn-light-brand"
+                    onClick={() => navigate(-1)}
+                    type="button"
+                  >
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary" disabled={updateLoading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={updateLoading}
+                  >
                     {updateLoading ? (
                       <div
                         className="spinner-border spinner-border-sm text-white me-2"
@@ -92,7 +105,6 @@ const TestTypesEditContent = ({ id, testData }) => {
               </div>
             </Form>
           )}
-
         </Formik>
       </div>
     </div>

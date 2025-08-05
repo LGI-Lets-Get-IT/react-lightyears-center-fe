@@ -8,8 +8,12 @@ export const createSchema = Yup.object({
 });
 
 export const clientSchema = Yup.object({
-  // password: Yup.string().min(8, 'Password must be at least 8 characters long'),
-  // passwordConfirm: Yup.string().oneOf([Yup.ref('password'), null], 'Password must match').required('Please enter the password confirmation'),
+  password: Yup.string()
+    .min(8, "Password must be at least 8 characters long")
+    .optional("Please enter the password"),
+  passwordConfirm: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Password must match")
+    .optional("Please enter the password confirmation"),
   fullName: Yup.string()
     .min(3, "Full Name must be at least 3 characters")
     .required("Please enter the full name"),

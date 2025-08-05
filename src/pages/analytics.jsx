@@ -27,7 +27,6 @@ const Analytics = () => {
       </PageHeader>
       <div className="main-content">
         <div className="row">
-          {console.log("appointments", appointments)}
           {appointments.map((item) => {
             return <h1 key={item.id}>{item.name}</h1>;
           })}

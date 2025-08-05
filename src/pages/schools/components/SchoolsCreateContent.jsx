@@ -11,10 +11,10 @@ import { schoolSchema } from "@/schemas/schoolSchema";
 const SchoolsCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading: createLoading } = useSelector(state => state.schools);
+  const { isLoading: createLoading } = useSelector((state) => state.schools);
 
   const handleSubmit = (values, actions) => {
-    console.log('HANDLESUBMIT', values)
+    console.log("HANDLESUBMIT", values);
     dispatch(createSchool(values))
       .unwrap()
       .then(() => navigate("/schools"))
@@ -25,24 +25,25 @@ const SchoolsCreateContent = () => {
       <div className="card border-top-0">
         <Formik
           initialValues={{
-            schoolName: '',
-            schoolAddress: '',
-            schoolPhoneNumber: '',
-            schoolEmail: '',
-            picName: '',
-            picPhoneNumber: '',
-            picEmail: '',
+            schoolName: "",
+            schoolAddress: "",
+            schoolPhoneNumber: "",
+            schoolEmail: "",
+            picName: "",
+            picPhoneNumber: "",
+            picEmail: "",
           }}
           validationSchema={schoolSchema}
-          onSubmit={handleSubmit}>
+          onSubmit={handleSubmit}
+        >
           {({ values, getFieldProps }) => (
             <Form>
               <div className="card-body personal-info">
                 <div className="mb-4 d-flex align-items-center justify-content-between">
                   <h5 className="fw-bold mb-0 me-4">
-                    <span className="d-block mb-2">School Information:</span>
+                    <span className="d-block mb-2">School Information</span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      Following information is publicly displayed, be careful!{" "}
+                      School details for our records.
                     </span>
                   </h5>
                 </div>
@@ -56,7 +57,8 @@ const SchoolsCreateContent = () => {
                       placeholder={"School Name"}
                       value={values.schoolName}
                       meta={meta}
-                      {...getFieldProps('schoolName')}
+                      isMandatory
+                      {...getFieldProps("schoolName")}
                     />
                   )}
                 </Field>
@@ -69,7 +71,7 @@ const SchoolsCreateContent = () => {
                       labelId={"schoolAddress"}
                       name={"schoolAddress"}
                       meta={meta}
-                      {...getFieldProps('schoolAddress')}
+                      {...getFieldProps("schoolAddress")}
                     />
                   )}
                 </Field>
@@ -84,7 +86,7 @@ const SchoolsCreateContent = () => {
                       name={"schoolPhoneNumber"}
                       value={values.schoolPhoneNumber}
                       meta={meta}
-                      {...getFieldProps('schoolPhoneNumber')}
+                      {...getFieldProps("schoolPhoneNumber")}
                     />
                   )}
                 </Field>
@@ -100,7 +102,7 @@ const SchoolsCreateContent = () => {
                       type={"email"}
                       value={values.schoolEmail}
                       meta={meta}
-                      {...getFieldProps('schoolEmail')}
+                      {...getFieldProps("schoolEmail")}
                     />
                   )}
                 </Field>
@@ -125,7 +127,7 @@ const SchoolsCreateContent = () => {
                       name={"picName"}
                       value={values.picName}
                       meta={meta}
-                      {...getFieldProps('picName')}
+                      {...getFieldProps("picName")}
                     />
                   )}
                 </Field>
@@ -140,7 +142,7 @@ const SchoolsCreateContent = () => {
                       name={"picPhoneNumber"}
                       value={values.picPhoneNumber}
                       meta={meta}
-                      {...getFieldProps('picPhoneNumber')}
+                      {...getFieldProps("picPhoneNumber")}
                     />
                   )}
                 </Field>
@@ -156,7 +158,7 @@ const SchoolsCreateContent = () => {
                       type={"email"}
                       value={values.picEmail}
                       meta={meta}
-                      {...getFieldProps('picEmail')}
+                      {...getFieldProps("picEmail")}
                     />
                   )}
                 </Field>
@@ -166,15 +168,19 @@ const SchoolsCreateContent = () => {
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary" disabled={createLoading}>
-                  {createLoading ? (
-                    <div
-                      className="spinner-border spinner-border-sm text-white me-2"
-                      role="status"
-                    />
-                  ) : (
-                    <FiCheck size={16} className="me-2" />
-                  )}
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={createLoading}
+                  >
+                    {createLoading ? (
+                      <div
+                        className="spinner-border spinner-border-sm text-white me-2"
+                        role="status"
+                      />
+                    ) : (
+                      <FiCheck size={16} className="me-2" />
+                    )}
                     <span>Create School</span>
                   </button>
                 </div>

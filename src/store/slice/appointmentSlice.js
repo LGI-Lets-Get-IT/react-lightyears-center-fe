@@ -62,7 +62,6 @@ export const fetchAppointmentForAssessments = createAsyncThunk(
   "appointments/getAppointmentForAssessments",
   async (query, { rejectWithValue }) => {
     try {
-      console.log('query', query)
       const response = await appointmentsApi.getAppointmentForAssessments(
         query
       );
@@ -77,7 +76,6 @@ export const updateAppointmentById = createAsyncThunk(
   "appointments/updateAppointmentById",
   async ({ appointmentId, data }, { rejectWithValue }) => {
     try {
-      console.log('DATAA', data)
       const response = await appointmentsApi.updateAppointmentById(
         appointmentId,
         data
@@ -93,8 +91,10 @@ export const confirmPicAttendanceById = createAsyncThunk(
   "appointments/confirmPicAttendanceById",
   async (appointmentId, { rejectWithValue, dispatch }) => {
     try {
-      const response = await appointmentsApi.confirmPicAttendanceById(appointmentId);
-      dispatch(fetchAppointmentById(appointmentId))
+      const response = await appointmentsApi.confirmPicAttendanceById(
+        appointmentId
+      );
+      dispatch(fetchAppointmentById(appointmentId));
       return response.data?.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -171,13 +171,15 @@ export const appointmentSlice = createSlice({
       state.isLoading = true;
       state.appointments = initialState.appointments;
     });
-    builder.addCase(fetchAppointmentForAssessments.fulfilled,
+    builder.addCase(
+      fetchAppointmentForAssessments.fulfilled,
       (state, action) => {
         state.isLoading = false;
         state.appointments = action.payload;
       }
     );
-    builder.addCase(fetchAppointmentForAssessments.rejected,
+    builder.addCase(
+      fetchAppointmentForAssessments.rejected,
       (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
@@ -199,34 +201,33 @@ export const appointmentSlice = createSlice({
         state.error = action.payload;
       });
     builder
-    .addCase(deleteAppointmentByIds.pending, (state) => {
-      state.isLoading = true;
-      state.error = null;
-      state.appointments = initialState.appointments;
-    })
-    .addCase(deleteAppointmentByIds.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.appointments = action.payload;
-    })
-    .addCase(deleteAppointmentByIds.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-      state.appointments = initialState.appointments;
-    });
+      .addCase(deleteAppointmentByIds.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.appointments = initialState.appointments;
+      })
+      .addCase(deleteAppointmentByIds.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.appointments = action.payload;
+      })
+      .addCase(deleteAppointmentByIds.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.appointments = initialState.appointments;
+      });
 
     builder
-    .addCase(confirmPicAttendanceById.pending, (state) => {
-      state.isLoading = true;
-      state.error = null;
-    })
-    .addCase(confirmPicAttendanceById.fulfilled, (state, action) => {
-      state.isLoading = false;
-    })
-    .addCase(confirmPicAttendanceById.rejected, (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    });
-    
+      .addCase(confirmPicAttendanceById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(confirmPicAttendanceById.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(confirmPicAttendanceById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
   },
 });
 

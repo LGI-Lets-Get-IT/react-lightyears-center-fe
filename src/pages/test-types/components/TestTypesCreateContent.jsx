@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from "react";
-import TabProfile from "../../../components/customersCreate/TabProfile";
-import TabPassword from "../../../components/customersCreate/TabPassword";
-import TabBilling from "../../../components/customersCreate/TabBilling";
-import TabNotificationsContent from "../../../components/customersView/TabNotificationsContent";
-import TabConnections from "../../../components/customersView/TabConnections";
-import TabBillingContent from "../../../components/customersView/TabBillingContent";
+import React from "react";
 import Input from "@/components/shared/Input";
 import TextArea from "@/components/shared/TextArea";
-import { FiCalendar, FiCheck, FiLayers, FiUserPlus, FiX } from "react-icons/fi";
-import DatePicker from "react-datepicker";
-import useDatePicker from "@/hooks/useDatePicker";
-import useLocationData from "@/hooks/useLocationData";
+import { FiCheck, FiX } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { genderOptions, relationshipOptions } from "@/utils/options";
-import { createSchool, fetchAllSchools } from "@/store/slice/schoolSlice";
-import SelectDropdown from "@/components/shared/SelectDropdown";
 import { createTestType } from "@/store/slice/testTypeSlice";
 import { Field, Form, Formik } from "formik";
 import { testTypeSchema } from "@/schemas/testTypeSchema";
@@ -23,7 +11,7 @@ import { testTypeSchema } from "@/schemas/testTypeSchema";
 const TestTypesCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading: createLoading } = useSelector(state => state.testTypes)
+  const { isLoading: createLoading } = useSelector((state) => state.testTypes);
 
   const handleSubmit = (values, actions) => {
     // console.log('KJSFKAJSKASFJKJ', values)
@@ -35,10 +23,14 @@ const TestTypesCreateContent = () => {
   return (
     <div className="col-lg-12">
       <div className="card border-top-0">
-        <Formik initialValues={{
-          name: null,
-          description: null
-        }} validationSchema={testTypeSchema} onSubmit={handleSubmit}>
+        <Formik
+          initialValues={{
+            name: null,
+            description: null,
+          }}
+          validationSchema={testTypeSchema}
+          onSubmit={handleSubmit}
+        >
           <Form>
             <div className="card-body personal-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -57,6 +49,7 @@ const TestTypesCreateContent = () => {
                     placeholder={"Test Name"}
                     name={"testName"}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -74,7 +67,6 @@ const TestTypesCreateContent = () => {
                   />
                 )}
               </Field>
-
             </div>
             <hr className="my-0" />
             <div className="card-body additional-info">
@@ -83,7 +75,11 @@ const TestTypesCreateContent = () => {
                   <FiX size={16} className="me-2" />
                   <span>Cancel</span>
                 </a>
-                <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={createLoading}
+                >
                   {createLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"

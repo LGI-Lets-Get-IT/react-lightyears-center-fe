@@ -51,30 +51,84 @@ import * as Yup from "yup";
 // });
 
 export const appointmentSchema = Yup.object({
-  title: Yup.string().required("Title is required").min(3, "Title is too short"),
-  clientId: Yup.number().required("Client Name is required"),
+  title: Yup.string()
+    .required("Title is required")
+    .min(3, "Title is too short"),
+  clientId: Yup.number().required("Client name is required"),
   appointmentType: Yup.string().required("Appointment type is required"),
-  picId: Yup.number().typeError('PIC is required').required("PIC is required"),
-  timeStart: Yup.string().required("Start time is required"),
+  // picId: Yup.number().typeError("PIC is required").required("PIC is required"),
+  // timeStart: Yup.string().required("Start time is required"),
   // timeEnd: Yup.string().required('End time is required').min(Yup.ref('timeStart'), 'End time must be after start time'),
-  timeEnd: Yup.string()
-    .required('End time is required')
-    .test('is-after-start', 'End time must be after start time', function (value) {
-      const { timeStart } = this.parent;
-      if (!timeStart || !value) return true; // skip validation if either is not filled
-      return value > timeStart; // assumes format is 'HH:mm'
-    }),
-  roomId: Yup.number().required('Room Name is required'),
-  appointmentDate: Yup.string().required("Appointment date is required").test(
-    'date-not-in-past',
-    'Appointment date must be today or later',
-    function (value) {
-      if (!value) return true;
-      const today = startOfDay(new Date());
-      const selected = startOfDay(new Date(value));
-      return selected >= today;
+  // timeEnd: Yup.string()
+  //   .required("End time is required")
+  //   .test(
+  //     "is-after-start",
+  //     "End time must be after start time",
+  //     function (value) {
+  //       const { timeStart } = this.parent;
+  //       if (!timeStart || !value) return true; // skip validation if either is not filled
+  //       return value > timeStart; // assumes format is 'HH:mm'
+  //     }
+  //   ),
+  picId: Yup.number().when(
+    ["appointmentType", "appointmentDate", "timeStart", "timeEnd"],
+    ([type, date, start, end], schema) => {
+      const allFilled = type && date && start && end;
+      return allFilled
+        ? schema.typeError("PIC is required").required("PIC is required")
+        : schema.required(
+            "Please complete appointment details before selecting a PIC"
+          );
     }
   ),
+  roomId: Yup.number().required("Room name is required"),
+  timeStart: Yup.string().when("appointmentType", {
+    is: (appointmentType) => appointmentType && appointmentType.length > 0,
+    then: (schema) => schema.required("Start time is required"),
+    otherwise: (schema) =>
+      schema.required(
+        "Please select an appointment type before choosing a start time"
+      ),
+  }),
+  timeEnd: Yup.string().when("appointmentType", {
+    is: (appointmentType) => appointmentType && appointmentType.length > 0,
+    then: (schema) =>
+      schema
+        .required("End time is required")
+        .test(
+          "is-after-start",
+          "End time must be after start time",
+          function (value) {
+            const { timeStart } = this.parent;
+            if (!timeStart || !value) return true; // skip validation if either is not filled
+            return value > timeStart; // assumes format is 'HH:mm'
+          }
+        ),
+    otherwise: (schema) =>
+      schema.required(
+        "Please select an appointment type before choosing an end time"
+      ),
+  }),
+  appointmentDate: Yup.string().when("appointmentType", {
+    is: (appointmentType) => appointmentType && appointmentType.length > 0,
+    then: (schema) =>
+      schema
+        .required("Appointment date is required")
+        .test(
+          "date-not-in-past",
+          "Appointment date must be today or later",
+          function (value) {
+            if (!value) return true;
+            const today = startOfDay(new Date());
+            const selected = startOfDay(new Date(value));
+            return selected >= today;
+          }
+        ),
+    otherwise: (schema) =>
+      schema.required(
+        "Please select an appointment type before choosing a date"
+      ),
+  }),
   // timeStart: Yup.string().required("Start time is required").test(
   //   'start-at-least-6-hours-from-now',
   //   'Appointment must be made at least 6 hours in advance',
@@ -97,4 +151,4 @@ export const appointmentSchema = Yup.object({
   //     return isAfter(new Date(value), minEndTime) || isEqual(new Date(value), minEndTime);
   //   }
   // ),
-})
+});

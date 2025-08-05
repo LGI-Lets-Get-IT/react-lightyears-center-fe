@@ -101,6 +101,7 @@ const TabProfile = ({ userData }) => {
                     name={"fullName"}
                     value={values.fullName}
                     meta={meta}
+                    isMandatory
                     {...field}
                     {...getFieldProps("fullName")}
                   />
@@ -109,7 +110,7 @@ const TabProfile = ({ userData }) => {
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label htmlFor="dateofBirth" className="fw-semibold">
-                    Date of Birth:{" "}
+                    Date of Birth <span className="text-danger">*</span>
                   </label>
                 </div>
                 <div className="col-lg-8">
@@ -143,7 +144,9 @@ const TabProfile = ({ userData }) => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Gender: </label>
+                  <label className="fw-semibold">
+                    Gender <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -159,7 +162,9 @@ const TabProfile = ({ userData }) => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Nationality: </label>
+                  <label className="fw-semibold">
+                    Nationality <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -175,7 +180,9 @@ const TabProfile = ({ userData }) => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">School Name: </label>
+                  <label className="fw-semibold">
+                    School Name <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -203,6 +210,7 @@ const TabProfile = ({ userData }) => {
                       name={"className"}
                       value={values.className}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -218,6 +226,7 @@ const TabProfile = ({ userData }) => {
                         placeholder={"Please specify the problem here"}
                         row="4"
                         meta={meta}
+                        isMandatory
                         {...field}
                       />
                     )}
@@ -249,6 +258,7 @@ const TabProfile = ({ userData }) => {
                     name={"guardianName"}
                     value={values.guardianName}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -265,6 +275,7 @@ const TabProfile = ({ userData }) => {
                     type={"email"}
                     value={values.guardianEmail}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -280,6 +291,7 @@ const TabProfile = ({ userData }) => {
                     name={"guardianPhone"}
                     value={values.guardianPhone}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -287,7 +299,9 @@ const TabProfile = ({ userData }) => {
 
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Nationality: </label>
+                  <label className="fw-semibold">
+                    Nationality <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -305,7 +319,8 @@ const TabProfile = ({ userData }) => {
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label className="fw-semibold">
-                    Relationship with child:{" "}
+                    Relationship with child{" "}
+                    <span className="text-danger">*</span>
                   </label>
                 </div>
                 <div className="col-lg-8">
@@ -320,31 +335,31 @@ const TabProfile = ({ userData }) => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
-              <a
-                className="btn btn-light-brand"
-                onClick={() => navigate(-1)}
-                type="button"
-              >
-                <FiX size={16} className="me-2" />
-                <span>Cancel</span>
-              </a>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={updateLoading}
-              >
-                {updateLoading ? (
-                  <div
-                    className="spinner-border spinner-border-sm text-white me-2"
-                    role="status"
-                  />
-                ) : (
-                  <FiCheck size={16} className="me-2" />
-                )}
-                <span>Edit Client</span>
-              </button>
+              <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
+                <a
+                  className="btn btn-light-brand"
+                  onClick={() => navigate(-1)}
+                  type="button"
+                >
+                  <FiX size={16} className="me-2" />
+                  <span>Cancel</span>
+                </a>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={updateLoading}
+                >
+                  {updateLoading ? (
+                    <div
+                      className="spinner-border spinner-border-sm text-white me-2"
+                      role="status"
+                    />
+                  ) : (
+                    <FiCheck size={16} className="me-2" />
+                  )}
+                  <span>Edit Client</span>
+                </button>
+              </div>
             </div>
             {/* <hr className="my-0" /> */}
             {/* <div className="card-body additional-info">

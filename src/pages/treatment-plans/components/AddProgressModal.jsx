@@ -16,10 +16,11 @@ const AddProgressModal = ({ setOpenModal }) => {
   const dispatch = useDispatch();
   const { plan } = useSelector((state) => state.treatmentPlans);
   const { appointments } = useSelector((state) => state.appointments);
-  const { isLoading: createLoading } = useSelector(state => state.treatmentSessions);
+  const { isLoading: createLoading } = useSelector(
+    (state) => state.treatmentSessions
+  );
 
   const handleAddProgress = (values) => {
-    console.log("VALUES", values);
     dispatch(createSession(values))
       .unwrap()
       .then(() => setOpenModal(false))
@@ -227,9 +228,13 @@ const AddProgressModal = ({ setOpenModal }) => {
                     data-bs-dismiss="modal"
                     onClick={() => setOpenModal(false)}
                   >
-                    Discard
+                    Cancel
                   </button>
-                  <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={createLoading}
+                  >
                     Add Progress
                   </button>
                 </div>

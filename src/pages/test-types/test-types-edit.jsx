@@ -9,16 +9,14 @@ import { useParams } from "react-router-dom";
 const TestTypesEdit = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { type } = useSelector(state => state.testTypes);
+  const { type } = useSelector((state) => state.testTypes);
 
   useEffect(() => {
     dispatch(fetchTestTypeById(id));
-  }, [])
+  }, []);
   return (
     <>
-      <PageHeader>
-      </PageHeader>
-      {console.log('TYPEEE', type)}
+      <PageHeader></PageHeader>
       <div className="main-content">
         <div className="row">
           <TestTypesEditContent id={id} testData={type} />

@@ -24,9 +24,10 @@ export const fetchAllEmployees = createAsyncThunk(
 
 export const fetchAllPsychologists = createAsyncThunk(
   "employees/getAllPsychologists",
-  async (_, { rejectWithValue }) => {
+  async (queryData, { rejectWithValue }) => {
     try {
-      const response = await employeesApi.getAllPsychologists();
+      console.log("QUERYDATA", queryData);
+      const response = await employeesApi.getAllPsychologists(queryData);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -36,9 +37,9 @@ export const fetchAllPsychologists = createAsyncThunk(
 
 export const fetchAllTherapists = createAsyncThunk(
   "employees/getAllTherapists",
-  async (_, { rejectWithValue }) => {
+  async (queryData, { rejectWithValue }) => {
     try {
-      const response = await employeesApi.getAllTherapists();
+      const response = await employeesApi.getAllTherapists(queryData);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -81,7 +82,6 @@ export const updateEmployeeById = createAsyncThunk(
     }
   }
 );
-
 
 export const updateEmployeePassword = createAsyncThunk(
   "employees/updateEmployeePasswordById",

@@ -12,7 +12,7 @@ export const menuList = [
     name: "Appointments",
     path: "/appointments",
     icon: "feather-calendar",
-    permissions: [PERMISSIONS.APPOINTMENTS.VIEW]
+    permissions: [PERMISSIONS.APPOINTMENTS.VIEW],
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -27,7 +27,7 @@ export const menuList = [
     name: "Assessments",
     path: "/assessments",
     icon: "pi-notepencil-light",
-    permissions: [PERMISSIONS.ASSESSMENTS.VIEW]
+    permissions: [PERMISSIONS.ASSESSMENTS.VIEW],
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -42,7 +42,7 @@ export const menuList = [
     name: "Clients",
     path: "/clients",
     icon: "feather-users",
-    permissions: [PERMISSIONS.CLIENTS.VIEW]
+    permissions: [PERMISSIONS.CLIENTS.VIEW],
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -55,9 +55,9 @@ export const menuList = [
   {
     id: 4,
     name: "Treatment Plans",
-    path: '/treatment-plans',
-    icon: 'tb-target-arrow',
-    permissions: [PERMISSIONS.TREATMENT_PLANS.VIEW]
+    path: "/treatment-plans",
+    icon: "tb-target-arrow",
+    permissions: [PERMISSIONS.TREATMENT_PLANS.VIEW],
     // dropdownMenu: [
     //   {
     //     id: 1,
@@ -76,9 +76,16 @@ export const menuList = [
     dropdownMenu: [
       {
         id: 1,
-        name: 'Employees',
-        path: '/employees',
-        icon: '',
+        name: "Employees",
+        path: "/employees",
+        icon: "",
+        permissions: [PERMISSIONS.EMPLOYEES.VIEW],
+      },
+      {
+        id: 5,
+        name: "Employee Schedules",
+        path: "employee-schedules",
+        icon: "",
         permissions: [PERMISSIONS.EMPLOYEES.VIEW],
       },
       {
@@ -102,10 +109,10 @@ export const menuList = [
         name: "Treatment Types",
         path: "/treatment-types",
         icon: "lia-file-medical",
-        permissions: [PERMISSIONS.TREATMENT_TYPES.CREATE]
+        permissions: [PERMISSIONS.TREATMENT_TYPES.CREATE],
       },
-    ]
-  }
+    ],
+  },
 
   // {
   //   id: 1,
