@@ -14,7 +14,6 @@ import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
 import { appointmentSchema } from "@/schemas/appointmentSchema";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
-import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 const AppointmentCreateContent = () => {
   const navigate = useNavigate();
@@ -219,10 +218,10 @@ const AppointmentCreateContent = () => {
                                     dispatch(
                                       fetchAllTherapists({
                                         params: {
-                                          appointmentDate: fromZonedTime(
+                                          appointmentDate: `${format(
                                             date,
-                                            "Asia/Jakarta"
-                                          ).toISOString(),
+                                            "yyyy-MM-dd"
+                                          )}`,
                                           timeStart: values.timeStart,
                                           timeEnd: values.timeEnd,
                                         },
@@ -232,10 +231,10 @@ const AppointmentCreateContent = () => {
                                     dispatch(
                                       fetchAllPsychologists({
                                         params: {
-                                          appointmentDate: fromZonedTime(
+                                          appointmentDate: `${format(
                                             date,
-                                            "Asia/Jakarta"
-                                          ).toISOString(),
+                                            "yyyy-MM-dd"
+                                          )}`,
                                           timeStart: values.timeStart,
                                           timeEnd: values.timeEnd,
                                         },
@@ -320,7 +319,10 @@ const AppointmentCreateContent = () => {
                                   dispatch(
                                     fetchAllTherapists({
                                       params: {
-                                        appointmentDate: values.appointmentDate,
+                                        appointmentDate: `${format(
+                                          values.appointmentDate,
+                                          "yyyy-MM-dd"
+                                        )}`,
                                         timeStart: e.target.value,
                                         timeEnd: values.timeEnd,
                                       },
@@ -330,7 +332,10 @@ const AppointmentCreateContent = () => {
                                   dispatch(
                                     fetchAllPsychologists({
                                       params: {
-                                        appointmentDate: values.appointmentDate,
+                                        appointmentDate: `${format(
+                                          values.appointmentDate,
+                                          "yyyy-MM-dd"
+                                        )}`,
                                         timeStart: e.target.value,
                                         timeEnd: values.timeEnd,
                                       },
@@ -375,7 +380,10 @@ const AppointmentCreateContent = () => {
                                   dispatch(
                                     fetchAllTherapists({
                                       params: {
-                                        appointmentDate: values.appointmentDate,
+                                        appointmentDate: `${format(
+                                          values.appointmentDate,
+                                          "yyyy-MM-dd"
+                                        )}`,
                                         timeStart: values.timeStart,
                                         timeEnd: e.target.value,
                                       },
@@ -385,7 +393,10 @@ const AppointmentCreateContent = () => {
                                   dispatch(
                                     fetchAllPsychologists({
                                       params: {
-                                        appointmentDate: values.appointmentDate,
+                                        appointmentDate: `${format(
+                                          values.appointmentDate,
+                                          "yyyy-MM-dd"
+                                        )}`,
                                         timeStart: values.timeStart,
                                         timeEnd: e.target.value,
                                       },
