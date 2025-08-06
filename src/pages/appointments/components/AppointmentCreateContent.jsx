@@ -14,6 +14,7 @@ import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
 import { appointmentSchema } from "@/schemas/appointmentSchema";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
 
 const AppointmentCreateContent = () => {
   const navigate = useNavigate();
@@ -52,11 +53,18 @@ const AppointmentCreateContent = () => {
   }, []);
 
   const formatDropdown = (dropdownItem) => {
+    console.log("DROPDOWNITEM", dropdownItem);
     const formValue = formRef.current?.values;
     const selectedDay = formValue?.appointmentDate
       ? format(formValue.appointmentDate, "EEEE")
       : null;
     const selectedStartTime = formValue?.timeStart;
+    console.log(
+      "selectedDay, selectedStartTime",
+      selectedDay,
+      selectedStartTime
+    );
+    console.log("formValue?.appointmentDate", formValue?.appointmentDate);
 
     // Find a schedule that matches the selected day
     const dayBasedSchedule = dropdownItem.schedules?.find((schedule) =>
@@ -211,7 +219,10 @@ const AppointmentCreateContent = () => {
                                     dispatch(
                                       fetchAllTherapists({
                                         params: {
-                                          appointmentDate: date,
+                                          appointmentDate: fromZonedTime(
+                                            date,
+                                            "Asia/Jakarta"
+                                          ).toISOString(),
                                           timeStart: values.timeStart,
                                           timeEnd: values.timeEnd,
                                         },
@@ -221,7 +232,10 @@ const AppointmentCreateContent = () => {
                                     dispatch(
                                       fetchAllPsychologists({
                                         params: {
-                                          appointmentDate: date,
+                                          appointmentDate: fromZonedTime(
+                                            date,
+                                            "Asia/Jakarta"
+                                          ).toISOString(),
                                           timeStart: values.timeStart,
                                           timeEnd: values.timeEnd,
                                         },
