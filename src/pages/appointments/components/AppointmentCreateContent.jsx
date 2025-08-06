@@ -87,6 +87,25 @@ const AppointmentCreateContent = () => {
     };
   };
 
+  const handleFetchPIC = (updatedValues) => {
+    const { appointmentType, appointmentDate, timeStart, timeEnd } =
+      updatedValues;
+
+    if (appointmentType && appointmentDate && timeStart && timeEnd) {
+      const params = {
+        appointmentDate: format(new Date(appointmentDate), "yyyy-MM-dd"),
+        timeStart,
+        timeEnd,
+      };
+
+      if (appointmentType.toLowerCase() === "treatment") {
+        dispatch(fetchAllTherapists({ params }));
+      } else {
+        dispatch(fetchAllPsychologists({ params }));
+      }
+    }
+  };
+
   return (
     <>
       <div className="col-lg-12">
@@ -154,12 +173,16 @@ const AppointmentCreateContent = () => {
                         selectedOption={values.appointmentType}
                         placeholder={"Select Appointment Type"}
                         onSelectOption={(option) => {
-                          if (option.value.toLowerCase() === "treatment") {
-                            dispatch(fetchAllTherapists());
-                          } else {
-                            dispatch(fetchAllPsychologists());
-                          }
+                          // if (option.value.toLowerCase() === "treatment") {
+                          //   dispatch(fetchAllTherapists());
+                          // } else {
+                          //   dispatch(fetchAllPsychologists());
+                          // }
                           setFieldValue("appointmentType", option.value);
+                          handleFetchPIC({
+                            ...values,
+                            appointmentType: option.value,
+                          });
                         }}
                       />
                     </div>
@@ -211,41 +234,45 @@ const AppointmentCreateContent = () => {
                                 showPopperArrow={false}
                                 selected={values.appointmentDate}
                                 onChange={(date) => {
-                                  if (
-                                    values.appointmentType.toLowerCase() ===
-                                    "treatment"
-                                  ) {
-                                    dispatch(
-                                      fetchAllTherapists({
-                                        params: {
-                                          appointmentDate: `${format(
-                                            date,
-                                            "yyyy-MM-dd"
-                                          )}`,
-                                          timeStart: values.timeStart,
-                                          timeEnd: values.timeEnd,
-                                        },
-                                      })
-                                    );
-                                  } else {
-                                    dispatch(
-                                      fetchAllPsychologists({
-                                        params: {
-                                          appointmentDate: `${format(
-                                            date,
-                                            "yyyy-MM-dd"
-                                          )}`,
-                                          timeStart: values.timeStart,
-                                          timeEnd: values.timeEnd,
-                                        },
-                                      })
-                                    );
-                                  }
+                                  // if (
+                                  //   values.appointmentType.toLowerCase() ===
+                                  //   "treatment"
+                                  // ) {
+                                  //   dispatch(
+                                  //     fetchAllTherapists({
+                                  //       params: {
+                                  //         appointmentDate: `${format(
+                                  //           date,
+                                  //           "yyyy-MM-dd"
+                                  //         )}`,
+                                  //         timeStart: values.timeStart,
+                                  //         timeEnd: values.timeEnd,
+                                  //       },
+                                  //     })
+                                  //   );
+                                  // } else {
+                                  //   dispatch(
+                                  //     fetchAllPsychologists({
+                                  //       params: {
+                                  //         appointmentDate: `${format(
+                                  //           date,
+                                  //           "yyyy-MM-dd"
+                                  //         )}`,
+                                  //         timeStart: values.timeStart,
+                                  //         timeEnd: values.timeEnd,
+                                  //       },
+                                  //     })
+                                  //   );
+                                  // }
                                   setFieldValue(
                                     "appointmentDate",
                                     // date,
                                     format(date, "yyyy-MM-dd HH:mm:ss xx")
                                   );
+                                  handleFetchPIC({
+                                    ...values,
+                                    appointmentDate: format(date, "yyyy-MM-dd"),
+                                  });
                                 }}
                                 className={`form-control ${
                                   meta.error ? "is-invalid" : ""
@@ -290,7 +317,6 @@ const AppointmentCreateContent = () => {
                           setFieldValue("picId", option.value);
                         }}
                       />
-                      {console.log("psychologists", psychologists)}
                     </div>
                     <div className="col-md-6 mb-4">
                       <label htmlFor="timeStart" className="form-label">
@@ -312,36 +338,40 @@ const AppointmentCreateContent = () => {
                               {...field}
                               onChange={(e) => {
                                 setFieldValue("timeStart", e.target.value);
-                                if (
-                                  values.appointmentType.toLowerCase() ===
-                                  "treatment"
-                                ) {
-                                  dispatch(
-                                    fetchAllTherapists({
-                                      params: {
-                                        appointmentDate: `${format(
-                                          values.appointmentDate,
-                                          "yyyy-MM-dd"
-                                        )}`,
-                                        timeStart: e.target.value,
-                                        timeEnd: values.timeEnd,
-                                      },
-                                    })
-                                  );
-                                } else {
-                                  dispatch(
-                                    fetchAllPsychologists({
-                                      params: {
-                                        appointmentDate: `${format(
-                                          values.appointmentDate,
-                                          "yyyy-MM-dd"
-                                        )}`,
-                                        timeStart: e.target.value,
-                                        timeEnd: values.timeEnd,
-                                      },
-                                    })
-                                  );
-                                }
+                                handleFetchPIC({
+                                  ...values,
+                                  timeStart: e.target.value,
+                                });
+                                // if (
+                                //   values.appointmentType.toLowerCase() ===
+                                //   "treatment"
+                                // ) {
+                                //   dispatch(
+                                //     fetchAllTherapists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: e.target.value,
+                                //         timeEnd: values.timeEnd,
+                                //       },
+                                //     })
+                                //   );
+                                // } else {
+                                //   dispatch(
+                                //     fetchAllPsychologists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: e.target.value,
+                                //         timeEnd: values.timeEnd,
+                                //       },
+                                //     })
+                                //   );
+                                // }
                               }}
                             />
                             {meta.error && (
@@ -373,36 +403,40 @@ const AppointmentCreateContent = () => {
                               {...field}
                               onChange={(e) => {
                                 setFieldValue("timeEnd", e.target.value);
-                                if (
-                                  values.appointmentType.toLowerCase() ===
-                                  "treatment"
-                                ) {
-                                  dispatch(
-                                    fetchAllTherapists({
-                                      params: {
-                                        appointmentDate: `${format(
-                                          values.appointmentDate,
-                                          "yyyy-MM-dd"
-                                        )}`,
-                                        timeStart: values.timeStart,
-                                        timeEnd: e.target.value,
-                                      },
-                                    })
-                                  );
-                                } else {
-                                  dispatch(
-                                    fetchAllPsychologists({
-                                      params: {
-                                        appointmentDate: `${format(
-                                          values.appointmentDate,
-                                          "yyyy-MM-dd"
-                                        )}`,
-                                        timeStart: values.timeStart,
-                                        timeEnd: e.target.value,
-                                      },
-                                    })
-                                  );
-                                }
+                                handleFetchPIC({
+                                  ...values,
+                                  timeEnd: e.target.value,
+                                });
+                                // if (
+                                //   values.appointmentType.toLowerCase() ===
+                                //   "treatment"
+                                // ) {
+                                //   dispatch(
+                                //     fetchAllTherapists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: values.timeStart,
+                                //         timeEnd: e.target.value,
+                                //       },
+                                //     })
+                                //   );
+                                // } else {
+                                //   dispatch(
+                                //     fetchAllPsychologists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: values.timeStart,
+                                //         timeEnd: e.target.value,
+                                //       },
+                                //     })
+                                //   );
+                                // }
                               }}
                             />
                             {meta.error && (
