@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchAllEmployees,
   fetchAllPsychologists,
   fetchAllTherapists,
 } from "@/store/slice/employeeSlice";
@@ -12,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import WeekdayPicker from "@/components/picker/WeekdayPicker";
 import TimePicker from "@/components/picker/TimePicker";
 import { createPicSchedule } from "@/store/slice/picScheduleSlice";
+import { picScheduleSchema } from "@/schemas/picScheduleSchema";
 
 const PICScheduleCreateContent = () => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const PICScheduleCreateContent = () => {
                 employeeId: null,
                 schedules: [],
               }}
-              //   validationSchema={treatmentPlanSchema}
+              validationSchema={picScheduleSchema}
               onSubmit={onSubmit}
             >
               {({ values, setFieldValue }) => (
@@ -133,6 +133,7 @@ const PICScheduleCreateContent = () => {
                                   </label>
                                   <div className="col-sm-9">
                                     <WeekdayPicker
+                                      name={`schedules[${index}].availableDays`}
                                       onChange={(options) => {
                                         setFieldValue(
                                           `schedules[${index}].availableDays`,
@@ -152,6 +153,7 @@ const PICScheduleCreateContent = () => {
                                       {() => (
                                         <>
                                           <TimePicker
+                                            name={`schedules[${index}].availableStartTime`}
                                             onChange={(option) => {
                                               setFieldValue(
                                                 `schedules[${index}].availableStartTime`,
@@ -200,6 +202,7 @@ const PICScheduleCreateContent = () => {
                                       {() => (
                                         <>
                                           <TimePicker
+                                            name={`schedules[${index}].availableEndTime`}
                                             onChange={(option) => {
                                               setFieldValue(
                                                 `schedules[${index}].availableEndTime`,
@@ -284,7 +287,7 @@ export default PICScheduleCreateContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

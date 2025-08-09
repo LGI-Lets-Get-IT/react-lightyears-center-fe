@@ -127,7 +127,6 @@ api.interceptors.response.use(
         processQueue(error, null);
         console.log("BEFORE DISPATCH LOGOUT LINE 128");
         await store.dispatch(userLogout());
-        store.dispatch(resetCurrentUser());
         console.log("AFTER DISPATCH LOGOUT LINE 131");
         window.location.href = "/login";
         return Promise.reject(error);

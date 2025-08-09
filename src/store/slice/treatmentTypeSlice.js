@@ -32,12 +32,12 @@ export const fetchTreatmentTypeById = createAsyncThunk(
   }
 );
 
-
 export const createTreatmentType = createAsyncThunk(
   "treatmenttype/createTreatmentType",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue, dispatch }) => {
     try {
       const response = await treatmentTypesApi.createTreatmentType(data);
+      dispatch(fetchAllTreatmentTypes());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -49,8 +49,11 @@ export const updateTreatmentTypeById = createAsyncThunk(
   "testtype/updateTreatmentTypeById",
   async (bodyData, { rejectWithValue }) => {
     try {
-      const { treatmentTypeId, data } = bodyData
-      const response = await treatmentTypesApi.updateTreatmentTypeById(treatmentTypeId, data);
+      const { treatmentTypeId, data } = bodyData;
+      const response = await treatmentTypesApi.updateTreatmentTypeById(
+        treatmentTypeId,
+        data
+      );
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -62,8 +65,10 @@ export const deleteTreatmentTypeByIds = createAsyncThunk(
   "testtype/deleteTreatmentTypeByIds",
   async (treatmentIds, { rejectWithValue, dispatch }) => {
     try {
-      const response = await treatmentTypesApi.deleteTreatmentTypeByIds(treatmentIds);
-      dispatch(fetchAllTreatmentTypes())
+      const response = await treatmentTypesApi.deleteTreatmentTypeByIds(
+        treatmentIds
+      );
+      dispatch(fetchAllTreatmentTypes());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -100,7 +105,7 @@ export const treatmentTypeSlice = createSlice({
     builder.addCase(fetchTreatmentTypeById.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
-      state.type = initialState.type
+      state.type = initialState.type;
     });
     builder.addCase(createTreatmentType.pending, (state) => {
       state.isLoading = true;

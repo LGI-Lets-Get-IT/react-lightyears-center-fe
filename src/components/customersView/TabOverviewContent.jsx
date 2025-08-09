@@ -120,11 +120,15 @@ const TabOverviewContent = ({ clientInformation }) => {
         </div>
 
         <div className="row g-0 mb-4">
-          <div className="col-sm-6 text-muted">Link to Sheets</div>
+          <div className="col-sm-6 text-muted">Google Form Link</div>
           <div className="col-sm-2">
-            <a href="https://sheets.google.com" className="btn btn-primary">
+            <a
+              target="_blank"
+              href={clientInformation?.intakeFormLink}
+              className="btn btn-primary"
+            >
               <FaEye size={12} className="me-2" />
-              <span>View Sheets</span>
+              <span>View Form</span>
             </a>
           </div>
         </div>
