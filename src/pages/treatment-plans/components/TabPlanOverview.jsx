@@ -180,7 +180,7 @@ export default TabPlanOverview;
 
 const AccordionItem = ({ id, header, ...content }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

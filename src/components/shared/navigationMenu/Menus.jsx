@@ -94,7 +94,6 @@ const Menus = () => {
               activeParent === name?.toLowerCase() ? "active" : ""
             }`}
           >
-            {console.log("ACTIVEPARENT", activeParent, name)}
             <Link to={path} className="nxl-link text-capitalize">
               <span className="nxl-micon"> {getIcon(icon)} </span>
               <span className="nxl-mtext" style={{ paddingLeft: "2.5px" }}>

@@ -14,12 +14,17 @@ import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
 import { appointmentSchema } from "@/schemas/appointmentSchema";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
+import {
+  createTreatmentType,
+  fetchAllTreatmentTypes,
+} from "@/store/slice/treatmentTypeSlice";
 
 const AppointmentCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formRef = useRef();
   const { clients } = useSelector((state) => state.clients);
+  const { treatmentTypes } = useSelector((state) => state.treatmentTypes);
   const { isLoading: createLoading } = useSelector(
     (state) => state.appointments
   );
@@ -129,6 +134,9 @@ const AppointmentCreateContent = () => {
                 appointmentDate: null,
                 timeStart: null,
                 timeEnd: null,
+                treatmentId: null,
+                numberOfRepetition: null,
+                intervalBetweenAppointment: null,
               }}
               validationSchema={appointmentSchema}
               onSubmit={onSubmit}
@@ -173,11 +181,9 @@ const AppointmentCreateContent = () => {
                         selectedOption={values.appointmentType}
                         placeholder={"Select Appointment Type"}
                         onSelectOption={(option) => {
-                          // if (option.value.toLowerCase() === "treatment") {
-                          //   dispatch(fetchAllTherapists());
-                          // } else {
-                          //   dispatch(fetchAllPsychologists());
-                          // }
+                          if (option.value.toLowerCase() === "treatment") {
+                            dispatch(fetchAllTreatmentTypes());
+                          }
                           setFieldValue("appointmentType", option.value);
                           handleFetchPIC({
                             ...values,
@@ -448,6 +454,94 @@ const AppointmentCreateContent = () => {
                         )}
                       </Field>
                     </div>
+                    {values.appointmentType?.toLowerCase() === "treatment" && (
+                      <>
+                        <hr />
+                        <div className="col-md-6 mb-4">
+                          <label htmlFor="timeEnd" className="form-label">
+                            Treatment Name
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <Field name="title">
+                            {({ field, meta }) => (
+                              <>
+                                <SelectDropdown
+                                  name={`treatmentId`}
+                                  options={treatmentTypes.map((item) => ({
+                                    label: item.name,
+                                    value: item.id,
+                                  }))}
+                                  selectedOption={values.treatmentId}
+                                  placeholder={"Select Treatment"}
+                                  onSelectOption={(option) =>
+                                    setFieldValue(`treatmentId`, option.value)
+                                  }
+                                  onCreateOption={(value) => {
+                                    dispatch(
+                                      createTreatmentType({
+                                        treatmentName: value,
+                                      })
+                                    );
+                                  }}
+                                />
+                              </>
+                            )}
+                          </Field>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <label htmlFor="timeEnd" className="form-label">
+                            Number of Appointment Repetitions
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <Field name={`numberOfRepetition`}>
+                            {({ field, meta }) => (
+                              <>
+                                <input
+                                  type="number"
+                                  className={`form-control ${
+                                    meta.error ? "is-invalid" : ""
+                                  }`}
+                                  placeholder="Enter how many appointments you want to schedule (e.g. 3 for three total sessions)"
+                                  min={1}
+                                  {...field}
+                                />
+                                {meta.error && (
+                                  <div className="text-danger">
+                                    {meta.error}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </Field>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <label htmlFor="timeEnd" className="form-label">
+                            Interval Between Appointments (Days)
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <Field name={`intervalBetweenAppointment`}>
+                            {({ field, meta }) => (
+                              <>
+                                <input
+                                  type="number"
+                                  className={`form-control ${
+                                    meta.error ? "is-invalid" : ""
+                                  }`}
+                                  placeholder="Enter how many days between each appointment (e.g. 2 for every other day)"
+                                  min={1}
+                                  {...field}
+                                />
+                                {meta.error && (
+                                  <div className="text-danger">
+                                    {meta.error}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </Field>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
                     <button
