@@ -59,6 +59,19 @@ export const updateClientByUuid = createAsyncThunk(
   }
 );
 
+export const updateClientIntakeFormLink = createAsyncThunk(
+  "clients/updateClientIntakeFormLink",
+  async (bodyData, { rejectWithValue }) => {
+    try {
+      const { uuid, data } = bodyData;
+      const response = await clientsApi.updateClientIntakeFormLink(uuid, data);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateClientPassword = createAsyncThunk(
   "clients/updateClientPasswordByUuid",
   async (bodyData, { rejectWithValue }) => {
@@ -136,6 +149,18 @@ export const clientSlice = createSlice({
       state.currentClient = action.payload;
     });
     builder.addCase(updateClientByUuid.rejected, (state, action) => {
+      state.isLoading = false;
+      // state.currentClient = initialState.currentClient;
+      state.error = action.payload;
+    });
+    builder.addCase(updateClientIntakeFormLink.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateClientIntakeFormLink.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.currentClient = action.payload;
+    });
+    builder.addCase(updateClientIntakeFormLink.rejected, (state, action) => {
       state.isLoading = false;
       // state.currentClient = initialState.currentClient;
       state.error = action.payload;

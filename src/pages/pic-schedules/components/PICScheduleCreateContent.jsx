@@ -25,7 +25,7 @@ const PICScheduleCreateContent = () => {
     console.log("ASFASFS", values, actions);
     dispatch(createPicSchedule(values))
       .unwrap()
-      .then(() => navigate("/employee-schedules"))
+      .then(() => navigate("/employee-availabilities"))
       .catch((error) => console.log("Error", error));
   };
 

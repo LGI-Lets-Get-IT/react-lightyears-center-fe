@@ -46,7 +46,7 @@ const PICScheduleTable = () => {
     {
       label: "Edit",
       icon: <FiEdit3 />,
-      link: `/employee-schedules/${id}/edit`,
+      link: `/employee-availabilities/${id}/edit`,
       permission: PERMISSIONS.ASSESSMENTS.UPDATE,
     },
     {
@@ -66,7 +66,7 @@ const PICScheduleTable = () => {
       () => {
         dispatch(deletePicScheduleByIds({ scheduleIds: [id] }))
           .unwrap()
-          .then(() => navigate("/employee-schedules"))
+          .then(() => navigate("/employee-availabilities"))
           .catch((err) => console.error("Error: ", err));
       },
       () => {}
@@ -117,7 +117,7 @@ const PICScheduleTable = () => {
         const roleName = info.row.original.role.name;
         const employeeName = info.getValue();
         return (
-          <Link to={`/employee-schedules/${clientId}`}>
+          <Link to={`/employee-availabilities/${clientId}`}>
             [{roleName}] {employeeName}
           </Link>
         );
@@ -141,7 +141,7 @@ const PICScheduleTable = () => {
         return (
           <div className="hstack gap-2 justify-content-end">
             <Link
-              to={`/employee-schedules/${row.original.id}`}
+              to={`/employee-availabilities/${row.original.id}`}
               className="avatar-text avatar-md"
             >
               <FiEye />

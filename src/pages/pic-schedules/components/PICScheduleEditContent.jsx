@@ -27,7 +27,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
     console.log("Values of Form: ", values, actions);
     dispatch(createPicSchedule(values))
       .unwrap()
-      .then(() => navigate("/employee-schedules"))
+      .then(() => navigate("/employee-availabilities"))
       .catch((error) => console.log("Error", error));
   };
 
