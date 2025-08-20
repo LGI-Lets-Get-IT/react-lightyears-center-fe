@@ -1,3 +1,4 @@
+import { useField } from "formik";
 import Select from "react-select";
 
 const timeOptions = [
@@ -21,13 +22,21 @@ const timeOptions = [
   { value: "23:00", label: "23:00" },
 ];
 
-const TimePicker = ({ selected, onChange, isMultiSelect }) => (
-  <Select
-    isMulti={isMultiSelect}
-    options={timeOptions}
-    value={selected}
-    onChange={onChange}
-  />
-);
+const TimePicker = ({ name, selected, onChange, isMultiSelect }) => {
+  const [field, meta, helpers] = useField(name);
+  return (
+    <>
+      <Select
+        name={name}
+        isMulti={isMultiSelect}
+        options={timeOptions}
+        value={selected}
+        onChange={onChange}
+      />
+      {/* Show error if any */}
+      {meta.error && <div className="text-danger mt-1">{meta.error}</div>}
+    </>
+  );
+};
 
 export default TimePicker;

@@ -23,7 +23,7 @@ const PICScheduleViewHeader = ({ id }) => {
       () => {
         dispatch(deletePicScheduleByIds({ scheduleIds: [id] }))
           .unwrap()
-          .then(() => navigate("/employee-schedules"))
+          .then(() => navigate("/employee-availabilities"))
           .catch((err) => console.error("Error: ", err));
       },
       () => {}
@@ -33,7 +33,10 @@ const PICScheduleViewHeader = ({ id }) => {
   return (
     <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
       {hasPermission(PERMISSIONS.EMPLOYEES.UPDATE) && (
-        <Link to={`/employee-schedules/${id}/edit`} className="btn btn-primary">
+        <Link
+          to={`/employee-availabilities/${id}/edit`}
+          className="btn btn-primary"
+        >
           <LiaPencilAltSolid size={16} className="me-2" />
           <span>Edit Schedule</span>
         </Link>

@@ -12,7 +12,8 @@ import { useNavigate } from "react-router-dom";
 import WeekdayPicker from "@/components/picker/WeekdayPicker";
 import TimePicker from "@/components/picker/TimePicker";
 import format from "date-fns/format";
-import { updatePicScheduleByEmployeeId } from "@/store/slice/picScheduleSlice";
+import { createPicSchedule } from "@/store/slice/picScheduleSlice";
+import { picScheduleSchema } from "@/schemas/picScheduleSchema";
 
 const PICScheduleEditContent = ({ scheduleData }) => {
   const navigate = useNavigate();
@@ -23,11 +24,11 @@ const PICScheduleEditContent = ({ scheduleData }) => {
   const { psychologists, therapists } = useSelector((state) => state.employees);
 
   const onSubmit = async (values, actions) => {
-    console.log("ASFASFS", values, actions);
-    // dispatch(updatePicScheduleByEmployeeId(values))
-    //   .unwrap()
-    //   .then(() => navigate("/employee-schedules"))
-    //   .catch((error) => console.log("Error", error));
+    console.log("Values of Form: ", values, actions);
+    dispatch(createPicSchedule(values))
+      .unwrap()
+      .then(() => navigate("/employee-availabilities"))
+      .catch((error) => console.log("Error", error));
   };
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                 schedules: scheduleData?.schedules,
               }}
               enableReinitialize
-              //   validationSchema={treatmentPlanSchema}
+              validationSchema={picScheduleSchema}
               onSubmit={onSubmit}
             >
               {({ values, setFieldValue }) => (
@@ -135,6 +136,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                   </label>
                                   <div className="col-sm-9">
                                     <WeekdayPicker
+                                      name={`schedules[${index}].availableDays`}
                                       selected={schedule?.availableDays.map(
                                         (day) => ({
                                           label: day,
@@ -160,6 +162,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                       {({ field, meta }) => (
                                         <>
                                           <TimePicker
+                                            name={`schedules[${index}].availableStartTime`}
                                             selected={{
                                               value:
                                                 schedule.availableStartTime,
@@ -198,6 +201,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                       {({ field, meta }) => (
                                         <>
                                           <TimePicker
+                                            name={`schedules[${index}].availableEndTime`}
                                             {...field}
                                             selected={{
                                               value: schedule.availableEndTime,
@@ -287,7 +291,7 @@ export default PICScheduleEditContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

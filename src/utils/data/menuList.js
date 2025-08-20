@@ -83,8 +83,8 @@ export const menuList = [
       },
       {
         id: 5,
-        name: "Employee Schedules",
-        path: "employee-schedules",
+        name: "Employee Availabilities",
+        path: "employee-availabilities",
         icon: "",
         permissions: [PERMISSIONS.EMPLOYEES.VIEW],
       },

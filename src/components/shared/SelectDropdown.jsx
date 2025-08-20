@@ -245,7 +245,7 @@ const SelectDropdown = ({
   const handleOptionClick = (option) => {
     if (!isDisabled) {
       setValue(option.value); // ⬅️ update Formik field value
-      setLocalSelectedOption(option)
+      setLocalSelectedOption(option);
       setIsOpen(false);
       if (onSelectOption) {
         onSelectOption(option); // Notify parent of the selected option
@@ -266,7 +266,9 @@ const SelectDropdown = ({
 
   useEffect(() => {
     if (selectedOption && options?.length) {
-      const selectedOpt = options?.find(option => option.value === selectedOption);
+      const selectedOpt = options?.find(
+        (option) => option.value === selectedOption
+      );
       setLocalSelectedOption(selectedOpt);
     }
   }, [selectedOption, options]);
@@ -292,13 +294,22 @@ const SelectDropdown = ({
 
   return (
     <div
-      className={`select-dropdown ${className || ""} ${openUpwards ? "open-upwards" : ""
-        } ${isDisabled ? "pe-none" : ""}`}
+      className={`select-dropdown ${className || ""} ${
+        openUpwards ? "open-upwards" : ""
+      } ${isDisabled ? "pe-none" : ""}`}
       ref={dropdownRef}
     >
-      <div className={`select-box ${isDisabled ? 'bg-gray-200' : ''} ${meta.error ? 'border-danger' : ''}`} onClick={toggleDropdown}>
+      <div
+        className={`select-box ${isDisabled ? "bg-gray-200" : ""} ${
+          meta.error ? "border-danger" : ""
+        }`}
+        onClick={toggleDropdown}
+      >
         {isDisabled ? (
-          <span className="selected-label text-capitalize" style={{ color: "#bcbcbc" }}>
+          <span
+            className="selected-label text-capitalize"
+            style={{ color: "#bcbcbc" }}
+          >
             {(!localSelectedOption && placeholder) ||
               localSelectedOption?.label}
           </span>
@@ -349,7 +360,13 @@ const SelectDropdown = ({
                 <li
                   key={option.value}
                   onClick={() => handleOptionClick(option)}
-                  className={`d-flex justify-content-between align-items-center gap-2 ${option.isDisabled ? 'pe-none bg-gray-200' : ''} ${option.value === field.value ? "active" : ""}`}
+                  className={`${
+                    option.additionalInfo
+                      ? "justify-content-between align-items-center gap-2"
+                      : ""
+                  } ${option.isDisabled ? "pe-none bg-gray-200" : ""} ${
+                    option.value === field.value ? "active" : ""
+                  }`}
                 >
                   {option.color && (
                     <span
@@ -369,17 +386,21 @@ const SelectDropdown = ({
                     />
                   )}
                   {option.label}
-                  <span className="badge bg-soft-primary text-primary">{option.additionalInfo}</span>
+                  <span className="badge bg-soft-primary text-primary">
+                    {option.additionalInfo}
+                  </span>
                 </li>
               ))
-            ) : (onCreateOption && searchTerm !== '') ? (
+            ) : onCreateOption && searchTerm !== "" ? (
               <li
                 className="add-option"
                 onClick={() => {
                   onCreateOption && onCreateOption(searchTerm);
                 }}
               >
-                <span className="me-2"><FiPlusCircle/></span>
+                <span className="me-2">
+                  <FiPlusCircle />
+                </span>
                 <span>
                   Create <strong>{searchTerm}</strong>
                 </span>
@@ -392,9 +413,7 @@ const SelectDropdown = ({
       )}
 
       {/* Show error if any */}
-      {meta.error && (
-        <div className="text-danger mt-1">{meta.error}</div>
-      )}
+      {meta.error && <div className="text-danger mt-1">{meta.error}</div>}
     </div>
   );
 };

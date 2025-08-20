@@ -1,3 +1,4 @@
+import { useField } from "formik";
 import Select from "react-select";
 
 const weekdayOptions = [
@@ -10,14 +11,24 @@ const weekdayOptions = [
   { value: "Sunday", label: "Sunday" },
 ];
 
-const WeekdayPicker = ({ selected, onChange, disabled = false }) => (
-  <Select
-    isMulti
-    isDisabled={disabled}
-    options={weekdayOptions}
-    value={selected}
-    onChange={onChange}
-  />
-);
+const WeekdayPicker = ({ name, selected, onChange, disabled = false }) => {
+  const [field, meta, helpers] = useField(name);
+
+  return (
+    <>
+      <Select
+        isMulti
+        isDisabled={disabled}
+        options={weekdayOptions}
+        value={selected}
+        onChange={onChange}
+      />
+      {/* Show error if any */}
+      {meta && meta?.error && (
+        <div className="text-danger mt-1">{meta.error}</div>
+      )}
+    </>
+  );
+};
 
 export default WeekdayPicker;

@@ -312,7 +312,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "employee-schedules",
+        path: "employee-availabilities",
         element: (
           <ProtectedRoute>
             <PICSchedulesList />
@@ -320,7 +320,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "employee-schedules/:id",
+        path: "employee-availabilities/:id",
         element: (
           <ProtectedRoute>
             <PICSchedulesView />
@@ -328,7 +328,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "employee-schedules/:id/edit",
+        path: "employee-availabilities/:id/edit",
         element: (
           <ProtectedRoute>
             <PICSchedulesEdit />
@@ -336,7 +336,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "employee-schedules/create",
+        path: "employee-availabilities/create",
         element: (
           <ProtectedRoute>
             <PICSchedulesCreate />

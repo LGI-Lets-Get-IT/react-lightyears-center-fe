@@ -14,12 +14,17 @@ import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
 import { appointmentSchema } from "@/schemas/appointmentSchema";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
+import {
+  createTreatmentType,
+  fetchAllTreatmentTypes,
+} from "@/store/slice/treatmentTypeSlice";
 
 const AppointmentCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formRef = useRef();
   const { clients } = useSelector((state) => state.clients);
+  const { treatmentTypes } = useSelector((state) => state.treatmentTypes);
   const { isLoading: createLoading } = useSelector(
     (state) => state.appointments
   );
@@ -52,11 +57,18 @@ const AppointmentCreateContent = () => {
   }, []);
 
   const formatDropdown = (dropdownItem) => {
+    console.log("DROPDOWNITEM", dropdownItem);
     const formValue = formRef.current?.values;
     const selectedDay = formValue?.appointmentDate
       ? format(formValue.appointmentDate, "EEEE")
       : null;
     const selectedStartTime = formValue?.timeStart;
+    console.log(
+      "selectedDay, selectedStartTime",
+      selectedDay,
+      selectedStartTime
+    );
+    console.log("formValue?.appointmentDate", formValue?.appointmentDate);
 
     // Find a schedule that matches the selected day
     const dayBasedSchedule = dropdownItem.schedules?.find((schedule) =>
@@ -80,6 +92,25 @@ const AppointmentCreateContent = () => {
     };
   };
 
+  const handleFetchPIC = (updatedValues) => {
+    const { appointmentType, appointmentDate, timeStart, timeEnd } =
+      updatedValues;
+
+    if (appointmentType && appointmentDate && timeStart && timeEnd) {
+      const params = {
+        appointmentDate: format(new Date(appointmentDate), "yyyy-MM-dd"),
+        timeStart,
+        timeEnd,
+      };
+
+      if (appointmentType.toLowerCase() === "treatment") {
+        dispatch(fetchAllTherapists({ params }));
+      } else {
+        dispatch(fetchAllPsychologists({ params }));
+      }
+    }
+  };
+
   return (
     <>
       <div className="col-lg-12">
@@ -95,14 +126,17 @@ const AppointmentCreateContent = () => {
             </div>
             <Formik
               initialValues={{
-                title: null,
+                title: undefined,
                 clientId: null,
                 picId: null,
                 roomId: null,
                 appointmentType: null,
                 appointmentDate: null,
-                timeStart: null,
-                timeEnd: null,
+                timeStart: undefined,
+                timeEnd: undefined,
+                treatmentId: null,
+                numberOfRepetition: null,
+                intervalBetweenAppointment: null,
               }}
               validationSchema={appointmentSchema}
               onSubmit={onSubmit}
@@ -148,11 +182,13 @@ const AppointmentCreateContent = () => {
                         placeholder={"Select Appointment Type"}
                         onSelectOption={(option) => {
                           if (option.value.toLowerCase() === "treatment") {
-                            dispatch(fetchAllTherapists());
-                          } else {
-                            dispatch(fetchAllPsychologists());
+                            dispatch(fetchAllTreatmentTypes());
                           }
                           setFieldValue("appointmentType", option.value);
+                          handleFetchPIC({
+                            ...values,
+                            appointmentType: option.value,
+                          });
                         }}
                       />
                     </div>
@@ -204,35 +240,45 @@ const AppointmentCreateContent = () => {
                                 showPopperArrow={false}
                                 selected={values.appointmentDate}
                                 onChange={(date) => {
-                                  if (
-                                    values.appointmentType.toLowerCase() ===
-                                    "treatment"
-                                  ) {
-                                    dispatch(
-                                      fetchAllTherapists({
-                                        params: {
-                                          appointmentDate: date,
-                                          timeStart: values.timeStart,
-                                          timeEnd: values.timeEnd,
-                                        },
-                                      })
-                                    );
-                                  } else {
-                                    dispatch(
-                                      fetchAllPsychologists({
-                                        params: {
-                                          appointmentDate: date,
-                                          timeStart: values.timeStart,
-                                          timeEnd: values.timeEnd,
-                                        },
-                                      })
-                                    );
-                                  }
+                                  // if (
+                                  //   values.appointmentType.toLowerCase() ===
+                                  //   "treatment"
+                                  // ) {
+                                  //   dispatch(
+                                  //     fetchAllTherapists({
+                                  //       params: {
+                                  //         appointmentDate: `${format(
+                                  //           date,
+                                  //           "yyyy-MM-dd"
+                                  //         )}`,
+                                  //         timeStart: values.timeStart,
+                                  //         timeEnd: values.timeEnd,
+                                  //       },
+                                  //     })
+                                  //   );
+                                  // } else {
+                                  //   dispatch(
+                                  //     fetchAllPsychologists({
+                                  //       params: {
+                                  //         appointmentDate: `${format(
+                                  //           date,
+                                  //           "yyyy-MM-dd"
+                                  //         )}`,
+                                  //         timeStart: values.timeStart,
+                                  //         timeEnd: values.timeEnd,
+                                  //       },
+                                  //     })
+                                  //   );
+                                  // }
                                   setFieldValue(
                                     "appointmentDate",
                                     // date,
                                     format(date, "yyyy-MM-dd HH:mm:ss xx")
                                   );
+                                  handleFetchPIC({
+                                    ...values,
+                                    appointmentDate: format(date, "yyyy-MM-dd"),
+                                  });
                                 }}
                                 className={`form-control ${
                                   meta.error ? "is-invalid" : ""
@@ -277,7 +323,6 @@ const AppointmentCreateContent = () => {
                           setFieldValue("picId", option.value);
                         }}
                       />
-                      {console.log("psychologists", psychologists)}
                     </div>
                     <div className="col-md-6 mb-4">
                       <label htmlFor="timeStart" className="form-label">
@@ -299,30 +344,40 @@ const AppointmentCreateContent = () => {
                               {...field}
                               onChange={(e) => {
                                 setFieldValue("timeStart", e.target.value);
-                                if (
-                                  values.appointmentType.toLowerCase() ===
-                                  "treatment"
-                                ) {
-                                  dispatch(
-                                    fetchAllTherapists({
-                                      params: {
-                                        appointmentDate: values.appointmentDate,
-                                        timeStart: e.target.value,
-                                        timeEnd: values.timeEnd,
-                                      },
-                                    })
-                                  );
-                                } else {
-                                  dispatch(
-                                    fetchAllPsychologists({
-                                      params: {
-                                        appointmentDate: values.appointmentDate,
-                                        timeStart: e.target.value,
-                                        timeEnd: values.timeEnd,
-                                      },
-                                    })
-                                  );
-                                }
+                                handleFetchPIC({
+                                  ...values,
+                                  timeStart: e.target.value,
+                                });
+                                // if (
+                                //   values.appointmentType.toLowerCase() ===
+                                //   "treatment"
+                                // ) {
+                                //   dispatch(
+                                //     fetchAllTherapists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: e.target.value,
+                                //         timeEnd: values.timeEnd,
+                                //       },
+                                //     })
+                                //   );
+                                // } else {
+                                //   dispatch(
+                                //     fetchAllPsychologists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: e.target.value,
+                                //         timeEnd: values.timeEnd,
+                                //       },
+                                //     })
+                                //   );
+                                // }
                               }}
                             />
                             {meta.error && (
@@ -354,30 +409,40 @@ const AppointmentCreateContent = () => {
                               {...field}
                               onChange={(e) => {
                                 setFieldValue("timeEnd", e.target.value);
-                                if (
-                                  values.appointmentType.toLowerCase() ===
-                                  "treatment"
-                                ) {
-                                  dispatch(
-                                    fetchAllTherapists({
-                                      params: {
-                                        appointmentDate: values.appointmentDate,
-                                        timeStart: values.timeStart,
-                                        timeEnd: e.target.value,
-                                      },
-                                    })
-                                  );
-                                } else {
-                                  dispatch(
-                                    fetchAllPsychologists({
-                                      params: {
-                                        appointmentDate: values.appointmentDate,
-                                        timeStart: values.timeStart,
-                                        timeEnd: e.target.value,
-                                      },
-                                    })
-                                  );
-                                }
+                                handleFetchPIC({
+                                  ...values,
+                                  timeEnd: e.target.value,
+                                });
+                                // if (
+                                //   values.appointmentType.toLowerCase() ===
+                                //   "treatment"
+                                // ) {
+                                //   dispatch(
+                                //     fetchAllTherapists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: values.timeStart,
+                                //         timeEnd: e.target.value,
+                                //       },
+                                //     })
+                                //   );
+                                // } else {
+                                //   dispatch(
+                                //     fetchAllPsychologists({
+                                //       params: {
+                                //         appointmentDate: `${format(
+                                //           values.appointmentDate,
+                                //           "yyyy-MM-dd"
+                                //         )}`,
+                                //         timeStart: values.timeStart,
+                                //         timeEnd: e.target.value,
+                                //       },
+                                //     })
+                                //   );
+                                // }
                               }}
                             />
                             {meta.error && (
@@ -389,6 +454,94 @@ const AppointmentCreateContent = () => {
                         )}
                       </Field>
                     </div>
+                    {values.appointmentType?.toLowerCase() === "treatment" && (
+                      <>
+                        <hr />
+                        <div className="col-md-6 mb-4">
+                          <label htmlFor="timeEnd" className="form-label">
+                            Treatment Name
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <Field name="title">
+                            {({ field, meta }) => (
+                              <>
+                                <SelectDropdown
+                                  name={`treatmentId`}
+                                  options={treatmentTypes.map((item) => ({
+                                    label: item.name,
+                                    value: item.id,
+                                  }))}
+                                  selectedOption={values.treatmentId}
+                                  placeholder={"Select Treatment"}
+                                  onSelectOption={(option) =>
+                                    setFieldValue(`treatmentId`, option.value)
+                                  }
+                                  onCreateOption={(value) => {
+                                    dispatch(
+                                      createTreatmentType({
+                                        treatmentName: value,
+                                      })
+                                    );
+                                  }}
+                                />
+                              </>
+                            )}
+                          </Field>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <label htmlFor="timeEnd" className="form-label">
+                            Number of Appointment Repetitions
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <Field name={`numberOfRepetition`}>
+                            {({ field, meta }) => (
+                              <>
+                                <input
+                                  type="number"
+                                  className={`form-control ${
+                                    meta.error ? "is-invalid" : ""
+                                  }`}
+                                  placeholder="Enter how many appointments you want to schedule (e.g. 3 for three total sessions)"
+                                  min={1}
+                                  {...field}
+                                />
+                                {meta.error && (
+                                  <div className="text-danger">
+                                    {meta.error}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </Field>
+                        </div>
+                        <div className="col-md-6 mb-4">
+                          <label htmlFor="timeEnd" className="form-label">
+                            Interval Between Appointments (Days)
+                            <span className="text-danger"> *</span>
+                          </label>
+                          <Field name={`intervalBetweenAppointment`}>
+                            {({ field, meta }) => (
+                              <>
+                                <input
+                                  type="number"
+                                  className={`form-control ${
+                                    meta.error ? "is-invalid" : ""
+                                  }`}
+                                  placeholder="Enter how many days between each appointment (e.g. 2 for every other day)"
+                                  min={1}
+                                  {...field}
+                                />
+                                {meta.error && (
+                                  <div className="text-danger">
+                                    {meta.error}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </Field>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
                     <button

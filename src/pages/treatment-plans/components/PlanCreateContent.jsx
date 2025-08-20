@@ -12,7 +12,10 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
 import { createPlan } from "@/store/slice/treatmentPlanSlice";
 import { useNavigate } from "react-router-dom";
-import { fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
+import {
+  createTreatmentType,
+  fetchAllTreatmentTypes,
+} from "@/store/slice/treatmentTypeSlice";
 
 const PlanCreateContent = () => {
   const navigate = useNavigate();
@@ -185,8 +188,8 @@ const PlanCreateContent = () => {
                     </div>
                     <div className="col-lg-12 mb-4">
                       <label htmlFor="parentPlan" className="form-label">
-                        Parent Collaboration Plan{" "}
-                        <span className="text-danger">*</span>
+                        Parent Collaboration Plan
+                        <span className="text-danger"> *</span>
                       </label>
                       <Field name="parentPlan">
                         {({ field, meta }) => (
@@ -247,7 +250,7 @@ const PlanCreateContent = () => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Program
                             </button>
                           </div>
                         </div>
@@ -262,8 +265,8 @@ const PlanCreateContent = () => {
                               >
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Treatment Name{" "}
-                                    <span className="text-danger">*</span>
+                                    Treatment Name
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <SelectDropdown
@@ -282,13 +285,20 @@ const PlanCreateContent = () => {
                                           option.value
                                         )
                                       }
+                                      onCreateOption={(value) => {
+                                        dispatch(
+                                          createTreatmentType({
+                                            treatmentName: value,
+                                          })
+                                        );
+                                      }}
                                     />
                                   </div>
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Therapist Name{" "}
-                                    <span className="text-danger">*</span>
+                                    Therapist Name
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <SelectDropdown
@@ -312,8 +322,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Aim of Treatment{" "}
-                                    <span className="text-danger">*</span>
+                                    Aim of Treatment
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -439,7 +449,7 @@ const PlanCreateContent = () => {
                                 })
                               }
                             >
-                              Add Items
+                              Add Target Behavior
                             </button>
                           </div>
                         </div>
@@ -612,7 +622,7 @@ export default PlanCreateContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

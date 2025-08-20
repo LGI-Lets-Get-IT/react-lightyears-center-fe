@@ -54,7 +54,7 @@ const AssessmentsCreateContent = () => {
                 appointmentId: null,
                 psychologistId: null,
                 testId: null,
-                result: null,
+                result: undefined,
               }}
               validationSchema={assessmentSchema}
               onSubmit={handleSubmit}

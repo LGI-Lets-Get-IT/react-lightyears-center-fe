@@ -620,7 +620,7 @@ export default PlanEditContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

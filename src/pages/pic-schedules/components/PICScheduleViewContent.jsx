@@ -4,8 +4,6 @@ import { fetchAllEmployees } from "@/store/slice/employeeSlice";
 import { useNavigate } from "react-router-dom";
 
 const PICScheduleViewContent = ({ scheduleData }) => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { isLoading: fetchLoading } = useSelector(
     (state) => state.picSchedules
   );
@@ -37,9 +35,8 @@ const PICScheduleViewContent = ({ scheduleData }) => {
             </div>
             <div className="col-lg-12">
               <label className="form-label">Available Schedules</label>
-
               <div className="accordion proposal-faq-accordion">
-                {scheduleData?.schedules.length > 0 ? (
+                {scheduleData?.schedules?.length > 0 ? (
                   scheduleData.schedules.map((schedule, index) => (
                     <AccordionItem
                       key={index}
@@ -93,7 +90,7 @@ export default PICScheduleViewContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

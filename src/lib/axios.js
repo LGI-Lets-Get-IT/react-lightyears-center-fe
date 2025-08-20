@@ -6,6 +6,7 @@ import {
   userLogout,
   userRefreshToken,
 } from "@/store/slice/authSlice";
+import Cookies from "js-cookie";
 const getStore = async () => {
   const module = await import("../store");
   return module.store;
@@ -46,6 +47,9 @@ api.interceptors.request.use(
     try {
       const store = await getStore();
       const token = store.getState().auth.accessToken;
+      const accessToken = Cookies.get("accessToken");
+      const refreshToken = Cookies.get("refreshToken");
+      console.log("COOKIES:", accessToken, refreshToken);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -127,7 +131,6 @@ api.interceptors.response.use(
         processQueue(error, null);
         console.log("BEFORE DISPATCH LOGOUT LINE 128");
         await store.dispatch(userLogout());
-        store.dispatch(resetCurrentUser());
         console.log("AFTER DISPATCH LOGOUT LINE 131");
         window.location.href = "/login";
         return Promise.reject(error);
