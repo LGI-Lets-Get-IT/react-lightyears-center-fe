@@ -126,14 +126,14 @@ const AppointmentCreateContent = () => {
             </div>
             <Formik
               initialValues={{
-                title: null,
+                title: undefined,
                 clientId: null,
                 picId: null,
                 roomId: null,
                 appointmentType: null,
                 appointmentDate: null,
-                timeStart: null,
-                timeEnd: null,
+                timeStart: undefined,
+                timeEnd: undefined,
                 treatmentId: null,
                 numberOfRepetition: null,
                 intervalBetweenAppointment: null,
