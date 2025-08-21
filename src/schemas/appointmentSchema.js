@@ -131,7 +131,7 @@ export const appointmentSchema = Yup.object({
   }),
   treatmentId: Yup.string().when("appointmentType", {
     is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) => schema.required("Please select the treatment"),
+    then: (schema) => schema.required("Please select the treatment name"),
     otherwise: (schema) => schema.notRequired(),
   }),
   numberOfRepetition: Yup.string().when("appointmentType", {
