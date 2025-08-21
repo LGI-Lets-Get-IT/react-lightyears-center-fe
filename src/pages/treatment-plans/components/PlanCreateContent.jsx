@@ -16,15 +16,10 @@ import {
   createTreatmentType,
   fetchAllTreatmentTypes,
 } from "@/store/slice/treatmentTypeSlice";
-import { FaEye } from "react-icons/fa";
-import { IoAdd } from "react-icons/io5";
-import AddAppointmentModal from "./AddAppointmentModal";
 
 const PlanCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [openModal, setOpenModal] = useState(false);
-
   const { isLoading: createLoading } = useSelector(
     (state) => state.treatmentPlans
   );
@@ -415,32 +410,6 @@ const PlanCreateContent = () => {
                                       )}
                                     </Field>
                                   </div>
-                                </div>
-                                <div className="form-group row mb-3 align-items-center">
-                                  <label className="col-sm-3 col-form-label">
-                                    Schedule Upcoming Appointments
-                                    <span className="text-danger"> *</span>
-                                  </label>
-                                  <div className="col-sm-9">
-                                    <button
-                                      type="button"
-                                      onClick={() => setOpenModal(true)}
-                                      className="btn btn-primary"
-                                    >
-                                      <FiPlus size={16} className="me-2" />
-                                      <span>Add Appointment</span>
-                                    </button>
-                                  </div>
-
-                                  {openModal && (
-                                    <>
-                                      <AddAppointmentModal
-                                        currentProgram={program}
-                                        setOpenModal={setOpenModal}
-                                      />
-                                      <div className="modal-backdrop fade show" />
-                                    </>
-                                  )}
                                 </div>
                               </AccordionItem>
                             ))}
