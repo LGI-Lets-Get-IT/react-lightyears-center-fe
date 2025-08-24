@@ -22,6 +22,7 @@ const WeekdayPicker = ({ name, selected, onChange, disabled = false }) => {
         options={weekdayOptions}
         value={selected}
         onChange={onChange}
+        menuPlacement="auto"
       />
       {/* Show error if any */}
       {meta && meta?.error && (

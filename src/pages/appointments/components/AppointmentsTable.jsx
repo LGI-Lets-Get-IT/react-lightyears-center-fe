@@ -218,7 +218,7 @@ const AppointmentsTable = () => {
             >
               <FiEye />
             </Link>
-            {permittedActions.length > 0 && (
+            {permittedActions?.length > 0 && (
               <Dropdown
                 dropdownItems={permittedActions}
                 triggerClass="avatar-md"

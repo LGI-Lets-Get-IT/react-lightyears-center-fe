@@ -12,7 +12,7 @@ import { Field, Form, Formik } from "formik";
 import { useNavigate, useParams } from "react-router-dom";
 import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
-import { appointmentSchema } from "@/schemas/appointmentSchema";
+import { appointmentBaseSchema } from "@/schemas/appointmentSchema";
 import { updateAppointmentById } from "@/store/slice/appointmentSlice";
 
 const AppointmentsEditContent = ({ appointmentData }) => {
@@ -88,7 +88,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                 timeStart: appointmentData?.appointmentTime.split(" - ")[0],
                 timeEnd: appointmentData?.appointmentTime.split(" - ")[1],
               }}
-              validationSchema={appointmentSchema}
+              validationSchema={appointmentBaseSchema}
               enableReinitialize
               onSubmit={onSubmit}
             >

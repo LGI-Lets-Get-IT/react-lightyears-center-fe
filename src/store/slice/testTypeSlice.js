@@ -32,12 +32,12 @@ export const fetchTestTypeById = createAsyncThunk(
   }
 );
 
-
 export const createTestType = createAsyncThunk(
   "testtype/createTestType",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue, dispatch }) => {
     try {
       const response = await testTypesApi.createTestType(data);
+      dispatch(fetchAllTestTypes());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -49,7 +49,7 @@ export const updateTestTypeById = createAsyncThunk(
   "testtype/updateTestTypeById",
   async (bodyData, { rejectWithValue }) => {
     try {
-      const { testTypeId, data } = bodyData
+      const { testTypeId, data } = bodyData;
       const response = await testTypesApi.updateTestTypeById(testTypeId, data);
       return response.data.data;
     } catch (error) {
@@ -63,7 +63,7 @@ export const deleteTestTypeByIds = createAsyncThunk(
   async (testIds, { rejectWithValue, dispatch }) => {
     try {
       const response = await testTypesApi.deleteTestTypeByIds(testIds);
-      dispatch(fetchAllTestTypes())
+      dispatch(fetchAllTestTypes());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -99,7 +99,7 @@ export const testTypeSlice = createSlice({
       state.error = action.payload;
     });
     builder.addCase(createTestType.pending, (state) => {
-        state.isLoading = true;
+      state.isLoading = true;
     });
     builder.addCase(createTestType.fulfilled, (state, action) => {
       state.isLoading = false;

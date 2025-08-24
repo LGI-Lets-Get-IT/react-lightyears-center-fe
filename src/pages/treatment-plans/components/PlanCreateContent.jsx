@@ -7,7 +7,7 @@ import {
   fetchAllTherapists,
 } from "@/store/slice/employeeSlice";
 import { fetchAllClients } from "@/store/slice/clientSlice";
-import { FiCheck, FiX } from "react-icons/fi";
+import { FiCheck, FiPlus, FiX } from "react-icons/fi";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
 import { createPlan } from "@/store/slice/treatmentPlanSlice";
@@ -60,9 +60,9 @@ const PlanCreateContent = () => {
               initialValues={{
                 clientId: null,
                 psychologistId: null,
-                consultDate: null,
-                presentProblem: "",
-                parentPlan: "",
+                consultDate: undefined,
+                presentProblem: undefined,
+                parentPlan: undefined,
                 programs: [],
                 targets: [],
               }}
@@ -230,6 +230,7 @@ const PlanCreateContent = () => {
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
                                 if (values.programs.length === 1) return;
@@ -239,6 +240,7 @@ const PlanCreateContent = () => {
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -351,7 +353,7 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Frequency
+                                    Total Session Frequency of The Treatment
                                     <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
@@ -365,7 +367,7 @@ const PlanCreateContent = () => {
                                             className={`form-control ${
                                               meta.error ? "is-invalid" : ""
                                             }`}
-                                            placeholder="Please specify the session frequency"
+                                            placeholder="Please specify the total sessions of this treatment"
                                             min={1}
                                             {...field}
                                           />
@@ -431,6 +433,7 @@ const PlanCreateContent = () => {
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
                                 if (values.targets.length === 1) return;
@@ -440,6 +443,7 @@ const PlanCreateContent = () => {
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -582,6 +586,7 @@ const PlanCreateContent = () => {
                         </div>
                         <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
                           <button
+                            type="button"
                             className="btn btn-light-brand"
                             onClick={() => navigate(-1)}
                           >
@@ -625,8 +630,8 @@ const AccordionItem = ({ id, header, children }) => {
     <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
-          className="accordion-button collapsed"
           type="button"
+          className="accordion-button collapsed"
           data-bs-toggle="collapse"
           data-bs-target={`#flush-collapse${id}`}
           aria-expanded="false"

@@ -50,7 +50,7 @@ import * as Yup from "yup";
 //   // ),
 // });
 
-export const appointmentSchema = Yup.object({
+export const appointmentBaseSchema = Yup.object({
   title: Yup.string()
     .required("Title is required")
     .min(3, "Title is too short"),
@@ -129,23 +129,23 @@ export const appointmentSchema = Yup.object({
         "Please select an appointment type before choosing a date"
       ),
   }),
-  treatmentId: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) => schema.required("Please select the treatment"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  numberOfRepetition: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) =>
-      schema.required("Please specify the number of appointment repetitions"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  intervalBetweenAppointment: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) =>
-      schema.required("Please specify the internal between appointment"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
+  // treatmentId: Yup.string().when("appointmentType", {
+  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+  //   then: (schema) => schema.required("Please select the treatment name"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
+  // numberOfRepetition: Yup.string().when("appointmentType", {
+  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+  //   then: (schema) =>
+  //     schema.required("Please specify the number of appointment repetitions"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
+  // intervalBetweenAppointment: Yup.string().when("appointmentType", {
+  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+  //   then: (schema) =>
+  //     schema.required("Please specify the internal between appointment"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
   // timeStart: Yup.string().required("Start time is required").test(
   //   'start-at-least-6-hours-from-now',
   //   'Appointment must be made at least 6 hours in advance',
@@ -168,4 +168,18 @@ export const appointmentSchema = Yup.object({
   //     return isAfter(new Date(value), minEndTime) || isEqual(new Date(value), minEndTime);
   //   }
   // ),
+});
+
+export const appointmentCreateSchema = appointmentBaseSchema.clone().shape({
+  treatmentId: Yup.string().when("appointmentType", {
+    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+    then: (schema) => schema.required("Please select the treatment name"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  numberOfRepetition: Yup.string().when("appointmentType", {
+    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+    then: (schema) =>
+      schema.required("Please specify the number of appointment repetitions"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 });

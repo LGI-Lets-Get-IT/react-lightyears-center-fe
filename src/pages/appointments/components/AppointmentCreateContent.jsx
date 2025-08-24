@@ -12,12 +12,13 @@ import { Field, Form, Formik, useFormikContext } from "formik";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { appointmentTypeOptions, roomOptions } from "@/utils/options";
-import { appointmentSchema } from "@/schemas/appointmentSchema";
+import { appointmentCreateSchema } from "@/schemas/appointmentSchema";
 import { makeAppointment } from "@/store/slice/appointmentSlice";
 import {
   createTreatmentType,
   fetchAllTreatmentTypes,
 } from "@/store/slice/treatmentTypeSlice";
+import WeekdayPicker from "@/components/picker/WeekdayPicker";
 
 const AppointmentCreateContent = () => {
   const navigate = useNavigate();
@@ -136,9 +137,9 @@ const AppointmentCreateContent = () => {
                 timeEnd: undefined,
                 treatmentId: null,
                 numberOfRepetition: null,
-                intervalBetweenAppointment: null,
+                therapyDays: [],
               }}
-              validationSchema={appointmentSchema}
+              validationSchema={appointmentCreateSchema}
               onSubmit={onSubmit}
               innerRef={formRef}
             >
@@ -501,7 +502,7 @@ const AppointmentCreateContent = () => {
                                   className={`form-control ${
                                     meta.error ? "is-invalid" : ""
                                   }`}
-                                  placeholder="Enter how many appointments you want to schedule (e.g. 3 for three total sessions)"
+                                  placeholder="Enter total appointments to schedule (e.g. 3 for three total sessions)"
                                   min={1}
                                   {...field}
                                 />
@@ -516,29 +517,18 @@ const AppointmentCreateContent = () => {
                         </div>
                         <div className="col-md-6 mb-4">
                           <label htmlFor="timeEnd" className="form-label">
-                            Interval Between Appointments (Days)
+                            Treatment Day(s)
                             <span className="text-danger"> *</span>
                           </label>
-                          <Field name={`intervalBetweenAppointment`}>
-                            {({ field, meta }) => (
-                              <>
-                                <input
-                                  type="number"
-                                  className={`form-control ${
-                                    meta.error ? "is-invalid" : ""
-                                  }`}
-                                  placeholder="Enter how many days between each appointment (e.g. 2 for every other day)"
-                                  min={1}
-                                  {...field}
-                                />
-                                {meta.error && (
-                                  <div className="text-danger">
-                                    {meta.error}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          </Field>
+                          <WeekdayPicker
+                            name={`therapyDays`}
+                            onChange={(options) => {
+                              setFieldValue(
+                                `therapyDays`,
+                                options.map((option) => option.value)
+                              );
+                            }}
+                          />
                         </div>
                       </>
                     )}

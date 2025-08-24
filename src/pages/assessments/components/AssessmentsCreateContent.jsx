@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAllClients } from "@/store/slice/clientSlice";
 import { fetchAllPsychologists } from "@/store/slice/employeeSlice";
 import { fetchAppointmentForAssessments } from "@/store/slice/appointmentSlice";
-import { fetchAllTestTypes } from "@/store/slice/testTypeSlice";
+import { createTestType, fetchAllTestTypes } from "@/store/slice/testTypeSlice";
 import { createAssessment } from "@/store/slice/assessmentSlice";
 
 const AssessmentsCreateContent = () => {
@@ -118,6 +118,9 @@ const AssessmentsCreateContent = () => {
                         onSelectOption={(option) =>
                           setFieldValue("testId", option.value)
                         }
+                        onCreateOption={(value) => {
+                          dispatch(createTestType({ testName: value }));
+                        }}
                       />
                     </div>
                     <div className="col-lg-6 mb-4">
