@@ -210,49 +210,50 @@ const TabProfile = () => {
                   </span>
                 </h5>
               </div>
-            </div>
-            <div className="row g-0 mb-4">
-              <div className="col-sm-4 fw-bold">Google Form File</div>
+              <div className="row g-0 mb-4">
+                <div className="col-sm-4 fw-bold">Google Form File</div>
 
-              <div className="col-sm-6">
-                {uploadedFileName ? (
-                  <div
-                    className="bg-white p-3 rounded shadow-sm text-center"
-                    style={{ width: "100%", maxWidth: "300px" }}
-                  >
-                    <div className="mb-2 text-wrap text-primary fw-bold">
-                      {uploadedFileName}
+                <div className="col-sm-6">
+                  {uploadedFileName ? (
+                    <div
+                      className="bg-white p-3 rounded shadow-sm text-center"
+                      style={{ width: "100%", maxWidth: "300px" }}
+                    >
+                      <div className="mb-2 text-wrap text-primary fw-bold">
+                        {uploadedFileName}
+                      </div>
+
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm w-100"
+                        onClick={handleCancel}
+                      >
+                        <FiX className="me-2" />
+                        Delete
+                      </button>
                     </div>
-
-                    <button
-                      type="button"
-                      className="btn btn-outline-danger btn-sm w-100"
-                      onClick={handleCancel}
-                    >
-                      <FiX className="me-2" />
-                      Delete
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={handleUploadClick}
-                    >
-                      <FiUpload size={16} className="me-2" />
-                      <span>Upload File</span>
-                    </button>
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                    />
-                  </>
-                )}
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleUploadClick}
+                      >
+                        <FiUpload size={16} className="me-2" />
+                        <span>Upload File</span>
+                      </button>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        style={{ display: "none" }}
+                      />
+                    </>
+                  )}
+                </div>
               </div>
             </div>
+
             <hr className="my-0" />
             <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
