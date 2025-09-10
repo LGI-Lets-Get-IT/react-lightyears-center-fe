@@ -182,4 +182,10 @@ export const appointmentCreateSchema = appointmentBaseSchema.clone().shape({
       schema.required("Please specify the number of appointment repetitions"),
     otherwise: (schema) => schema.notRequired(),
   }),
+  therapyDays: Yup.array().when("appointmentType", {
+    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+    then: (schema) =>
+      schema.min(1, "Please select at least one therapy day").required(),
+    otherwise: (schema) => schema.notRequired(),
+  }),
 });
