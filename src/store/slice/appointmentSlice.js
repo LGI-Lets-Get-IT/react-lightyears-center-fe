@@ -193,11 +193,9 @@ export const appointmentSlice = createSlice({
       })
       .addCase(makeAppointment.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.appointments = action.payload;
       })
       .addCase(makeAppointment.rejected, (state, action) => {
         state.isLoading = false;
-        state.appointments = initialState.appointments;
         state.error = action.payload;
       });
     builder
