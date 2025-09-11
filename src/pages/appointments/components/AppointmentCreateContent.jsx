@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ const AppointmentCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const formRef = useRef();
+  const [selectedDates, setSelectedDates] = useState([new Date()]);
   const { clients } = useSelector((state) => state.clients);
   const { treatmentTypes } = useSelector((state) => state.treatmentTypes);
   const { isLoading: createLoading } = useSelector(
@@ -132,7 +133,7 @@ const AppointmentCreateContent = () => {
                 picId: null,
                 roomId: null,
                 appointmentType: null,
-                appointmentDate: null,
+                appointmentDate: [],
                 timeStart: undefined,
                 timeEnd: undefined,
                 treatmentId: null,
@@ -233,53 +234,31 @@ const AppointmentCreateContent = () => {
                           {({ meta }) => (
                             <>
                               <DatePicker
+                                selectedDates={selectedDates}
+                                selectsMultiple={
+                                  values.appointmentType?.toLowerCase() ===
+                                  "treatment"
+                                }
                                 disabled={!values.appointmentType}
                                 autoComplete="off"
                                 name="appointmentDate"
                                 placeholderText="YYYY-MM-DD"
                                 dateFormat={"yyyy-MM-dd"}
                                 showPopperArrow={false}
-                                selected={values.appointmentDate}
+                                shouldCloseOnSelect={false}
+                                // selected={values.appointmentDate}
                                 onChange={(date) => {
-                                  // if (
-                                  //   values.appointmentType.toLowerCase() ===
-                                  //   "treatment"
-                                  // ) {
-                                  //   dispatch(
-                                  //     fetchAllTherapists({
-                                  //       params: {
-                                  //         appointmentDate: `${format(
-                                  //           date,
-                                  //           "yyyy-MM-dd"
-                                  //         )}`,
-                                  //         timeStart: values.timeStart,
-                                  //         timeEnd: values.timeEnd,
-                                  //       },
-                                  //     })
-                                  //   );
-                                  // } else {
-                                  //   dispatch(
-                                  //     fetchAllPsychologists({
-                                  //       params: {
-                                  //         appointmentDate: `${format(
-                                  //           date,
-                                  //           "yyyy-MM-dd"
-                                  //         )}`,
-                                  //         timeStart: values.timeStart,
-                                  //         timeEnd: values.timeEnd,
-                                  //       },
-                                  //     })
-                                  //   );
-                                  // }
-                                  setFieldValue(
-                                    "appointmentDate",
-                                    // date,
-                                    format(date, "yyyy-MM-dd HH:mm:ss xx")
-                                  );
-                                  handleFetchPIC({
-                                    ...values,
-                                    appointmentDate: format(date, "yyyy-MM-dd"),
-                                  });
+                                  console.log("DATE", date);
+                                  setSelectedDates(date);
+                                  // setFieldValue(
+                                  //   "appointmentDate",
+                                  //   date
+                                  //   // format(date, "yyyy-MM-dd HH:mm:ss xx")
+                                  // );
+                                  // handleFetchPIC({
+                                  //   ...values,
+                                  //   appointmentDate: format(date, "yyyy-MM-dd"),
+                                  // });
                                 }}
                                 className={`form-control ${
                                   meta.error ? "is-invalid" : ""
