@@ -35,6 +35,19 @@ export const fetchAllPsychologists = createAsyncThunk(
   }
 );
 
+export const fetchAllTherapists = createAsyncThunk(
+  "employees/getAllTherapists",
+  async (queryData, { rejectWithValue }) => {
+    try {
+      console.log("QUERYDATA", queryData);
+      const response = await employeesApi.getAllTherapists(queryData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchAllPsychologistsWithAvailability = createAsyncThunk(
   "employees/getAllPsychologistsWithAvailability",
   async (queryData, { rejectWithValue }) => {
@@ -153,17 +166,17 @@ export const employeeSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
-    // builder.addCase(fetchAllTherapists.pending, (state) => {
-    //   state.isLoading = true;
-    // });
-    // builder.addCase(fetchAllTherapists.fulfilled, (state, action) => {
-    //   state.isLoading = false;
-    //   state.therapists = action.payload;
-    // });
-    // builder.addCase(fetchAllTherapists.rejected, (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // });
+    builder.addCase(fetchAllTherapists.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(fetchAllTherapists.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.therapists = action.payload;
+    });
+    builder.addCase(fetchAllTherapists.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
     builder.addCase(fetchAllPsychologistsWithAvailability.pending, (state) => {
       state.isLoading = true;
     });
