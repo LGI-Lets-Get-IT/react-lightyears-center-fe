@@ -2,11 +2,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import {
-  resetCurrentUser,
+  // resetCurrentUser, // OLD CODE - commented out (not used with HTTP-only cookies)
   userLogout,
   userRefreshToken,
 } from "@/store/slice/authSlice";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie"; // OLD CODE - commented out (not used with HTTP-only cookies)
 const getStore = async () => {
   const module = await import("../store");
   return module.store;
@@ -45,16 +45,25 @@ export const axiosPublic = axios.create({
 api.interceptors.request.use(
   async (config) => {
     try {
-      const store = await getStore();
-      const token = store.getState().auth.accessToken;
-      const accessToken = Cookies.get("accessToken");
-      const refreshToken = Cookies.get("refreshToken");
-      console.log("COOKIES:", accessToken, refreshToken);
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+      // FIXED: Remove token handling since we're using HTTP-only cookies
+      // The browser will automatically include cookies with requests
+      // No need to manually set Authorization header
+
+      // OLD CODE - commented out
+      // const store = await getStore();
+      // const token = store.getState().auth.accessToken;
+      // const accessToken = Cookies.get("accessToken");
+      // const refreshToken = Cookies.get("refreshToken");
+      // console.log("COOKIES:", accessToken, refreshToken);
+      // if (token) {
+      //   config.headers.Authorization = `Bearer ${token}`;
+      // }
+
+      console.log(
+        "Request interceptor: Using HTTP-only cookies for authentication"
+      );
     } catch (err) {
-      console.err("Token fetch error", err);
+      console.error("Request interceptor error", err);
     }
     return config;
   },
@@ -65,12 +74,13 @@ api.interceptors.request.use(
 
 let isRefreshing = false;
 let failedQueue = [];
-const processQueue = (error, token = null) => {
+const processQueue = (error) => {
   failedQueue.forEach((prom) => {
     if (error) {
       prom.reject(error);
     } else {
-      prom.resolve(token);
+      // FIXED: No need to pass token since we're using HTTP-only cookies
+      prom.resolve();
     }
   });
   failedQueue = [];
@@ -95,19 +105,19 @@ api.interceptors.response.use(
 
     if (
       error.response?.status === 401 &&
-      message == "Token expired. Please refresh the page." &&
+      (message === "Token expired. Please refresh the page." ||
+        message === "No access token provided") &&
       !originalRequest._retry
     ) {
-      // console.log('MASUK IF LINE 93')
+      console.log("Access token expired, attempting refresh...");
       try {
-        // console.log('TRY LINE 95')
         const store = await getStore();
         if (isRefreshing) {
-          // console.log('IS REFRESHING LINE 98')
+          console.log("Already refreshing, queuing request...");
           return new Promise((resolve, reject) => {
             failedQueue.push({
-              resolve: (token) => {
-                originalRequest.headers.Authorization = `Bearer ${token}`;
+              resolve: () => {
+                // FIXED: No need to set Authorization header, cookies are automatic
                 resolve(api(originalRequest));
               },
               reject,
@@ -118,22 +128,24 @@ api.interceptors.response.use(
         originalRequest._retry = true;
         isRefreshing = true;
 
-        // console.log("BEFORE DISPATCH REFTOKEN LINE 113");
+        console.log("Calling refresh token endpoint...");
+        // FIXED: Call refresh token endpoint to get new cookies
         await store.dispatch(userRefreshToken()).unwrap();
-        const newAccessToken = store.getState().auth.accessToken;
-        processQueue(null, newAccessToken);
+        console.log("Refresh token successful, retrying original request...");
 
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        processQueue(null);
+
+        // FIXED: No need to set Authorization header, cookies are automatic
         return api(originalRequest);
-      } catch (error) {
-        console.log("CATCH 1 LINE 125");
+      } catch (refreshError) {
+        console.log("Refresh token failed:", refreshError);
         const store = await getStore();
-        processQueue(error, null);
-        console.log("BEFORE DISPATCH LOGOUT LINE 128");
+        processQueue(refreshError);
+        console.log("Logging out user...");
         await store.dispatch(userLogout());
-        console.log("AFTER DISPATCH LOGOUT LINE 131");
+        console.log("Redirecting to login...");
         window.location.href = "/login";
-        return Promise.reject(error);
+        return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
       }

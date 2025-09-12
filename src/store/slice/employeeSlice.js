@@ -39,7 +39,38 @@ export const fetchAllTherapists = createAsyncThunk(
   "employees/getAllTherapists",
   async (queryData, { rejectWithValue }) => {
     try {
+      console.log("QUERYDATA", queryData);
       const response = await employeesApi.getAllTherapists(queryData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAllPsychologistsWithAvailability = createAsyncThunk(
+  "employees/getAllPsychologistsWithAvailability",
+  async (queryData, { rejectWithValue }) => {
+    try {
+      console.log("QUERYDATA WITH AVAILABILITY", queryData);
+      const response = await employeesApi.getAllPsychologistsWithAvailability(
+        queryData
+      );
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchAllTherapistsWithAvailability = createAsyncThunk(
+  "employees/getAllTherapistsWithAvailability",
+  async (queryData, { rejectWithValue }) => {
+    try {
+      console.log("QUERYDATA WITH AVAILABILITY", queryData);
+      const response = await employeesApi.getAllTherapistsWithAvailability(
+        queryData
+      );
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -146,6 +177,40 @@ export const employeeSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(fetchAllPsychologistsWithAvailability.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      fetchAllPsychologistsWithAvailability.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.psychologists = action.payload;
+      }
+    );
+    builder.addCase(
+      fetchAllPsychologistsWithAvailability.rejected,
+      (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }
+    );
+    builder.addCase(fetchAllTherapistsWithAvailability.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      fetchAllTherapistsWithAvailability.fulfilled,
+      (state, action) => {
+        state.isLoading = false;
+        state.therapists = action.payload;
+      }
+    );
+    builder.addCase(
+      fetchAllTherapistsWithAvailability.rejected,
+      (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      }
+    );
     builder.addCase(fetchEmployeeById.pending, (state) => {
       state.isLoading = true;
     });
