@@ -109,10 +109,40 @@ export const appointmentBaseSchema = Yup.object({
         "Please select an appointment type before choosing an end time"
       ),
   }),
-  appointmentDate: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType && appointmentType.length > 0,
-    then: (schema) =>
-      schema
+  appointmentDate: Yup.mixed().when("appointmentType", {
+    is: "Treatment",
+    then: () =>
+      // Yup.array()
+      //   .of(Yup.string().required("Each date is required"))
+      //   .min(1, "At least one date is required"),
+      // Yup.array()
+      //   .nullable() // allow null
+      //   .default([]) // treat null as empty array
+      //   .transform((val, orig) => (orig == null ? [] : val)) // normalize null -> []
+      //   .of(Yup.string().required("Each date is required"))
+      //   .min(1, "Please select at least one appointment date"),
+
+      Yup.array()
+        .nullable()
+        .default([])
+        .transform((val, orig) => (orig == null ? [] : val)) // null -> []
+        .of(
+          Yup.string()
+            .required("Each date is required")
+            .test(
+              "date-not-in-past",
+              "Appointment date must be today or later",
+              (value) => {
+                if (!value) return true;
+                const today = startOfDay(new Date());
+                const selected = startOfDay(new Date(value));
+                return selected >= today;
+              }
+            )
+        )
+        .min(1, "Please select at least one appointment date"),
+    otherwise: () =>
+      Yup.string()
         .required("Appointment date is required")
         .test(
           "date-not-in-past",
@@ -124,11 +154,27 @@ export const appointmentBaseSchema = Yup.object({
             return selected >= today;
           }
         ),
-    otherwise: (schema) =>
-      schema.required(
-        "Please select an appointment type before choosing a date"
-      ),
   }),
+  // appointmentDate: Yup.string().when("appointmentType", {
+  //   is: (appointmentType) => appointmentType && appointmentType.length > 0,
+  //   then: (schema) =>
+  //     schema
+  //       .required("Appointment date is required")
+  //       .test(
+  //         "date-not-in-past",
+  //         "Appointment date must be today or later",
+  //         function (value) {
+  //           if (!value) return true;
+  //           const today = startOfDay(new Date());
+  //           const selected = startOfDay(new Date(value));
+  //           return selected >= today;
+  //         }
+  //       ),
+  //   otherwise: (schema) =>
+  //     schema.required(
+  //       "Please select an appointment type before choosing a date"
+  //     ),
+  // }),
   // treatmentId: Yup.string().when("appointmentType", {
   //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
   //   then: (schema) => schema.required("Please select the treatment name"),
@@ -176,16 +222,16 @@ export const appointmentCreateSchema = appointmentBaseSchema.clone().shape({
     then: (schema) => schema.required("Please select the treatment name"),
     otherwise: (schema) => schema.notRequired(),
   }),
-  numberOfRepetition: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) =>
-      schema.required("Please specify the number of appointment repetitions"),
-    otherwise: (schema) => schema.notRequired(),
-  }),
-  therapyDays: Yup.array().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) =>
-      schema.min(1, "Please select at least one therapy day").required(),
-    otherwise: (schema) => schema.notRequired(),
-  }),
+  // numberOfRepetition: Yup.string().when("appointmentType", {
+  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+  //   then: (schema) =>
+  //     schema.required("Please specify the number of appointment repetitions"),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
+  // therapyDays: Yup.array().when("appointmentType", {
+  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
+  //   then: (schema) =>
+  //     schema.min(1, "Please select at least one therapy day").required(),
+  //   otherwise: (schema) => schema.notRequired(),
+  // }),
 });

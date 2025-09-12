@@ -3,8 +3,10 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchAllPsychologists,
-  fetchAllTherapists,
+  // fetchAllPsychologists,
+  fetchAllPsychologistsWithAvailability,
+  // fetchAllTherapists,
+  fetchAllTherapistsWithAvailability,
 } from "@/store/slice/employeeSlice";
 import { fetchAllClients } from "@/store/slice/clientSlice";
 import { FiCheck, FiX } from "react-icons/fi";
@@ -56,9 +58,11 @@ const AppointmentsEditContent = ({ appointmentData }) => {
     dispatch(fetchAllClients());
     if (appointmentData) {
       if (appointmentData?.appointmentType.toLowerCase() === "treatment") {
-        dispatch(fetchAllTherapists());
+        // dispatch(fetchAllTherapists());
+        dispatch(fetchAllTherapistsWithAvailability());
       } else {
-        dispatch(fetchAllPsychologists());
+        // dispatch(fetchAllPsychologists());
+        dispatch(fetchAllPsychologistsWithAvailability());
       }
     }
   }, [appointmentData]);
