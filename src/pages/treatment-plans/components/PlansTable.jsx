@@ -12,6 +12,7 @@ import {
   deletePlanByIds,
   fetchAllPlans,
 } from "@/store/slice/treatmentPlanSlice";
+import format from "date-fns/format";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -142,7 +143,7 @@ const PlansTable = () => {
       header: () => "Consultation Date",
       cell: (info) => {
         const date = new Date(info.getValue());
-        return <a>{date.toLocaleDateString()}</a>;
+        return <a>{format(date, "dd MMM yyyy")}</a>;
       },
     },
     {

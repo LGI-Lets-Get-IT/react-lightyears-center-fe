@@ -73,7 +73,7 @@ const PlanCreateContent = () => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -97,7 +97,7 @@ const PlanCreateContent = () => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -120,7 +120,7 @@ const PlanCreateContent = () => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="consultDate" className="form-label">
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -129,8 +129,8 @@ const PlanCreateContent = () => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Consultation Date"
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {

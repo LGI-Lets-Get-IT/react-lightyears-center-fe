@@ -105,7 +105,7 @@ const EmployeeEdit = ({ empData }) => {
               </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">
+                  <label htmlFor="roleId" className="fw-semibold">
                     Role <span className="text-danger">*</span>
                   </label>
                 </div>
@@ -123,7 +123,7 @@ const EmployeeEdit = ({ empData }) => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">
+                  <label htmlFor="isActive" className="fw-semibold">
                     Employee Status <span className="text-danger">*</span>
                   </label>
                 </div>

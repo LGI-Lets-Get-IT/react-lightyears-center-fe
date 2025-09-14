@@ -57,12 +57,19 @@ const AppointmentsEditContent = ({ appointmentData }) => {
   useEffect(() => {
     dispatch(fetchAllClients());
     if (appointmentData) {
+      const params = {
+        appointmentDate: format(
+          new Date(appointmentData.appointmentDate),
+          "yyyy-MM-dd"
+        ),
+        timeStart: appointmentData?.appointmentTime.split(" - ")[0],
+        timeEnd: appointmentData?.appointmentTime.split(" - ")[1],
+      };
+
       if (appointmentData?.appointmentType.toLowerCase() === "treatment") {
-        // dispatch(fetchAllTherapists());
-        dispatch(fetchAllTherapistsWithAvailability());
+        dispatch(fetchAllTherapistsWithAvailability(params));
       } else {
-        // dispatch(fetchAllPsychologists());
-        dispatch(fetchAllPsychologistsWithAvailability());
+        dispatch(fetchAllPsychologistsWithAvailability(params));
       }
     }
   }, [appointmentData]);
@@ -100,7 +107,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-6 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="title" className="form-label">
                         Appointment Title <span className="text-danger">*</span>
                       </label>
                       <Field name="title">
@@ -126,7 +133,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                       </Field>
                     </div>
                     <div className="col-lg-6 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="appointmentType" className="form-label">
                         Appointment Type <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -146,7 +153,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                       />
                     </div>
                     <div className="col-lg-6 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -164,7 +171,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                       />
                     </div>
                     <div className="col-lg-6 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="roomId" className="form-label">
                         Room Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -178,7 +185,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                       />
                     </div>
                     <div className="col-lg-6 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="appointmentDate" className="form-label">
                         Appointment Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -187,8 +194,8 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                             <>
                               <DatePicker
                                 name="appointmentDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Appointment Date"
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.appointmentDate}
                                 onChange={(date) => {
@@ -218,7 +225,7 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                       </div>
                     </div>
                     <div className="col-lg-6 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="picId" className="form-label">
                         PIC Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
