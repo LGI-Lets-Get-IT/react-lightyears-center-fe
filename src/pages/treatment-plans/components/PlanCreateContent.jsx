@@ -129,8 +129,8 @@ const PlanCreateContent = () => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Consultation Date"
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {

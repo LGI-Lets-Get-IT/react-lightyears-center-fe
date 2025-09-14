@@ -532,8 +532,8 @@ const AppointmentCreateContent = () => {
                                     disabled={!values.appointmentType}
                                     autoComplete="off"
                                     name="appointmentDate"
-                                    placeholderText="YYYY-MM-DD"
-                                    dateFormat={"yyyy-MM-dd"}
+                                    placeholderText="Select Appointment Date"
+                                    dateFormat={"dd MMM yyyy"}
                                     showPopperArrow={false}
                                     shouldCloseOnSelect={false}
                                     onChange={(date) => {
@@ -564,8 +564,8 @@ const AppointmentCreateContent = () => {
                                     disabled={!values.appointmentType}
                                     autoComplete="off"
                                     name="appointmentDate"
-                                    placeholderText="YYYY-MM-DD"
-                                    dateFormat={"yyyy-MM-dd"}
+                                    placeholderText="Select Appointment Date"
+                                    dateFormat={"dd MMM YYYY"}
                                     showPopperArrow={false}
                                     selected={values.appointmentDate}
                                     onChange={(date) => {

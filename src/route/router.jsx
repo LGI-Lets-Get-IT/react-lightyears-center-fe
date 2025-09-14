@@ -314,7 +314,7 @@ export const router = createBrowserRouter([
       {
         path: "employee-availabilities",
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={PERMISSIONS.PIC_SCHEDULES.VIEW}>
             <PICSchedulesList />
           </ProtectedRoute>
         ),
@@ -322,7 +322,7 @@ export const router = createBrowserRouter([
       {
         path: "employee-availabilities/:id",
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermissions={PERMISSIONS.PIC_SCHEDULES.VIEW}>
             <PICSchedulesView />
           </ProtectedRoute>
         ),
@@ -330,7 +330,9 @@ export const router = createBrowserRouter([
       {
         path: "employee-availabilities/:id/edit",
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute
+            requiredPermissions={PERMISSIONS.PIC_SCHEDULES.UPDATE}
+          >
             <PICSchedulesEdit />
           </ProtectedRoute>
         ),
@@ -338,7 +340,9 @@ export const router = createBrowserRouter([
       {
         path: "employee-availabilities/create",
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute
+            requiredPermissions={PERMISSIONS.PIC_SCHEDULES.CREATE}
+          >
             <PICSchedulesCreate />
           </ProtectedRoute>
         ),

@@ -123,7 +123,7 @@ const PlanEditContent = ({ planData }) => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="DD-MM-YYYY"
+                                placeholderText="Select Consultation Date"
                                 // dateFormat={"yyyy-MM-dd"}
                                 dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}

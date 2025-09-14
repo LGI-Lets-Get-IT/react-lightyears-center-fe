@@ -57,12 +57,19 @@ const AppointmentsEditContent = ({ appointmentData }) => {
   useEffect(() => {
     dispatch(fetchAllClients());
     if (appointmentData) {
+      const params = {
+        appointmentDate: format(
+          new Date(appointmentData.appointmentDate),
+          "yyyy-MM-dd"
+        ),
+        timeStart: appointmentData?.appointmentTime.split(" - ")[0],
+        timeEnd: appointmentData?.appointmentTime.split(" - ")[1],
+      };
+
       if (appointmentData?.appointmentType.toLowerCase() === "treatment") {
-        // dispatch(fetchAllTherapists());
-        dispatch(fetchAllTherapistsWithAvailability());
+        dispatch(fetchAllTherapistsWithAvailability(params));
       } else {
-        // dispatch(fetchAllPsychologists());
-        dispatch(fetchAllPsychologistsWithAvailability());
+        dispatch(fetchAllPsychologistsWithAvailability(params));
       }
     }
   }, [appointmentData]);
@@ -187,8 +194,8 @@ const AppointmentsEditContent = ({ appointmentData }) => {
                             <>
                               <DatePicker
                                 name="appointmentDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Appointment Date"
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.appointmentDate}
                                 onChange={(date) => {
