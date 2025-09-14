@@ -62,7 +62,7 @@ const AssessmentsCreateContent = () => {
               {({ values, setFieldValue }) => (
                 <Form>
                   <div className="row">
-                    <div className="col-lg-6 mb-4">
+                    <div className="col-lg-4 mb-4">
                       <label className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
@@ -86,7 +86,7 @@ const AssessmentsCreateContent = () => {
                         }}
                       />
                     </div>
-                    <div className="col-lg-6 mb-4">
+                    <div className="col-lg-4 mb-4">
                       <label className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
@@ -103,7 +103,7 @@ const AssessmentsCreateContent = () => {
                         }
                       />
                     </div>
-                    <div className="col-lg-6 mb-4">
+                    <div className="col-lg-4 mb-4">
                       <label className="form-label">
                         Test Name <span className="text-danger">*</span>
                       </label>
@@ -123,7 +123,7 @@ const AssessmentsCreateContent = () => {
                         }}
                       />
                     </div>
-                    <div className="col-lg-6 mb-4">
+                    <div className="col-lg-4 mb-4">
                       <label htmlFor="appointmentId" className="form-label">
                         Assessed On <span className="text-danger">*</span>
                       </label>

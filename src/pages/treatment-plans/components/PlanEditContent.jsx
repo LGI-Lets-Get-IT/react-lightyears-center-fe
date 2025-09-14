@@ -123,8 +123,9 @@ const PlanEditContent = ({ planData }) => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="DD-MM-YYYY"
+                                // dateFormat={"yyyy-MM-dd"}
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {
@@ -574,6 +575,17 @@ const PlanEditContent = ({ planData }) => {
                                       )}
                                     </Field>
                                   </div>
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Target
+                                  </button>
                                 </div>
                               </AccordionItem>
                             ))}
