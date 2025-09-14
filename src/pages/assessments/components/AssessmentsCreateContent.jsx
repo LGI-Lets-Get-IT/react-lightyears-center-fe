@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
+import DatePicker from "react-datepicker";
 import { Field, Form, Formik } from "formik";
 import { assessmentSchema } from "@/schemas/assessmentSchema";
 import { FiCheck, FiX } from "react-icons/fi";
@@ -22,7 +23,9 @@ const AssessmentsCreateContent = () => {
   const { appointments } = useSelector((state) => state.appointments);
   const { psychologists } = useSelector((state) => state.employees);
 
-  const handleSubmit = (values, actions) => {
+  const handleSubmit = (values) => {
+    console.log("VALUES", values);
+    return;
     dispatch(createAssessment(values))
       .unwrap()
       .then(() => navigate("/assessments"))
@@ -33,7 +36,7 @@ const AssessmentsCreateContent = () => {
     dispatch(fetchAllClients());
     dispatch(fetchAllPsychologists());
     dispatch(fetchAllTestTypes());
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="col-lg-12">
@@ -51,7 +54,9 @@ const AssessmentsCreateContent = () => {
             <Formik
               initialValues={{
                 clientId: null,
+                isInCenterAssessment: false,
                 appointmentId: null,
+                assessmentDate: null,
                 psychologistId: null,
                 testId: null,
                 result: undefined,
@@ -63,7 +68,7 @@ const AssessmentsCreateContent = () => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -86,8 +91,35 @@ const AssessmentsCreateContent = () => {
                         }}
                       />
                     </div>
+                    <div className="col-lg-12 mb-4">
+                      <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="isInCenterAssessment"
+                          checked={values.isInCenterAssessment}
+                          onChange={(e) => {
+                            setFieldValue(
+                              "isInCenterAssessment",
+                              e.target.checked
+                            );
+                            if (e.target.checked) {
+                              // Clear appointment when switching to in-center
+                              setFieldValue("appointmentId", null);
+                            }
+                          }}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="isInCenterAssessment"
+                        >
+                          <strong>In-Center Assessment</strong> (Assessment
+                          conducted without a scheduled appointment)
+                        </label>
+                      </div>
+                    </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -104,7 +136,7 @@ const AssessmentsCreateContent = () => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="testId" className="form-label">
                         Test Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -123,23 +155,73 @@ const AssessmentsCreateContent = () => {
                         }}
                       />
                     </div>
+                    {!values.isInCenterAssessment && (
+                      <div className="col-lg-4 mb-4">
+                        <label htmlFor="appointmentId" className="form-label">
+                          Assessed On <span className="text-danger">*</span>
+                        </label>
+                        <SelectDropdown
+                          isDisabled={!values.clientId}
+                          name={"appointmentId"}
+                          options={appointments.map((appointment) => ({
+                            value: appointment.id,
+                            label: `[${appointment.appointmentType}] ${appointment.title}`,
+                          }))}
+                          placeholder={"Select Appointment"}
+                          selectedOption={values.appointmentId}
+                          onSelectOption={(option) => {
+                            setFieldValue("appointmentId", option.value);
+                            const selectedAppointment = appointments.find(
+                              (appointment) => appointment.id === option.value
+                            );
+                            setFieldValue(
+                              "assessmentDate",
+                              selectedAppointment.appointmentDate
+                            );
+                          }}
+                        />
+                      </div>
+                    )}
                     <div className="col-lg-4 mb-4">
-                      <label htmlFor="appointmentId" className="form-label">
-                        Assessed On <span className="text-danger">*</span>
+                      <label htmlFor="assessmentDate" className="form-label">
+                        {values.isInCenterAssessment
+                          ? "Assessment Date"
+                          : "Assessment Date (from appointment)"}{" "}
+                        <span className="text-danger">*</span>
                       </label>
-                      <SelectDropdown
-                        isDisabled={!values.clientId}
-                        name={"appointmentId"}
-                        options={appointments.map((appointment) => ({
-                          value: appointment.id,
-                          label: `[${appointment.appointmentType}] ${appointment.title}`,
-                        }))}
-                        placeholder={"Select Appointment"}
-                        selectedOption={values.appointmentId}
-                        onSelectOption={(option) =>
-                          setFieldValue("appointmentId", option.value)
-                        }
-                      />
+                      <div className="input-group date flex-column">
+                        <Field name="assessmentDate">
+                          {({ meta }) => (
+                            <>
+                              <DatePicker
+                                name="assessmentDate"
+                                placeholderText="Select Assessment Date"
+                                dateFormat="dd MMM yyyy"
+                                showPopperArrow={false}
+                                disabled={!values.isInCenterAssessment}
+                                selected={values.assessmentDate}
+                                onChange={(date) => {
+                                  setFieldValue("assessmentDate", date);
+                                }}
+                                className={`form-control ${
+                                  meta.error ? "is-invalid" : ""
+                                }`}
+                                popperPlacement="bottom-start"
+                                calendarContainer={({ children }) => (
+                                  <div className="bg-white react-datepicker">
+                                    {children}
+                                  </div>
+                                )}
+                              />
+                              {meta.error && (
+                                <div className="mt-1 text-danger">
+                                  {meta.error}
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </Field>
+                      </div>
                     </div>
 
                     <div className="col-lg-12 mb-4">

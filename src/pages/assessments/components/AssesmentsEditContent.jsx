@@ -85,7 +85,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -110,7 +110,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -127,7 +127,7 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="testId" className="form-label">
                         Test Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -155,9 +155,16 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                         }))}
                         placeholder={"Select Appointment"}
                         selectedOption={values.appointmentId}
-                        onSelectOption={(option) =>
-                          setFieldValue("appointmentId", option.value)
-                        }
+                        onSelectOption={(option) => {
+                          setFieldValue("appointmentId", option.value);
+                          const selectedAppointment = appointments.find(
+                            (appointment) => appointment.id === option.value
+                          );
+                          setFieldValue(
+                            "assessmentDate",
+                            selectedAppointment.appointmentDate
+                          );
+                        }}
                       />
                     </div>
                     <div className="col-lg-12 mb-4">
