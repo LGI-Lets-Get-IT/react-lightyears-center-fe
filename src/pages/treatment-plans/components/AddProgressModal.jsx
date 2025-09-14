@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import TaskDateRange from "@/components/tasks/TaskDateRange";
-import TaskStatus from "@/components/tasks/TaskStatus";
 // import ReactQuill from 'react-quill';
-import MultiSelectTags from "@/components/shared/MultiSelectTags";
-import MultiSelectImg from "@/components/shared/MultiSelectImg";
 import { useDispatch, useSelector } from "react-redux";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { FiX } from "react-icons/fi";

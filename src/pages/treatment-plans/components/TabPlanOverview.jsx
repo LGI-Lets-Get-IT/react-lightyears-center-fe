@@ -38,7 +38,11 @@ const TabPlanOverview = () => {
                   </div>
                   <div className="progress mt-2 ht-5">
                     <div
-                      className="progress-bar bg-primary"
+                      className={`progress-bar ${
+                        (plan?.programsDone / plan?.totalPrograms) * 100 < 100
+                          ? "bg-primary"
+                          : "bg-success"
+                      }`}
                       role="progressbar"
                       style={{
                         width: `${

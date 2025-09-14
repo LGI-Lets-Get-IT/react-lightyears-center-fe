@@ -30,15 +30,10 @@
 @import "themes/layouts/nxl-navigation";
 @import "themes/layouts/nxl-sidebar";
 
-// Modals
-@import "themes/components/search";
-@import "themes/components/language";
-
 // Applications
 @import "themes/applications/apps-common";
 @import "themes/applications/chat";
 @import "themes/applications/email";
-@import "themes/applications/tasks";
 @import "themes/applications/notes";
 @import "themes/applications/calendar";
 @import "themes/applications/storage";
@@ -60,9 +55,6 @@
 
 // Widgets
 @import "themes/widgets/widgets-lists";
-@import "themes/widgets/widgets-tables";
-@import "themes/widgets/widgets-charts";
-@import "themes/widgets/widgets-statistics";
 @import "themes/widgets/widgets-miscellaneous";
 
 // Pages

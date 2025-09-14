@@ -2,21 +2,23 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { FiAlignLeft, FiArrowRight } from "react-icons/fi";
 import ProfileModal from "./ProfileModal";
 import { NavigationContext } from "../../../contentApi/navigationProvider";
+import TimesheetsModal from "./TimesheetsModal";
+import NotificationsModal from "./NotificationsModal";
 
 const Header = () => {
   const { navigationOpen, setNavigationOpen } = useContext(NavigationContext);
-  const [openMegaMenu, setOpenMegaMenu] = useState(false);
+  // const [openMegaMenu, setOpenMegaMenu] = useState(false);
   const [navigationExpend, setNavigationExpend] = useState(false);
   const miniButtonRef = useRef(null);
   const expendButtonRef = useRef(null);
 
-  useEffect(() => {
-    if (openMegaMenu) {
-      document.documentElement.classList.add("nxl-lavel-mega-menu-open");
-    } else {
-      document.documentElement.classList.remove("nxl-lavel-mega-menu-open");
-    }
-  }, [openMegaMenu]);
+  // useEffect(() => {
+  //   if (openMegaMenu) {
+  //     document.documentElement.classList.add("nxl-lavel-mega-menu-open");
+  //   } else {
+  //     document.documentElement.classList.remove("nxl-lavel-mega-menu-open");
+  //   }
+  // }, [openMegaMenu]);
 
   const handleThemeMode = (type) => {
     if (type === "dark") {
@@ -243,8 +245,8 @@ const Header = () => {
                 <FiSun size={20} />
               </div>
             </div> */}
-            {/* <TimesheetsModal /> */}
-            {/* <NotificationsModal /> */}
+            {/* <TimesheetsModal />
+            <NotificationsModal /> */}
             <ProfileModal />
           </div>
         </div>

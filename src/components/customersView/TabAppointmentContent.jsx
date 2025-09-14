@@ -1,27 +1,70 @@
-import React from 'react'
-import { FiCheck, FiCheckCircle, FiEye, FiMoreHorizontal, FiMoreVertical, FiX } from 'react-icons/fi'
-import { profileActivityData } from '@/utils/data/profileActivityData'
-import { ActivityListItem } from '../widgetsList/ActivityTwo';
-import TabClientsAppointment from '@/pages/clients/components/TabClientsAppointment';
+import React from "react";
+import {
+  FiCheck,
+  FiCheckCircle,
+  FiEye,
+  FiMoreHorizontal,
+  FiMoreVertical,
+  FiX,
+} from "react-icons/fi";
+import TabClientsAppointment from "@/pages/clients/components/TabClientsAppointment";
 
 const logData = [
-    { browser: 'Chrome on Window', ip: '192.149.122.128', time: '11:34 PM', action: 'success' },
-    { browser: 'Mozilla on Window', ip: '186.188.154.225', time: 'Nov 20, 2023 10:34 PM', action: 'fail' },
-    { browser: 'Chrome on iMac', ip: '192.149.122.128', time: 'Oct 23, 2023 04:16 PM', action: 'fail' },
-    { browser: 'Mozilla on Window', ip: '186.188.154.225', time: 'Nov 20, 2023 10:34 PM', action: 'fail' },
-    { browser: 'Chrome on Window', ip: '192.149.122.128', time: 'Oct 23, 2023 04:16 PM', action: 'fail' },
-    { browser: 'Chrome on iMac', ip: '192.149.122.128', time: 'Oct 15, 2023 11:41 PM', action: 'fail' },
-    { browser: 'Mozilla on Window', ip: '186.188.154.225', time: 'Oct 13, 2023 05:43 AM', action: 'fail' },
-    { browser: 'Chrome on iMac', ip: '192.149.122.128', time: 'Oct 03, 2023 04:12 AM', action: 'fail' },
-
+  {
+    browser: "Chrome on Window",
+    ip: "192.149.122.128",
+    time: "11:34 PM",
+    action: "success",
+  },
+  {
+    browser: "Mozilla on Window",
+    ip: "186.188.154.225",
+    time: "Nov 20, 2023 10:34 PM",
+    action: "fail",
+  },
+  {
+    browser: "Chrome on iMac",
+    ip: "192.149.122.128",
+    time: "Oct 23, 2023 04:16 PM",
+    action: "fail",
+  },
+  {
+    browser: "Mozilla on Window",
+    ip: "186.188.154.225",
+    time: "Nov 20, 2023 10:34 PM",
+    action: "fail",
+  },
+  {
+    browser: "Chrome on Window",
+    ip: "192.149.122.128",
+    time: "Oct 23, 2023 04:16 PM",
+    action: "fail",
+  },
+  {
+    browser: "Chrome on iMac",
+    ip: "192.149.122.128",
+    time: "Oct 15, 2023 11:41 PM",
+    action: "fail",
+  },
+  {
+    browser: "Mozilla on Window",
+    ip: "186.188.154.225",
+    time: "Oct 13, 2023 05:43 AM",
+    action: "fail",
+  },
+  {
+    browser: "Chrome on iMac",
+    ip: "192.149.122.128",
+    time: "Oct 03, 2023 04:12 AM",
+    action: "fail",
+  },
 ];
 
-
 const TabAppointmentContent = () => {
-    return (
-        <div className="tab-pane fade" id="appointmentTab" role="tabpanel">
-            <TabClientsAppointment/>
-            {/* <div className="recent-activity p-4 pb-0">
+  return (
+    <div className="tab-pane fade" id="appointmentTab" role="tabpanel">
+      <TabClientsAppointment />
+      {/* <div className="recent-activity p-4 pb-0">
                 <div className="mb-4 pb-2 d-flex justify-content-between">
                     <h5 className="fw-bold">Recent Appointments:</h5>
                     <a href="#" className="btn btn-sm btn-light-brand">View Alls</a>
@@ -46,8 +89,8 @@ const TabAppointmentContent = () => {
                     <span className="fs-10 text-uppercase ms-2 text-truncate-1-line">Load More</span>
                 </a>
             </div> */}
-            {/* <hr /> */}
-            {/* <div className="logs-history mb-0">
+      {/* <hr /> */}
+      {/* <div className="logs-history mb-0">
                 <div className="px-4 mb-4 d-flex justify-content-between">
                     <h5 className="fw-bold">Logs History</h5>
                     <a href="#" className="btn btn-sm btn-light-brand">View Alls</a>
@@ -76,31 +119,29 @@ const TabAppointmentContent = () => {
                     </table>
                 </div>
             </div> */}
-        </div>
-    )
-}
-
-export default TabAppointmentContent
-
-
-
-
-const LogEntry = ({ browser, ip, time, action }) => {
-    return (
-        <tr>
-            <td className="fw-medium text-dark text-start ps-4">{browser}</td>
-            <td><span className="text-muted">{ip}</span></td>
-            <td>
-                <span className="text-muted">{time}</span>
-            </td>
-            <td>
-                {action === 'success' ? (
-                    <FiCheckCircle className='text-success' />
-                ) : (
-                    <FiX className='text-danger' />
-                )}
-            </td>
-        </tr>
-    );
+    </div>
+  );
 };
 
+export default TabAppointmentContent;
+
+const LogEntry = ({ browser, ip, time, action }) => {
+  return (
+    <tr>
+      <td className="fw-medium text-dark text-start ps-4">{browser}</td>
+      <td>
+        <span className="text-muted">{ip}</span>
+      </td>
+      <td>
+        <span className="text-muted">{time}</span>
+      </td>
+      <td>
+        {action === "success" ? (
+          <FiCheckCircle className="text-success" />
+        ) : (
+          <FiX className="text-danger" />
+        )}
+      </td>
+    </tr>
+  );
+};

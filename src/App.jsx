@@ -1,7 +1,6 @@
 // import React from 'react'
 import { RouterProvider } from "react-router-dom";
 import { router } from "./route/router";
-// import 'react-quill/dist/quill.snow.css';
 import "react-circular-progressbar/dist/styles.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,8 +9,7 @@ import NavigationProvider from "./contentApi/navigationProvider";
 import SideBarToggleProvider from "./contentApi/sideBarToggleProvider";
 // import ThemeCustomizer from "./components/shared/ThemeCustomizer";
 import { Provider } from "react-redux";
-import { persistor, store } from "./store";
-import { PersistGate } from "redux-persist/integration/react";
+import { store } from "./store";
 
 const App = () => {
   return (
@@ -19,7 +17,7 @@ const App = () => {
       <NavigationProvider>
         <SideBarToggleProvider>
           <Provider store={store}>
-              <RouterProvider router={router} />
+            <RouterProvider router={router} />
           </Provider>
         </SideBarToggleProvider>
       </NavigationProvider>

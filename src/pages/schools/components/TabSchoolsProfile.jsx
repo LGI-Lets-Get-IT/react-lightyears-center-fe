@@ -1,44 +1,6 @@
 import React from "react";
 import getIcon from "@/utils/getIcon";
 
-const generalInfoData = [
-  {
-    title: "Status",
-    icon: "feather-git-commit",
-    text: "Customer",
-  },
-  {
-    title: "Source",
-    icon: "feather-facebook",
-    text: "Facebook",
-  },
-  {
-    title: "Default Language",
-    icon: "feather-airplay",
-    text: "System Default",
-  },
-  {
-    title: "Privacy",
-    icon: "feather-globe",
-    text: "Private",
-  },
-  {
-    title: "Created",
-    icon: "feather-clock",
-    text: "26 MAY, 2023",
-  },
-  {
-    title: "Assigned",
-    image: "/images/avatar/1.png",
-    text: "Alexandra Della",
-  },
-  {
-    title: "Lead By",
-    image: "/images/avatar/5.png",
-    text: "Green Cute - Website design and development",
-  },
-];
-
 const schoolInfoData = [
   {
     title: "School Name",
