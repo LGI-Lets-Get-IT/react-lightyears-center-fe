@@ -96,7 +96,7 @@ const PICScheduleCreateContent = () => {
                               type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.schedules.length === 1) return;
+                                // if (values.schedules.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >

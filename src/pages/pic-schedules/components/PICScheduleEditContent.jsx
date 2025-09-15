@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchAllEmployees,
   fetchAllPsychologists,
   fetchAllTherapists,
 } from "@/store/slice/employeeSlice";
 import { FiCheck, FiX } from "react-icons/fi";
-import { Field, FieldArray, Form, Formik } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import WeekdayPicker from "@/components/picker/WeekdayPicker";
 import TimePicker from "@/components/picker/TimePicker";
 import format from "date-fns/format";
-import { createPicSchedule } from "@/store/slice/picScheduleSlice";
+import { updatePicScheduleByEmployeeId } from "@/store/slice/picScheduleSlice";
 import { picScheduleSchema } from "@/schemas/picScheduleSchema";
 
 const PICScheduleEditContent = ({ scheduleData }) => {
@@ -25,7 +24,12 @@ const PICScheduleEditContent = ({ scheduleData }) => {
 
   const onSubmit = async (values, actions) => {
     console.log("Values of Form: ", values, actions);
-    dispatch(createPicSchedule(values))
+    dispatch(
+      updatePicScheduleByEmployeeId({
+        employeeId: scheduleData?.id,
+        data: values,
+      })
+    )
       .unwrap()
       .then(() => navigate("/employee-availabilities"))
       .catch((error) => console.log("Error", error));
@@ -35,7 +39,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
     // dispatch(fetchAllEmployees());
     dispatch(fetchAllTherapists());
     dispatch(fetchAllPsychologists());
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="col-lg-12">
@@ -99,7 +103,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                               type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.schedules.length === 1) return;
+                                // if (values.schedules.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
@@ -116,7 +120,7 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Schedule
                             </button>
                           </div>
                         </div>
@@ -158,27 +162,19 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                     <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
-                                    <Field name="availableStartTime">
-                                      {({ field, meta }) => (
-                                        <>
-                                          <TimePicker
-                                            name={`schedules[${index}].availableStartTime`}
-                                            selected={{
-                                              value:
-                                                schedule.availableStartTime,
-                                              label:
-                                                schedule.availableStartTime,
-                                            }}
-                                            onChange={(option) => {
-                                              setFieldValue(
-                                                `schedules[${index}].availableStartTime`,
-                                                option.value
-                                              );
-                                            }}
-                                          />
-                                        </>
-                                      )}
-                                    </Field>
+                                    <TimePicker
+                                      name={`schedules[${index}].availableStartTime`}
+                                      selected={{
+                                        value: schedule.availableStartTime,
+                                        label: schedule.availableStartTime,
+                                      }}
+                                      onChange={(option) => {
+                                        setFieldValue(
+                                          `schedules[${index}].availableStartTime`,
+                                          option.value
+                                        );
+                                      }}
+                                    />
                                   </div>
                                   {/* <div className="col-sm-9">
                                     <WeekdayPicker
@@ -197,42 +193,19 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                     <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
-                                    <Field name="timeStart">
-                                      {({ field, meta }) => (
-                                        <>
-                                          <TimePicker
-                                            name={`schedules[${index}].availableEndTime`}
-                                            {...field}
-                                            selected={{
-                                              value: schedule.availableEndTime,
-                                              label: schedule.availableEndTime,
-                                            }}
-                                            onChange={(option) => {
-                                              setFieldValue(
-                                                `schedules[${index}].availableEndTime`,
-                                                option.value
-                                              );
-                                            }}
-                                          />
-                                          {/* <input
-                                            type="time"
-                                            id="timeStart"
-                                            name="timeStart"
-                                            value={values.timeStart}
-                                            className={`form-control ${
-                                              meta.error ? "is-invalid" : ""
-                                            }`}
-                                            required
-                                            {...field}
-                                          />
-                                          {meta.error && (
-                                            <div className="mt-1 text-danger">
-                                              {meta.error}
-                                            </div>
-                                          )} */}
-                                        </>
-                                      )}
-                                    </Field>
+                                    <TimePicker
+                                      name={`schedules[${index}].availableEndTime`}
+                                      selected={{
+                                        value: schedule.availableEndTime,
+                                        label: schedule.availableEndTime,
+                                      }}
+                                      onChange={(option) => {
+                                        setFieldValue(
+                                          `schedules[${index}].availableEndTime`,
+                                          option.value
+                                        );
+                                      }}
+                                    />
                                   </div>
                                   {/* <div className="col-sm-9">
                                     <WeekdayPicker
@@ -244,6 +217,17 @@ const PICScheduleEditContent = ({ scheduleData }) => {
                                       }
                                     />
                                   </div> */}
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Schedule
+                                  </button>
                                 </div>
                               </AccordionItem>
                             ))}
