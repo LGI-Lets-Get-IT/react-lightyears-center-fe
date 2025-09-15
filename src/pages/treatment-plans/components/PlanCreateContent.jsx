@@ -233,7 +233,7 @@ const PlanCreateContent = () => {
                               type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.programs.length === 1) return;
+                                // if (values.programs.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
@@ -411,6 +411,17 @@ const PlanCreateContent = () => {
                                     </Field>
                                   </div>
                                 </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Program
+                                  </button>
+                                </div>
                               </AccordionItem>
                             ))}
                         </div>
@@ -436,7 +447,7 @@ const PlanCreateContent = () => {
                               type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.targets.length === 1) return;
+                                // if (values.targets.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
@@ -453,7 +464,7 @@ const PlanCreateContent = () => {
                                 })
                               }
                             >
-                              Add Target Behavior
+                              Add New Target
                             </button>
                           </div>
                         </div>
@@ -580,6 +591,17 @@ const PlanCreateContent = () => {
                                       )}
                                     </Field>
                                   </div>
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Target
+                                  </button>
                                 </div>
                               </AccordionItem>
                             ))}
