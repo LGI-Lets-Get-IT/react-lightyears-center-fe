@@ -24,8 +24,6 @@ const AssessmentsCreateContent = () => {
   const { psychologists } = useSelector((state) => state.employees);
 
   const handleSubmit = (values) => {
-    console.log("VALUES", values);
-    return;
     dispatch(createAssessment(values))
       .unwrap()
       .then(() => navigate("/assessments"))
@@ -61,7 +59,7 @@ const AssessmentsCreateContent = () => {
                 testId: null,
                 result: undefined,
               }}
-              validationSchema={assessmentSchema}
+              // validationSchema={assessmentSchema}
               onSubmit={handleSubmit}
             >
               {({ values, setFieldValue }) => (
