@@ -1,12 +1,13 @@
 import { userForgotPassword } from "@/store/slice/authSlice";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 const ResetForm = ({ path }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState(null);
+  const { isLoading: resetLoading } = useSelector((state) => state.auth);
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
@@ -37,8 +38,19 @@ const ResetForm = ({ path }) => {
           />
         </div>
         <div className="mt-5">
-          <button type="submit" className="btn btn-lg btn-primary w-100">
-            Reset Password
+          <button
+            type="submit"
+            className="btn btn-lg btn-primary w-100"
+            disabled={resetLoading}
+          >
+            {resetLoading ? (
+              <div
+                className="spinner-border spinner-border-sm text-white me-2"
+                role="status"
+              />
+            ) : (
+              <span>Reset Password</span>
+            )}
           </button>
         </div>
       </form>

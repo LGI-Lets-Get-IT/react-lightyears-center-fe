@@ -135,6 +135,16 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(userForgotPassword.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(userForgotPassword.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(userForgotPassword.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
 

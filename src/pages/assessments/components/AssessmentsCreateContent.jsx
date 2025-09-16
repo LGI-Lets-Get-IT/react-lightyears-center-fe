@@ -11,6 +11,7 @@ import { fetchAllPsychologists } from "@/store/slice/employeeSlice";
 import { fetchAppointmentForAssessments } from "@/store/slice/appointmentSlice";
 import { createTestType, fetchAllTestTypes } from "@/store/slice/testTypeSlice";
 import { createAssessment } from "@/store/slice/assessmentSlice";
+import Checkbox from "@/components/shared/Checkbox";
 
 const AssessmentsCreateContent = () => {
   const dispatch = useDispatch();
@@ -24,10 +25,11 @@ const AssessmentsCreateContent = () => {
   const { psychologists } = useSelector((state) => state.employees);
 
   const handleSubmit = (values) => {
-    dispatch(createAssessment(values))
-      .unwrap()
-      .then(() => navigate("/assessments"))
-      .catch((error) => console.error("handle error", error));
+    console.log("VALUES", values);
+    // dispatch(createAssessment(values))
+    //   .unwrap()
+    //   .then(() => navigate("/assessments"))
+    //   .catch((error) => console.error("handle error", error));
   };
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const AssessmentsCreateContent = () => {
                 testId: null,
                 result: undefined,
               }}
-              // validationSchema={assessmentSchema}
+              validationSchema={assessmentSchema}
               onSubmit={handleSubmit}
             >
               {({ values, setFieldValue }) => (
@@ -88,33 +90,6 @@ const AssessmentsCreateContent = () => {
                           );
                         }}
                       />
-                    </div>
-                    <div className="col-lg-12 mb-4">
-                      <div className="form-check">
-                        <input
-                          className="form-check-input"
-                          type="checkbox"
-                          id="isInCenterAssessment"
-                          checked={values.isInCenterAssessment}
-                          onChange={(e) => {
-                            setFieldValue(
-                              "isInCenterAssessment",
-                              e.target.checked
-                            );
-                            if (e.target.checked) {
-                              // Clear appointment when switching to in-center
-                              setFieldValue("appointmentId", null);
-                            }
-                          }}
-                        />
-                        <label
-                          className="form-check-label"
-                          htmlFor="isInCenterAssessment"
-                        >
-                          <strong>In-Center Assessment</strong> (Assessment
-                          conducted without a scheduled appointment)
-                        </label>
-                      </div>
                     </div>
                     <div className="col-lg-4 mb-4">
                       <label htmlFor="psychologistId" className="form-label">
@@ -153,6 +128,51 @@ const AssessmentsCreateContent = () => {
                         }}
                       />
                     </div>
+                    <div className="col-lg-12 mb-4">
+                      <Checkbox
+                        name="In-Center Assessment (Assessment conducted without a scheduled appointment)"
+                        checked={values.isInCenterAssessment}
+                        id="isInCenterAssessment"
+                        onChange={(e) => {
+                          setFieldValue(
+                            "isInCenterAssessment",
+                            e.target.checked
+                          );
+                          if (e.target.checked) {
+                            // Clear appointment when switching to in-center
+                            setFieldValue("appointmentId", null);
+                            setFieldValue("appointmentDate", null);
+                          }
+                        }}
+                      />
+                      {/* <div className="form-check">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          id="isInCenterAssessment"
+                          checked={values.isInCenterAssessment}
+                          onChange={(e) => {
+                            setFieldValue(
+                              "isInCenterAssessment",
+                              e.target.checked
+                            );
+                            if (e.target.checked) {
+                              // Clear appointment when switching to in-center
+                              setFieldValue("appointmentId", null);
+                              setFieldValue("appointmentDate", null);
+                            }
+                          }}
+                        />
+                        <label
+                          className="form-check-label"
+                          htmlFor="isInCenterAssessment"
+                        >
+                          <strong>In-Center Assessment</strong> (Assessment
+                          conducted without a scheduled appointment)
+                        </label>
+                      </div> */}
+                    </div>
+
                     {!values.isInCenterAssessment && (
                       <div className="col-lg-4 mb-4">
                         <label htmlFor="appointmentId" className="form-label">
