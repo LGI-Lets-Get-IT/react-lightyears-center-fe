@@ -201,10 +201,44 @@ const AppointmentCreateContent = () => {
         return; // Skip this date
       }
 
-      const selectedDay = format(new Date(date), "EEEE");
-      // console.log(
-      //   `Checking day: ${selectedDay} for PIC: ${dropdownItem.fullName}`
-      // );
+      // Fix timezone issue: Use the date as-is without timezone conversion
+      let selectedDay;
+      if (typeof date === "string") {
+        // If it's a string, parse it as local date without timezone conversion
+        const dateParts = date.split(" ")[0].split("-"); // Extract YYYY-MM-DD part
+        const year = parseInt(dateParts[0]);
+        const month = parseInt(dateParts[1]) - 1; // Month is 0-indexed
+        const day = parseInt(dateParts[2]);
+
+        // Create date object in local timezone
+        const dateObj = new Date(year, month, day);
+
+        // Get day name using JavaScript's built-in method to avoid UTC conversion
+        const dayNames = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        selectedDay = dayNames[dateObj.getDay()];
+      } else {
+        // If it's already a Date object, use JavaScript's built-in method
+        const dayNames = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        selectedDay = dayNames[date.getDay()];
+      }
+
+      console.log(`Selected date: ${date}, Calculated day: ${selectedDay}`);
 
       // Find a schedule that matches the selected day
       const dayBasedSchedule = dropdownItem.schedules?.find((schedule) =>
