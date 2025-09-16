@@ -49,12 +49,12 @@ const PICScheduleTable = () => {
       link: `/employee-availabilities/${id}/edit`,
       permission: PERMISSIONS.ASSESSMENTS.UPDATE,
     },
-    {
-      label: "Delete",
-      icon: <FiTrash2 />,
-      onClick: () => handleConfirmDelete(id, clientName, testName),
-      permission: PERMISSIONS.ASSESSMENTS.DELETE,
-    },
+    // {
+    //   label: "Delete",
+    //   icon: <FiTrash2 />,
+    //   onClick: () => handleConfirmDelete(id, clientName, testName),
+    //   permission: PERMISSIONS.ASSESSMENTS.DELETE,
+    // },
   ];
 
   const handleConfirmDelete = (id, clientName, testName) => {

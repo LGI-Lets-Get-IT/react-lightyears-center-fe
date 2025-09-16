@@ -131,12 +131,12 @@ const PlansTable = () => {
     {
       accessorKey: "totalTreatments",
       header: () => "Total Treatments",
-      cell: (info) => <a className="text-wrap">{info.getValue()} Programs</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue()} Program(s)</a>,
     },
     {
       accessorKey: "totalTargetedBehaviors",
       header: () => "Total Target Behaviors",
-      cell: (info) => <a className="text-wrap">{info.getValue()} Targets</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue()} Target(s)</a>,
     },
     {
       accessorKey: "consultDate",

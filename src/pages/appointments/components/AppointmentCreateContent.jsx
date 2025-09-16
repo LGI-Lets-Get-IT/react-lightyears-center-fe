@@ -70,7 +70,8 @@ const AppointmentCreateContent = () => {
             picId: values.picId,
             roomId: values.roomId,
             appointmentType: values.appointmentType,
-            appointmentDate: date,
+            // appointmentDate: date,
+            appointmentDate: format(date, "yyyy-MM-dd HH:mm:ss xx"),
             timeStart: startDateTimeLocal.toISOString(),
             timeEnd: endDateTimeLocal.toISOString(),
             treatmentId: values.treatmentId,
@@ -95,6 +96,10 @@ const AppointmentCreateContent = () => {
 
         const formattedValues = {
           ...values,
+          appointmentDate: format(
+            values.appointmentDate,
+            "yyyy-MM-dd HH:mm:ss xx"
+          ),
           timeStart: startDateTimeLocal.toISOString(),
           timeEnd: endDateTimeLocal.toISOString(),
         };
@@ -345,9 +350,13 @@ const AppointmentCreateContent = () => {
           // For bulk appointments, we need to check availability for all dates
           // Pass all selected dates to the backend for comprehensive checking
           const params = {
-            appointmentDate: validDates.map((d) =>
-              format(new Date(d), "yyyy-MM-dd")
-            ),
+            appointmentDate: validDates.map((d) => {
+              // Ensure consistent date formatting without timezone issues
+              if (typeof d === "string") {
+                return d.split("T")[0]; // Extract YYYY-MM-DD part
+              }
+              return format(d, "yyyy-MM-dd");
+            }),
             timeStart,
             timeEnd,
           };
@@ -603,17 +612,11 @@ const AppointmentCreateContent = () => {
                                     showPopperArrow={false}
                                     selected={values.appointmentDate}
                                     onChange={(date) => {
-                                      setFieldValue(
-                                        "appointmentDate",
-                                        // date,
-                                        format(date, "yyyy-MM-dd HH:mm:ss xx")
-                                      );
+                                      // Store the date as a Date object to avoid timezone issues
+                                      setFieldValue("appointmentDate", date);
                                       handleFetchPIC({
                                         ...values,
-                                        appointmentDate: format(
-                                          date,
-                                          "yyyy-MM-dd"
-                                        ),
+                                        appointmentDate: date,
                                       });
                                     }}
                                     className={`form-control ${
