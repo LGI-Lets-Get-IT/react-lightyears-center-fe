@@ -96,6 +96,10 @@ const AppointmentCreateContent = () => {
 
         const formattedValues = {
           ...values,
+          appointmentDate: format(
+            values.appointmentDate,
+            "yyyy-MM-dd HH:mm:ss xx"
+          ),
           timeStart: startDateTimeLocal.toISOString(),
           timeEnd: endDateTimeLocal.toISOString(),
         };
@@ -202,10 +206,18 @@ const AppointmentCreateContent = () => {
         return; // Skip this date
       }
 
-      const selectedDay = format(new Date(date), "EEEE");
-      // console.log(
-      //   `Checking day: ${selectedDay} for PIC: ${dropdownItem.fullName}`
-      // );
+      // Fix timezone issue: Use the date as-is without timezone conversion
+      let selectedDay;
+      if (typeof date === "string") {
+        // If it's a string, parse it as local date
+        const dateObj = new Date(date + "T00:00:00");
+        selectedDay = format(dateObj, "EEEE");
+      } else {
+        // If it's already a Date object, use it directly
+        selectedDay = format(date, "EEEE");
+      }
+
+      console.log(`Selected date: ${date}, Calculated day: ${selectedDay}`);
 
       // Find a schedule that matches the selected day
       const dayBasedSchedule = dropdownItem.schedules?.find((schedule) =>
@@ -312,9 +324,13 @@ const AppointmentCreateContent = () => {
           // For bulk appointments, we need to check availability for all dates
           // Pass all selected dates to the backend for comprehensive checking
           const params = {
-            appointmentDate: validDates.map((d) =>
-              format(new Date(d), "yyyy-MM-dd")
-            ),
+            appointmentDate: validDates.map((d) => {
+              // Ensure consistent date formatting without timezone issues
+              if (typeof d === "string") {
+                return d.split("T")[0]; // Extract YYYY-MM-DD part
+              }
+              return format(d, "yyyy-MM-dd");
+            }),
             timeStart,
             timeEnd,
           };
@@ -570,17 +586,11 @@ const AppointmentCreateContent = () => {
                                     showPopperArrow={false}
                                     selected={values.appointmentDate}
                                     onChange={(date) => {
-                                      setFieldValue(
-                                        "appointmentDate",
-                                        // date,
-                                        format(date, "yyyy-MM-dd HH:mm:ss xx")
-                                      );
+                                      // Store the date as a Date object to avoid timezone issues
+                                      setFieldValue("appointmentDate", date);
                                       handleFetchPIC({
                                         ...values,
-                                        appointmentDate: format(
-                                          date,
-                                          "yyyy-MM-dd"
-                                        ),
+                                        appointmentDate: date,
                                       });
                                     }}
                                     className={`form-control ${
