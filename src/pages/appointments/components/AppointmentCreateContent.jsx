@@ -71,7 +71,7 @@ const AppointmentCreateContent = () => {
             roomId: values.roomId,
             appointmentType: values.appointmentType,
             // appointmentDate: date,
-            appointmentDate: format(date, "yyyy-MM-dd HH:mm:ss xx"),
+            appointmentDate: format(date, "yyyy-MM-dd"),
             timeStart: startDateTimeLocal.toISOString(),
             timeEnd: endDateTimeLocal.toISOString(),
             treatmentId: values.treatmentId,
@@ -96,10 +96,7 @@ const AppointmentCreateContent = () => {
 
         const formattedValues = {
           ...values,
-          appointmentDate: format(
-            values.appointmentDate,
-            "yyyy-MM-dd HH:mm:ss xx"
-          ),
+          appointmentDate: format(values.appointmentDate, "yyyy-MM-dd"),
           timeStart: startDateTimeLocal.toISOString(),
           timeEnd: endDateTimeLocal.toISOString(),
         };
