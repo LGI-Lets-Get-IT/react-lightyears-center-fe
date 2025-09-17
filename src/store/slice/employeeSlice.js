@@ -102,6 +102,18 @@ export const createEmployee = createAsyncThunk(
   }
 );
 
+export const createEmployeeFromSchool = createAsyncThunk(
+  "employees/createEmployeeFromSchool",
+  async (employeeData, { rejectWithValue }) => {
+    try {
+      const response = await employeesApi.createEmployee(employeeData);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateEmployeeById = createAsyncThunk(
   "employees/updateEmployeeById",
   async ({ id, data }, { rejectWithValue }) => {
@@ -227,11 +239,21 @@ export const employeeSlice = createSlice({
     });
     builder.addCase(createEmployee.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.currentClient = action.payload;
+      state.employee = action.payload;
     });
     builder.addCase(createEmployee.rejected, (state, action) => {
       state.isLoading = false;
-      state.currentClient = initialState.currentClient;
+      state.error = action.payload;
+    });
+    builder.addCase(createEmployeeFromSchool.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createEmployeeFromSchool.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(createEmployeeFromSchool.rejected, (state, action) => {
+      state.isLoading = false;
+      state.employee = initialState.employee;
       state.error = action.payload;
     });
     builder.addCase(updateEmployeeById.pending, (state) => {

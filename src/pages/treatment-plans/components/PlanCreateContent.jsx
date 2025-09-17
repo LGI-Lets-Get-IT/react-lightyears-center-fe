@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import {
   fetchAllTherapists,
 } from "@/store/slice/employeeSlice";
 import { fetchAllClients } from "@/store/slice/clientSlice";
-import { FiCheck, FiPlus, FiX } from "react-icons/fi";
+import { FiCheck, FiX } from "react-icons/fi";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
 import { createPlan } from "@/store/slice/treatmentPlanSlice";
@@ -106,7 +106,7 @@ const PlanCreateContent = () => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={currentUser.role === "Psychologist"}
+                        // isDisabled={currentUser.role === "Psychologist"}
                         defaultSelect={
                           currentUser.role === "Psychologist"
                             ? currentUser.id

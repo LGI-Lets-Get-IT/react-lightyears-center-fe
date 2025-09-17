@@ -5,6 +5,7 @@ const empInfoData = [
   { label: "Phone Number", key: "phoneNumber" },
   { label: "Email", key: "email" },
   { label: "Role", key: "roleName" },
+  { label: "School Name", key: "schoolName" },
   { label: "Active Status", key: "isActive" },
 ];
 
@@ -17,9 +18,12 @@ const TabOverviewContent = ({ employeeInformation }) => {
     >
       <div className="profile-details mb-5">
         <div className="mb-4 d-flex align-items-center justify-content-between">
-          <h5 className="fw-bold mb-0">Employee Information:</h5>
+          <h5 className="fw-bold mb-0">Employee Information</h5>
         </div>
         {empInfoData.map((item, index) => {
+          if (item.key === "schoolName" && !employeeInformation?.schoolName) {
+            return null;
+          }
           return (
             <div
               key={index}
@@ -29,6 +33,7 @@ const TabOverviewContent = ({ employeeInformation }) => {
             >
               <div className="col-sm-6 text-muted">{item.label}:</div>
               <div className="col-sm-6 fw-semibold">
+                {item.key === "schoolName" && employeeInformation?.school?.name}
                 {item.key === "isActive"
                   ? employeeInformation?.isActive
                     ? "Active"

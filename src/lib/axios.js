@@ -11,9 +11,9 @@ const getStore = async () => {
   const module = await import("../store");
   return module.store;
 };
-const MySwal = withReactContent(Swal);
+export const MySwal = withReactContent(Swal);
 
-const swalOptions = {
+export const swalOptions = {
   toast: true,
   position: "top-end",
   showConfirmButton: false,
