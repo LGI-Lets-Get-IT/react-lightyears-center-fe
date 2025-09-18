@@ -20,6 +20,18 @@ export const makeAppointment = createAsyncThunk(
   }
 );
 
+export const makeBulkAppointments = createAsyncThunk(
+  "appointments/createBulkAppointments",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await appointmentsApi.createBulkAppointments(data);
+      return response.data?.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const fetchAllAppointments = createAsyncThunk(
   "appointments/getAllAppointments",
   async (_, { rejectWithValue }) => {
@@ -195,6 +207,19 @@ export const appointmentSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(makeAppointment.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+
+    builder
+      .addCase(makeBulkAppointments.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(makeBulkAppointments.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(makeBulkAppointments.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

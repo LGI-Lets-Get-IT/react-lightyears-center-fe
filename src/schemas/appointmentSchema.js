@@ -1,54 +1,16 @@
 import { addHours, addMinutes, isAfter, isEqual, startOfDay } from "date-fns";
 import * as Yup from "yup";
 
-// export const step0Schema = Yup.object({
-//   title: Yup.string().required("Title is required").min(3, "Title is too short"),
-//   clientId: Yup.number().required("Client Name is required"),
-//   appointmentType: Yup.string().required("Appointment type is required"),
-// });
-
-// export const step1Schema = Yup.object({
-//   picId: Yup.number().typeError('PIC is required').required("PIC is required"),
-//   picType: Yup.string().required('PIC Type is required')
-// });
-
-// export const step2Schema = Yup.object({
-//   // appointmentDate: Yup.date().required("Appointment date is required"),
-//   // timeStart: Yup.string().required("Start time is required"),
-//   // timeEnd: Yup.string().required('End time is required').min(Yup.ref('timeStart'), 'End time must be after start time'),
-//   appointmentDate: Yup.date().required("Appointment date is required").test(
-//     'date-not-in-past',
-//     'Appointment date must be today or later',
-//     function (value) {
-//       if (!value) return true;
-//       const today = startOfDay(new Date());
-//       const selected = startOfDay(new Date(value));
-//       return selected >= today;
-//     }
-//   ),
-//   // timeStart: Yup.date().required("Start time is required").test(
-//   //   'start-at-least-6-hours-from-now',
-//   //   'Appointment must be made at least 6 hours in advance',
-//   //   function (value) {
-//   //     if (!value) return true;
-//   //     const now = new Date();
-//   //     const minStart = addHours(now, 6);
-//   //     console.log('MINSTART', minStart)
-//   //     return isAfter(new Date(value), minStart) || isEqual(new Date(value), minStart);
-//   //   }
-//   // ),
-//   // timeEnd: Yup.date().required("End time is required").test(
-//   //   'min-30-min-after-start',
-//   //   'The minimum session duration is 30 minutes.',
-//   //   function (value) {
-//   //     const { timeStart } = this.parent;
-//   //     if (!value || !timeStart) return true; // Skip validation if either is missing
-
-//   //     const minEndTime = addMinutes(new Date(timeStart), 30);
-//   //     return isAfter(new Date(value), minEndTime) || isEqual(new Date(value), minEndTime);
-//   //   }
-//   // ),
-// });
+const notInPastTest = Yup.string().test(
+  "date-not-in-past",
+  "Appointment date must be today or later",
+  (value) => {
+    if (!value) return true;
+    const today = startOfDay(new Date());
+    const selected = startOfDay(new Date(value));
+    return selected >= today;
+  }
+);
 
 export const appointmentBaseSchema = Yup.object({
   title: Yup.string()
@@ -56,20 +18,6 @@ export const appointmentBaseSchema = Yup.object({
     .min(3, "Title is too short"),
   clientId: Yup.number().required("Client name is required"),
   appointmentType: Yup.string().required("Appointment type is required"),
-  // picId: Yup.number().typeError("PIC is required").required("PIC is required"),
-  // timeStart: Yup.string().required("Start time is required"),
-  // timeEnd: Yup.string().required('End time is required').min(Yup.ref('timeStart'), 'End time must be after start time'),
-  // timeEnd: Yup.string()
-  //   .required("End time is required")
-  //   .test(
-  //     "is-after-start",
-  //     "End time must be after start time",
-  //     function (value) {
-  //       const { timeStart } = this.parent;
-  //       if (!timeStart || !value) return true; // skip validation if either is not filled
-  //       return value > timeStart; // assumes format is 'HH:mm'
-  //     }
-  //   ),
   picId: Yup.number().when(
     ["appointmentType", "appointmentDate", "timeStart", "timeEnd"],
     ([type, date, start, end], schema) => {
@@ -109,65 +57,52 @@ export const appointmentBaseSchema = Yup.object({
         "Please select an appointment type before choosing an end time"
       ),
   }),
-  appointmentDate: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType && appointmentType.length > 0,
-    then: (schema) =>
-      schema
-        .required("Appointment date is required")
-        .test(
-          "date-not-in-past",
-          "Appointment date must be today or later",
-          function (value) {
-            if (!value) return true;
-            const today = startOfDay(new Date());
-            const selected = startOfDay(new Date(value));
-            return selected >= today;
-          }
-        ),
-    otherwise: (schema) =>
-      schema.required(
-        "Please select an appointment type before choosing a date"
-      ),
-  }),
-  // treatmentId: Yup.string().when("appointmentType", {
-  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-  //   then: (schema) => schema.required("Please select the treatment name"),
-  //   otherwise: (schema) => schema.notRequired(),
-  // }),
-  // numberOfRepetition: Yup.string().when("appointmentType", {
-  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-  //   then: (schema) =>
-  //     schema.required("Please specify the number of appointment repetitions"),
-  //   otherwise: (schema) => schema.notRequired(),
-  // }),
-  // intervalBetweenAppointment: Yup.string().when("appointmentType", {
-  //   is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-  //   then: (schema) =>
-  //     schema.required("Please specify the internal between appointment"),
-  //   otherwise: (schema) => schema.notRequired(),
-  // }),
-  // timeStart: Yup.string().required("Start time is required").test(
-  //   'start-at-least-6-hours-from-now',
-  //   'Appointment must be made at least 6 hours in advance',
-  //   function (value) {
-  //     if (!value) return true;
-  //     const now = new Date();
-  //     const minStart = addHours(now, 6);
-  //     console.log('MINSTART', minStart)
-  //     return isAfter(new Date(value), minStart) || isEqual(new Date(value), minStart);
-  //   }
-  // ),
-  // timeEnd: Yup.date().required("End time is required").test(
-  //   'min-30-min-after-start',
-  //   'The minimum session duration is 30 minutes.',
-  //   function (value) {
-  //     const { timeStart } = this.parent;
-  //     if (!value || !timeStart) return true; // Skip validation if either is missing
+  // appointmentDate: Yup.mixed().when("appointmentType", {
+  //   is: "Treatment",
+  //   then: () =>
+  //     // Yup.array()
+  //     //   .of(Yup.string().required("Each date is required"))
+  //     //   .min(1, "At least one date is required"),
+  //     // Yup.array()
+  //     //   .nullable() // allow null
+  //     //   .default([]) // treat null as empty array
+  //     //   .transform((val, orig) => (orig == null ? [] : val)) // normalize null -> []
+  //     //   .of(Yup.string().required("Each date is required"))
+  //     //   .min(1, "Please select at least one appointment date"),
 
-  //     const minEndTime = addMinutes(new Date(timeStart), 30);
-  //     return isAfter(new Date(value), minEndTime) || isEqual(new Date(value), minEndTime);
-  //   }
-  // ),
+  //     Yup.array()
+  //       .nullable()
+  //       .default([])
+  //       .transform((val, orig) => (orig == null ? [] : val)) // null -> []
+  //       .of(
+  //         Yup.string()
+  //           .required("Each date is required")
+  //           .test(
+  //             "date-not-in-past",
+  //             "Appointment date must be today or later",
+  //             (value) => {
+  //               if (!value) return true;
+  //               const today = startOfDay(new Date());
+  //               const selected = startOfDay(new Date(value));
+  //               return selected >= today;
+  //             }
+  //           )
+  //       )
+  //       .min(1, "Please select at least one appointment date"),
+  //   otherwise: () =>
+  //     Yup.string()
+  //       .required("Appointment date is required")
+  //       .test(
+  //         "date-not-in-past",
+  //         "Appointment date must be today or later",
+  //         function (value) {
+  //           if (!value) return true;
+  //           const today = startOfDay(new Date());
+  //           const selected = startOfDay(new Date(value));
+  //           return selected >= today;
+  //         }
+  //       ),
+  // }),
 });
 
 export const appointmentCreateSchema = appointmentBaseSchema.clone().shape({
@@ -176,16 +111,36 @@ export const appointmentCreateSchema = appointmentBaseSchema.clone().shape({
     then: (schema) => schema.required("Please select the treatment name"),
     otherwise: (schema) => schema.notRequired(),
   }),
-  numberOfRepetition: Yup.string().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) =>
-      schema.required("Please specify the number of appointment repetitions"),
-    otherwise: (schema) => schema.notRequired(),
+  appointmentDate: Yup.mixed().when("appointmentType", {
+    is: "Treatment",
+    then: () =>
+      // Yup.array()
+      //   .of(Yup.string().required("Each date is required"))
+      //   .min(1, "At least one date is required"),
+      // Yup.array()
+      //   .nullable() // allow null
+      //   .default([]) // treat null as empty array
+      //   .transform((val, orig) => (orig == null ? [] : val)) // normalize null -> []
+      //   .of(Yup.string().required("Each date is required"))
+      //   .min(1, "Please select at least one appointment date"),
+
+      Yup.array()
+        .nullable()
+        .default([])
+        .transform((val, orig) => (orig == null ? [] : val)) // null -> []
+        .of(
+          Yup.string().required("Each date is required").concat(notInPastTest)
+        )
+        .min(1, "Please select at least one appointment date"),
+    otherwise: () =>
+      Yup.string()
+        .required("Appointment date is required")
+        .concat(notInPastTest),
   }),
-  therapyDays: Yup.array().when("appointmentType", {
-    is: (appointmentType) => appointmentType?.toLowerCase() === "treatment",
-    then: (schema) =>
-      schema.min(1, "Please select at least one therapy day").required(),
-    otherwise: (schema) => schema.notRequired(),
-  }),
+});
+
+export const appointmentEditSchema = appointmentBaseSchema.clone().shape({
+  appointmentDate: Yup.string()
+    .required("Appointment date is required")
+    .concat(notInPastTest),
 });

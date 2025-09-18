@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,7 +7,7 @@ import {
   fetchAllTherapists,
 } from "@/store/slice/employeeSlice";
 import { fetchAllClients } from "@/store/slice/clientSlice";
-import { FiCheck, FiPlus, FiX } from "react-icons/fi";
+import { FiCheck, FiX } from "react-icons/fi";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
 import { createPlan } from "@/store/slice/treatmentPlanSlice";
@@ -73,7 +73,7 @@ const PlanCreateContent = () => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -97,7 +97,7 @@ const PlanCreateContent = () => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -106,7 +106,7 @@ const PlanCreateContent = () => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={currentUser.role === "Psychologist"}
+                        // isDisabled={currentUser.role === "Psychologist"}
                         defaultSelect={
                           currentUser.role === "Psychologist"
                             ? currentUser.id
@@ -120,7 +120,7 @@ const PlanCreateContent = () => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="consultDate" className="form-label">
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -129,8 +129,8 @@ const PlanCreateContent = () => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Consultation Date"
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {
@@ -233,7 +233,7 @@ const PlanCreateContent = () => {
                               type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.programs.length === 1) return;
+                                // if (values.programs.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
@@ -411,6 +411,17 @@ const PlanCreateContent = () => {
                                     </Field>
                                   </div>
                                 </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Program
+                                  </button>
+                                </div>
                               </AccordionItem>
                             ))}
                         </div>
@@ -436,7 +447,7 @@ const PlanCreateContent = () => {
                               type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.targets.length === 1) return;
+                                // if (values.targets.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
@@ -453,7 +464,7 @@ const PlanCreateContent = () => {
                                 })
                               }
                             >
-                              Add Target Behavior
+                              Add New Target
                             </button>
                           </div>
                         </div>
@@ -580,6 +591,17 @@ const PlanCreateContent = () => {
                                       )}
                                     </Field>
                                   </div>
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Target
+                                  </button>
                                 </div>
                               </AccordionItem>
                             ))}

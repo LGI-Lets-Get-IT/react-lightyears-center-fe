@@ -21,9 +21,10 @@ export const fetchUserProfile = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
   "profile/updateUserProfile",
-  async (bodyData, { rejectWithValue }) => {
+  async (bodyData, { rejectWithValue, dispatch }) => {
     try {
       const response = await profilesApi.updateUserProfile(bodyData);
+      dispatch(fetchUserProfile());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.message);

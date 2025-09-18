@@ -19,7 +19,7 @@ const SchoolsView = () => {
   return (
     <>
       <PageHeader>
-        <SchoolsViewHeader id={id} />
+        <SchoolsViewHeader id={id} schoolData={school} />
       </PageHeader>
       <SchoolsViewTab />
       <div className="main-content">

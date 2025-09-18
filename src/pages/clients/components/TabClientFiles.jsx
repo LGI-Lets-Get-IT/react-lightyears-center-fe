@@ -9,9 +9,11 @@ const TabClientFiles = () => {
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
   const { currentClient } = useSelector((state) => state.clients);
-  const { files, isLoading: uploadLoading } = useSelector(
-    (state) => state.files
-  );
+  const {
+    files,
+    isLoading: uploadLoading,
+    isLoading: fetchLoading,
+  } = useSelector((state) => state.files);
   const [uploadedFileName, setUploadedFileName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -86,8 +88,13 @@ const TabClientFiles = () => {
                         }
                     </div>
                 </div> */}
-
-        {files && files.length > 0 ? (
+        {fetchLoading ? (
+          <div className="d-flex justify-content-center align-items-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : files && files.length > 0 ? (
           <div className="project-section">
             <div className="d-flex flex-row m-4">
               {uploadedFileName ? (

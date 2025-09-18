@@ -14,25 +14,15 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const TabPlanProgress = ({ id }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { hasPermission } = useFilterByPermission();
   const { plan } = useSelector((state) => state.treatmentPlans);
-  const { isLoading: downloadLoading } = useSelector(state => state.files);
+  const { isLoading: downloadLoading } = useSelector((state) => state.files);
   const [openModal, setOpenModal] = useState(false);
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
   const handleConfirmDelete = (sessionId) => {
-    dispatch(
-      fetchAllSessionByPlanId({
-        params: {
-          planId: plan?.id,
-        },
-      })
-      .unwrap()
-      .then(() => navigate(`/treatment-plans/${id}`))
-    );
-
     showConfirmation(
       "Are you sure to delete this treatment session?",
       () => {
@@ -169,7 +159,7 @@ const AccordionItem = ({
               className="btn btn-primary btn-sm mb-3"
               onClick={handleDownload}
               disabled={downloadLoading}
-              style={{width: '15rem', height: '2rem'}}
+              style={{ width: "15rem", height: "2rem" }}
             >
               {downloadLoading ? (
                 <div

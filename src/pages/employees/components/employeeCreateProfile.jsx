@@ -7,11 +7,14 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import { isActiveOptions, roleIdOptions } from "@/utils/options";
 import { Field, Form, Formik } from "formik";
 import { employeeSchema } from "@/schemas/employeeSchema";
+import { fetchAllSchools } from "@/store/slice/schoolSlice";
+import { ROLES } from "@/shared/rolesConstant";
 
 const EmployeeCreateProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading: createLoading } = useSelector((state) => state.employees);
+  const { schools } = useSelector((state) => state.schools);
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
@@ -42,6 +45,7 @@ const EmployeeCreateProfile = () => {
             phoneNumber: null,
             email: null,
             roleId: null,
+            schoolId: null,
             isActive: null,
           }}
           enableReinitialize
@@ -100,25 +104,55 @@ const EmployeeCreateProfile = () => {
               </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">
+                  <label htmlFor="roleId" className="fw-semibold">
                     Role <span className="text-danger">*</span>
                   </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
                     name={"roleId"}
-                    options={roleId}
+                    options={roleId.map((role) => ({
+                      label: role.label,
+                      value: role.value,
+                    }))}
                     selectedOption={values.roleId}
                     placeholder={"Select Employee Role"}
-                    onSelectOption={(option) =>
-                      setFieldValue("roleId", option.value)
-                    }
+                    onSelectOption={(option) => {
+                      setFieldValue("roleId", option.value);
+                      if (option.value === ROLES.SCHOOL_PIC.value) {
+                        dispatch(fetchAllSchools());
+                      }
+                      setFieldValue("schoolId", null);
+                    }}
                   />
                 </div>
               </div>
+              {values.roleId === ROLES.SCHOOL_PIC.value && (
+                <div className="row mb-4 align-items-center">
+                  <div className="col-lg-4">
+                    <label htmlFor="roleId" className="fw-semibold">
+                      School Name <span className="text-danger">*</span>
+                    </label>
+                  </div>
+                  <div className="col-lg-8">
+                    <SelectDropdown
+                      name={"schoolId"}
+                      options={schools.map((school) => ({
+                        label: school.name,
+                        value: school.id,
+                      }))}
+                      selectedOption={values.schoolId}
+                      placeholder={"Select School Name"}
+                      onSelectOption={(option) =>
+                        setFieldValue("schoolId", option.value)
+                      }
+                    />
+                  </div>
+                </div>
+              )}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">
+                  <label htmlFor="isActive" className="fw-semibold">
                     Employee Status <span className="text-danger">*</span>
                   </label>
                 </div>

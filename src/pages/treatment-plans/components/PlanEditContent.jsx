@@ -78,7 +78,7 @@ const PlanEditContent = ({ planData }) => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -96,7 +96,7 @@ const PlanEditContent = ({ planData }) => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -114,7 +114,7 @@ const PlanEditContent = ({ planData }) => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="consultDate" className="form-label">
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -123,8 +123,9 @@ const PlanEditContent = ({ planData }) => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Consultation Date"
+                                // dateFormat={"yyyy-MM-dd"}
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {
@@ -224,15 +225,17 @@ const PlanEditContent = ({ planData }) => {
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.programs.length === 1) return;
+                                // if (values.programs.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -244,7 +247,7 @@ const PlanEditContent = ({ planData }) => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Program
                             </button>
                           </div>
                         </div>
@@ -338,7 +341,7 @@ const PlanEditContent = ({ planData }) => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Frequency{" "}
+                                    Total Session Frequency of The Treatment{" "}
                                     <span className="text-danger">*</span>
                                   </label>
                                   <div className="col-sm-9">
@@ -429,15 +432,17 @@ const PlanEditContent = ({ planData }) => {
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.targets.length === 1) return;
+                                // if (values.targets.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -447,7 +452,7 @@ const PlanEditContent = ({ planData }) => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Target
                             </button>
                           </div>
                         </div>
@@ -574,6 +579,17 @@ const PlanEditContent = ({ planData }) => {
                                       )}
                                     </Field>
                                   </div>
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Target
+                                  </button>
                                 </div>
                               </AccordionItem>
                             ))}
