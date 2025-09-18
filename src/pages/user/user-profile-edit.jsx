@@ -338,9 +338,11 @@ const UserProfileEdit = () => {
                               meta.errors ? "is-invalid" : ""
                             }`}
                             value={values.allowShareData}
-                            onChange={(option) => {
-                              console.log("OPTION", option);
-                              setFieldValue("allowShareData", option.value);
+                            onChange={(event) => {
+                              setFieldValue(
+                                "allowShareData",
+                                event.target.value
+                              );
                             }}
                           >
                             <option value="true">Yes</option>
