@@ -8,7 +8,8 @@ const TabAppointmentOverview = ({ appointmentData }) => {
   // const chartOptions = projectViewAreaChartOptions();
   const [now, setNow] = useState(new Date());
 
-  const getRoomLabel = (id) => roomOptions.find(option => option.value === id)?.label || '-';
+  const getRoomLabel = (id) =>
+    roomOptions.find((option) => option.value === id)?.label || "-";
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -93,18 +94,44 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               <div className="me-4">
                 <h4 className="mb-4 fw-bold d-flex">
                   <span className="text-truncate-1-line text-capitalize">
-                    {appointmentData ? <>[{appointmentData?.appointmentType}] {appointmentData?.title}</> : <>-</>}
+                    {appointmentData ? (
+                      <>
+                        [{appointmentData?.appointmentType}]{" "}
+                        {appointmentData?.title}
+                      </>
+                    ) : (
+                      <>-</>
+                    )}
                   </span>
-                  <span className={`
-                    badge bg-soft-${appointmentData?.status == 'Upcoming' ? 'primary' : appointmentData?.status == 'Ongoing ' ? 'warning' : appointmentData?.status == 'Done' ? 'success' : 'danger'}
-                    text-${appointmentData?.status == 'Upcoming' ? 'primary' : appointmentData?.status == 'Ongoing' ? 'warning' : appointmentData?.status == 'Done' ? 'success' : 'danger'} mx-3
-                    `}>
+                  <span
+                    className={`
+                    badge bg-soft-${
+                      appointmentData?.status == "Ongoing"
+                        ? "primary"
+                        : appointmentData?.status == "Upcoming "
+                        ? "warning"
+                        : appointmentData?.status == "Done"
+                        ? "success"
+                        : "danger"
+                    }
+                    text-${
+                      appointmentData?.status == "Ongoing"
+                        ? "primary"
+                        : appointmentData?.status == "Upcoming"
+                        ? "warning"
+                        : appointmentData?.status == "Done"
+                        ? "success"
+                        : "danger"
+                    } mx-3
+                    `}
+                  >
                     {appointmentData?.status}
                   </span>
                 </h4>
                 <p>
                   PIC Name:
-                  <strong> {appointmentData?.picName}</strong> ({appointmentData?.picType})
+                  <strong> {appointmentData?.picName}</strong> (
+                  {appointmentData?.picType})
                 </p>
                 <p>
                   Room Name:
@@ -279,7 +306,9 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Date of Birth</label>
-                  <p>{format(appointmentData?.client.dateOfBirth, 'dd MMM yyyy')}</p>
+                  <p>
+                    {format(appointmentData?.client.dateOfBirth, "dd MMM yyyy")}
+                  </p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <label className="form-label">Nationality</label>
@@ -309,10 +338,16 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   <label className="form-label">Contact Person:</label>
                   <ul>
                     <li>
-                      <a href={`mailto:${appointmentData?.client.guardianEmail}`}>{appointmentData?.client.guardianEmail}</a>
+                      <a
+                        href={`mailto:${appointmentData?.client.guardianEmail}`}
+                      >
+                        {appointmentData?.client.guardianEmail}
+                      </a>
                     </li>
                     <li>
-                      <a href={`tel:${appointmentData?.client.guardianPhone}`}>{appointmentData?.client.guardianPhone}</a>
+                      <a href={`tel:${appointmentData?.client.guardianPhone}`}>
+                        {appointmentData?.client.guardianPhone}
+                      </a>
                     </li>
                   </ul>
                   {/* <p>
@@ -360,7 +395,10 @@ const TabAppointmentOverview = ({ appointmentData }) => {
               icon="feather-calendar"
               color="primary"
               title="Appointment Date"
-              hours={appointmentData?.appointmentDate && format(appointmentData.appointmentDate, 'dd MMM yyyy')}
+              hours={
+                appointmentData?.appointmentDate &&
+                format(appointmentData.appointmentDate, "dd MMM yyyy")
+              }
             />
             <HourCard
               icon="feather-clock"
@@ -381,12 +419,13 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                   </div>
                   <div className="progress mt-2 ht-3">
                     <div
-                      className={`progress-bar ${isOverdue
-                        ? "bg-success"
-                        : isOngoing
+                      className={`progress-bar ${
+                        isOverdue
+                          ? "bg-success"
+                          : isOngoing
                           ? "bg-primary"
                           : "bg-warning"
-                        }`}
+                      }`}
                       role="progressbar"
                       style={{ width: `${progress}%` }}
                     />
