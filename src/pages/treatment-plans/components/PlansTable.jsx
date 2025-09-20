@@ -12,6 +12,7 @@ import {
   deletePlanByIds,
   fetchAllPlans,
 } from "@/store/slice/treatmentPlanSlice";
+import format from "date-fns/format";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -130,19 +131,19 @@ const PlansTable = () => {
     {
       accessorKey: "totalTreatments",
       header: () => "Total Treatments",
-      cell: (info) => <a className="text-wrap">{info.getValue()} Programs</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue()} Program(s)</a>,
     },
     {
       accessorKey: "totalTargetedBehaviors",
       header: () => "Total Target Behaviors",
-      cell: (info) => <a className="text-wrap">{info.getValue()} Targets</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue()} Target(s)</a>,
     },
     {
       accessorKey: "consultDate",
       header: () => "Consultation Date",
       cell: (info) => {
         const date = new Date(info.getValue());
-        return <a>{date.toLocaleDateString()}</a>;
+        return <a>{format(date, "dd MMM yyyy")}</a>;
       },
     },
     {
@@ -173,9 +174,9 @@ const PlansTable = () => {
           </div>
         );
       },
-      meta: {
-        headerClassName: "text-end",
-      },
+      // meta: {
+      //   headerClassName: "text-end",
+      // },
     },
   ];
 

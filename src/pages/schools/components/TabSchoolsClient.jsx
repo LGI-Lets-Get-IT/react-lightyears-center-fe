@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiEye } from "react-icons/fi";
-import Pagination from "@/components/shared/Pagination";
 import { useSelector } from "react-redux";
 
 const TabSchoolClient = () => {

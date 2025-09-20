@@ -1,6 +1,5 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { FiCheck, FiX } from "react-icons/fi";
-import { MdCancel, MdCheckCircleOutline } from "react-icons/md";
 
 const ConfirmationDialog = ({ isOpen, message, onConfirm, onCancel }) => {
   if (!isOpen) {
@@ -73,19 +72,24 @@ const useConfirmation = () => {
   const [onCancelCallback, setOnCancelCallback] = useState(() => {});
 
   const showConfirmation = useCallback((message, onConfirm, onCancel) => {
+    console.log("ONCANCEL", onCancel);
     setMessage(message);
-    setOnConfirmCallback(() => onConfirm);
-    setOnCancelCallback(() => onCancel);
+    setOnConfirmCallback(() => onConfirm || (() => {}));
+    setOnCancelCallback(() => onCancel || (() => {}));
     setIsOpen(true);
   }, []);
 
   const handleConfirm = useCallback(() => {
-    onConfirmCallback();
+    if (typeof onConfirmCallback === "function") {
+      onConfirmCallback();
+    }
     setIsOpen(false);
   }, [onConfirmCallback]);
 
   const handleCancel = useCallback(() => {
-    onCancelCallback();
+    if (typeof onCancelCallback === "function") {
+      onCancelCallback();
+    }
     setIsOpen(false);
   }, [onCancelCallback]);
 

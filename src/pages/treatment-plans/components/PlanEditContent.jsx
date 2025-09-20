@@ -19,7 +19,9 @@ const PlanEditContent = ({ planData }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const{ isLoading: updateLoading } = useSelector(state => state.treatmentPlans);
+  const { isLoading: updateLoading } = useSelector(
+    (state) => state.treatmentPlans
+  );
   const { clients } = useSelector((state) => state.clients);
   const { currentUser } = useSelector((state) => state.auth);
   const { psychologists, therapists } = useSelector((state) => state.employees);
@@ -76,7 +78,7 @@ const PlanEditContent = ({ planData }) => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -94,7 +96,7 @@ const PlanEditContent = ({ planData }) => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -103,7 +105,7 @@ const PlanEditContent = ({ planData }) => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={true}
+                        // isDisabled={true}
                         selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
@@ -112,7 +114,7 @@ const PlanEditContent = ({ planData }) => {
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="consultDate" className="form-label">
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -121,8 +123,9 @@ const PlanEditContent = ({ planData }) => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Consultation Date"
+                                // dateFormat={"yyyy-MM-dd"}
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {
@@ -214,7 +217,7 @@ const PlanEditContent = ({ planData }) => {
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold mb-0 me-4">
                             <span className="d-block mb-2">
-                              Treatment Programs:
+                              Treatment Programs
                             </span>
                             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                               The treatment programs to be done
@@ -222,15 +225,17 @@ const PlanEditContent = ({ planData }) => {
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.programs.length === 1) return;
+                                // if (values.programs.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -242,7 +247,7 @@ const PlanEditContent = ({ planData }) => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Program
                             </button>
                           </div>
                         </div>
@@ -336,7 +341,7 @@ const PlanEditContent = ({ planData }) => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Frequency{" "}
+                                    Total Session Frequency of The Treatment{" "}
                                     <span className="text-danger">*</span>
                                   </label>
                                   <div className="col-sm-9">
@@ -419,23 +424,25 @@ const PlanEditContent = ({ planData }) => {
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold mb-0 me-4">
                             <span className="d-block mb-2">
-                              Targeted Behaviors:
+                              Targeted Therapy
                             </span>
                             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                              The behaviors to be achieved
+                              Goals to be achieved
                             </span>
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.targets.length === 1) return;
+                                // if (values.targets.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -445,7 +452,7 @@ const PlanEditContent = ({ planData }) => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Target
                             </button>
                           </div>
                         </div>
@@ -573,6 +580,17 @@ const PlanEditContent = ({ planData }) => {
                                     </Field>
                                   </div>
                                 </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Target
+                                  </button>
+                                </div>
                               </AccordionItem>
                             ))}
                         </div>
@@ -585,7 +603,11 @@ const PlanEditContent = ({ planData }) => {
                             <FiX size={16} className="me-2" />
                             <span>Cancel</span>
                           </button>
-                          <button type="submit" className="btn btn-primary" disabled={updateLoading}>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={updateLoading}
+                          >
                             {updateLoading ? (
                               <div
                                 className="spinner-border spinner-border-sm text-white me-2"
@@ -614,7 +636,7 @@ export default PlanEditContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

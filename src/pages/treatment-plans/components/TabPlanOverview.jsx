@@ -12,7 +12,7 @@ const TabPlanOverview = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="fw-bold mb-0">
-                <span className="d-block mb-2">Plan Information :</span>
+                <span className="d-block mb-2">Plan Information</span>
                 <span className="fs-12 fw-normal text-muted d-block">
                   Information regarding the treatment plans
                 </span>
@@ -99,10 +99,10 @@ const TabPlanOverview = () => {
               </div>
               <hr />
               <div className="col-md-12">
-                <label className="form-label">Programs</label>
+                <label className="form-label">Treatment Programs</label>
               </div>
               <ul className="list-unstyled text-muted mb-0">
-                {plan?.programs?.length > 0 &&
+                {plan?.programs?.length > 0 ? (
                   plan?.programs?.map(
                     ({
                       id,
@@ -134,17 +134,20 @@ const TabPlanOverview = () => {
                         </li>
                       );
                     }
-                  )}
+                  )
+                ) : (
+                  <p>There are no treatment programs assigned</p>
+                )}
               </ul>
               <hr />
               <div className="col-md-12">
-                <label className="form-label">Targeted Behaviors</label>
+                <label className="form-label">Targeted Therapy</label>
               </div>
               <div
                 className="accordion proposal-faq-accordion"
                 id="accordionFaqGroup"
               >
-                {plan?.targets?.length > 0 &&
+                {plan?.targets?.length > 0 ? (
                   plan?.targets?.map(
                     ({
                       id,
@@ -166,7 +169,10 @@ const TabPlanOverview = () => {
                         />
                       );
                     }
-                  )}
+                  )
+                ) : (
+                  <p>There are no targeted therapy assigned</p>
+                )}
               </div>
             </div>
           </div>
@@ -180,7 +186,7 @@ export default TabPlanOverview;
 
 const AccordionItem = ({ id, header, ...content }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
           className="accordion-button collapsed"

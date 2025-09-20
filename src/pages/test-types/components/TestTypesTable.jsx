@@ -143,9 +143,9 @@ const TestTypesTable = () => {
           </div>
         );
       },
-      meta: {
-        headerClassName: "text-end",
-      },
+      // meta: {
+      //   headerClassName: "text-end",
+      // },
     },
   ];
 

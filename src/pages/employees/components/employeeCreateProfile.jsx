@@ -7,11 +7,14 @@ import SelectDropdown from "@/components/shared/SelectDropdown";
 import { isActiveOptions, roleIdOptions } from "@/utils/options";
 import { Field, Form, Formik } from "formik";
 import { employeeSchema } from "@/schemas/employeeSchema";
+import { fetchAllSchools } from "@/store/slice/schoolSlice";
+import { ROLES } from "@/shared/rolesConstant";
 
 const EmployeeCreateProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading: createLoading } = useSelector(state => state.employees);
+  const { isLoading: createLoading } = useSelector((state) => state.employees);
+  const { schools } = useSelector((state) => state.schools);
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
@@ -19,8 +22,8 @@ const EmployeeCreateProfile = () => {
     dispatch(createEmployee(values))
       .unwrap()
       .then(() => {
-        actions.resetForm()
-        navigate(`/employees`)
+        actions.resetForm();
+        navigate(`/employees`);
       })
       .catch((error) => console.error("handle error", error));
   };
@@ -30,21 +33,21 @@ const EmployeeCreateProfile = () => {
       <div className="card-body personal-info">
         <div className="mb-4 d-flex align-items-center justify-content-between">
           <h5 className="fw-bold mb-0 me-4">
-            <span className="d-block mb-2">
-              Create Employee
-            </span>
+            <span className="d-block mb-2">Create Employee</span>
             {/* <span className="fs-12 fw-normal text-muted text-truncate-1-line">
               Last Edited: {empData?.updatedAt && format(empData.updatedAt, 'dd MMM yyyy, HH:mm aa')}
             </span> */}
           </h5>
         </div>
-        <Formik initialValues={{
-          fullName: null,
-          phoneNumber: null,
-          email: null,
-          roleId: null,
-          isActive: null,
-        }}
+        <Formik
+          initialValues={{
+            fullName: null,
+            phoneNumber: null,
+            email: null,
+            roleId: null,
+            schoolId: null,
+            isActive: null,
+          }}
           enableReinitialize
           validationSchema={employeeSchema}
           onSubmit={handleSubmit}
@@ -61,6 +64,7 @@ const EmployeeCreateProfile = () => {
                     name={"fullName"}
                     // value={values.fullName}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -76,6 +80,7 @@ const EmployeeCreateProfile = () => {
                     name={"phoneNumber"}
                     // value={values.phoneNumber}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -91,36 +96,75 @@ const EmployeeCreateProfile = () => {
                     name={"email"}
                     // value={values.email}
                     meta={meta}
+                    isMandatory
                     {...field}
-                  // {...getFieldProps('email')}
+                    // {...getFieldProps('email')}
                   />
                 )}
               </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Role: </label>
+                  <label htmlFor="roleId" className="fw-semibold">
+                    Role <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'roleId'}
-                    options={roleId}
+                    name={"roleId"}
+                    options={roleId.map((role) => ({
+                      label: role.label,
+                      value: role.value,
+                    }))}
                     selectedOption={values.roleId}
                     placeholder={"Select Employee Role"}
-                    onSelectOption={(option) => setFieldValue('roleId', option.value)}
+                    onSelectOption={(option) => {
+                      setFieldValue("roleId", option.value);
+                      if (option.value === ROLES.SCHOOL_PIC.value) {
+                        dispatch(fetchAllSchools());
+                      }
+                      setFieldValue("schoolId", null);
+                    }}
                   />
                 </div>
               </div>
+              {values.roleId === ROLES.SCHOOL_PIC.value && (
+                <div className="row mb-4 align-items-center">
+                  <div className="col-lg-4">
+                    <label htmlFor="roleId" className="fw-semibold">
+                      School Name <span className="text-danger">*</span>
+                    </label>
+                  </div>
+                  <div className="col-lg-8">
+                    <SelectDropdown
+                      name={"schoolId"}
+                      options={schools.map((school) => ({
+                        label: school.name,
+                        value: school.id,
+                      }))}
+                      selectedOption={values.schoolId}
+                      placeholder={"Select School Name"}
+                      onSelectOption={(option) =>
+                        setFieldValue("schoolId", option.value)
+                      }
+                    />
+                  </div>
+                </div>
+              )}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Employee Status : </label>
+                  <label htmlFor="isActive" className="fw-semibold">
+                    Employee Status <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
-                    name={'isActive'}
+                    name={"isActive"}
                     options={isActive}
                     selectedOption={values.isActive}
                     placeholder={"Select Employee Status"}
-                    onSelectOption={(option) => setFieldValue('isActive', option.value)}
+                    onSelectOption={(option) =>
+                      setFieldValue("isActive", option.value)
+                    }
                   />
                 </div>
               </div>
@@ -130,7 +174,11 @@ const EmployeeCreateProfile = () => {
                   <span>Cancel</span>
                 </a>
 
-                <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={createLoading}
+                >
                   {createLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
@@ -141,7 +189,6 @@ const EmployeeCreateProfile = () => {
                   )}
                   <span>Create Employee</span>
                 </button>
-
               </div>
             </Form>
           )}

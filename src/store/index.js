@@ -1,26 +1,30 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from 'redux-persist/lib/storage';
+import storage from "redux-persist/lib/storage";
 import appointmentReducer from "./slice/appointmentSlice";
 import assessmentReducer from "./slice/assessmentSlice";
 import clientReducer from "./slice/clientSlice";
 import employeeReducer from "./slice/employeeSlice";
 import schoolReducer from "./slice/schoolSlice";
-import authReducer from './slice/authSlice';
-import profileReducer from './slice/profileSlice';
+import authReducer from "./slice/authSlice";
+import profileReducer from "./slice/profileSlice";
 import treatmentPlanReducer from "./slice/treatmentPlanSlice";
 import treatmentSessionReducer from "./slice/treatmentSessionSlice";
 import treatmentTypeReducer from "./slice/treatmentTypeSlice";
 import testTypeReducer from "./slice/testTypeSlice";
 import fileReducer from "./slice/fileSlice";
 import dashboardReducer from "./slice/dashboardSlice";
+import picScheduleReducer from "./slice/picScheduleSlice";
 
 const authPersistConfig = {
-  key: 'root',
+  key: "root",
   storage,
-  whitelist: ['currentUser', 'accessToken', 'isAuthenticated'],
-}
-
+  // FIXED: Remove accessToken from persistence since we're using HTTP-only cookies
+  // Only persist user data and authentication state
+  whitelist: ["currentUser", "isAuthenticated"],
+  // OLD CODE - commented out
+  // whitelist: ['currentUser', 'accessToken', 'isAuthenticated'],
+};
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -40,6 +44,7 @@ export const store = configureStore({
     testTypes: testTypeReducer,
     profile: profileReducer,
     dashboard: dashboardReducer,
+    picSchedules: picScheduleReducer,
     auth: persistReducer(authPersistConfig, authReducer),
   },
   // middleware

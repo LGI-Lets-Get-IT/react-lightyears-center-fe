@@ -8,7 +8,10 @@ import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAppointmentByIds, fetchAllAppointments } from "@/store/slice/appointmentSlice";
+import {
+  deleteAppointmentByIds,
+  fetchAllAppointments,
+} from "@/store/slice/appointmentSlice";
 import format from "date-fns/format";
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -32,7 +35,9 @@ const AppointmentsTable = () => {
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const { appointments, isLoading: fetchLoading } = useSelector((state) => state.appointments);
+  const { appointments, isLoading: fetchLoading } = useSelector(
+    (state) => state.appointments
+  );
 
   useEffect(() => {
     dispatch(fetchAllAppointments());
@@ -123,13 +128,22 @@ const AppointmentsTable = () => {
     {
       accessorKey: "picName",
       header: () => "PIC Name",
-      cell: (info) => <a>{info.getValue()}</a>,
+      cell: (info) => {
+        const { picType } = info.row.original;
+        const picName = info.getValue();
+
+        return (
+          <a>
+            [{picType}] {picName}
+          </a>
+        );
+      },
     },
-    {
-      accessorKey: "picType",
-      header: () => "PIC Type",
-      cell: (info) => <a>{info.getValue()}</a>,
-    },
+    // {
+    //   accessorKey: "picType",
+    //   header: () => "PIC Type",
+    //   cell: (info) => <a>{info.getValue()}</a>,
+    // },
     {
       accessorKey: "title",
       header: () => "Appointment Title",
@@ -138,7 +152,9 @@ const AppointmentsTable = () => {
     {
       accessorKey: "appointmentDate",
       header: () => "Appointment Date",
-      cell: (info) => <a>{info?.getValue() && format(info.getValue(), 'dd MMM yyyy')}</a>,
+      cell: (info) => (
+        <a>{info?.getValue() && format(info.getValue(), "dd MMM yyyy")}</a>
+      ),
     },
     {
       accessorKey: "appointmentTime",
@@ -147,7 +163,7 @@ const AppointmentsTable = () => {
     },
     {
       accessorKey: "appointmentType",
-      header: () => "Type",
+      header: () => "Appointment Type",
       cell: (info) => {
         return (
           <span className="text-capitalize badge bg-primary">
@@ -157,17 +173,15 @@ const AppointmentsTable = () => {
       },
     },
     {
-      accessorKey: 'isConfirmed',
-      header: () => 'Confirmed by PIC',
+      accessorKey: "isConfirmed",
+      header: () => "Confirmed by PIC",
       cell: (info) => {
-        const text = info.getValue() ? 'Confirmed' : 'Not Confirmed';
-        const color = info.getValue() ? 'success' : 'danger';
+        const text = info.getValue() ? "Confirmed" : "Not Confirmed";
+        const color = info.getValue() ? "success" : "danger";
         return (
-          <span className={`badge bg-soft-${color} text-${color}`}>
-            {text}
-          </span>
-        )
-      }
+          <span className={`badge bg-soft-${color} text-${color}`}>{text}</span>
+        );
+      },
     },
     {
       accessorKey: "status",
@@ -204,7 +218,7 @@ const AppointmentsTable = () => {
             >
               <FiEye />
             </Link>
-            {permittedActions.length > 0 && (
+            {permittedActions?.length > 0 && (
               <Dropdown
                 dropdownItems={permittedActions}
                 triggerClass="avatar-md"
@@ -215,9 +229,9 @@ const AppointmentsTable = () => {
           </div>
         );
       },
-      meta: {
-        headerClassName: "text-end",
-      },
+      // meta: {
+      //   headerClassName: "text-end",
+      // },
     },
   ];
 

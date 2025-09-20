@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { FiCalendar, FiCheck, FiX } from "react-icons/fi";
+import { useEffect, useRef, useState } from "react";
+import { FiCalendar, FiCheck, FiUpload, FiX } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import Input from "@/components/shared/Input";
@@ -13,16 +13,25 @@ import {
   createSchool,
   fetchAllSchools,
 } from "../../../store/slice/schoolSlice";
-import { createClient } from "@/store/slice/clientSlice";
+import {
+  createClient,
+  updateClientByUuid,
+  updateClientIntakeFormLink,
+} from "@/store/slice/clientSlice";
 import { useNavigate } from "react-router-dom";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { clientSchema } from "@/schemas/clientSchema";
 import TextArea from "@/components/shared/TextArea";
 import useLocationData from "@/hooks/useLocationData";
+import { uploadFile } from "@/store/slice/fileSlice";
 
 const TabProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [uploadedFileName, setUploadedFileName] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const { isLoading: createLoading } = useSelector((state) => state.clients);
   const { schools } = useSelector((state) => state.schools);
   // const countries = countriesOptions;
@@ -38,28 +47,80 @@ const TabProfile = () => {
     console.log("VALIESSS", values);
     dispatch(createClient(values))
       .unwrap()
-      .then(() => {
+      .then((data) => {
+        console.log("Created Client Data: ", data);
+        handleUploadFile(
+          data.uuid,
+          data.fullName.replaceAll(" ", ""),
+          selectedFile
+        );
         actions.resetForm(), navigate("/clients");
       })
       .catch((error) => console.error("handle error", error));
+  };
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleCancel = () => {
+    if (selectedFile) {
+      setUploadedFileName(null);
+      setSelectedFile(null);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    console.log("File to upload: ", file);
+    if (file) {
+      setUploadedFileName(file.name);
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUploadFile = (clientUuid, clientName, file) => {
+    dispatch(
+      uploadFile({
+        uuid: clientUuid,
+        clientName: clientName,
+        file,
+      })
+    )
+      .unwrap()
+      .then(async (data) => {
+        console.log("DATA UPLOADED FILE", data);
+        setUploadedFileName(null);
+        setSelectedFile(null);
+        console.log("Ini dapet ga?");
+        dispatch(
+          updateClientIntakeFormLink({
+            uuid: clientUuid,
+            data: {
+              intakeFormLink: data.webViewLink,
+            },
+          })
+        );
+      })
+      .catch((err) => console.error("Error ", err));
   };
 
   return (
     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
       <Formik
         initialValues={{
-          password: null,
-          passwordConfirm: null,
-          fullName: null,
+          password: undefined,
+          passwordConfirm: undefined,
+          fullName: undefined,
           dateOfBirth: null,
           gender: null,
           nationality: null,
-          problem: null,
-          className: null,
+          problem: undefined,
+          className: undefined,
           schoolId: null,
-          guardianName: null,
-          guardianEmail: null,
-          guardianPhone: null,
+          guardianName: undefined,
+          guardianEmail: undefined,
+          guardianPhone: undefined,
           guardianNationality: null,
           guardianRelationship: null,
           // intakeForm: {
@@ -106,6 +167,7 @@ const TabProfile = () => {
                     value={values.password}
                     className={`${meta.error ? "is-invalid" : ""}`}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -122,6 +184,7 @@ const TabProfile = () => {
                     value={values.passwordConfirm}
                     className={`${meta.error ? "is-invalid" : ""}`}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -139,9 +202,65 @@ const TabProfile = () => {
             <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
-                  <span className="d-block mb-2">Child Information:</span>
+                  <span className="d-block mb-2">
+                    Client Intake Form Information
+                  </span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                    Following information is publicly displayed, be careful!{" "}
+                    Google form link of the client
+                  </span>
+                </h5>
+              </div>
+              <div className="row g-0 mb-4">
+                <div className="col-sm-4 fw-bold">Google Form File</div>
+
+                <div className="col-sm-6">
+                  {uploadedFileName ? (
+                    <div
+                      className="bg-white p-3 rounded shadow-sm text-center"
+                      style={{ width: "100%", maxWidth: "300px" }}
+                    >
+                      <div className="mb-2 text-wrap text-primary fw-bold">
+                        {uploadedFileName}
+                      </div>
+
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger btn-sm w-100"
+                        onClick={handleCancel}
+                      >
+                        <FiX className="me-2" />
+                        Delete
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleUploadClick}
+                      >
+                        <FiUpload size={16} className="me-2" />
+                        <span>Upload File</span>
+                      </button>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        style={{ display: "none" }}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            <hr className="my-0" />
+            <div className="card-body">
+              <div className="mb-4 d-flex align-items-center justify-content-between">
+                <h5 className="fw-bold mb-0 me-4">
+                  <span className="d-block mb-2">Child Information</span>
+                  <span className="fs-12 fw-normal text-muted text-truncate-1-line">
+                    Detailed information of the child
                   </span>
                 </h5>
               </div>
@@ -157,6 +276,7 @@ const TabProfile = () => {
                       value={values.fullName}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -165,7 +285,7 @@ const TabProfile = () => {
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label htmlFor="dateofBirth" className="fw-semibold">
-                    Date of Birth:{" "}
+                    Date of Birth <span className="text-danger">*</span>
                   </label>
                 </div>
 
@@ -213,7 +333,9 @@ const TabProfile = () => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Gender: </label>
+                  <label className="fw-semibold">
+                    Gender <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -229,7 +351,9 @@ const TabProfile = () => {
               </div>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Nationality: </label>
+                  <label className="fw-semibold">
+                    Nationality <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -243,10 +367,11 @@ const TabProfile = () => {
                   />
                 </div>
               </div>
-              {console.log("VALUESS", values)}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">School Name: </label>
+                  <label className="fw-semibold">
+                    School Name <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -277,6 +402,7 @@ const TabProfile = () => {
                       name={"className"}
                       value={values.className}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -292,6 +418,7 @@ const TabProfile = () => {
                         placeholder={"Please specify the problem here"}
                         row="4"
                         meta={meta}
+                        isMandatory
                         {...field}
                       />
                       // <>
@@ -317,7 +444,7 @@ const TabProfile = () => {
             <div className="card-body">
               <div className="mb-4 d-flex align-items-center justify-content-between">
                 <h5 className="fw-bold mb-0 me-4">
-                  <span className="d-block mb-2">Guardian Information:</span>
+                  <span className="d-block mb-2">Guardian Information</span>
                   <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                     Communication details for us to connect with.
                   </span>
@@ -335,6 +462,7 @@ const TabProfile = () => {
                       value={values.guardianName}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -354,6 +482,7 @@ const TabProfile = () => {
                       value={values.guardianEmail}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -372,6 +501,7 @@ const TabProfile = () => {
                       value={values.guardianPhone}
                       className={`${meta.error ? "is-invalid" : ""}`}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   </>
@@ -379,7 +509,9 @@ const TabProfile = () => {
               </Field>
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Nationality: </label>
+                  <label className="fw-semibold">
+                    Nationality <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown
@@ -396,7 +528,9 @@ const TabProfile = () => {
 
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
-                  <label className="fw-semibold">Relationship to child: </label>
+                  <label className="fw-semibold">
+                    Relationship to child <span className="text-danger">*</span>
+                  </label>
                 </div>
                 <div className="col-lg-8">
                   <SelectDropdown

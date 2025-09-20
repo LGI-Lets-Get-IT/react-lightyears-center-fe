@@ -51,7 +51,10 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       Edit {schoolData?.name} Data
                     </span>
                     <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                      Last Edited: {schoolData?.updatedAt ? format(schoolData.updatedAt, 'dd MMM yyyy, HH:mm aa') : '-'}
+                      Last Edited:{" "}
+                      {schoolData?.updatedAt
+                        ? format(schoolData.updatedAt, "dd MMM yyyy, HH:mm aa")
+                        : "-"}
                     </span>
                   </h5>
                 </div>
@@ -65,6 +68,7 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                       placeholder={"School Name"}
                       value={values.schoolName}
                       meta={meta}
+                      isMandatory
                       {...field}
                     />
                   )}
@@ -180,7 +184,11 @@ const SchoolsEditContent = ({ id, schoolData }) => {
                     <FiX size={16} className="me-2" />
                     <span>Cancel</span>
                   </a>
-                  <button type="submit" className="btn btn-primary" disabled={updateLoading}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={updateLoading}
+                  >
                     {updateLoading ? (
                       <div
                         className="spinner-border spinner-border-sm text-white me-2"

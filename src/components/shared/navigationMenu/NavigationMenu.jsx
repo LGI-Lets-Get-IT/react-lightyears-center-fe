@@ -22,7 +22,8 @@ const NavigationManu = () => {
           <Link to="/" className="b-brand">
             {/* <!-- ========   change your logo hear   ============ --> */}
             <img
-              src="/images/TLY_LOGO.svg"
+              width={"220"}
+              src="/images/TLY_LOGO_L.png"
               alt="logo"
               className="logo logo-lg"
             />

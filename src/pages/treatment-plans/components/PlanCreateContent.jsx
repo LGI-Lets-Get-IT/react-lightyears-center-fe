@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import SelectDropdown from "@/components/shared/SelectDropdown";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,12 +12,17 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { treatmentPlanSchema } from "@/schemas/treatmentPlanSchema";
 import { createPlan } from "@/store/slice/treatmentPlanSlice";
 import { useNavigate } from "react-router-dom";
-import { fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
+import {
+  createTreatmentType,
+  fetchAllTreatmentTypes,
+} from "@/store/slice/treatmentTypeSlice";
 
 const PlanCreateContent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading: createLoading } = useSelector(state => state.treatmentPlans)
+  const { isLoading: createLoading } = useSelector(
+    (state) => state.treatmentPlans
+  );
   const { clients } = useSelector((state) => state.clients);
   const { currentUser } = useSelector((state) => state.auth);
   const { psychologists, therapists } = useSelector((state) => state.employees);
@@ -25,11 +30,10 @@ const PlanCreateContent = () => {
   // const [selectedOption, setSelectedOption] = useState(null);
 
   const onSubmit = async (values, actions) => {
-    console.log("ASFASFS", values, actions);
     dispatch(createPlan(values))
       .unwrap()
-      .then(() => navigate('/treatment-plans'))
-      .catch(error => console.log('Error', error));
+      .then(() => navigate("/treatment-plans"))
+      .catch((error) => console.log("Error", error));
   };
 
   useEffect(() => {
@@ -47,8 +51,7 @@ const PlanCreateContent = () => {
               <h5 className="fw-bold mb-0 me-4">
                 <span className="d-block mb-2">Create Treatment Plan</span>
                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Typically refers to adding a new potential customer or sales
-                  prospect
+                  Information about the treatment plan
                 </span>
               </h5>
             </div>
@@ -56,9 +59,9 @@ const PlanCreateContent = () => {
               initialValues={{
                 clientId: null,
                 psychologistId: null,
-                consultDate: null,
-                presentProblem: "",
-                parentPlan: "",
+                consultDate: undefined,
+                presentProblem: undefined,
+                parentPlan: undefined,
                 programs: [],
                 targets: [],
               }}
@@ -69,7 +72,7 @@ const PlanCreateContent = () => {
                 <Form>
                   <div className="row">
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="clientId" className="form-label">
                         Client Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -81,14 +84,19 @@ const PlanCreateContent = () => {
                         selectedOption={values.clientId}
                         placeholder={"Select Client"}
                         onSelectOption={(option) => {
-                          setFieldValue('clientId', option.value)
-                          const selectedClient = clients.find(client => client.id === option.value);
-                          setFieldValue('presentProblem', selectedClient.problem)
+                          setFieldValue("clientId", option.value);
+                          const selectedClient = clients.find(
+                            (client) => client.id === option.value
+                          );
+                          setFieldValue(
+                            "presentProblem",
+                            selectedClient.problem
+                          );
                         }}
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="psychologistId" className="form-label">
                         Psychologist Name <span className="text-danger">*</span>
                       </label>
                       <SelectDropdown
@@ -97,7 +105,7 @@ const PlanCreateContent = () => {
                           label: item.fullName,
                           value: item.id,
                         }))}
-                        isDisabled={currentUser.role === "Psychologist"}
+                        // isDisabled={currentUser.role === "Psychologist"}
                         defaultSelect={
                           currentUser.role === "Psychologist"
                             ? currentUser.id
@@ -106,12 +114,12 @@ const PlanCreateContent = () => {
                         selectedOption={values.psychologistId}
                         placeholder={"Select Psychologist In Charge"}
                         onSelectOption={(option) => {
-                          setFieldValue('psychologistId', option.value)
+                          setFieldValue("psychologistId", option.value);
                         }}
                       />
                     </div>
                     <div className="col-lg-4 mb-4">
-                      <label className="form-label">
+                      <label htmlFor="consultDate" className="form-label">
                         Consultation Date <span className="text-danger">*</span>
                       </label>
                       <div className="input-group date flex-column">
@@ -120,8 +128,8 @@ const PlanCreateContent = () => {
                             <>
                               <DatePicker
                                 name="consultDate"
-                                placeholderText="YYYY-MM-DD"
-                                dateFormat={"yyyy-MM-dd"}
+                                placeholderText="Select Consultation Date"
+                                dateFormat={"dd MMM yyyy"}
                                 showPopperArrow={false}
                                 selected={values.consultDate}
                                 onChange={(date) => {
@@ -131,8 +139,9 @@ const PlanCreateContent = () => {
                                     // format(date, "yyyy-MM-dd")
                                   );
                                 }}
-                                className={`form-control ${meta.error ? "is-invalid" : ""
-                                  }`}
+                                className={`form-control ${
+                                  meta.error ? "is-invalid" : ""
+                                }`}
                                 popperPlacement="bottom-start"
                                 calendarContainer={({ children }) => (
                                   <div className="bg-white react-datepicker">
@@ -141,7 +150,9 @@ const PlanCreateContent = () => {
                                 )}
                               />
                               {meta.error && (
-                                <div className="mt-1 text-danger">{meta.error}</div>
+                                <div className="mt-1 text-danger">
+                                  {meta.error}
+                                </div>
                               )}
                             </>
                           )}
@@ -158,14 +169,17 @@ const PlanCreateContent = () => {
                             <textarea
                               id="presentProblem"
                               rows={6}
-                              className={`form-control ${meta.error ? "is-invalid" : ""
-                                }`}
+                              className={`form-control ${
+                                meta.error ? "is-invalid" : ""
+                              }`}
                               placeholder="Please specify the problem here"
                               defaultValue={""}
                               {...field}
                             />
                             {meta.error && (
-                              <div className="mt-1 text-danger">{meta.error}</div>
+                              <div className="mt-1 text-danger">
+                                {meta.error}
+                              </div>
                             )}
                           </>
                         )}
@@ -173,8 +187,8 @@ const PlanCreateContent = () => {
                     </div>
                     <div className="col-lg-12 mb-4">
                       <label htmlFor="parentPlan" className="form-label">
-                        Parent Collaboration Plan{" "}
-                        <span className="text-danger">*</span>
+                        Parent Collaboration Plan
+                        <span className="text-danger"> *</span>
                       </label>
                       <Field name="parentPlan">
                         {({ field, meta }) => (
@@ -182,14 +196,17 @@ const PlanCreateContent = () => {
                             <textarea
                               id="parentPlan"
                               rows={6}
-                              className={`form-control ${meta.error ? "is-invalid" : ""
-                                }`}
+                              className={`form-control ${
+                                meta.error ? "is-invalid" : ""
+                              }`}
                               placeholder="Please specify the plan here"
                               defaultValue={""}
                               {...field}
                             />
                             {meta.error && (
-                              <div className="mt-1 text-danger">{meta.error}</div>
+                              <div className="mt-1 text-danger">
+                                {meta.error}
+                              </div>
                             )}
                           </>
                         )}
@@ -204,7 +221,7 @@ const PlanCreateContent = () => {
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold mb-0 me-4">
                             <span className="d-block mb-2">
-                              Treatment Programs:
+                              Treatment Programs
                             </span>
                             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                               The treatment programs to be done
@@ -212,15 +229,17 @@ const PlanCreateContent = () => {
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.programs.length === 1) return;
+                                // if (values.programs.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -232,7 +251,7 @@ const PlanCreateContent = () => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Program
                             </button>
                           </div>
                         </div>
@@ -247,8 +266,8 @@ const PlanCreateContent = () => {
                               >
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Treatment Name{" "}
-                                    <span className="text-danger">*</span>
+                                    Treatment Name
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <SelectDropdown
@@ -257,18 +276,30 @@ const PlanCreateContent = () => {
                                         label: item.name,
                                         value: item.id,
                                       }))}
-                                      selectedOption={values.programs[index].treatmentId}
+                                      selectedOption={
+                                        values.programs[index].treatmentId
+                                      }
                                       placeholder={"Select Treatment"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].treatmentId`, option.value)
+                                        setFieldValue(
+                                          `programs[${index}].treatmentId`,
+                                          option.value
+                                        )
                                       }
+                                      onCreateOption={(value) => {
+                                        dispatch(
+                                          createTreatmentType({
+                                            treatmentName: value,
+                                          })
+                                        );
+                                      }}
                                     />
                                   </div>
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Therapist Name{" "}
-                                    <span className="text-danger">*</span>
+                                    Therapist Name
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <SelectDropdown
@@ -277,18 +308,23 @@ const PlanCreateContent = () => {
                                         label: item.fullName,
                                         value: item.id,
                                       }))}
-                                      selectedOption={values.programs[index].therapistId}
+                                      selectedOption={
+                                        values.programs[index].therapistId
+                                      }
                                       placeholder={"Select Therapist"}
                                       onSelectOption={(option) =>
-                                        setFieldValue(`programs[${index}].therapistId`, option.value)
+                                        setFieldValue(
+                                          `programs[${index}].therapistId`,
+                                          option.value
+                                        )
                                       }
                                     />
                                   </div>
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Aim of Treatment{" "}
-                                    <span className="text-danger">*</span>
+                                    Aim of Treatment
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -298,8 +334,9 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify aim of the treatment"
                                             {...field}
                                           />
@@ -315,8 +352,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Frequency{" "}
-                                    <span className="text-danger">*</span>
+                                    Total Session Frequency of The Treatment
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -326,9 +363,10 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="number"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
-                                            placeholder="Please specify the session frequency"
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
+                                            placeholder="Please specify the total sessions of this treatment"
                                             min={1}
                                             {...field}
                                           />
@@ -344,8 +382,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Session Duration (minutes){" "}
-                                    <span className="text-danger">*</span>
+                                    Session Duration (minutes)
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -355,8 +393,9 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="number"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the session duration"
                                             min={1}
                                             {...field}
@@ -370,6 +409,17 @@ const PlanCreateContent = () => {
                                       )}
                                     </Field>
                                   </div>
+                                </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Program
+                                  </button>
                                 </div>
                               </AccordionItem>
                             ))}
@@ -385,23 +435,25 @@ const PlanCreateContent = () => {
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold mb-0 me-4">
                             <span className="d-block mb-2">
-                              Targeted Behaviors:
+                              Targeted Therapy
                             </span>
                             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                              The behaviors to be achieved
+                              Goals to be achieved
                             </span>
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">
                             <button
+                              type="button"
                               className="btn btn-sm bg-soft-danger text-danger"
                               onClick={() => {
-                                if (values.targets.length === 1) return;
+                                // if (values.targets.length === 1) return;
                                 arrayHelpers.pop();
                               }}
                             >
                               Delete
                             </button>
                             <button
+                              type="button"
                               className="btn btn-sm btn-primary"
                               onClick={() =>
                                 arrayHelpers.push({
@@ -411,7 +463,7 @@ const PlanCreateContent = () => {
                                 })
                               }
                             >
-                              Add Items
+                              Add New Target
                             </button>
                           </div>
                         </div>
@@ -425,17 +477,20 @@ const PlanCreateContent = () => {
                               >
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Target Behavior{" "}
-                                    <span className="text-danger">*</span>
+                                    Target Behavior
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
-                                    <Field name={`targets[${index}].targetBehavior`}>
+                                    <Field
+                                      name={`targets[${index}].targetBehavior`}
+                                    >
                                       {({ field, meta }) => (
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the child's target behavior"
                                             {...field}
                                           />
@@ -451,8 +506,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Child&apos;s Current Ability{" "}
-                                    <span className="text-danger">*</span>
+                                    Child&apos;s Current Ability
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -462,8 +517,9 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the child's current ability"
                                             {...field}
                                           />
@@ -479,8 +535,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Short-term Target:{" "}
-                                    <span className="text-danger">*</span>
+                                    Short-term Target:
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -490,8 +546,9 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the short-term target"
                                             {...field}
                                           />
@@ -507,8 +564,8 @@ const PlanCreateContent = () => {
                                 </div>
                                 <div className="form-group row mb-3 align-items-center">
                                   <label className="col-sm-3 col-form-label">
-                                    Media/Tools{" "}
-                                    <span className="text-danger">*</span>
+                                    Media/Tools
+                                    <span className="text-danger"> *</span>
                                   </label>
                                   <div className="col-sm-9">
                                     <Field
@@ -518,8 +575,9 @@ const PlanCreateContent = () => {
                                         <>
                                           <input
                                             type="text"
-                                            className={`form-control ${meta.error ? "is-invalid" : ""
-                                              }`}
+                                            className={`form-control ${
+                                              meta.error ? "is-invalid" : ""
+                                            }`}
                                             placeholder="Please specify the media or tools"
                                             {...field}
                                           />
@@ -533,18 +591,34 @@ const PlanCreateContent = () => {
                                     </Field>
                                   </div>
                                 </div>
+                                <div className="d-flex justify-content-end mt-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-outline-danger"
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                  >
+                                    Delete Target
+                                  </button>
+                                </div>
                               </AccordionItem>
                             ))}
                         </div>
                         <div className="d-flex justify-content-end align-items-center gap-2 page-header-right-items-wrapper">
                           <button
+                            type="button"
                             className="btn btn-light-brand"
                             onClick={() => navigate(-1)}
                           >
                             <FiX size={16} className="me-2" />
                             <span>Cancel</span>
                           </button>
-                          <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            disabled={createLoading}
+                          >
                             {createLoading ? (
                               <div
                                 className="spinner-border spinner-border-sm text-white me-2"
@@ -574,11 +648,11 @@ export default PlanCreateContent;
 
 const AccordionItem = ({ id, header, children }) => {
   return (
-    <div className="accordion-item">
+    <div className="accordion-item" style={{ borderWidth: "3px" }}>
       <h2 className="accordion-header" id={`flush-heading${id}`}>
         <button
-          className="accordion-button collapsed"
           type="button"
+          className="accordion-button collapsed"
           data-bs-toggle="collapse"
           data-bs-target={`#flush-collapse${id}`}
           aria-expanded="false"

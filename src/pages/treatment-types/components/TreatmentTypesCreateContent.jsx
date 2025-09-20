@@ -12,10 +12,11 @@ const TreatmentTypesCreateContent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { isLoading: createLoading } = useSelector(state => state.treatmentTypes);
+  const { isLoading: createLoading } = useSelector(
+    (state) => state.treatmentTypes
+  );
 
   const handleSubmit = (values, actions) => {
-    // console.log('KJSFKAJSKASFJKJ', values)
     dispatch(createTreatmentType(values))
       .unwrap()
       .then(() => navigate("/treatment-types"))
@@ -24,10 +25,14 @@ const TreatmentTypesCreateContent = () => {
   return (
     <div className="col-lg-12">
       <div className="card border-top-0">
-        <Formik initialValues={{
-          treatmentName: null,
-          treatmentDescription: null
-        }} validationSchema={treatmentTypeSchema} onSubmit={handleSubmit}>
+        <Formik
+          initialValues={{
+            treatmentName: null,
+            treatmentDescription: null,
+          }}
+          validationSchema={treatmentTypeSchema}
+          onSubmit={handleSubmit}
+        >
           <Form>
             <div className="card-body personal-info">
               <div className="mb-4 d-flex align-items-center justify-content-between">
@@ -46,6 +51,7 @@ const TreatmentTypesCreateContent = () => {
                     placeholder={"Treatment Name"}
                     name={"treatmentName"}
                     meta={meta}
+                    isMandatory
                     {...field}
                   />
                 )}
@@ -63,7 +69,6 @@ const TreatmentTypesCreateContent = () => {
                   />
                 )}
               </Field>
-
             </div>
             <hr className="my-0" />
             <div className="card-body additional-info">
@@ -72,7 +77,11 @@ const TreatmentTypesCreateContent = () => {
                   <FiX size={16} className="me-2" />
                   <span>Cancel</span>
                 </a>
-                <button type="submit" className="btn btn-primary" disabled={createLoading}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={createLoading}
+                >
                   {createLoading ? (
                     <div
                       className="spinner-border spinner-border-sm text-white me-2"
@@ -88,7 +97,7 @@ const TreatmentTypesCreateContent = () => {
           </Form>
         </Formik>
       </div>
-    </div >
+    </div>
   );
 };
 

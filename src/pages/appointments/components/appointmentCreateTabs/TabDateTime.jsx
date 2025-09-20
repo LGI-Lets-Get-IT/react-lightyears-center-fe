@@ -17,12 +17,10 @@ const TabDateTime = ({ error, setError, formData, setFormData }) => {
 
   const handleTimeChange = (e) => {
     const { name, value } = e.target; // name: timeStart / timeEnd
-    console.log('name,', name, value)
 
     const datePart = formData.appointmentDate
       ? format(new Date(formData.appointmentDate), "yyyy-MM-dd")
       : null;
-    console.log('DATEPART', datePart)
     if (!datePart || !value) {
       setFormData({ ...formData, [name]: "" });
       return;
@@ -72,11 +70,12 @@ const TabDateTime = ({ error, setError, formData, setFormData }) => {
                 showPopperArrow={false}
                 dateFormat="yyyy-MM-dd"
                 onChange={(date) => {
-                  setStartDate(date)
-                  handleDateChange(date)
+                  setStartDate(date);
+                  handleDateChange(date);
                 }}
-                className={`form-control rounded-0 ${!startDate ? "is-invalid" : ""
-                  }`}
+                className={`form-control rounded-0 ${
+                  !startDate ? "is-invalid" : ""
+                }`}
                 popperPlacement="bottom-start"
                 calendarContainer={({ children }) => (
                   <div className="bg-white react-datepicker">
@@ -87,7 +86,9 @@ const TabDateTime = ({ error, setError, formData, setFormData }) => {
               />
             </div>
             {!startDate && (
-              <div className="mt-1 text-danger">Appointment date is required.</div>
+              <div className="mt-1 text-danger">
+                Appointment date is required.
+              </div>
             )}
           </div>
 
@@ -106,8 +107,9 @@ const TabDateTime = ({ error, setError, formData, setFormData }) => {
                     : ""
                 }
                 onChange={handleTimeChange}
-                className={`form-control ${error.timeStart ? "is-invalid" : ""
-                  }`}
+                className={`form-control ${
+                  error.timeStart ? "is-invalid" : ""
+                }`}
                 required
               />
               {error.timeStart && (
@@ -128,8 +130,7 @@ const TabDateTime = ({ error, setError, formData, setFormData }) => {
                     : ""
                 }
                 onChange={handleTimeChange}
-                className={`form-control ${error.timeEnd ? "is-invalid" : ""
-                  }`}
+                className={`form-control ${error.timeEnd ? "is-invalid" : ""}`}
                 required
               />
               {error.timeEnd && (
