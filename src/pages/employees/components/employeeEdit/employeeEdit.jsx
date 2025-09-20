@@ -9,12 +9,15 @@ import { isActiveOptions, roleIdOptions } from "@/utils/options";
 import { Field, Form, Formik } from "formik";
 import { employeeSchema } from "@/schemas/employeeSchema";
 import { format } from "date-fns";
+import { ROLES } from "@/shared/rolesConstant";
+import { fetchAllSchools } from "@/store/slice/schoolSlice";
 
 const EmployeeEdit = ({ empData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const { isLoading: updateLoading } = useSelector((state) => state.employees);
+  const { schools } = useSelector((state) => state.schools);
 
   const isActive = isActiveOptions;
   const roleId = roleIdOptions;
@@ -27,6 +30,10 @@ const EmployeeEdit = ({ empData }) => {
       })
       .catch((error) => console.error("handle error", error));
   };
+
+  useEffect(() => {
+    dispatch(fetchAllSchools());
+  }, [empData?.roleId === ROLES.SCHOOL_PIC.value]);
 
   return (
     <div className="tab-pane fade show active" id="profileTab" role="tabpanel">
@@ -47,6 +54,7 @@ const EmployeeEdit = ({ empData }) => {
             phoneNumber: empData?.phoneNumber,
             email: empData?.email,
             roleId: empData?.roleId,
+            schoolId: empData?.schoolId,
             isActive: empData?.isActive,
           }}
           enableReinitialize
@@ -121,6 +129,29 @@ const EmployeeEdit = ({ empData }) => {
                   />
                 </div>
               </div>
+              {values.roleId === ROLES.SCHOOL_PIC.value && (
+                <div className="row mb-4 align-items-center">
+                  <div className="col-lg-4">
+                    <label htmlFor="roleId" className="fw-semibold">
+                      School Name <span className="text-danger">*</span>
+                    </label>
+                  </div>
+                  <div className="col-lg-8">
+                    <SelectDropdown
+                      name={"schoolId"}
+                      options={schools.map((school) => ({
+                        label: school.name,
+                        value: school.id,
+                      }))}
+                      selectedOption={values.schoolId}
+                      placeholder={"Select School Name"}
+                      onSelectOption={(option) =>
+                        setFieldValue("schoolId", option.value)
+                      }
+                    />
+                  </div>
+                </div>
+              )}
               <div className="row mb-4 align-items-center">
                 <div className="col-lg-4">
                   <label htmlFor="isActive" className="fw-semibold">

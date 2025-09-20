@@ -248,7 +248,7 @@ export const employeeSlice = createSlice({
     builder.addCase(createEmployeeFromSchool.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(createEmployeeFromSchool.fulfilled, (state, action) => {
+    builder.addCase(createEmployeeFromSchool.fulfilled, (state) => {
       state.isLoading = false;
     });
     builder.addCase(createEmployeeFromSchool.rejected, (state, action) => {

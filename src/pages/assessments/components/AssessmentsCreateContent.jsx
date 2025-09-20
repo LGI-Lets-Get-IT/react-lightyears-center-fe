@@ -46,8 +46,7 @@ const AssessmentsCreateContent = () => {
               <h5 className="fw-bold mb-0 me-4">
                 <span className="d-block mb-2">Create Client Assessment</span>
                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Typically refers to adding a new potential customer or sales
-                  prospect
+                  Information about the client assessment
                 </span>
               </h5>
             </div>

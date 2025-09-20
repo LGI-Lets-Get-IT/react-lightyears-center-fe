@@ -107,6 +107,7 @@ const TabPlanProgress = ({ id }) => {
             title="No progress yet!"
             description="There are no progress on this treatment plan"
             onClick={() => setOpenModal(true)}
+            hasPermission={hasPermission(PERMISSIONS.TREATMENT_SESSIONS.CREATE)}
           />
         )}
 

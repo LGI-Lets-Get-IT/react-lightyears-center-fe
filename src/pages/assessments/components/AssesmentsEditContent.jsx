@@ -11,6 +11,8 @@ import { fetchAppointmentForAssessments } from "@/store/slice/appointmentSlice";
 import { fetchAllTestTypes } from "@/store/slice/testTypeSlice";
 import { updateAssessmentById } from "@/store/slice/assessmentSlice";
 import format from "date-fns/format";
+import Checkbox from "@/components/shared/Checkbox";
+import DatePicker from "react-datepicker";
 
 const AssessmentsEditContent = ({ assessmentData }) => {
   const dispatch = useDispatch();
@@ -76,6 +78,8 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                 psychologistId: assessmentData?.psychologist?.id,
                 testId: assessmentData?.testType?.id,
                 result: assessmentData?.result,
+                isInCenterAssessment: assessmentData?.isInCenterAssessment,
+                assessmentDate: assessmentData?.assessmentDate,
               }}
               validationSchema={assessmentSchema}
               enableReinitialize
@@ -143,30 +147,94 @@ const AssessmentsEditContent = ({ assessmentData }) => {
                         }
                       />
                     </div>
-                    <div className="col-lg-4 mb-4">
-                      <label htmlFor="appointmentId" className="form-label">
-                        Assessed On <span className="text-danger">*</span>
-                      </label>
-                      <SelectDropdown
-                        name={"appointmentId"}
-                        options={appointments.map((appointment) => ({
-                          value: appointment.id,
-                          label: `[${appointment.appointmentType}] ${appointment.title}`,
-                        }))}
-                        placeholder={"Select Appointment"}
-                        selectedOption={values.appointmentId}
-                        onSelectOption={(option) => {
-                          setFieldValue("appointmentId", option.value);
-                          const selectedAppointment = appointments.find(
-                            (appointment) => appointment.id === option.value
-                          );
+                    <div className="col-lg-12 mb-4">
+                      <Checkbox
+                        name="In-Center Assessment (Assessment conducted without a scheduled appointment)"
+                        checked={values.isInCenterAssessment}
+                        id="isInCenterAssessment"
+                        onChange={(e) => {
                           setFieldValue(
-                            "assessmentDate",
-                            selectedAppointment.appointmentDate
+                            "isInCenterAssessment",
+                            e.target.checked
                           );
+                          if (e.target.checked) {
+                            // Clear appointment when switching to in-center
+                            setFieldValue("appointmentId", null);
+                            setFieldValue("appointmentDate", null);
+                          }
                         }}
                       />
                     </div>
+
+                    {!values?.isInCenterAssessment && (
+                      <div className="col-lg-4 mb-4">
+                        <label htmlFor="appointmentId" className="form-label">
+                          Assessed On <span className="text-danger">*</span>
+                        </label>
+                        <SelectDropdown
+                          name={"appointmentId"}
+                          options={appointments.map((appointment) => ({
+                            value: appointment.id,
+                            label: `[${appointment.appointmentType}] ${appointment.title}`,
+                          }))}
+                          placeholder={"Select Appointment"}
+                          selectedOption={values.appointmentId}
+                          onSelectOption={(option) => {
+                            setFieldValue("appointmentId", option.value);
+                            const selectedAppointment = appointments.find(
+                              (appointment) => appointment.id === option.value
+                            );
+                            setFieldValue(
+                              "assessmentDate",
+                              selectedAppointment.appointmentDate
+                            );
+                          }}
+                        />
+                      </div>
+                    )}
+
+                    <div className="col-lg-4 mb-4">
+                      <label htmlFor="assessmentDate" className="form-label">
+                        {values.isInCenterAssessment
+                          ? "Assessment Date"
+                          : "Assessment Date (from appointment)"}{" "}
+                        <span className="text-danger">*</span>
+                      </label>
+                      <div className="input-group date flex-column">
+                        <Field name="assessmentDate">
+                          {({ meta }) => (
+                            <>
+                              <DatePicker
+                                name="assessmentDate"
+                                placeholderText="Select Assessment Date"
+                                dateFormat="dd MMM yyyy"
+                                showPopperArrow={false}
+                                disabled={!values.isInCenterAssessment}
+                                selected={values.assessmentDate}
+                                onChange={(date) => {
+                                  setFieldValue("assessmentDate", date);
+                                }}
+                                className={`form-control ${
+                                  meta.error ? "is-invalid" : ""
+                                }`}
+                                popperPlacement="bottom-start"
+                                calendarContainer={({ children }) => (
+                                  <div className="bg-white react-datepicker">
+                                    {children}
+                                  </div>
+                                )}
+                              />
+                              {meta.error && (
+                                <div className="mt-1 text-danger">
+                                  {meta.error}
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </Field>
+                      </div>
+                    </div>
+
                     <div className="col-lg-12 mb-4">
                       <label htmlFor="result" className="form-label">
                         Test Result <span className="text-danger">*</span>

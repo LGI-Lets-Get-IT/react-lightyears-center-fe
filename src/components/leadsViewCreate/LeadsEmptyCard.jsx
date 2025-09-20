@@ -1,21 +1,40 @@
-import React from 'react'
-import { FiPlus } from 'react-icons/fi'
+import React from "react";
+import { FiPlus } from "react-icons/fi";
 
-const LeadsEmptyCard = ({ title, description, link, buttonText, onClick, children }) => {
-    return (
-        <div className="card card-body">
-            <div className="d-flex align-items-center justify-content-center" style={{ height: "calc(100vh - 315px)" }}>
-                <div className="text-center">
-                    <h2 className="fs-16 fw-semibold">{title}</h2>
-                    <p className="fs-12 text-muted">{description}</p>
-                    <a href={link} className="avatar-text bg-soft-primary text-primary mx-auto" data-bs-toggle="tooltip" title={buttonText} onClick={onClick}>
-                        <FiPlus size={16} />
-                    </a>
-                    {children}
-                </div>
-            </div>
+const LeadsEmptyCard = ({
+  title,
+  description,
+  link,
+  buttonText,
+  onClick,
+  children,
+  hasPermission,
+}) => {
+  return (
+    <div className="card card-body">
+      <div
+        className="d-flex align-items-center justify-content-center"
+        style={{ height: "calc(100vh - 315px)" }}
+      >
+        <div className="text-center">
+          <h2 className="fs-16 fw-semibold">{title}</h2>
+          <p className="fs-12 text-muted">{description}</p>
+          {hasPermission && (
+            <a
+              href={link}
+              className="avatar-text bg-soft-primary text-primary mx-auto"
+              data-bs-toggle="tooltip"
+              title={buttonText}
+              onClick={onClick}
+            >
+              <FiPlus size={16} />
+            </a>
+          )}
+          {children}
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
-export default LeadsEmptyCard
+export default LeadsEmptyCard;

@@ -1,6 +1,5 @@
 import TabSchoolClient from "./TabSchoolsClient";
 import TabSchoolsProfile from "./TabSchoolsProfile";
-import LeadsEmptyCard from "@/components/leadsViewCreate/LeadsEmptyCard";
 
 const SchoolsViewContent = ({ schoolsData }) => {
   {

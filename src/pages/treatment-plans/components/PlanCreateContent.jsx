@@ -51,8 +51,7 @@ const PlanCreateContent = () => {
               <h5 className="fw-bold mb-0 me-4">
                 <span className="d-block mb-2">Create Treatment Plan</span>
                 <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                  Typically refers to adding a new potential customer or sales
-                  prospect
+                  Information about the treatment plan
                 </span>
               </h5>
             </div>
@@ -222,7 +221,7 @@ const PlanCreateContent = () => {
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold mb-0 me-4">
                             <span className="d-block mb-2">
-                              Treatment Programs:
+                              Treatment Programs
                             </span>
                             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
                               The treatment programs to be done
@@ -436,10 +435,10 @@ const PlanCreateContent = () => {
                         <div className="mb-5 d-flex align-items-center justify-content-between">
                           <h5 className="fw-bold mb-0 me-4">
                             <span className="d-block mb-2">
-                              Targeted Behaviors:
+                              Targeted Therapy
                             </span>
                             <span className="fs-12 fw-normal text-muted text-truncate-1-line">
-                              The behaviors to be achieved
+                              Goals to be achieved
                             </span>
                           </h5>
                           <div className="d-flex justify-content-end gap-2 mt-3">

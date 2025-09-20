@@ -15,17 +15,21 @@ import { useNavigate } from "react-router-dom";
 const SchoolsViewHeader = ({ id, schoolData }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading: deleteLoading, isLoading: createPicLoading } = useSelector(
-    (state) => state.schools
-  );
   const { hasPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
+  const { isLoading: deleteLoading } = useSelector((state) => state.schools);
+  const { isLoading: createPicLoading } = useSelector(
+    (state) => state.employees
+  );
 
   const handleCreatePic = () => {
     if (
-      !schoolData.picFullName &&
-      !schoolData.picEmail &&
-      !schoolData.picPhoneNumber
+      !schoolData.picFullName ||
+      schoolData.picFullName === "" ||
+      !schoolData.picEmail ||
+      schoolData.picEmail === "" ||
+      !schoolData.picPhoneNumber ||
+      schoolData.picPhoneNumber === ""
     ) {
       MySwal.mixin(swalOptions).fire({
         icon: "error",
@@ -33,6 +37,7 @@ const SchoolsViewHeader = ({ id, schoolData }) => {
       });
       return;
     }
+
     const body = {
       fullName: schoolData.picFullName,
       email: schoolData.picEmail,
@@ -64,13 +69,20 @@ const SchoolsViewHeader = ({ id, schoolData }) => {
     <div className="d-flex align-items-center gap-2 page-header-right-items-wrapper">
       <div className="filter-dropdown"></div>
       {hasPermission(PERMISSIONS.EMPLOYEES.CREATE) &&
-        schoolData.pic.length === 0 && (
+        schoolData?.pic?.length === 0 && (
           <button
             className="btn btn-success"
             onClick={handleCreatePic}
             disabled={createPicLoading}
           >
-            <FaCheck size={16} className="me-2" />
+            {createPicLoading ? (
+              <div
+                className="spinner-border spinner-border-sm text-white me-2"
+                role="status"
+              />
+            ) : (
+              <FaCheck size={16} className="me-2" />
+            )}
             <span>Create PIC Account</span>
           </button>
         )}

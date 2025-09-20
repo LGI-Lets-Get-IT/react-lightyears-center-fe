@@ -224,6 +224,21 @@ export const appointmentSlice = createSlice({
         state.error = action.payload;
       });
     builder
+      .addCase(updateAppointmentById.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.currentAppointment = initialState.currentAppointment;
+      })
+      .addCase(updateAppointmentById.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentAppointment = action.payload;
+      })
+      .addCase(updateAppointmentById.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.currentAppointment = initialState.currentAppointment;
+      });
+    builder
       .addCase(deleteAppointmentByIds.pending, (state) => {
         state.isLoading = true;
         state.error = null;

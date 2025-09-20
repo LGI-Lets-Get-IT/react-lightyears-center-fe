@@ -28,16 +28,19 @@ const TabAssessmentOverview = ({ assessmentData }) => {
                     <label className="form-label">Test Name</label>
                     <p>{assessmentData?.testType?.name ?? "-"}</p>
                   </div>
-                  <div className="col-md-6 mb-4">
-                    <label className="form-label">Assessed On</label>
-                    <a
-                      className="d-flex fw-normal"
-                      href={`/appointments/${assessmentData?.appointment?.id}`}
-                    >
-                      [{assessmentData?.appointment?.appointmentType ?? "-"}]{" "}
-                      {assessmentData?.appointment?.title ?? "-"}
-                    </a>
-                  </div>
+
+                  {assessmentData?.isInCenterAssessment && (
+                    <div className="col-md-6 mb-4">
+                      <label className="form-label">Assessed On</label>
+                      <a
+                        className="d-flex fw-normal"
+                        href={`/appointments/${assessmentData?.appointment?.id}`}
+                      >
+                        [{assessmentData?.appointment?.appointmentType ?? "-"}]{" "}
+                        {assessmentData?.appointment?.title ?? "-"}
+                      </a>
+                    </div>
+                  )}
                   <div className="col-md-6 mb-4">
                     <label className="form-label">Assessment Date</label>
                     <p>
