@@ -26,24 +26,31 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const SchoolsTable = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const { schools, isLoading: fetchLoading } = useSelector((state) => state.schools);
+  const { schools, isLoading: fetchLoading } = useSelector(
+    (state) => state.schools
+  );
 
   useEffect(() => {
     dispatch(fetchAllSchools());
   }, []);
 
   const getActions = ({ id, name }) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/schools/${id}/edit`, permission: PERMISSIONS.SCHOOLS.UPDATE },
+    {
+      label: "Edit",
+      icon: <FiEdit3 />,
+      link: `/schools/${id}/edit`,
+      permission: PERMISSIONS.SCHOOLS.UPDATE,
+    },
     {
       label: "Delete",
       icon: <FiTrash2 />,
       onClick: () => handleConfirmDelete(id, name),
-      permission: PERMISSIONS.SCHOOLS.DELETE
+      permission: PERMISSIONS.SCHOOLS.DELETE,
     },
   ];
 
@@ -55,9 +62,9 @@ const SchoolsTable = () => {
       </>,
       () => {
         dispatch(deleteSchoolByIds({ schoolIds: [id] }))
-        .unwrap()
-        .then(() => navigate('/schools'))
-        .catch((err) => console.error('Error: ', err))
+          .unwrap()
+          .then(() => navigate("/schools"))
+          .catch((err) => console.error("Error: ", err));
       },
       () => {}
     );
@@ -66,34 +73,36 @@ const SchoolsTable = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: ({ table }) => {
-        const checkboxRef = React.useRef(null);
+      // header: ({ table }) => {
+      //   const checkboxRef = React.useRef(null);
 
-        useEffect(() => {
-          if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
-          }
-        }, [table.getIsSomeRowsSelected()]);
+      //   useEffect(() => {
+      //     if (checkboxRef.current) {
+      //       checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
+      //     }
+      //   }, [table.getIsSomeRowsSelected()]);
 
-        return (
-          <input
-            type="checkbox"
-            className="custom-table-checkbox"
-            ref={checkboxRef}
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        );
-      },
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          className="custom-table-checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
+      //   return (
+      //     <input
+      //       type="checkbox"
+      //       className="custom-table-checkbox"
+      //       ref={checkboxRef}
+      //       checked={table.getIsAllRowsSelected()}
+      //       onChange={table.getToggleAllRowsSelectedHandler()}
+      //     />
+      //   );
+      // },
+      // cell: ({ row }) => (
+      //   <input
+      //     type="checkbox"
+      //     className="custom-table-checkbox"
+      //     checked={row.getIsSelected()}
+      //     disabled={!row.getCanSelect()}
+      //     onChange={row.getToggleSelectedHandler()}
+      //   />
+      // ),
+      header: () => "ID",
+      cell: (info) => <a>{info.getValue()}</a>,
       meta: {
         headerClassName: "width-30",
       },
@@ -102,19 +111,19 @@ const SchoolsTable = () => {
     {
       accessorKey: "name",
       header: () => "School Name",
-      cell: (info) => <a className="text-wrap">{info.getValue() || '-'}</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue() || "-"}</a>,
     },
     {
       accessorKey: "pic.full_name",
       header: () => "PIC Name",
-      cell: (info) => <a className="text-wrap">{info.getValue() || '-'}</a>,
+      cell: (info) => <a className="text-wrap">{info.getValue() || "-"}</a>,
     },
     {
       accessorKey: "pic.email",
       header: () => "PIC Email",
       cell: (info) => (
         <a href={`mailto:${info.getValue()}`} className="text-wrap">
-          {info.getValue() || '-'}
+          {info.getValue() || "-"}
         </a>
       ),
     },
@@ -123,7 +132,7 @@ const SchoolsTable = () => {
       header: () => "PIC Phone Number",
       cell: (info) => (
         <a href={`tel:${info.getValue()}`} className="text-wrap">
-          {info.getValue() || '-'}
+          {info.getValue() || "-"}
         </a>
       ),
     },

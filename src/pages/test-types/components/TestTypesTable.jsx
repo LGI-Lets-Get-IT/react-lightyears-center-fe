@@ -8,7 +8,10 @@ import { format } from "date-fns";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTestTypeByIds, fetchAllTestTypes } from "@/store/slice/testTypeSlice";
+import {
+  deleteTestTypeByIds,
+  fetchAllTestTypes,
+} from "@/store/slice/testTypeSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,7 +34,9 @@ const TestTypesTable = () => {
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const { testTypes, isLoading: fetchLoading } = useSelector((state) => state.testTypes);
+  const { testTypes, isLoading: fetchLoading } = useSelector(
+    (state) => state.testTypes
+  );
 
   useEffect(() => {
     dispatch(fetchAllTestTypes());
@@ -52,10 +57,10 @@ const TestTypesTable = () => {
         Are you sure you want to delete <strong>{testName}</strong> data?
       </>,
       () => {
-        dispatch(deleteTestTypeByIds({ testIds: [id]}))
-        .unwrap()
-        .then(() => navigate('/test-types'))
-        .catch((err) => console.error('Error: ', err))
+        dispatch(deleteTestTypeByIds({ testIds: [id] }))
+          .unwrap()
+          .then(() => navigate("/test-types"))
+          .catch((err) => console.error("Error: ", err));
       },
       () => {}
     );
@@ -64,34 +69,36 @@ const TestTypesTable = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: ({ table }) => {
-        const checkboxRef = React.useRef(null);
+      // header: ({ table }) => {
+      //   const checkboxRef = React.useRef(null);
 
-        useEffect(() => {
-          if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
-          }
-        }, [table.getIsSomeRowsSelected()]);
+      //   useEffect(() => {
+      //     if (checkboxRef.current) {
+      //       checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
+      //     }
+      //   }, [table.getIsSomeRowsSelected()]);
 
-        return (
-          <input
-            type="checkbox"
-            className="custom-table-checkbox"
-            ref={checkboxRef}
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        );
-      },
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          className="custom-table-checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
+      //   return (
+      //     <input
+      //       type="checkbox"
+      //       className="custom-table-checkbox"
+      //       ref={checkboxRef}
+      //       checked={table.getIsAllRowsSelected()}
+      //       onChange={table.getToggleAllRowsSelectedHandler()}
+      //     />
+      //   );
+      // },
+      // cell: ({ row }) => (
+      //   <input
+      //     type="checkbox"
+      //     className="custom-table-checkbox"
+      //     checked={row.getIsSelected()}
+      //     disabled={!row.getCanSelect()}
+      //     onChange={row.getToggleSelectedHandler()}
+      //   />
+      // ),
+      header: () => "ID",
+      cell: (info) => <a>{info.getValue()}</a>,
       meta: {
         headerClassName: "width-30",
       },

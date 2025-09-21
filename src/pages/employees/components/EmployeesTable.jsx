@@ -7,7 +7,10 @@ import { Link, useNavigate } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEmployeeByIds, fetchAllEmployees } from "@/store/slice/employeeSlice";
+import {
+  deleteEmployeeByIds,
+  fetchAllEmployees,
+} from "@/store/slice/employeeSlice";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
 
 const TableCell = memo(({ options, defaultSelect }) => {
@@ -26,19 +29,26 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const EmployeesTable = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const { employees, isLoading: fetchLoading } = useSelector((state) => state.employees);
+  const { employees, isLoading: fetchLoading } = useSelector(
+    (state) => state.employees
+  );
 
   useEffect(() => {
     dispatch(fetchAllEmployees());
   }, []);
 
   const getActions = ({ id, fullName }) => [
-    { label: "Edit", icon: <FiEdit3 />, link: `/employees/${id}/edit`, permission: PERMISSIONS.EMPLOYEES.UPDATE },
+    {
+      label: "Edit",
+      icon: <FiEdit3 />,
+      link: `/employees/${id}/edit`,
+      permission: PERMISSIONS.EMPLOYEES.UPDATE,
+    },
     {
       label: "Delete",
       icon: <FiTrash2 />,
@@ -55,9 +65,9 @@ const EmployeesTable = () => {
       </>,
       () => {
         dispatch(deleteEmployeeByIds({ employeeIds: [id] }))
-        .unwrap()
-        .then(() => navigate('/employees'))
-        .catch((err) => console.error('Error: ', err))
+          .unwrap()
+          .then(() => navigate("/employees"))
+          .catch((err) => console.error("Error: ", err));
       },
       () => {}
     );
@@ -66,34 +76,36 @@ const EmployeesTable = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: ({ table }) => {
-        const checkboxRef = React.useRef(null);
+      // header: ({ table }) => {
+      //   const checkboxRef = React.useRef(null);
 
-        useEffect(() => {
-          if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
-          }
-        }, [table.getIsSomeRowsSelected()]);
+      //   useEffect(() => {
+      //     if (checkboxRef.current) {
+      //       checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
+      //     }
+      //   }, [table.getIsSomeRowsSelected()]);
 
-        return (
-          <input
-            type="checkbox"
-            className="custom-table-checkbox"
-            ref={checkboxRef}
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        );
-      },
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          className="custom-table-checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
+      //   return (
+      //     <input
+      //       type="checkbox"
+      //       className="custom-table-checkbox"
+      //       ref={checkboxRef}
+      //       checked={table.getIsAllRowsSelected()}
+      //       onChange={table.getToggleAllRowsSelectedHandler()}
+      //     />
+      //   );
+      // },
+      // cell: ({ row }) => (
+      //   <input
+      //     type="checkbox"
+      //     className="custom-table-checkbox"
+      //     checked={row.getIsSelected()}
+      //     disabled={!row.getCanSelect()}
+      //     onChange={row.getToggleSelectedHandler()}
+      //   />
+      // ),
+      header: () => "ID",
+      cell: (info) => <a>{info.getValue()}</a>,
       meta: {
         headerClassName: "width-30",
       },
