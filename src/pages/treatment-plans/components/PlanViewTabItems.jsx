@@ -23,9 +23,9 @@ const PlanViewTabItems = () => {
   const { isLoading: downloadLoading, isLoading: sendMailLoading } =
     useSelector((state) => state.files);
 
-  const sendEmailTreatmentPlanReport = () => {
-    dispatch(sendMailPlanReport(id));
-  };
+  // const sendEmailTreatmentPlanReport = () => {
+  //   dispatch(sendMailPlanReport(id));
+  // };
 
   const generateTreatmentPlanReport = () => {
     dispatch(generatePlanReport(id)).then((response) => {
@@ -89,7 +89,7 @@ const PlanViewTabItems = () => {
         </div>
         <div className="page-content-right-sidebar-wrapper">
           <div className="proposal-action-btn">
-            <div className="d-md-none d-lg-flex">
+            {/* <div className="d-md-none d-lg-flex">
               <a
                 href="#"
                 onClick={sendEmailTreatmentPlanReport}
@@ -106,7 +106,7 @@ const PlanViewTabItems = () => {
                   <FiMail size={16} />
                 )}
               </a>
-            </div>
+            </div> */}
             <div className="d-md-none d-lg-flex">
               <a
                 href="#"
