@@ -87,6 +87,18 @@ export const generatePlanReport = createAsyncThunk(
   }
 );
 
+export const sendMailPlanReport = createAsyncThunk(
+  "files/sendMailePlanReport",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await filesApi.sendMailPlanReport(id);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const generateDailyProgressReport = createAsyncThunk(
   "files/generateDailyProgressReport",
   async (id, { rejectWithValue }) => {
@@ -134,6 +146,16 @@ export const fileSlice = createSlice({
       state.file = action.payload;
     });
     builder.addCase(generatePlanReport.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    builder.addCase(sendMailPlanReport.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(sendMailPlanReport.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(sendMailPlanReport.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

@@ -1,10 +1,13 @@
 import useConfirmation from "@/hooks/useConfirmation";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
 import { PERMISSIONS } from "@/shared/permissionsConstant";
-import { generatePlanReport } from "@/store/slice/fileSlice";
+import {
+  generatePlanReport,
+  sendMailPlanReport,
+} from "@/store/slice/fileSlice";
 import { deletePlanByIds } from "@/store/slice/treatmentPlanSlice";
 import React, { useState } from "react";
-import { FiEdit, FiPrinter, FiTrash2 } from "react-icons/fi";
+import { FiEdit, FiMail, FiPrinter, FiTrash2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -17,7 +20,12 @@ const PlanViewTabItems = () => {
   const { plan, isLoading: deleteLoading } = useSelector(
     (state) => state.treatmentPlans
   );
-  const { isLoading: downloadLoading } = useSelector((state) => state.files);
+  const { isLoading: downloadLoading, isLoading: sendMailLoading } =
+    useSelector((state) => state.files);
+
+  const sendEmailTreatmentPlanReport = () => {
+    dispatch(sendMailPlanReport(id));
+  };
 
   const generateTreatmentPlanReport = () => {
     dispatch(generatePlanReport(id)).then((response) => {
@@ -81,6 +89,24 @@ const PlanViewTabItems = () => {
         </div>
         <div className="page-content-right-sidebar-wrapper">
           <div className="proposal-action-btn">
+            <div className="d-md-none d-lg-flex">
+              <a
+                href="#"
+                onClick={sendEmailTreatmentPlanReport}
+                className={`action-btn ${sendMailLoading ? "pe-none" : ""}`}
+                data-bs-toggle="tooltip"
+                title="Email Plan Report"
+              >
+                {sendMailLoading ? (
+                  <div
+                    className="spinner-border spinner-border-sm text-primary"
+                    role="status"
+                  />
+                ) : (
+                  <FiMail size={16} />
+                )}
+              </a>
+            </div>
             <div className="d-md-none d-lg-flex">
               <a
                 href="#"

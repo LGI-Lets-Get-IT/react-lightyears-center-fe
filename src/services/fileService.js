@@ -10,11 +10,15 @@ export const filesApi = {
       {},
       { responseType: "blob" }
     ),
+  sendMailPlanReport: (id) =>
+    api.post(`/files/reports/treatment-plan/send-mail/${id}`),
   generateDailyProgressReport: (id) =>
     api.post(
       `/files/reports/daily-progress/generate/${id}`,
       {},
       { responseType: "blob" }
     ),
+  sendMailDailyProgressReport: (id) =>
+    api.post(`/files/reports/daily-progress/send-mail/${id}`),
   deleteFile: (requestBody) => api.delete(`/files`, { data: requestBody }),
 };
