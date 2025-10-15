@@ -77,34 +77,36 @@ const PlansTable = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: ({ table }) => {
-        const checkboxRef = React.useRef(null);
+      // header: ({ table }) => {
+      //   const checkboxRef = React.useRef(null);
 
-        useEffect(() => {
-          if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
-          }
-        }, [table.getIsSomeRowsSelected()]);
+      //   useEffect(() => {
+      //     if (checkboxRef.current) {
+      //       checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
+      //     }
+      //   }, [table.getIsSomeRowsSelected()]);
 
-        return (
-          <input
-            type="checkbox"
-            className="custom-table-checkbox"
-            ref={checkboxRef}
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        );
-      },
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          className="custom-table-checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
+      //   return (
+      //     <input
+      //       type="checkbox"
+      //       className="custom-table-checkbox"
+      //       ref={checkboxRef}
+      //       checked={table.getIsAllRowsSelected()}
+      //       onChange={table.getToggleAllRowsSelectedHandler()}
+      //     />
+      //   );
+      // },
+      // cell: ({ row }) => (
+      //   <input
+      //     type="checkbox"
+      //     className="custom-table-checkbox"
+      //     checked={row.getIsSelected()}
+      //     disabled={!row.getCanSelect()}
+      //     onChange={row.getToggleSelectedHandler()}
+      //   />
+      // ),
+      header: () => "ID",
+      cell: (info) => <a className="text-wrap">{info.getValue()}</a>,
       meta: {
         headerClassName: "width-30",
       },

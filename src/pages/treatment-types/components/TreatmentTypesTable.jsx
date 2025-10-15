@@ -8,7 +8,10 @@ import { format } from "date-fns";
 import useConfirmation from "@/hooks/useConfirmation";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteTreatmentTypeByIds, fetchAllTreatmentTypes } from "@/store/slice/treatmentTypeSlice";
+import {
+  deleteTreatmentTypeByIds,
+  fetchAllTreatmentTypes,
+} from "@/store/slice/treatmentTypeSlice";
 
 const TableCell = memo(({ options, defaultSelect }) => {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -31,7 +34,9 @@ const TreatmentTypesTable = () => {
   const { filterItemsByPermission } = useFilterByPermission();
   const { showConfirmation, ConfirmationDialog } = useConfirmation();
 
-  const { treatmentTypes, isLoading: fetchLoading } = useSelector((state) => state.treatmentTypes);
+  const { treatmentTypes, isLoading: fetchLoading } = useSelector(
+    (state) => state.treatmentTypes
+  );
 
   useEffect(() => {
     dispatch(fetchAllTreatmentTypes());
@@ -52,10 +57,10 @@ const TreatmentTypesTable = () => {
         Are you sure you want to delete <strong>{treatmentName}</strong> data?
       </>,
       () => {
-        dispatch(deleteTreatmentTypeByIds({ treatmentIds: [id]}))
-        .unwrap()
-        .then(() => navigate('/treatment-types'))
-        .catch((err) => console.error('Error: ', err))
+        dispatch(deleteTreatmentTypeByIds({ treatmentIds: [id] }))
+          .unwrap()
+          .then(() => navigate("/treatment-types"))
+          .catch((err) => console.error("Error: ", err));
       },
       () => {}
     );
@@ -64,34 +69,36 @@ const TreatmentTypesTable = () => {
   const columns = [
     {
       accessorKey: "id",
-      header: ({ table }) => {
-        const checkboxRef = React.useRef(null);
+      // header: ({ table }) => {
+      //   const checkboxRef = React.useRef(null);
 
-        useEffect(() => {
-          if (checkboxRef.current) {
-            checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
-          }
-        }, [table.getIsSomeRowsSelected()]);
+      //   useEffect(() => {
+      //     if (checkboxRef.current) {
+      //       checkboxRef.current.indeterminate = table.getIsSomeRowsSelected();
+      //     }
+      //   }, [table.getIsSomeRowsSelected()]);
 
-        return (
-          <input
-            type="checkbox"
-            className="custom-table-checkbox"
-            ref={checkboxRef}
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-          />
-        );
-      },
-      cell: ({ row }) => (
-        <input
-          type="checkbox"
-          className="custom-table-checkbox"
-          checked={row.getIsSelected()}
-          disabled={!row.getCanSelect()}
-          onChange={row.getToggleSelectedHandler()}
-        />
-      ),
+      //   return (
+      //     <input
+      //       type="checkbox"
+      //       className="custom-table-checkbox"
+      //       ref={checkboxRef}
+      //       checked={table.getIsAllRowsSelected()}
+      //       onChange={table.getToggleAllRowsSelectedHandler()}
+      //     />
+      //   );
+      // },
+      // cell: ({ row }) => (
+      //   <input
+      //     type="checkbox"
+      //     className="custom-table-checkbox"
+      //     checked={row.getIsSelected()}
+      //     disabled={!row.getCanSelect()}
+      //     onChange={row.getToggleSelectedHandler()}
+      //   />
+      // ),
+      header: () => "ID",
+      cell: (info) => <a>{info.getValue()}</a>,
       meta: {
         headerClassName: "width-30",
       },
@@ -151,7 +158,7 @@ const TreatmentTypesTable = () => {
 
   return (
     <div>
-      <Table data={treatmentTypes} columns={columns} loading={fetchLoading}/>
+      <Table data={treatmentTypes} columns={columns} loading={fetchLoading} />
       <ConfirmationDialog />
     </div>
   );
