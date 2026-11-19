@@ -3,9 +3,8 @@ import React from 'react'
 const Footer = () => {
     return (
         <footer className="footer">
-            <p className="fs-11 text-muted fw-medium text-uppercase mb-0 copyright">
-                <span>Copyright © </span>
-                {new Date().getFullYear()}
+            <p className="fs-11 text-muted fw-medium mb-0 copyright">
+                © {new Date().getFullYear()} Lightyears Center. All rights reserved.
             </p>
             <div className="d-flex align-items-center gap-4">
                 <span>TLY-CDC v1.0.0</span>
