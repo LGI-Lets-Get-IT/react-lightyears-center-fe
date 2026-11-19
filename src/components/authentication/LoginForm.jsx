@@ -45,7 +45,7 @@ const LoginForm = ({ resetPath }) => {
                       className={`form-control ${
                         meta.error ? "is-invalid" : ""
                       }`}
-                      placeholder="Email"
+                      placeholder="Email address"
                       value={values.email}
                       required
                       {...field}
