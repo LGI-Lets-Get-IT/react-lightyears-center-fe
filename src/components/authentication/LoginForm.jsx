@@ -76,14 +76,13 @@ const LoginForm = ({ resetPath }) => {
                         <button
                           type="button"
                           onClick={() => setHidePassword(!hidePassword)}
-                          className={`btn btn-link position-absolute top-50 end-0 translate-middle-y p-0 text-muted ${
-                            meta.error ? "me-4" : "me-3"
-                          }`}
+                          className="btn btn-link position-absolute top-50 end-0 translate-middle-y p-0 text-muted"
                           style={{
                             cursor: "pointer",
                             border: "none",
                             background: "none",
                             zIndex: 10,
+                            marginRight: meta.error ? "2rem" : "1rem",
                           }}
                         >
                           {hidePassword ? (
