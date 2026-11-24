@@ -18,6 +18,7 @@ import {
   updateClientByUuid,
   updateClientIntakeFormLink,
 } from "@/store/slice/clientSlice";
+import { notifySuccess } from "@/store/slice/notificationSlice";
 import { useNavigate } from "react-router-dom";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { clientSchema } from "@/schemas/clientSchema";
@@ -49,6 +50,7 @@ const TabProfile = () => {
       .unwrap()
       .then((data) => {
         console.log("Created Client Data: ", data);
+        dispatch(notifySuccess("Client created successfully"));
         handleUploadFile(
           data.uuid,
           data.fullName.replaceAll(" ", ""),
