@@ -6,11 +6,19 @@ import {
   userLogout,
   userRefreshToken,
 } from "@/store/slice/authSlice";
+import { addNotification } from "@/store/slice/notificationSlice";
 // import Cookies from "js-cookie"; // OLD CODE - commented out (not used with HTTP-only cookies)
 const getStore = async () => {
   const module = await import("../store");
   return module.store;
 };
+
+// Surface a toast through the app-wide notification component. Uses the lazy
+// store import to stay clear of the service -> slice -> store import cycle.
+const pushNotification = (type, message) => {
+  getStore().then((store) => store.dispatch(addNotification({ type, message })));
+};
+
 export const MySwal = withReactContent(Swal);
 
 export const swalOptions = {
@@ -92,10 +100,7 @@ api.interceptors.response.use(
     // if (response.status === 201 || response.status === 204) {
     const contentModifyActions = ["put", "delete"];
     if (contentModifyActions.includes(response.config.method)) {
-      MySwal.mixin(swalOptions).fire({
-        icon: "success",
-        title: response?.data?.message || "Success",
-      });
+      pushNotification("success", response?.data?.message || "Success");
     }
     return response;
   },
@@ -166,10 +171,7 @@ api.interceptors.response.use(
     }
 
     // console.log("KELAURIN ERROR");
-    MySwal.mixin(swalOptions).fire({
-      icon: "error",
-      title: message || "Internal Server Error",
-    });
+    pushNotification("error", message || "Internal Server Error");
 
     return Promise.reject(error);
   }
@@ -179,19 +181,13 @@ axiosPublic.interceptors.response.use(
   (response) => {
     // if (response.status === 201 || response.status === 204) {
     if ([201, 204].includes(response.status)) {
-      MySwal.mixin(swalOptions).fire({
-        icon: "success",
-        title: response?.data?.message || "Success",
-      });
+      pushNotification("success", response?.data?.message || "Success");
     }
     return response;
   },
   async (error) => {
     const message = error?.response?.data?.message;
-    MySwal.mixin(swalOptions).fire({
-      icon: "error",
-      title: message || "Internal Server Error",
-    });
+    pushNotification("error", message || "Internal Server Error");
     if (error.response?.status === 401) {
       window.location.href = "/login";
       // Handle unauthorized access
