@@ -3,9 +3,9 @@ import Table from "@/components/shared/table/Table";
 import { FiEdit3, FiEye, FiMoreHorizontal, FiTrash2 } from "react-icons/fi";
 import Dropdown from "@/components/shared/Dropdown";
 import SelectDropdown from "@/components/shared/SelectDropdown";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useFilterByPermission from "@/hooks/useFilterByPermission";
-import useConfirmation from "@/hooks/useConfirmation";
+import useUndoableDelete from "@/hooks/useUndoableDelete";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deleteClientByUuids,
@@ -29,10 +29,10 @@ const TableCell = memo(({ options, defaultSelect }) => {
 TableCell.displayName = "TableCell";
 
 const ClientsTable = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { filterItemsByPermission } = useFilterByPermission();
-  const { showConfirmation, ConfirmationDialog } = useConfirmation();
+  const { showUndoableDelete } = useUndoableDelete();
+  const [pendingDeleteUuids, setPendingDeleteUuids] = useState([]);
 
   const { clients, isLoading: fetchLoading } = useSelector(
     (state) => state.clients
@@ -53,25 +53,30 @@ const ClientsTable = () => {
       {
         label: "Delete",
         icon: <FiTrash2 />,
-        onClick: () => handleConfirmDelete(uuid, fullName),
+        onClick: () => handleDelete(uuid, fullName),
         permission: PERMISSIONS.CLIENTS.DELETE,
       },
     ];
   };
 
-  const handleConfirmDelete = (uuid, fullName) => {
-    showConfirmation(
-      <>
-        Are you sure you want to delete client <strong>{fullName}</strong> data?
-      </>,
-      () => {
+  // Optimistically hide the row, then offer an Undo window. The server-side
+  // delete is only dispatched when the window elapses (onCommit); pressing
+  // Undo (onUndo) restores the row because the delete never left the client.
+  const handleDelete = (uuid, fullName) => {
+    setPendingDeleteUuids((prev) => [...prev, uuid]);
+    showUndoableDelete({
+      message: `Client ${fullName} deleted`,
+      onUndo: () =>
+        setPendingDeleteUuids((prev) => prev.filter((id) => id !== uuid)),
+      onCommit: () => {
         dispatch(deleteClientByUuids({ clientIds: [uuid] }))
           .unwrap()
-          .then(() => navigate("/clients"))
-          .catch((err) => console.error("Error: ", err));
+          .catch((err) => console.error("Error: ", err))
+          .finally(() =>
+            setPendingDeleteUuids((prev) => prev.filter((id) => id !== uuid))
+          );
       },
-      () => {}
-    );
+    });
   };
 
   const columns = [
@@ -242,10 +247,13 @@ const ClientsTable = () => {
     },
   ];
 
+  const visibleClients = clients.filter(
+    (client) => !pendingDeleteUuids.includes(client.uuid)
+  );
+
   return (
     <div>
-      <Table data={clients} columns={columns} loading={fetchLoading} />
-      <ConfirmationDialog />
+      <Table data={visibleClients} columns={columns} loading={fetchLoading} />
     </div>
   );
 };
