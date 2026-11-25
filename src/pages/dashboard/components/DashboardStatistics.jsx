@@ -9,7 +9,7 @@ import { fetchDashboardData } from "@/store/slice/dashboardSlice";
 const DashboardStatistics = () => {
   const dispatch = useDispatch();
   const { hasPermission } = useFilterByPermission();
-  const { dashboardData } = useSelector((state) => state.dashboard);
+  const { dashboardData, isLoading } = useSelector((state) => state.dashboard);
   const { user } = useSelector((state) => state.profile);
   const isClient = !user?.roleId;
 
@@ -97,7 +97,13 @@ const DashboardStatistics = () => {
                       <Link to={url} className="fw-bold d-block">
                         <span className="text-truncate-1-line">{title}</span>
                         <span className="fs-24 fw-bolder d-block">
-                          {count ?? 0}
+                          {isLoading ? (
+                            <span className="placeholder-glow d-block">
+                              <span className="placeholder col-5 rounded" />
+                            </span>
+                          ) : (
+                            count ?? 0
+                          )}
                         </span>
                       </Link>
                     </div>
