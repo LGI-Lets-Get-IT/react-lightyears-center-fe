@@ -3,7 +3,7 @@ import { dashboardApi } from "@/services/dashboardService";
 
 const initialState = {
   dashboardData: [],
-  isLoading: false,
+  isLoading: true,
   error: null,
 };
 
@@ -28,11 +28,11 @@ export const dashboardSlice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(fetchDashboardData.fulfilled, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.dashboardData = action.payload;
     });
     builder.addCase(fetchDashboardData.rejected, (state, action) => {
-      state.isLoading = true;
+      state.isLoading = false;
       state.error = action.payload;
     });
   },
