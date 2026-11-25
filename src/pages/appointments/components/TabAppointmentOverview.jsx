@@ -92,11 +92,15 @@ const TabAppointmentOverview = ({ appointmentData }) => {
           <div className="card stretch stretch-full">
             <div className="card-body task-header d-md-flex align-items-center justify-content-between">
               <div className="me-4">
-                <h4 className="mb-4 fw-bold d-flex">
+                <h4 className="mb-4 fw-bold d-flex flex-column flex-md-row align-items-start align-items-md-stretch">
                   <span className="text-truncate-1-line text-capitalize">
                     {appointmentData ? (
                       <>
-                        [{appointmentData?.appointmentType}]{" "}
+                        {appointmentData?.appointmentType && (
+                          <span className="text-muted fw-normal me-2">
+                            {appointmentData.appointmentType}
+                          </span>
+                        )}
                         {appointmentData?.title}
                       </>
                     ) : (
@@ -122,7 +126,7 @@ const TabAppointmentOverview = ({ appointmentData }) => {
                         : appointmentData?.status == "Done"
                         ? "success"
                         : "danger"
-                    } mx-3
+                    } mx-md-3 mt-2 mt-md-0
                     `}
                   >
                     {appointmentData?.status}
