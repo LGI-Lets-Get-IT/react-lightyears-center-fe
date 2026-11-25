@@ -24,7 +24,7 @@ const AppointmentCalendar = () => {
     <>
       {hasPermission(PERMISSIONS.APPOINTMENTS.VIEW) && (
         <div className="card card-body">
-            <div className="custom-card-action p-0 w-full overflow-x-auto">
+            <div className="custom-card-action p-0 w-full overflow-x-auto dashboard-appointment-calendar">
                 <FullCalendar
                   height={'auto'}
                   plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
